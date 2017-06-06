@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="49dp"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white"
+    android:baselineAligned="true"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/tab_index"
+        style="@style/TabBar">
+
+        <ImageView
+            android:id="@+id/tab_index_img"
+            android:layout_height="24dp"
+            android:layout_width="24dp"
+            android:layout_marginTop="2dp"
+            android:src="@mipmap/tab1_b" />
+
+        <TextView
+            android:id="@+id/tab_index_title"
+            style="@style/TabBarTitle"
+            android:text="首页"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/tab_doctor"
+        style="@style/TabBar">
+
+        <ImageView
+            android:id="@+id/tab_doctor_img"
+            android:layout_height="24dp"
+            android:layout_width="24dp"
+            android:layout_marginTop="2dp"
+            android:src="@mipmap/tab2_b" />
+
+        <TextView
+            android:id="@+id/tab_doctor_title"
+            style="@style/TabBarTitle"
+            android:text="会议" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/tab_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/tab_plus_img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@mipmap/tab_plus_g"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_community"
+        style="@style/TabBar">
+
+        <ImageView
+            android:id="@+id/tab_community_img"
+            android:layout_height="24dp"
+            android:layout_width="24dp"
+            android:layout_marginTop="2dp"
+            android:src="@mipmap/tab3_b" />
+
+        <TextView
+            android:id="@+id/tab_community_title"
+            style="@style/TabBarTitle"
+            android:text="直播" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tab_mine"
+        style="@style/TabBar">
+
+        <ImageView
+            android:id="@+id/tab_mine_img"
+            android:layout_height="24dp"
+            android:layout_width="24dp"
+            android:layout_marginTop="2dp"
+            android:src="@mipmap/tab4_b" />
+
+        <TextView
+            android:id="@+id/tab_mine_title"
+            style="@style/TabBarTitle"
+            android:text="个人" />
+    </LinearLayout>
+</LinearLayout>
+
