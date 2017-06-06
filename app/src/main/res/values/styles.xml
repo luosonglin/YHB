@@ -1,5 +1,4 @@
-<resources>
-
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -8,4 +7,91 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!--首次进入无黑色-->
+    <style name="WelcomeTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@mipmap/hahahahhahahahha</item>
+    </style>
+
+    <!--bar-->
+    <style name="TabBar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TabBarImg">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TabBarTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TabText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TabIndexText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Toolbar" parent="Theme.AppCompat">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">#FFF</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:textColorSecondary">#FFF</item>
+        <item name="actionMenuTextColor">#FFF</item>
+    </style>
+    <style name="TextStyle_title_golden">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/gold</item>
+    </style>
+    <style name="TextStyle_gray">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="ItemDetailTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <!-- 沉浸式状态栏 -->
+        <item name="colorPrimary">@color/transparent</item>    <!-- 状态栏 -->
+        <item name="colorPrimaryDark">@color/transparent</item> <!-- toolbar -->
+        <item name="colorAccent">@color/colorAccent</item>  <!-- 重点 -->
+    </style>
 </resources>

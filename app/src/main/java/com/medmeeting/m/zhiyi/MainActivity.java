@@ -1,7 +1,7 @@
-package com.medmeeting.m.zhiyi.yihuibao;
+package com.medmeeting.m.zhiyi;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
