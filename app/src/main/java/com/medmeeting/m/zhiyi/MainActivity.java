@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.medmeeting.m.zhiyi.MVP.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.UI.Entity.BookListDto;
 import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
@@ -258,6 +259,7 @@ public class MainActivity extends AppCompatActivity
 //                startActivity(new Intent(MainActivity.this, PlusSignedDetailsActivity.class));
                 break;
             case 1:
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
 //                String confirmNumber = "";
 //                final String TAG_CARD = "002";
 //                try {

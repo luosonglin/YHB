@@ -25,10 +25,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MVP.SignInAndSignUpView.LoginActivity"
+            android:label="LoginActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name="com.medmeeting.m.zhiyi.MainActivity" />
         <activity
             android:name=".UI.ListvView.ListvViewActivity"
             android:label="ListvView模式" />
+
     </application>
 
 </manifest>
