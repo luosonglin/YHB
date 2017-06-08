@@ -11,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.medmeeting.m.zhiyi.MVP.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.MVP.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.UI.Entity.BookListDto;
 import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
@@ -26,7 +28,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
-        implements IndexFragment.OnFragmentInteractionListener{
+        implements IndexFragment.OnFragmentInteractionListener,
+            MeetingFragment.OnFragmentInteractionListener,
+            MineFragment.OnFragmentInteractionListener{
 
     private static final String TABORDERSTAG = "TABORDERSTAG";
     private static final String TABMERCHANDISE = "TABMERCHANDISE";
@@ -75,10 +79,10 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentManager fragmentManager;
     private IndexFragment mIndexFragment;
-    private IndexFragment mMeetingFragment;
+    private MeetingFragment mMeetingFragment;
     //    private CommunityFragment mCommunityFragment;
     private IndexFragment mCommunityFragment;
-    private IndexFragment mMineFragment;
+    private MineFragment mMineFragment;
 
     @OnClick(R.id.tab_index) void orderTab() {
         setTabSelection(tabOrders);
@@ -115,9 +119,9 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             mIndexFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABORDERSTAG);
-            mMeetingFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABMERCHANDISE);
+            mMeetingFragment = (MeetingFragment) fragmentManager.findFragmentByTag(TABMERCHANDISE);
             mCommunityFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
-            mMineFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
+            mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
         }
         setTabSelection(tabOrders);
     }
@@ -155,7 +159,7 @@ public class MainActivity extends AppCompatActivity
                 tabMerchandiseImg.setImageResource(R.mipmap.tab2_b);
                 tabMerchandiseTitle.setTextColor(activeColorRecourse);
                 if (mMeetingFragment == null) {
-                    mMeetingFragment = new IndexFragment();
+                    mMeetingFragment = new MeetingFragment();
                     fragmentTransaction.add(R.id.container, mMeetingFragment, TABMERCHANDISE);
                 } else {
                     fragmentTransaction.show(mMeetingFragment);
@@ -200,7 +204,7 @@ public class MainActivity extends AppCompatActivity
                 tabSelfImg.setImageResource(R.mipmap.tab4_b);
                 tabSelfTitle.setTextColor(activeColorRecourse);
                 if (mMineFragment == null) {
-                    mMineFragment = new IndexFragment();
+                    mMineFragment = new MineFragment();
                     fragmentTransaction.add(R.id.container, mMineFragment, TABSELFTAG);
                 } else {
                     fragmentTransaction.show(mMineFragment);
@@ -256,29 +260,9 @@ public class MainActivity extends AppCompatActivity
         Intent intent;
         switch (position) {
             case 0:
-//                startActivity(new Intent(MainActivity.this, PlusSignedDetailsActivity.class));
                 break;
             case 1:
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
-//                String confirmNumber = "";
-//                final String TAG_CARD = "002";
-//                try {
-//                    if (!DBUtils.isSet(MainActivity.this, "tokenId") && !DBUtils.isSet(MainActivity.this, "openId")) {
-//                        Intent loginIntent = new Intent(MainActivity.this, SignUpByPhoneCodeActivity.class);
-//                        int requestCode = 2;
-//                        startActivityForResult(loginIntent, requestCode);
-//                        return;
-//                    }
-//                    confirmNumber = DBUtils.get(MainActivity.this, "confirmNumber");
-//                } catch (SnappydbException e) {
-//                    e.printStackTrace();
-//                }
-//                Intent intent2 = new Intent(MainActivity.this, MyBusinessCardActivity.class);
-//                Bundle bundle2 = new Bundle();
-//                bundle2.putString("confirmNumber", confirmNumber);
-//                bundle2.putString("card_type", TAG_CARD);
-//                intent2.putExtras(bundle2);
-//                startActivity(intent2);
                 break;
             case 2:
                 intent = new Intent(MainActivity.this, ListvViewActivity.class);

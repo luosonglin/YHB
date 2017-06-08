@@ -35,12 +35,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
+import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.snappydb.SnappydbException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import rx.Observer;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -139,6 +149,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 timer.start();
+                getPhoneCode();
             }
         });
 
@@ -160,6 +171,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //                startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
             }
         });
+    }
+
+    private void getPhoneCode() {
+
+        if (!PhoneUtils.isMobile(mPhoneView.getText().toString().trim())) {
+            ToastUtils.show(LoginActivity.this, "手机号格式不正确,请重新输入");
+            return;
+        }
+
+        HttpData.getInstance().HttpDataGetPhoneCode(new Observer<SignUpCodeDto>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                //设置页面为加载错误
+                Log.e(TAG, "onError: "+e.getMessage()
+                        +"\n"+e.getCause()
+                        +"\n"+e.getLocalizedMessage()
+                        +"\n"+e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(SignUpCodeDto signUpCodeDto) {
+                Log.e(TAG, "onNext sms "+ signUpCodeDto.getData().getMsg() + " " + signUpCodeDto.getCode());
+            }
+        }, mPhoneView.getText().toString().trim());
     }
 
     private void populateAutoComplete() {
@@ -360,6 +400,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mPhone;
         private final String mPassword;
+        private Map<String, Object> map = new HashMap<>();
 
         UserLoginTask(String phone, String password) {
             mPhone = phone;
@@ -394,14 +435,48 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
-                Log.d(TAG, "Login succeed!");
-                finish();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            } else {
-                mCodeView.setError("验证码错误");
-                mCodeView.requestFocus();
-            }
+            map.put("phone", mPhone);
+            map.put("code", mPassword);
+            HttpData.getInstance().HttpDataLogin(new Observer<SignUpDto>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    mCodeView.setError("验证码错误");
+                    mCodeView.requestFocus();
+
+                    Log.e(TAG, "onError: "+e.getMessage()
+                            +"\n"+e.getCause()
+                            +"\n"+e.getLocalizedMessage()
+                            +"\n"+e.getStackTrace());
+                }
+
+                @Override
+                public void onNext(SignUpDto signUpDto) {
+
+                    try {
+                        DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
+                    } catch (SnappydbException e) {
+                        e.printStackTrace();
+                    }
+
+                    Log.d(TAG, "Login succeed!");
+                    finish();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                }
+            }, map);
+
+//            if (success) {
+//                Log.d(TAG, "Login succeed!");
+//                finish();
+//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//            } else {
+//                mCodeView.setError("验证码错误");
+//                mCodeView.requestFocus();
+//            }
         }
 
         @Override

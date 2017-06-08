@@ -1,6 +1,5 @@
 package com.medmeeting.m.zhiyi.MVP.Model;
 
-
 import android.util.Log;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;

@@ -9,9 +9,12 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
+import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
+import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
 import java.io.File;
+import java.util.Map;
 
 import io.rx_cache.DynamicKey;
 import io.rx_cache.EvictDynamicKey;
@@ -67,6 +70,18 @@ public class HttpData extends RetrofitUtils {
         Observable observableCache = providers.getBannerList(observable, new DynamicKey("banner测试"), new EvictDynamicKey(false)).map(new HttpResultFuncCcche<BannerDto>());
         Log.e("HttpData", "HttpDataGetBanner");
         setSubscribe(observableCache, observer);
+    }
+
+    //get test get phone code
+    public void HttpDataGetPhoneCode(Observer<SignUpCodeDto> observer, String phone) {
+        Observable observable = service.getPhoneCode(phone);
+        setSubscribe(observable, observer);
+    }
+
+    //test login
+    public void HttpDataLogin(Observer<SignUpDto> observer, Map<String, Object> map) {
+        Observable observable = service.LoginByPhoneCode(map);
+        setSubscribe(observable, observer);
     }
 
     /**
