@@ -43,4 +43,33 @@ public abstract class RetrofitUtils {
         return mRetrofit;
     }
 
+    /**
+     * 获取Retrofit对象
+     *
+     * @return
+     */
+    protected static Retrofit getMeetingRetrofit() {
+
+        if (null == mRetrofit) {
+
+            if (null == mOkHttpClient) {
+                mOkHttpClient = OkHttpUtils.getOkHttpClient();
+            }
+
+            //Retrofit2后使用build设计模式
+            mRetrofit = new Retrofit.Builder()
+                    //设置服务器路径
+                    .baseUrl(Constant.API_SERVER_MEETING + "/")
+                    //添加转化库，默认是Gson
+                    .addConverterFactory(GsonConverterFactory.create())
+                    //添加回调库，采用RxJava
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    //设置使用okhttp网络请求
+                    .client(mOkHttpClient)
+                    .build();
+        }
+
+        return mRetrofit;
+    }
+
 }

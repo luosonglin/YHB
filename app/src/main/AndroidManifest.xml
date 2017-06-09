@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MVP.SignInAndSignUpView.LoginActivity"
+            android:name=".UI.SignInAndSignUpView.LoginActivity"
             android:label="LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name="com.medmeeting.m.zhiyi.MainActivity" />

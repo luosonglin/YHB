@@ -12,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.MVP.MineView.MineFragment;
-import com.medmeeting.m.zhiyi.MVP.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.UI.Entity.BookListDto;
 import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -22,6 +22,7 @@ import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
 import com.snappydb.SnappydbException;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +31,7 @@ import butterknife.OnClick;
 public class MainActivity extends AppCompatActivity
         implements IndexFragment.OnFragmentInteractionListener,
             MeetingFragment.OnFragmentInteractionListener,
+            LiveFragment.OnFragmentInteractionListener,
             MineFragment.OnFragmentInteractionListener{
 
     private static final String TABORDERSTAG = "TABORDERSTAG";
@@ -80,8 +82,8 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private IndexFragment mIndexFragment;
     private MeetingFragment mMeetingFragment;
-    //    private CommunityFragment mCommunityFragment;
-    private IndexFragment mCommunityFragment;
+    //    private CommunityFragment mLiveFragment;
+    private LiveFragment mLiveFragment;
     private MineFragment mMineFragment;
 
     @OnClick(R.id.tab_index) void orderTab() {
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState != null) {
             mIndexFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABORDERSTAG);
             mMeetingFragment = (MeetingFragment) fragmentManager.findFragmentByTag(TABMERCHANDISE);
-            mCommunityFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
+            mLiveFragment = (LiveFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
             mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
         }
         setTabSelection(tabOrders);
@@ -191,11 +193,11 @@ public class MainActivity extends AppCompatActivity
                 hideFragments(fragmentTransaction);
                 tabPurchaseImg.setImageResource(R.mipmap.tab3_b);
                 tabPurchaseTitle.setTextColor(activeColorRecourse);
-                if (mCommunityFragment == null) {
-                    mCommunityFragment = new IndexFragment();
-                    fragmentTransaction.add(R.id.container, mCommunityFragment, TABPURCHASE);
+                if (mLiveFragment == null) {
+                    mLiveFragment = new LiveFragment();
+                    fragmentTransaction.add(R.id.container, mLiveFragment, TABPURCHASE);
                 } else {
-                    fragmentTransaction.show(mCommunityFragment);
+                    fragmentTransaction.show(mLiveFragment);
                 }
                 break;
 
@@ -311,8 +313,8 @@ public class MainActivity extends AppCompatActivity
         if (mMeetingFragment != null) {
             transaction.hide(mMeetingFragment);
         }
-        if (mCommunityFragment != null) {
-            transaction.hide(mCommunityFragment);
+        if (mLiveFragment != null) {
+            transaction.hide(mLiveFragment);
         }
         if (mMineFragment != null) {
             transaction.hide(mMineFragment);

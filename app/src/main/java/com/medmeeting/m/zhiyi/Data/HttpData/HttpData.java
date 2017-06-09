@@ -9,6 +9,7 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
+import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
@@ -38,6 +39,7 @@ public class HttpData extends RetrofitUtils {
             .using(CacheProviders.class);
 
     protected static final APIService service = getRetrofit().create(APIService.class);
+    protected static final APIService service_meeting = getMeetingRetrofit().create(APIService.class);
 
     //在访问HttpMethods时创建单例
     private static class SingletonHolder{
@@ -81,6 +83,12 @@ public class HttpData extends RetrofitUtils {
     //test login
     public void HttpDataLogin(Observer<SignUpDto> observer, Map<String, Object> map) {
         Observable observable = service.LoginByPhoneCode(map);
+        setSubscribe(observable, observer);
+    }
+
+    //test get hot meetings
+    public void HttpDataGetHotMeetings(Observer<MeetingDto> observer, Integer pageNum, Integer pageSize){
+        Observable observable = service_meeting.getHotMeetings(pageNum, pageSize);
         setSubscribe(observable, observer);
     }
 

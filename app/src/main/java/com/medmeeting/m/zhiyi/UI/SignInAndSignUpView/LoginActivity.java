@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.MVP.SignInAndSignUpView;
+package com.medmeeting.m.zhiyi.UI.SignInAndSignUpView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
