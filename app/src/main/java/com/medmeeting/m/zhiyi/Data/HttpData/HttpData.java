@@ -38,8 +38,10 @@ public class HttpData extends RetrofitUtils {
             .persistence(cacheDirectory)
             .using(CacheProviders.class);
 
-    protected static final APIService service = getRetrofit().create(APIService.class);
     protected static final APIService service_meeting = getMeetingRetrofit().create(APIService.class);
+    protected static final APIService service = getRetrofit().create(APIService.class);
+
+    private static final String TAG = HttpData.class.getSimpleName();
 
     //在访问HttpMethods时创建单例
     private static class SingletonHolder{
@@ -70,7 +72,7 @@ public class HttpData extends RetrofitUtils {
     public void HttpDataGetBanner(Observer<BannerDto> observer) {
         Observable observable = service.getBannerList().map(new HttpResultFunc<BannerDto>());
         Observable observableCache = providers.getBannerList(observable, new DynamicKey("banner测试"), new EvictDynamicKey(false)).map(new HttpResultFuncCcche<BannerDto>());
-        Log.e("HttpData", "HttpDataGetBanner");
+        Log.e(TAG, "HttpDataGetBanner");
         setSubscribe(observableCache, observer);
     }
 
@@ -90,6 +92,9 @@ public class HttpData extends RetrofitUtils {
     public void HttpDataGetHotMeetings(Observer<MeetingDto> observer, Integer pageNum, Integer pageSize){
         Observable observable = service_meeting.getHotMeetings(pageNum, pageSize);
         setSubscribe(observable, observer);
+//        Observable observableCache = providers.getMeetingList(observable, new DynamicKey("热门会议"), new EvictDynamicKey(false));
+//        setSubscribe(observableCache, observer);
+        Log.e(TAG, "HttpDataGetHotMeetings");
     }
 
     /**
