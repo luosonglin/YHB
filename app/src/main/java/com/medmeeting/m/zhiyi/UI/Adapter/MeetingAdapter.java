@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
+import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -21,9 +22,16 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto.PageInfoBean.Lis
                 .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
                 .crossFade()
                 .placeholder(R.mipmap.ic_launcher)
-                .into((ImageView) helper.getView(R.id.book_info_image_url));
-        helper.setText(R.id.book_info_textview_name,item.getTitle());
-        helper.setText(R.id.book_info_textview_author,item.getId()+"");
-        helper.setText(R.id.book_info_textview_introduction,"简介:"+item.getStartDate());
+                .into((ImageView) helper.getView(R.id.image));
+
+        helper.setText(R.id.name, item.getTitle())
+                .setText(R.id.author, item.getId()+"");
+
+        Glide.with(mContext)
+                .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .crossFade()
+                .transform(new GlideCircleTransform(mContext))
+                .placeholder(R.mipmap.ic_launcher)
+                .into((ImageView) helper.getView(R.id.avatar));
     }
 }

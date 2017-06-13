@@ -13,10 +13,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.MVP.Presenter.BannerListPresent;
+import com.medmeeting.m.zhiyi.MVP.View.BannerListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BannersAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
+import com.xiaochao.lcrapiddeveloplibrary.container.RotationHeader;
+import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
+import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -36,7 +43,10 @@ import butterknife.ButterKnife;
  * Use the {@link IndexFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IndexFragment extends Fragment {
+public class IndexFragment extends Fragment
+        implements BaseQuickAdapter.RequestLoadMoreListener,
+            SpringView.OnFreshListener,
+            BannerListView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,19 +57,20 @@ public class IndexFragment extends Fragment {
     Banner banner;
     @Bind(R.id.rv_list)
     RecyclerView rvList;
-    @Bind(R.id.rv_list2)
-    RecyclerView rvList2;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private Banner mBanner;
-    private RecyclerView mRecyclerView;
     private List<String> bannerImages = new ArrayList<>();
-    private BannersAdapter mSelectedParkAdapter;
-    private RecyclerView mRecyclerView2;
-    private BannersAdapter mLatestRecommendationAdapter;
+
+    private RecyclerView mRecyclerView;
+    private ProgressActivity progress;
+    private BaseQuickAdapter mQuickAdapter;
+    private int PageIndex = 1;
+    private SpringView springView;
+    private BannerListPresent present;
 
     private OnFragmentInteractionListener mListener;
 
@@ -121,62 +132,50 @@ public class IndexFragment extends Fragment {
         });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
-        //设置布局管理器
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        springView = (SpringView) view.findViewById(R.id.springview);
+        //设置下拉刷新监听
+        springView.setListener(this);
+        //设置下拉刷新样式
+        springView.setType(SpringView.Type.OVERLAP);
+        springView.setHeader(new RotationHeader(getActivity()));
+//        springView.setFooter(new DefaultFooter(this));
+//        springView.setHeader(new RotationHeader(this));
+//        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
+
+        progress = (ProgressActivity) view.findViewById(R.id.progress);
+        //设置RecyclerView的显示模式  当前List模式
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
-        // test data
-        mSelectedParkAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
+        //设置页面为加载中..
+        progress.showLoading();
+        //设置适配器
+//        mQuickAdapter = new ListViewAdapter(R.layout.list_view_item_layout,null);
+        mQuickAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
         //设置加载动画
-        mSelectedParkAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
-        mSelectedParkAdapter.openLoadMore(6, true);
+        mQuickAdapter.openLoadMore(6,true);
         //将适配器添加到RecyclerView
-        mRecyclerView.setAdapter(mSelectedParkAdapter);
-
-        mRecyclerView2 = (RecyclerView) view.findViewById(R.id.rv_list2);
-        //设置布局管理器
-        mRecyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //如果Item高度固定  增加该属性能够提高效率
-        mRecyclerView2.setHasFixedSize(true);
-        // test data
-        mLatestRecommendationAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
-        //设置加载动画
-        mLatestRecommendationAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_CUSTOM);
-        //设置是否自动加载以及加载个数
-        mLatestRecommendationAdapter.openLoadMore(6, true);
-        //将适配器添加到RecyclerView
-        mRecyclerView2.setAdapter(mLatestRecommendationAdapter);
+        mRecyclerView.setAdapter(mQuickAdapter);
+//        present = new BookListPresent(this);
+        present = new BannerListPresent(this);
+        //请求网络数据
+//        present.LoadData("1",PageIndex,false);
+        present.LoadData(false);
 
         initListener();
         return view;
     }
 
     private void initListener() {
-        mSelectedParkAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(getActivity(), "点击了" + position, Toast.LENGTH_SHORT).show();
             }
         });
-        mSelectedParkAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "长按了" + position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-        mLatestRecommendationAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-//                startActivity(new Intent(getActivity(), ParkDetailActivity.class));
-                Toast.makeText(getActivity(), "点击了" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mLatestRecommendationAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
+        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
             @Override
             public boolean onItemLongClick(View view, int position) {
                 Toast.makeText(getActivity(), "长按了" + position, Toast.LENGTH_SHORT).show();
@@ -229,4 +228,79 @@ public class IndexFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    //自动加载
+    @Override
+    public void onLoadMoreRequested() {
+        PageIndex++;
+//        present.LoadData("1",PageIndex,true);
+        present.LoadData(true);
+    }
+    //下拉刷新
+    @Override
+    public void onRefresh() {
+        PageIndex=1;
+//        present.LoadData("1",PageIndex,false);
+        present.LoadData(false);
+    }
+    //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
+    @Override
+    public void onLoadmore() {
+
+    }
+    /*
+    * MVP模式的相关状态
+    *
+    * */
+    @Override
+    public void showProgress() {
+        progress.showLoading();
+    }
+
+    @Override
+    public void hideProgress() {
+        progress.showContent();
+    }
+
+    @Override
+    public void newDatas(List<BannerDto.BannersBean> newsList) {
+        //进入显示的初始数据或者下拉刷新显示的数据
+        mQuickAdapter.setNewData(newsList);//新增数据
+        mQuickAdapter.openLoadMore(10,true);//设置是否可以下拉加载  以及加载条数
+        springView.onFinishFreshAndLoad();//刷新完成
+    }
+
+    @Override
+    public void addDatas(List<BannerDto.BannersBean> addList) {
+        //新增自动加载的的数据
+        mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
+    }
+
+    @Override
+    public void showLoadFailMsg() {
+        //设置加载错误页显示
+        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PageIndex=1;
+//                present.LoadData("1",PageIndex,false);
+                present.LoadData(false);
+            }
+        });
+    }
+
+    @Override
+    public void showLoadCompleteAllData() {
+        //所有数据加载完成后显示
+        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
+        mQuickAdapter.addFooterView(view);
+    }
+
+    @Override
+    public void showNoData() {
+        //设置无数据显示页面
+        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE,Constant.EMPTY_CONTEXT);
+    }
+
 }

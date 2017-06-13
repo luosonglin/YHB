@@ -116,7 +116,7 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-        mQuickAdapter = new MeetingAdapter(R.layout.list_view_item_layout, null);
+        mQuickAdapter = new MeetingAdapter(R.layout.item_meeting, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
