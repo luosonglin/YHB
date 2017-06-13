@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.Data.HttpData;
 
 import android.util.Log;
 
+import com.medmeeting.m.zhiyi.Data.APi.APIMeetingService;
 import com.medmeeting.m.zhiyi.Data.APi.APIService;
 import com.medmeeting.m.zhiyi.Data.APi.CacheProviders;
 import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
@@ -38,7 +39,8 @@ public class HttpData extends RetrofitUtils {
             .persistence(cacheDirectory)
             .using(CacheProviders.class);
 
-    protected static final APIService service_meeting = getMeetingRetrofit().create(APIService.class);
+//    protected static final APIService service_meeting = getMeetingRetrofit().create(APIService.class);
+    protected static final APIMeetingService service_meeting = getMeetingRetrofit().create(APIMeetingService.class);
     protected static final APIService service = getRetrofit().create(APIService.class);
 
     private static final String TAG = HttpData.class.getSimpleName();
@@ -94,7 +96,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
 //        Observable observableCache = providers.getMeetingList(observable, new DynamicKey("热门会议"), new EvictDynamicKey(false));
 //        setSubscribe(observableCache, observer);
-        Log.e(TAG, "HttpDataGetHotMeetings");
+        Log.e(TAG, "HttpDataGetHotMeetings: " + observable);
     }
 
     /**

@@ -3,7 +3,6 @@ package com.medmeeting.m.zhiyi.Data.APi;
 
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
-import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 
@@ -12,7 +11,6 @@ import java.util.Map;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
@@ -34,7 +32,5 @@ public interface APIService {
     @POST("/api/v1/userinfos/")
     Observable<SignUpDto> LoginByPhoneCode(@QueryMap Map<String, Object> options);
 
-    //热门会议
-    @GET("/phoneEvent/getHotEvents")
-    Observable<MeetingDto> getHotMeetings(@Query("pageNum")Integer pageNum, @Query("pageSize")Integer pageSize);
+
 }
