@@ -48,11 +48,6 @@
             app:delay_time="5000"
             app:image_scale_type="fit_xy" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20px"
-            android:background="@color/grey1" />
-
         <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->
         <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity
             android:id="@+id/progress"
