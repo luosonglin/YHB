@@ -9,6 +9,7 @@ import com.medmeeting.m.zhiyi.Data.APi.CacheProviders;
 import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
@@ -40,8 +41,9 @@ public class HttpData extends RetrofitUtils {
             .using(CacheProviders.class);
 
 //    protected static final APIService service_meeting = getMeetingRetrofit().create(APIService.class);
-    protected static final APIMeetingService service_meeting = getMeetingRetrofit().create(APIMeetingService.class);
+
     protected static final APIService service = getRetrofit().create(APIService.class);
+    protected static final APIMeetingService service_meeting = getMeetingRetrofit().create(APIMeetingService.class);
 
     private static final String TAG = HttpData.class.getSimpleName();
 
@@ -97,6 +99,14 @@ public class HttpData extends RetrofitUtils {
 //        Observable observableCache = providers.getMeetingList(observable, new DynamicKey("热门会议"), new EvictDynamicKey(false));
 //        setSubscribe(observableCache, observer);
         Log.e(TAG, "HttpDataGetHotMeetings: " + observable);
+    }
+
+    //test get recommending blog list
+    public void HttpDataGetNews(Observer<BlogDto> observer, Integer pageNum, Integer pageSize) {
+        Observable observable = service.getRecommendBlogList(pageNum, pageSize).map(new HttpResultFunc<BlogDto>());
+//        Observable observableCache = providers.getRecommendNews(observable, new DynamicKey("推荐新闻帖子"), new EvictDynamicKey(false));
+//        setSubscribe(observableCache, observer);
+        setSubscribe(observable, observer);
     }
 
     /**

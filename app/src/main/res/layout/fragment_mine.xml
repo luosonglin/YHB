@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.medmeeting.m.zhiyi.MVP.MineView.MineFragment">
+    tools:context="com.medmeeting.m.zhiyi.UI.MineView.MineFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

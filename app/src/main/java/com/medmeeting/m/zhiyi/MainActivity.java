@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.medmeeting.m.zhiyi.MVP.MineView.MineFragment;
+import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.Entity.BookListDto;
 import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;

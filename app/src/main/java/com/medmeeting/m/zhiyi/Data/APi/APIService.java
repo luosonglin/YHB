@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.Data.APi;
 
 
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
@@ -32,5 +33,10 @@ public interface APIService {
     @POST("/api/v1/userinfos/")
     Observable<SignUpDto> LoginByPhoneCode(@QueryMap Map<String, Object> options);
 
+    // 推荐新闻帖子
+//    @GET("/api/v1/blogs/recommend/")
+//    Observable<BlogDto> getRecommendBlogList(@QueryMap Map<String, Object> options);
+    @GET("/api/v1/blogs/recommend/{pageNum}/{pageSize}")
+    Observable<HttpResult<BlogDto>> getRecommendBlogList(@Path("pageNum") Integer pageNum, @Path("pageSize") Integer pageSize);
 
 }

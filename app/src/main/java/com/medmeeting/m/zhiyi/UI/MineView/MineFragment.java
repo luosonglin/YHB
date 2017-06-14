@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.MVP.MineView;
+package com.medmeeting.m.zhiyi.UI.MineView;
 
 import android.content.Context;
 import android.net.Uri;

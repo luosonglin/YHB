@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,11 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
-import com.medmeeting.m.zhiyi.MVP.Presenter.BannerListPresent;
-import com.medmeeting.m.zhiyi.MVP.View.BannerListView;
+import com.medmeeting.m.zhiyi.MVP.Presenter.NewsListPresent;
+import com.medmeeting.m.zhiyi.MVP.View.NewsListView;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.BannersAdapter;
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Adapter.NewsAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.RotationHeader;
@@ -46,7 +47,7 @@ import butterknife.ButterKnife;
 public class IndexFragment extends Fragment
         implements BaseQuickAdapter.RequestLoadMoreListener,
             SpringView.OnFreshListener,
-            BannerListView {
+            NewsListView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,8 +70,9 @@ public class IndexFragment extends Fragment
     private ProgressActivity progress;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
+    private int PageSize = 10;
     private SpringView springView;
-    private BannerListPresent present;
+    private NewsListPresent present;
 
     private OnFragmentInteractionListener mListener;
 
@@ -143,6 +145,8 @@ public class IndexFragment extends Fragment
 //        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
 
         progress = (ProgressActivity) view.findViewById(R.id.progress);
+        //分割线
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         //设置RecyclerView的显示模式  当前List模式
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //如果Item高度固定  增加该属性能够提高效率
@@ -150,8 +154,8 @@ public class IndexFragment extends Fragment
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-//        mQuickAdapter = new ListViewAdapter(R.layout.list_view_item_layout,null);
-        mQuickAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
+//        mQuickAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
+        mQuickAdapter = new NewsAdapter(R.layout.item_news, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
@@ -159,10 +163,10 @@ public class IndexFragment extends Fragment
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
 //        present = new BookListPresent(this);
-        present = new BannerListPresent(this);
+        present = new NewsListPresent(this);
         //请求网络数据
 //        present.LoadData("1",PageIndex,false);
-        present.LoadData(false);
+        present.LoadData(false, PageIndex, PageSize);
 
         initListener();
         return view;
@@ -234,14 +238,14 @@ public class IndexFragment extends Fragment
     public void onLoadMoreRequested() {
         PageIndex++;
 //        present.LoadData("1",PageIndex,true);
-        present.LoadData(true);
+        present.LoadData(true, PageIndex, PageSize);
     }
     //下拉刷新
     @Override
     public void onRefresh() {
         PageIndex=1;
 //        present.LoadData("1",PageIndex,false);
-        present.LoadData(false);
+        present.LoadData(false, PageIndex, PageSize);
     }
     //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
     @Override
@@ -263,7 +267,7 @@ public class IndexFragment extends Fragment
     }
 
     @Override
-    public void newDatas(List<BannerDto.BannersBean> newsList) {
+    public void newDatas(List<BlogDto.BlogBean.ListBean> newsList) {
         //进入显示的初始数据或者下拉刷新显示的数据
         mQuickAdapter.setNewData(newsList);//新增数据
         mQuickAdapter.openLoadMore(10,true);//设置是否可以下拉加载  以及加载条数
@@ -271,7 +275,7 @@ public class IndexFragment extends Fragment
     }
 
     @Override
-    public void addDatas(List<BannerDto.BannersBean> addList) {
+    public void addDatas(List<BlogDto.BlogBean.ListBean> addList) {
         //新增自动加载的的数据
         mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
     }
@@ -284,7 +288,7 @@ public class IndexFragment extends Fragment
             public void onClick(View v) {
                 PageIndex=1;
 //                present.LoadData("1",PageIndex,false);
-                present.LoadData(false);
+                present.LoadData(false, PageIndex, PageSize);
             }
         });
     }

@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.Data.APi;
 
 
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 
 import java.util.List;
@@ -37,4 +38,7 @@ public interface CacheProviders {
 
     @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
     Observable<Reply<MeetingDto>> getMeetingList(Observable<MeetingDto> oRepos, DynamicKey userName, EvictDynamicKey evictDynamicKey);
+
+    @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
+    Observable<Reply<List<BlogDto>>> getRecommendNews(Observable<List<BlogDto>> oRepos, DynamicKey userName, EvictDynamicKey evictDynamicKey);
 }
