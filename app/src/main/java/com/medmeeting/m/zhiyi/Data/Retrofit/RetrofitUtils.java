@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public abstract class RetrofitUtils {
 
     private static Retrofit mRetrofit;
+    private static Retrofit mRetrofitMeeting;
     private static OkHttpClient mOkHttpClient;
     /**
      * 获取Retrofit对象
@@ -50,14 +51,14 @@ public abstract class RetrofitUtils {
      */
     protected static Retrofit getMeetingRetrofit() {
 
-        if (null == mRetrofit) {
+        if (null == mRetrofitMeeting) {
 
             if (null == mOkHttpClient) {
                 mOkHttpClient = OkHttpUtils.getOkHttpClient();
             }
 
             //Retrofit2后使用build设计模式
-            mRetrofit = new Retrofit.Builder()
+            mRetrofitMeeting = new Retrofit.Builder()
                     //设置服务器路径
                     .baseUrl(Constant.API_SERVER_MEETING + "/")
                     //添加转化库，默认是Gson
@@ -69,7 +70,7 @@ public abstract class RetrofitUtils {
                     .build();
         }
 
-        return mRetrofit;
+        return mRetrofitMeeting;
     }
 
 }
