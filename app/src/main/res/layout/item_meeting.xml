@@ -58,13 +58,15 @@
                         android:src="@mipmap/ic_launcher" />
 
                     <TextView
-                        android:id="@+id/author"
+                        android:id="@+id/address"
                         style="@style/TextStyle_gray"
-                        android:layout_width="wrap_content"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:layout_gravity="center"
-                        android:text="songlin" />
+                        android:text="songlin"
+                        android:ellipsize="marquee"
+                        android:lines="1"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -72,23 +74,23 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/ha"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginRight="2dp"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@mipmap/ic_launcher" />
+                    <!--<ImageView-->
+                        <!--android:layout_width="12dp"-->
+                        <!--android:layout_height="12dp"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--android:src="@mipmap/ic_launcher" />-->
 
                     <TextView
-                        android:id="@+id/book_info_textview_author1"
+                        android:id="@+id/ha1"
                         style="@style/TextStyle_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:layout_gravity="center"
-                        android:text="123" />
+                        android:text="06-16" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -99,20 +101,20 @@
                     android:layout_alignParentRight="true"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@mipmap/ic_launcher" />
+                    <!--<ImageView-->
+                        <!--android:layout_width="12dp"-->
+                        <!--android:layout_height="12dp"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--android:src="@mipmap/ic_launcher" />-->
 
                     <TextView
-                        android:id="@+id/book_info_textview_author2"
+                        android:id="@+id/ha2"
                         style="@style/TextStyle_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:layout_gravity="center"
-                        android:text="123" />
+                        android:text="~ 06-16" />
                 </LinearLayout>
 
             </RelativeLayout>
