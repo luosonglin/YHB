@@ -4,26 +4,31 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
-import com.medmeeting.m.zhiyi.MVP.Presenter.BannerListPresent;
-import com.medmeeting.m.zhiyi.MVP.View.BannerListView;
+import com.medmeeting.m.zhiyi.MVP.Presenter.LiveListPresent;
+import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.BannersAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 
 import java.util.List;
+
+import info.hoang8f.android.segmented.SegmentedGroup;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +38,8 @@ import java.util.List;
  * Use the {@link LiveFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLoadMoreListener,SpringView.OnFreshListener,BannerListView {
+public class LiveFragment extends Fragment
+        implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, LiveListView, SegmentedGroup.OnCheckedChangeListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,11 +48,12 @@ public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLo
     RecyclerView mRecyclerView;
     ProgressActivity progress;
     private Toolbar toolbar;
+    private RadioButton liveButton21, liveButton22;
     private BaseQuickAdapter mQuickAdapter;
-    private int PageIndex=1;
+    private int PageIndex = 1;
     private SpringView springView;
     //    private BookListPresent present;
-    private BannerListPresent present;
+    private LiveListPresent present;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -96,6 +103,13 @@ public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLo
     }
 
     private void initView(View view) {
+        SegmentedGroup segmented4 = (SegmentedGroup) view.findViewById(R.id.segmented2);
+        segmented4.setTintColor(0xFF1b7ce8);
+        segmented4.setOnCheckedChangeListener(this);
+
+        liveButton21 = (RadioButton) view.findViewById(R.id.button21);
+        liveButton22 = (RadioButton) view.findViewById(R.id.button22);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         springView = (SpringView) view.findViewById(R.id.springview);
         //设置下拉刷新监听
@@ -109,26 +123,29 @@ public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLo
 
         progress = (ProgressActivity) view.findViewById(R.id.progress);
         //设置RecyclerView的显示模式  当前List模式
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
 //        mQuickAdapter = new ListViewAdapter(R.layout.list_view_item_layout,null);
-        mQuickAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
+        mQuickAdapter = new LiveAdapter(R.layout.item_live, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
-        mQuickAdapter.openLoadMore(6,true);
+        mQuickAdapter.openLoadMore(6, true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
 //        present = new BookListPresent(this);
-        present = new BannerListPresent(this);
+        present = new LiveListPresent(this);
         //请求网络数据
 //        present.LoadData("1",PageIndex,false);
         present.LoadData(false);
     }
+
     private void initListener() {
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
@@ -136,17 +153,36 @@ public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLo
         mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), "点击了"+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "点击了" + position, Toast.LENGTH_SHORT).show();
             }
         });
         mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
             @Override
             public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "长按了"+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "长按了" + position, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
     }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.button21:
+//                mPager.setAdapter(mAdapter);
+//                mPager.setCurrentItem(MAX_COUNT/2);
+//                mPager.setOffscreenPageLimit(5);
+                ToastUtils.show(getActivity(), "1");
+                return;
+            case R.id.button22:
+//                mPager.setAdapter(mAdapter1);
+//                mPager.setCurrentItem(MAX_COUNT/2);
+//                mPager.setOffscreenPageLimit(5);
+                ToastUtils.show(getActivity(), "2");
+                return;
+        }
+    }
+
     //自动加载
     @Override
     public void onLoadMoreRequested() {
@@ -154,22 +190,25 @@ public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLo
 //        present.LoadData("1",PageIndex,true);
         present.LoadData(true);
     }
+
     //下拉刷新
     @Override
     public void onRefresh() {
-        PageIndex=1;
+        PageIndex = 1;
 //        present.LoadData("1",PageIndex,false);
         present.LoadData(false);
     }
+
     //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
     @Override
     public void onLoadmore() {
 
     }
+
     /*
     * MVP模式的相关状态
     *
-    * */
+    */
     @Override
     public void showProgress() {
         progress.showLoading();
@@ -184,7 +223,7 @@ public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLo
     public void newDatas(List<BannerDto.BannersBean> newsList) {
         //进入显示的初始数据或者下拉刷新显示的数据
         mQuickAdapter.setNewData(newsList);//新增数据
-        mQuickAdapter.openLoadMore(10,true);//设置是否可以下拉加载  以及加载条数
+        mQuickAdapter.openLoadMore(10, true);//设置是否可以下拉加载  以及加载条数
         springView.onFinishFreshAndLoad();//刷新完成
     }
 
@@ -200,7 +239,7 @@ public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLo
         progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PageIndex=1;
+                PageIndex = 1;
 //                present.LoadData("1",PageIndex,false);
                 present.LoadData(false);
             }
@@ -218,7 +257,7 @@ public class LiveFragment extends Fragment implements BaseQuickAdapter.RequestLo
     @Override
     public void showNoData() {
         //设置无数据显示页面
-        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE,Constant.EMPTY_CONTEXT);
+        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
