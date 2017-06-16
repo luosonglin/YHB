@@ -136,7 +136,7 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
         mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), "点击了"+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "点击了"+position+"\n", Toast.LENGTH_SHORT).show();
             }
         });
         mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {

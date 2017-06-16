@@ -1,5 +1,8 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -7,6 +10,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -18,7 +22,7 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto.PageInfoBean.Lis
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MeetingDto.PageInfoBean.ListBean item) {
+    protected void convert(BaseViewHolder helper, final MeetingDto.PageInfoBean.ListBean item) {
         Glide.with(mContext)
                 .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
                 .crossFade()
@@ -36,5 +40,17 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto.PageInfoBean.Lis
                 .transform(new GlideCircleTransform(mContext))
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.avatar));
+
+        helper.getView(R.id.item_meeting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, MeetingDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("eventId", item.getId()+"");
+                bundle.putString("eventTitle", item.getTitle());
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
+            }
+        });
     }
 }
