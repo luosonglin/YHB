@@ -44,7 +44,7 @@
         </info.hoang8f.android.segmented.SegmentedGroup>
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/live_search_bar_llyt"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -100,7 +100,13 @@
                 android:layout_gravity="center_vertical"
                 android:src="@mipmap/search_tag_delete"/>
         </LinearLayout>
-    </RelativeLayout>
+    </RelativeLayout>-->
+
+    <View
+        android:id="@+id/search_live_btn"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@mipmap/live_search"/>
 
     <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->
     <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity xmlns:progressActivity="http://schemas.android.com/apk/res-auto"

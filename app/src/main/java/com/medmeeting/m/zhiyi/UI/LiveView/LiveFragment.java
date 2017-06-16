@@ -49,6 +49,7 @@ public class LiveFragment extends Fragment
     ProgressActivity progress;
     private Toolbar toolbar;
     private RadioButton liveButton21, liveButton22;
+    private View searchLiveBtn;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
     private SpringView springView;
@@ -109,6 +110,15 @@ public class LiveFragment extends Fragment
 
         liveButton21 = (RadioButton) view.findViewById(R.id.button21);
         liveButton22 = (RadioButton) view.findViewById(R.id.button22);
+
+        searchLiveBtn = view.findViewById(R.id.search_live_btn);
+        searchLiveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                startActivity(new Intent(getActivity(), LiveSearchActivity.class));
+                ToastUtils.show(getActivity(), "aha");
+            }
+        });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         springView = (SpringView) view.findViewById(R.id.springview);
@@ -172,13 +182,15 @@ public class LiveFragment extends Fragment
 //                mPager.setAdapter(mAdapter);
 //                mPager.setCurrentItem(MAX_COUNT/2);
 //                mPager.setOffscreenPageLimit(5);
-                ToastUtils.show(getActivity(), "1");
+                present.LoadData(false);
                 return;
+
             case R.id.button22:
 //                mPager.setAdapter(mAdapter1);
 //                mPager.setCurrentItem(MAX_COUNT/2);
 //                mPager.setOffscreenPageLimit(5);
-                ToastUtils.show(getActivity(), "2");
+//                ToastUtils.show(getActivity(), "2");
+                present.LoadData(false);
                 return;
         }
     }
