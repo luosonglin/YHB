@@ -29,11 +29,11 @@
             android:name=".UI.SignInAndSignUpView.LoginActivity"
             android:label="LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name="com.medmeeting.m.zhiyi.MainActivity" />
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".UI.ListvView.ListvViewActivity"
             android:label="ListvView模式" />
-
+        <activity android:name=".UI.MeetingView.MeetingDetailActivity"></activity>
     </application>
 
 </manifest>

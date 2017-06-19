@@ -8,9 +8,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
-import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
