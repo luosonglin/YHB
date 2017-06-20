@@ -20,7 +20,8 @@ import com.medmeeting.m.zhiyi.MVP.Presenter.LiveListPresent;
 import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
@@ -61,6 +62,8 @@ public class LiveFragment extends Fragment
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private LiveSearchDto2 liveSearchDto2 = new LiveSearchDto2();
 
     public LiveFragment() {
         // Required empty public constructor
@@ -153,7 +156,8 @@ public class LiveFragment extends Fragment
         present = new LiveListPresent(this);
         //请求网络数据
 //        present.LoadData("1",PageIndex,false);
-        present.LoadData(false);
+
+        present.LoadData(false, liveSearchDto2);
     }
 
     private void initListener() {
@@ -182,7 +186,7 @@ public class LiveFragment extends Fragment
 //                mPager.setAdapter(mAdapter);
 //                mPager.setCurrentItem(MAX_COUNT/2);
 //                mPager.setOffscreenPageLimit(5);
-                present.LoadData(false);
+                present.LoadData(false, liveSearchDto2);
                 return;
 
             case R.id.button22:
@@ -190,14 +194,14 @@ public class LiveFragment extends Fragment
 //                mPager.setCurrentItem(MAX_COUNT/2);
 //                mPager.setOffscreenPageLimit(5);
 //                ToastUtils.show(getActivity(), "2");
-                present.LoadData(false);
+                present.LoadData(false, liveSearchDto2);
                 return;
             case R.id.button23:
 //                mPager.setAdapter(mAdapter1);
 //                mPager.setCurrentItem(MAX_COUNT/2);
 //                mPager.setOffscreenPageLimit(5);
 //                ToastUtils.show(getActivity(), "2");
-                present.LoadData(false);
+                present.LoadData(false, liveSearchDto2);
                 return;
         }
     }
@@ -207,7 +211,7 @@ public class LiveFragment extends Fragment
     public void onLoadMoreRequested() {
         PageIndex++;
 //        present.LoadData("1",PageIndex,true);
-        present.LoadData(true);
+        present.LoadData(true, liveSearchDto2);
     }
 
     //下拉刷新
@@ -215,7 +219,7 @@ public class LiveFragment extends Fragment
     public void onRefresh() {
         PageIndex = 1;
 //        present.LoadData("1",PageIndex,false);
-        present.LoadData(false);
+        present.LoadData(false, liveSearchDto2);
     }
 
     //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
@@ -239,7 +243,7 @@ public class LiveFragment extends Fragment
     }
 
     @Override
-    public void newDatas(List<BannerDto.BannersBean> newsList) {
+    public void newDatas(List<LiveDto.DataBean> newsList) {
         //进入显示的初始数据或者下拉刷新显示的数据
         mQuickAdapter.setNewData(newsList);//新增数据
         mQuickAdapter.openLoadMore(10, true);//设置是否可以下拉加载  以及加载条数
@@ -247,7 +251,7 @@ public class LiveFragment extends Fragment
     }
 
     @Override
-    public void addDatas(List<BannerDto.BannersBean> addList) {
+    public void addDatas(List<LiveDto.DataBean> addList) {
         //新增自动加载的的数据
         mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
     }
@@ -260,7 +264,7 @@ public class LiveFragment extends Fragment
             public void onClick(View v) {
                 PageIndex = 1;
 //                present.LoadData("1",PageIndex,false);
-                present.LoadData(false);
+                present.LoadData(false, liveSearchDto2);
             }
         });
     }

@@ -1,6 +1,6 @@
 package com.medmeeting.m.zhiyi.MVP.View;
 
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ public interface LiveListView {
     void hideProgress();
 
     //加载新数据
-    void newDatas(List<BannerDto.BannersBean> newsList);
+    void newDatas(List<LiveDto.DataBean> newsList);
 
     //添加更多数据
-    void addDatas(List<BannerDto.BannersBean> addList);
+    void addDatas(List<LiveDto.DataBean> addList);
 
     //显示加载失败
     void showLoadFailMsg();

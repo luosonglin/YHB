@@ -7,6 +7,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /*
  * okHttp的配置
@@ -27,6 +28,8 @@ public class OkHttpUtils {
             mOkHttpClient = new OkHttpClient.Builder()
                     //添加拦截器
                     .addInterceptor(mTokenInterceptor)
+                    //添加日志拦截器
+                    .addNetworkInterceptor(mHttpLoggingInterceptor)
                     //添加网络连接器
                     //设置请求读写的超时时间
                     .connectTimeout(30, TimeUnit.SECONDS)
@@ -38,18 +41,26 @@ public class OkHttpUtils {
 
         return mOkHttpClient;
     }
+
     /**
      * 云端响应头拦截器
      * 用于添加统一请求头  请按照自己的需求添加
      * 主要用于加密传输 和设备数据传输
      */
     private static final Interceptor mTokenInterceptor = new Interceptor() {
-        @Override public Response intercept(Chain chain) throws IOException {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
             Request originalRequest = chain.request();
             Request authorised = originalRequest.newBuilder()
-                    .header("FromSource", "1.0")
+//                    .header("FromSource", "1.0")
+                    .header("Authorization", "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuadvuaelyIsInVzZXJJZCI6IjciLCJjcmVhdGVkIjoxNDk3OTQwNjI3MTQxLCJleHAiOjE0OTYyMzc2NTk4NDUsImlzcyI6ImhlYWxpZmUiLCJhdWQiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiJ9.utJehQYVTI51MjNLwYP6t9No0BXYkAJi4NTfW4_lzig")
                     .build();
             return chain.proceed(authorised);
         }
     };
+
+    /**
+     * 日志拦截器
+     */
+    private static final Interceptor mHttpLoggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 }

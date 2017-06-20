@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.Data.APi;
 
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 
@@ -44,5 +45,8 @@ public interface CacheProviders {
     Observable<Reply<List<BlogDto>>> getRecommendNews(Observable<List<BlogDto>> oRepos, DynamicKey userName, EvictDynamicKey evictDynamicKey);
 
     Observable<Reply<LiveTagDto>> getLiveTagList(Observable<LiveTagDto> oRepos, DynamicKey userName, EvictDynamicKey evictDynamicKey);
+
+    @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
+    Observable<Reply<LiveDto>> getAllLiveList(Observable<LiveDto> oRepos, DynamicKey userName, EvictDynamicKey evictDynamicKey);
 
 }

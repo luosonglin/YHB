@@ -15,6 +15,7 @@ public class Constant {
     //服务器路径
     public static final String API_SERVER = "http://medmeeting.com:8080";
     public static final String API_SERVER_MEETING = "http://www.medmeeting.com";
-    public static final String API_SERVER_LIVE = "http://hd.medmeeting.com";
+    public static final String API_SERVER_LIVE_TEST = "http://hd.medmeeting.com";
+    public static final String API_SERVER_LIVE = "http://api.medmeeting.com";
 
 }

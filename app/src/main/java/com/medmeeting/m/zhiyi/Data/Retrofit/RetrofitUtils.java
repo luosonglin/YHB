@@ -15,7 +15,10 @@ public abstract class RetrofitUtils {
     private static Retrofit mRetrofit;
     private static Retrofit mRetrofitMeeting;
     private static Retrofit mRetrofitLive;
+
     private static OkHttpClient mOkHttpClient;
+    private static OkHttpClient mOkHttpClientLive;
+
     /**
      * 获取Retrofit对象
      *
@@ -81,10 +84,10 @@ public abstract class RetrofitUtils {
      */
     protected static Retrofit getLiveRetrofit() {
 
-        if (null == mRetrofitLive) {
+        if (null == mOkHttpClientLive) {
 
-            if (null == mOkHttpClient) {
-                mOkHttpClient = OkHttpUtils.getOkHttpClient();
+            if (null == mOkHttpClientLive) {
+                mOkHttpClientLive = OkHttpUtils.getOkHttpClient();
             }
 
             //Retrofit2后使用build设计模式
@@ -96,7 +99,7 @@ public abstract class RetrofitUtils {
                     //添加回调库，采用RxJava
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     //设置使用okhttp网络请求
-                    .client(mOkHttpClient)
+                    .client(mOkHttpClientLive)
                     .build();
         }
 
