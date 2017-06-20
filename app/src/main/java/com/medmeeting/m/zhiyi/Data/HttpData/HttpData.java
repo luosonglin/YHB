@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.Data.HttpData;
 
 import android.util.Log;
 
+import com.medmeeting.m.zhiyi.Data.APi.APILiveService;
 import com.medmeeting.m.zhiyi.Data.APi.APIMeetingService;
 import com.medmeeting.m.zhiyi.Data.APi.APIService;
 import com.medmeeting.m.zhiyi.Data.APi.CacheProviders;
@@ -11,6 +12,7 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
@@ -44,6 +46,7 @@ public class HttpData extends RetrofitUtils {
 
     protected static final APIService service = getRetrofit().create(APIService.class);
     protected static final APIMeetingService service_meeting = getMeetingRetrofit().create(APIMeetingService.class);
+    protected static final APILiveService service_live = getLiveRetrofit().create(APILiveService.class);
 
     private static final String TAG = HttpData.class.getSimpleName();
 
@@ -107,6 +110,13 @@ public class HttpData extends RetrofitUtils {
 //        Observable observableCache = providers.getRecommendNews(observable, new DynamicKey("推荐新闻帖子"), new EvictDynamicKey(false));
 //        setSubscribe(observableCache, observer);
         setSubscribe(observable, observer);
+    }
+
+    //get live tags
+    public void HttpDataGetLiveTags(Observer<LiveTagDto> observer) {
+        Observable observable = service_live.getLiveTagList();
+        Observable observableCache = providers.getLiveTagList(observable, new DynamicKey("live标签"), new EvictDynamicKey(false));
+        setSubscribe(observableCache, observer);
     }
 
     /**

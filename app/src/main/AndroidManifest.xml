@@ -34,6 +34,9 @@
             android:name=".UI.ListvView.ListvViewActivity"
             android:label="ListvView模式" />
         <activity android:name=".UI.MeetingView.MeetingDetailActivity"></activity>
+        <activity
+            android:name=".UI.LiveView.LiveSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

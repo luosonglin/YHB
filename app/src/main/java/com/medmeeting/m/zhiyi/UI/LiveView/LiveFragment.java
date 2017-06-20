@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,6 @@ import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
-import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
@@ -48,7 +48,7 @@ public class LiveFragment extends Fragment
     RecyclerView mRecyclerView;
     ProgressActivity progress;
     private Toolbar toolbar;
-    private RadioButton liveButton21, liveButton22;
+    private RadioButton liveButton21, liveButton22, liveButton23;
     private View searchLiveBtn;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
@@ -110,13 +110,13 @@ public class LiveFragment extends Fragment
 
         liveButton21 = (RadioButton) view.findViewById(R.id.button21);
         liveButton22 = (RadioButton) view.findViewById(R.id.button22);
+        liveButton23 = (RadioButton) view.findViewById(R.id.button23);
 
         searchLiveBtn = view.findViewById(R.id.search_live_btn);
         searchLiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(getActivity(), LiveSearchActivity.class));
-                ToastUtils.show(getActivity(), "aha");
+                startActivity(new Intent(getActivity(), LiveSearchActivity.class));
             }
         });
 
@@ -186,6 +186,13 @@ public class LiveFragment extends Fragment
                 return;
 
             case R.id.button22:
+//                mPager.setAdapter(mAdapter1);
+//                mPager.setCurrentItem(MAX_COUNT/2);
+//                mPager.setOffscreenPageLimit(5);
+//                ToastUtils.show(getActivity(), "2");
+                present.LoadData(false);
+                return;
+            case R.id.button23:
 //                mPager.setAdapter(mAdapter1);
 //                mPager.setCurrentItem(MAX_COUNT/2);
 //                mPager.setOffscreenPageLimit(5);

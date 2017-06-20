@@ -1,14 +1,15 @@
 package com.medmeeting.m.zhiyi.UI.Entity;
 
 /**
- * Created by liukun on 16/3/5.
+ * 用于我最初写的API
+ * Created by luosonglin on 16/3/5.
  */
 public class HttpResult<T> {
 
 
     /**
      * data : []
-     * requestTime : 2016-11-02 14:00:25
+     * //requestTime : 2016-11-02 14:00:25
      * code : 1
      */
 

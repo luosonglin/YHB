@@ -34,8 +34,6 @@ public interface APIService {
     Observable<SignUpDto> LoginByPhoneCode(@QueryMap Map<String, Object> options);
 
     // 推荐新闻帖子
-//    @GET("/api/v1/blogs/recommend/")
-//    Observable<BlogDto> getRecommendBlogList(@QueryMap Map<String, Object> options);
     @GET("/api/v1/blogs/recommend/{pageNum}/{pageSize}")
     Observable<HttpResult<BlogDto>> getRecommendBlogList(@Path("pageNum") Integer pageNum, @Path("pageSize") Integer pageSize);
 
