@@ -33,6 +33,10 @@ public class BannerDto implements Serializable {
         private long startDate;
         private long endDate;
 
+        public BannersBean(int id) {
+            this.id = id;
+        }
+
         public int getId() {
             return id;
         }

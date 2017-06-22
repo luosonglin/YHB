@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.MineView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -183,6 +185,7 @@ public class MineFragment extends Fragment {
             case R.id.wodejianli:
                 break;
             case R.id.wodezhibo:
+                startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
                 break;
             case R.id.wodewendang:
                 break;

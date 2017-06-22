@@ -206,7 +206,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
-                        android:text="我的直播"
+                        android:text="我的直播间"
                         android:textColor="@color/black" />
                 </LinearLayout>
             </RelativeLayout>

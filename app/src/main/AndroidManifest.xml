@@ -40,6 +40,9 @@
         <activity
             android:name=".UI.LiveView.LiveDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.LiveView.MyLiveRoomActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
