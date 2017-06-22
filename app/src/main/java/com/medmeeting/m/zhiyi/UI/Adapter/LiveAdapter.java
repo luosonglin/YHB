@@ -10,6 +10,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -40,7 +41,15 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .setText(R.id.name,item.getTitle())
                 .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06));
 
-        helper.getView(R.id.item_live_cv).setOnClickListener(new View.OnClickListener() {
+        helper.getView(R.id.item_live_flyt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                mContext.startActivity(mContext, );
+                ToastUtils.show(mContext, "11");
+            }
+        });
+
+        helper.getView(R.id.name).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, LiveDetailActivity.class);

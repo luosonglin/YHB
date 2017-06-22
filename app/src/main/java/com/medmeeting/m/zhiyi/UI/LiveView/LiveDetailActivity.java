@@ -94,7 +94,6 @@ public class LiveDetailActivity extends AppCompatActivity {
         titleTv.setText(title);
         userNameTv.setText("主理人：" + userName);
 
-
         // 获取屏幕宽高
         metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);

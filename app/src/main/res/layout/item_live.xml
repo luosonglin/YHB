@@ -18,6 +18,7 @@
         android:padding="5dp">
 
         <FrameLayout
+            android:id="@+id/item_live_flyt"
             android:layout_width="wrap_content"
             android:layout_height="100dp">
 
