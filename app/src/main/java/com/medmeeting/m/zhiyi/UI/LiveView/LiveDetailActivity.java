@@ -56,8 +56,11 @@ public class LiveDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_detail);
         toolBar();
-        initView(getIntent().getExtras().getString("coverPhote"), getIntent().getExtras().getString("title"), getIntent().getExtras().getString("authorName"));
-        initTagsView(getIntent().getExtras().getInt("roomId"));
+        initView(getIntent().getExtras().getString("coverPhote"),
+                getIntent().getExtras().getString("title"),
+                getIntent().getExtras().getString("authorName"));
+        initTagsView(getIntent().getExtras().getInt("roomId"),
+                getIntent().getExtras().getString("description"));
     }
 
     private void toolBar() {
@@ -68,7 +71,7 @@ public class LiveDetailActivity extends AppCompatActivity {
 //        toolbar.setSubtitle(R.string.app_name);//二级标题
 //        toolbar.setLogo(R.mipmap.ic_launcher);//设置logo
         getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_white));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +92,7 @@ public class LiveDetailActivity extends AppCompatActivity {
                 .placeholder(R.mipmap.ic_launcher)
                 .into(coverPhotoTv);
         titleTv.setText(title);
-        userNameTv.setText(userName);
+        userNameTv.setText("主理人：" + userName);
 
 
         // 获取屏幕宽高
@@ -169,7 +172,7 @@ public class LiveDetailActivity extends AppCompatActivity {
     }
 
 
-    private void initTagsView(Integer roomId) {
+    private void initTagsView(Integer roomId, String des) {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -181,17 +184,17 @@ public class LiveDetailActivity extends AppCompatActivity {
         viewPager.setLayoutParams(params);
         Log.e(TAG, viewPager.getHeight() + " " + viewPager.getLayoutParams().height);
 
-        setUpViewPager(viewPager, roomId);
+        setUpViewPager(viewPager, roomId, des);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    private void setUpViewPager(ViewPager viewPager, Integer roomId) {
+    private void setUpViewPager(ViewPager viewPager, Integer roomId, String des) {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(LiveDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
         mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播");
-        mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "视频");
-        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(roomId), "简介");
+        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "视频");
+        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "简介");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);

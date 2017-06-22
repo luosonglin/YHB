@@ -27,6 +27,7 @@ public class LiveDto {
      * labelIds : 1,2,3
      * labelNames : 循环,内分泌,神经
      * payCount : 0
+     * des : null
      */
 
     private int id;
@@ -54,6 +55,7 @@ public class LiveDto {
     private String labelIds;
     private String labelNames;
     private int payCount;
+    private String des;
 
     public int getId() {
         return id;
@@ -253,5 +255,13 @@ public class LiveDto {
 
     public void setPayCount(int payCount) {
         this.payCount = payCount;
+    }
+
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
     }
 }

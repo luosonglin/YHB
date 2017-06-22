@@ -48,6 +48,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 intent.putExtra("coverPhote", item.getCoverPhoto());
                 intent.putExtra("title", item.getTitle());
                 intent.putExtra("authorName", item.getAuthorName());
+                intent.putExtra("description", item.getDes());
                 mContext.startActivity(intent);
             }
         });

@@ -29,6 +29,8 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
                 .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06))
                 .setText(R.id.money, "¥" + item.getPrice())
                 .setText(R.id.type, "直播");
+
+        if (item.getPrice() == null) helper.setText(R.id.money, "免费");
     }
 }
 
