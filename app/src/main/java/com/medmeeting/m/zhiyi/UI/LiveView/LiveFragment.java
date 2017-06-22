@@ -243,7 +243,7 @@ public class LiveFragment extends Fragment
     }
 
     @Override
-    public void newDatas(List<LiveDto.DataBean> newsList) {
+    public void newDatas(List<LiveDto> newsList) {
         //进入显示的初始数据或者下拉刷新显示的数据
         mQuickAdapter.setNewData(newsList);//新增数据
         mQuickAdapter.openLoadMore(10, true);//设置是否可以下拉加载  以及加载条数
@@ -251,7 +251,7 @@ public class LiveFragment extends Fragment
     }
 
     @Override
-    public void addDatas(List<LiveDto.DataBean> addList) {
+    public void addDatas(List<LiveDto> addList) {
         //新增自动加载的的数据
         mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
     }

@@ -12,6 +12,7 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
@@ -122,7 +123,7 @@ public class HttpData extends RetrofitUtils {
     }
 
     //test live list
-    public void HttpDataGetAllLives(Observer<LiveDto> observer, LiveSearchDto2 liveSearchDto) {
+    public void HttpDataGetAllLives(Observer<HttpResult3<LiveDto>> observer, LiveSearchDto2 liveSearchDto) {
         Observable observable = service_live.getAllLiveList(liveSearchDto);
 //        Observable observableCache = providers.getLiveList(observable, new DynamicKey("live直播列表"), new EvictDynamicKey(false));
         setSubscribe(observable, observer);

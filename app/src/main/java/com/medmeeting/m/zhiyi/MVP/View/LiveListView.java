@@ -12,10 +12,10 @@ public interface LiveListView {
     void hideProgress();
 
     //加载新数据
-    void newDatas(List<LiveDto.DataBean> newsList);
+    void newDatas(List<LiveDto> newsList);
 
     //添加更多数据
-    void addDatas(List<LiveDto.DataBean> addList);
+    void addDatas(List<LiveDto> addList);
 
     //显示加载失败
     void showLoadFailMsg();

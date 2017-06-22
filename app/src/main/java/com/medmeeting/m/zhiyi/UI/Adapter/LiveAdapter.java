@@ -15,13 +15,13 @@ import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
 import java.util.List;
 
-public class LiveAdapter extends BaseQuickAdapter<LiveDto.DataBean> {
-    public LiveAdapter(int layoutResId, List<LiveDto.DataBean> data) {
+public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
+    public LiveAdapter(int layoutResId, List<LiveDto> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, LiveDto.DataBean item) {
+    protected void convert(BaseViewHolder helper, LiveDto item) {
         Glide.with(mContext)
                 .load("http://www.medmeeting.com/upload/banner/" + item.getCoverPhoto())
                 .crossFade()

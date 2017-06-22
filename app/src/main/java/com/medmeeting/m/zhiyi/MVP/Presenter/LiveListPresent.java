@@ -8,7 +8,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 
 import java.util.List;
 
-public class LiveListPresent implements OnLoadDataListListener<List<LiveDto.DataBean>> {
+public class LiveListPresent implements OnLoadDataListListener<List<LiveDto>> {
     private LiveListView mView;
     private LiveListModel mModel;
     private boolean isjz;
@@ -25,7 +25,7 @@ public class LiveListPresent implements OnLoadDataListListener<List<LiveDto.Data
     }
 
     @Override
-    public void onSuccess(List<LiveDto.DataBean> data) {
+    public void onSuccess(List<LiveDto> data) {
         if (isjz) {
             if (data.size() == 0) {
                 mView.showLoadCompleteAllData();

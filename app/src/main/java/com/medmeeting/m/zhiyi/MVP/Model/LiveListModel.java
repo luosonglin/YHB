@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.OnLoadDataListListener;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 
@@ -13,7 +14,7 @@ public class LiveListModel {
     private static final String TAG = LiveListModel.class.getSimpleName();
 
     public void LoadData(final OnLoadDataListListener listener, LiveSearchDto2 liveSearchDto) {
-        HttpData.getInstance().HttpDataGetAllLives(new Observer<LiveDto>() {
+        HttpData.getInstance().HttpDataGetAllLives(new Observer<HttpResult3<LiveDto>>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");
@@ -30,7 +31,7 @@ public class LiveListModel {
             }
 
             @Override
-            public void onNext(LiveDto data) {
+            public void onNext(HttpResult3<LiveDto> data) {
                 listener.onSuccess(data.getData());
                 Log.e(TAG, "onNext");
             }

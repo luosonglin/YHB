@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.Data.APi;
 
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult2;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
@@ -23,7 +24,7 @@ public interface APILiveService {
     //获取直播节目一栏-分页
     //全部
     @POST("/v1/liveProgram/page")
-    Observable<LiveDto> getAllLiveList(@Body LiveSearchDto2 liveSearchDto);
+    Observable<HttpResult3<LiveDto>> getAllLiveList(@Body LiveSearchDto2 liveSearchDto);
 
     @POST("/v1/liveProgram/page")
     Observable<LiveDto> getLiveList(@Body LiveSearchDto liveSearchDto);
