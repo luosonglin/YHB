@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -33,5 +34,13 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
                 .transform(new GlideCircleTransform(mContext))
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.avatar));
+
+        helper.getView(R.id.item_news_cv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //test
+//                mContext.startActivity(new Intent(mContext, .class));
+            }
+        });
     }
 }

@@ -37,6 +37,9 @@
         <activity
             android:name=".UI.LiveView.LiveSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.LiveView.LiveDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
