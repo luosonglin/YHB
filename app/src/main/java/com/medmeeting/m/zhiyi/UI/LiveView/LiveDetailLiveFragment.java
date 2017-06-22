@@ -12,11 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
-import com.medmeeting.m.zhiyi.MVP.Presenter.BannerListPresent;
-import com.medmeeting.m.zhiyi.MVP.View.BannerListView;
+import com.medmeeting.m.zhiyi.MVP.Presenter.LiveDetailListPresent;
+import com.medmeeting.m.zhiyi.MVP.View.LiveDetailListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveDetailAdapter;
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
@@ -25,7 +24,7 @@ import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 
 import java.util.List;
 
-public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter.RequestLoadMoreListener,SpringView.OnFreshListener,BannerListView {
+public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter.RequestLoadMoreListener,SpringView.OnFreshListener,LiveDetailListView {
 
     RecyclerView mRecyclerView;
     ProgressActivity progress;
@@ -33,17 +32,17 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex=1;
     private SpringView springView;
-    private BannerListPresent present;
+    private LiveDetailListPresent present;
 
-    private static LiveDetailDto.EntityBean  entity;
+    private static Integer roomId = 0;
 
-    public static LiveDetailLiveFragment newInstance(LiveDetailDto.EntityBean entity1) {
+    public static LiveDetailLiveFragment newInstance(Integer roomId1) {
         LiveDetailLiveFragment fragment = new LiveDetailLiveFragment();
         Bundle args = new Bundle();
-        args.putSerializable("entity", entity1);
+        args.putInt("roomId", roomId1);
         fragment.setArguments(args);
 
-        entity = entity1;
+        roomId = roomId1;
         return fragment;
     }
 
@@ -52,7 +51,7 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            entity = (LiveDetailDto.EntityBean) getArguments().getSerializable("entity");
+            roomId = getArguments().getInt("roomId");
         }
     }
 
@@ -89,7 +88,7 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-        mQuickAdapter = new LiveDetailAdapter(R.layout.item_live_detail, entity.getProgramList());
+        mQuickAdapter = new LiveDetailAdapter(R.layout.item_live_detail, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
@@ -97,10 +96,10 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
 
-//        present = new BannerListPresent(this);
-//        //请求网络数据
-////        present.LoadData("1",PageIndex,false);
-//        present.LoadData(false);
+        present = new LiveDetailListPresent(this);
+        //请求网络数据
+//        present.LoadData("1",PageIndex,false);
+        present.LoadData(false, roomId);
     }
 
     private void initListener() {
@@ -126,14 +125,14 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     public void onLoadMoreRequested() {
         PageIndex++;
 //        present.LoadData("1",PageIndex,true);
-        present.LoadData(true);
+        present.LoadData(true, roomId);
     }
     //下拉刷新
     @Override
     public void onRefresh() {
         PageIndex=1;
 //        present.LoadData("1",PageIndex,false);
-        present.LoadData(false);
+        present.LoadData(false, roomId);
     }
     //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
     @Override
@@ -155,7 +154,7 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     }
 
     @Override
-    public void newDatas(List<BannerDto.BannersBean> newsList) {
+    public void newDatas(List<LiveDetailDto.EntityBean.ProgramListBean> newsList) {
         //进入显示的初始数据或者下拉刷新显示的数据
         mQuickAdapter.setNewData(newsList);//新增数据
         mQuickAdapter.openLoadMore(10,true);//设置是否可以下拉加载  以及加载条数
@@ -163,7 +162,7 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     }
 
     @Override
-    public void addDatas(List<BannerDto.BannersBean> addList) {
+    public void addDatas(List<LiveDetailDto.EntityBean.ProgramListBean> addList) {
         //新增自动加载的的数据
         mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
     }
@@ -176,7 +175,7 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
             public void onClick(View v) {
                 PageIndex=1;
 //                present.LoadData("1",PageIndex,false);
-                present.LoadData(false);
+                present.LoadData(false, roomId);
             }
         });
     }

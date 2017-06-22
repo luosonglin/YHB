@@ -12,12 +12,12 @@ import com.medmeeting.m.zhiyi.R;
 public class LiveDetailSummaryFragment extends Fragment {
 
     private TextView mSummaryTv;
-    private static String classifys;
+    private static Integer classifys;
 
-    public static LiveDetailSummaryFragment newInstance(String classifys1) {
+    public static LiveDetailSummaryFragment newInstance(Integer classifys1) {
         LiveDetailSummaryFragment fragment = new LiveDetailSummaryFragment();
         Bundle args = new Bundle();
-        args.putString("classifys", classifys1);
+        args.putInt("classifys", classifys1);
         fragment.setArguments(args);
 
         classifys = classifys1;
@@ -29,7 +29,7 @@ public class LiveDetailSummaryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            classifys = getArguments().getString("classifys");
+            classifys = getArguments().getInt("classifys");
         }
     }
 
@@ -43,12 +43,8 @@ public class LiveDetailSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initView(view);
-    }
-
-    private void initView(View root) {
-        mSummaryTv = (TextView) root.findViewById(R.id.summary);
-        mSummaryTv.setText(classifys);
+        mSummaryTv = (TextView) view.findViewById(R.id.summary);
+        mSummaryTv.setText(classifys+"");
     }
 
 }
