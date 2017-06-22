@@ -21,7 +21,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, LiveDto item) {
+    protected void convert(BaseViewHolder helper, final LiveDto item) {
         Glide.with(mContext)
                 .load("http://www.medmeeting.com/upload/banner/" + item.getCoverPhoto())
                 .crossFade()
@@ -43,7 +43,9 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
         helper.getView(R.id.item_live_cv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, LiveDetailActivity.class));
+                Intent intent = new Intent(mContext, LiveDetailActivity.class);
+                intent.putExtra("roomId", item.getRoomId());
+                mContext.startActivity(intent);
             }
         });
     }

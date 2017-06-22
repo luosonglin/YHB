@@ -2,14 +2,15 @@ package com.medmeeting.m.zhiyi.Data.APi;
 
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult2;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -26,6 +27,10 @@ public interface APILiveService {
     @POST("/v1/liveProgram/page")
     Observable<HttpResult3<LiveDto>> getAllLiveList(@Body LiveSearchDto2 liveSearchDto);
 
-    @POST("/v1/liveProgram/page")
-    Observable<LiveDto> getLiveList(@Body LiveSearchDto liveSearchDto);
+//    @POST("/v1/liveProgram/page")
+//    Observable<LiveDto> getLiveList(@Body LiveSearchDto liveSearchDto);
+
+    //获取直播房间详情，包括直播节目列表
+    @GET("/v1/open/room/{roomId}")
+    Observable<LiveDetailDto> getLiveDetail(@Path("roomId") Integer roomId);
 }

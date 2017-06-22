@@ -14,7 +14,7 @@ import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.BannerListPresent;
 import com.medmeeting.m.zhiyi.MVP.View.BannerListView;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.LiveDetailAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.BannersAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
@@ -89,7 +89,7 @@ public class LiveDetailVideoFragment extends Fragment implements BaseQuickAdapte
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-        mQuickAdapter = new LiveDetailAdapter(R.layout.item_live_detail, null);
+        mQuickAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数

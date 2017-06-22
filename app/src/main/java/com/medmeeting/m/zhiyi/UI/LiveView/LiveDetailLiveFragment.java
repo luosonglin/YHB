@@ -17,6 +17,7 @@ import com.medmeeting.m.zhiyi.MVP.View.BannerListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveDetailAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
@@ -34,15 +35,15 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     private SpringView springView;
     private BannerListPresent present;
 
-    private static String classifys;
+    private static LiveDetailDto.EntityBean  entity;
 
-    public static LiveDetailLiveFragment newInstance(String classifys1) {
+    public static LiveDetailLiveFragment newInstance(LiveDetailDto.EntityBean entity1) {
         LiveDetailLiveFragment fragment = new LiveDetailLiveFragment();
         Bundle args = new Bundle();
-        args.putString("classifys", classifys1);
+        args.putSerializable("entity", entity1);
         fragment.setArguments(args);
 
-        classifys = classifys1;
+        entity = entity1;
         return fragment;
     }
 
@@ -51,7 +52,7 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            classifys = getArguments().getString("classifys");
+            entity = (LiveDetailDto.EntityBean) getArguments().getSerializable("entity");
         }
     }
 
@@ -88,7 +89,7 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-        mQuickAdapter = new LiveDetailAdapter(R.layout.item_live_detail, null);
+        mQuickAdapter = new LiveDetailAdapter(R.layout.item_live_detail, entity.getProgramList());
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
@@ -96,10 +97,10 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
 
-        present = new BannerListPresent(this);
-        //请求网络数据
-//        present.LoadData("1",PageIndex,false);
-        present.LoadData(false);
+//        present = new BannerListPresent(this);
+//        //请求网络数据
+////        present.LoadData("1",PageIndex,false);
+//        present.LoadData(false);
     }
 
     private void initListener() {

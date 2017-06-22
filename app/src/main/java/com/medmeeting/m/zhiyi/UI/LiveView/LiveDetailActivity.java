@@ -18,11 +18,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
+import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observer;
 
 public class LiveDetailActivity extends AppCompatActivity {
     private static final String TAG = LiveDetailActivity.class.getSimpleName();
@@ -32,7 +39,12 @@ public class LiveDetailActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private Context context = this;
     private ScrollView scrollView;
+    //背景图
     private ImageView imageView;
+    //直播间头像
+    private ImageView coverPhotoTv;
+    private TextView titleTv, userNameTv;
+
 
     // 记录首次按下位置
     private float mFirstPosition = 0;
@@ -41,13 +53,60 @@ public class LiveDetailActivity extends AppCompatActivity {
 
     private DisplayMetrics metric;
 
+    private Integer roomId = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_detail);
         toolBar();
         initView();
-        initTagsView();
+//        initTagsView();
+
+        initDataView(getIntent().getExtras().getInt("roomId"));
+    }
+
+    private void initDataView(Integer roomId) {
+        HttpData.getInstance().HttpDataGetLiveDetail(new Observer<LiveDetailDto>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                //设置页面为加载错误
+//                listener.onFailure(e);
+                Log.e(TAG, "onError: "+e.getMessage()
+                        +"\n"+e.getCause()
+                        +"\n"+e.getLocalizedMessage()
+                        +"\n"+e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(LiveDetailDto data) {
+//                listener.onSuccess(data.getBanners());
+
+                initDetailView(data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getUserName());
+                initTagsView(data.getEntity(), data.getEntity().getDes());
+                Log.e(TAG, "onNext");
+            }
+        }, roomId);
+    }
+
+    private void initDetailView(String coverPhone, String title, String userName) {
+        coverPhotoTv = (ImageView) findViewById(R.id.coverPhoto);
+        titleTv = (TextView) findViewById(R.id.title);
+        userNameTv = (TextView) findViewById(R.id.userName);
+
+        Glide.with(LiveDetailActivity.this)
+                .load(coverPhone)
+                .crossFade()
+                .transform(new GlideCircleTransform(LiveDetailActivity.this))
+                .placeholder(R.mipmap.ic_launcher)
+                .into(coverPhotoTv);
+        titleTv.setText(title);
+        userNameTv.setText(userName);
     }
 
     private void toolBar() {
@@ -145,7 +204,7 @@ public class LiveDetailActivity extends AppCompatActivity {
     }
 
 
-    private void initTagsView() {
+    private void initTagsView(LiveDetailDto.EntityBean entity, String description) {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -157,16 +216,16 @@ public class LiveDetailActivity extends AppCompatActivity {
         viewPager.setLayoutParams(params);
         Log.e(TAG, viewPager.getHeight() + " " + viewPager.getLayoutParams().height);
 
-        setUpViewPager(viewPager, "0");
+        setUpViewPager(viewPager, entity, description);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    private void setUpViewPager(ViewPager viewPager, String mParam1) {
+    private void setUpViewPager(ViewPager viewPager, LiveDetailDto.EntityBean entity, String mParam1) {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(LiveDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
-        mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(mParam1), "直播");
-        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(mParam1), "视频");
+        mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(entity), "直播");
+        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance("视频"), "视频");
         mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(mParam1), "简介");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
