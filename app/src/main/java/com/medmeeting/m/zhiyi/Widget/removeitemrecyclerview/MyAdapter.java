@@ -6,15 +6,16 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private LayoutInflater mInflater;
-    private ArrayList<String> mList;
+    private ArrayList<BannerDto.BannersBean> mList;
 
-    public MyAdapter(Context context, ArrayList<String> list) {
+    public MyAdapter(Context context, ArrayList<BannerDto.BannersBean> list) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mList = list;
@@ -28,7 +29,7 @@ public class MyAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final MyViewHolder viewHolder = (MyViewHolder) holder;
-        viewHolder.content.setText(mList.get(position));
+        viewHolder.content.setText(mList.get(position).getTitle());
     }
 
     @Override
