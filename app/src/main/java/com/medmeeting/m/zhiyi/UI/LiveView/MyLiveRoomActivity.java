@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,8 @@ import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.ItemRemoveRecyclerView;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.MyAdapter;
@@ -24,7 +26,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
 
     private static final String TAG = MyLiveRoomActivity.class.getSimpleName();
     private ItemRemoveRecyclerView mRecyclerView;
-    private ArrayList<BannerDto.BannersBean> mList;
+    private ArrayList<LiveRoomDto> mList;
 
     private Toolbar toolbar;
     private MyAdapter adapter;
@@ -62,7 +64,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
         //内容
         mRecyclerView = (ItemRemoveRecyclerView) findViewById(R.id.id_item_remove_recyclerview);
         mList = new ArrayList<>();
-        HttpData.getInstance().HttpDataGetBanner(new Observer<BannerDto>() {
+        HttpData.getInstance().HttpDataGetLiveRoom(new Observer<HttpResult3<LiveRoomDto>>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");
@@ -77,8 +79,8 @@ public class MyLiveRoomActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(BannerDto bannerDto) {
-                mList.addAll(bannerDto.getBanners());
+            public void onNext(HttpResult3<LiveRoomDto> liveRoomDtoHttpResult3) {
+                mList.addAll(liveRoomDtoHttpResult3.getData());
                 Log.e(TAG, "onNext");
 
                 adapter = new MyAdapter(MyLiveRoomActivity.this, mList);
@@ -88,6 +90,11 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         Toast.makeText(MyLiveRoomActivity.this, "** " + mList.get(position) + " **", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MyLiveRoomActivity.this, LiveProgramDetailActivity.class);
+                        intent.putExtra("roomId", mList.get(position).getId());
+                        intent.putExtra("title", mList.get(position).getTitle());
+                        intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());
+                        startActivity(intent);
                     }
 
                     @Override

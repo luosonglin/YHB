@@ -4,6 +4,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult2;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
 
@@ -33,4 +34,13 @@ public interface APILiveService {
     //获取直播房间详情，包括直播节目列表
     @GET("/v1/open/room/{roomId}")
     Observable<LiveDetailDto> getLiveDetail(@Path("roomId") Integer roomId);
+
+    //获取主播房间列表
+    @GET("/v1/anchor/liveRoom")
+    Observable<HttpResult3<LiveRoomDto>> getLiveRoom();
+
+    //GET /v1/anchor/{roomId}/liveProgram 获取直播节目列表
+    @GET("/v1/anchor/{roomId}/liveProgram")
+    Observable<HttpResult3<LiveDto>> getLivePrograms(@Path("roomId") Integer roomId);   //LiveDto需换
+
 }

@@ -15,6 +15,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
@@ -130,10 +131,21 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-
     //get live detail
     public void HttpDataGetLiveDetail(Observer<LiveDetailDto> observer, Integer roomId) {
         Observable observable = service_live.getLiveDetail(roomId);
+        setSubscribe(observable, observer);
+    }
+
+    //直播-主播-直播房间 GET /v1/anchor/liveRoom 获取主播房间列表
+    public void HttpDataGetLiveRoom(Observer<HttpResult3<LiveRoomDto>> observer) {
+        Observable observable = service_live.getLiveRoom();
+        setSubscribe(observable, observer);
+    }
+
+    //GET /v1/anchor/{roomId}/liveProgram 获取直播节目列表
+    public void HttpDataGetLivePrograms(Observer<HttpResult3<LiveDto>> observer, Integer roomId) {
+        Observable observable = service_live.getLivePrograms(roomId);
         setSubscribe(observable, observer);
     }
 
