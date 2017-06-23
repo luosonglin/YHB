@@ -13,6 +13,9 @@ import android.widget.Scroller;
 
 import com.medmeeting.m.zhiyi.R;
 
+/**
+ * 左滑出现删除按钮的RecyclerView
+ */
 public class ItemRemoveRecyclerView extends RecyclerView {
     private Context mContext;
 
