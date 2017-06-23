@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,6 +75,15 @@ public class LiveProgramDetailActivity extends AppCompatActivity implements Base
                 .crossFade()
 //                .placeholder(R.mipmap.ic_launcher)
                 .into(backgroundIv);
+
+        findViewById(R.id.invitation_letter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LiveProgramDetailActivity.this, LiveInvitationLetterActivity.class);
+                intent.putExtra("roomId", roomId);
+                startActivity(intent);
+            }
+        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
         springView = (SpringView) findViewById(R.id.springview);

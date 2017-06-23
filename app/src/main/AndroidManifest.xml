@@ -46,6 +46,9 @@
         <activity
             android:name=".UI.LiveView.LiveProgramDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.LiveView.LiveInvitationLetterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
