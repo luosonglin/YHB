@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.snappydb.SnappydbException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,6 +80,7 @@ public class MineFragment extends Fragment {
     RelativeLayout wodewendang;
 
 //    private String identityHtml;
+    private String userId = null;
 
     private OnFragmentInteractionListener mListener;
 
@@ -121,7 +129,39 @@ public class MineFragment extends Fragment {
     }
 
     private void initView() {
+        try {
+            userId = DBUtils.get(getActivity(), "userId");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
 
+        HttpData.getInstance().HttpDataGetMyInfo(new Observer<MyInfoDto>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: "+e.getMessage()
+                        +"\n"+e.getCause()
+                        +"\n"+e.getLocalizedMessage()
+                        +"\n"+e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(MyInfoDto item) {
+                Glide.with(getActivity())
+                        .load(item.getData().getUser().getUserPic())
+                        .crossFade()
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(headIv);
+                nameTv.setText(item.getData().getUser().getName() == null ?
+                        item.getData().getUser().getNickName() : item.getData().getUser().getName());
+                hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
+                titleTv.setText(item.getData().getUser().getTitle()+" ");
+            }
+        }, Integer.parseInt(userId));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

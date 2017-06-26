@@ -19,6 +19,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
+import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
@@ -97,6 +98,12 @@ public class HttpData extends RetrofitUtils {
     //test login
     public void HttpDataLogin(Observer<SignUpDto> observer, Map<String, Object> map) {
         Observable observable = service.LoginByPhoneCode(map);
+        setSubscribe(observable, observer);
+    }
+
+    //个人中心
+    public void HttpDataGetMyInfo(Observer<MyInfoDto> observer, Integer userId) {
+        Observable observable = service.getMyInformation(userId);
         setSubscribe(observable, observer);
     }
 

@@ -4,6 +4,7 @@ package com.medmeeting.m.zhiyi.Data.APi;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
+import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 
@@ -37,4 +38,7 @@ public interface APIService {
     @GET("/api/v1/blogs/recommend/{pageNum}/{pageSize}")
     Observable<HttpResult<BlogDto>> getRecommendBlogList(@Path("pageNum") Integer pageNum, @Path("pageSize") Integer pageSize);
 
+    //个人重心
+    @GET("/api/v1/app/{user_id}")
+    Observable<MyInfoDto> getMyInformation(@Path("user_id") Integer userId);
 }
