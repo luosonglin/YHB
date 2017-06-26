@@ -18,4 +18,5 @@ public class Constant {
     public static final String API_SERVER_LIVE_TEST = "http://hd.medmeeting.com";
     public static final String API_SERVER_LIVE = "http://api.medmeeting.com";
 
+    public static final String FIRST_OPEN = "first_open";
 }

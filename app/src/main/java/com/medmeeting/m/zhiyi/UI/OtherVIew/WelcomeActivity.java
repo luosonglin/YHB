@@ -6,10 +6,15 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
+import com.medmeeting.m.zhiyi.Util.SpUtils;
 
+/**
+ *  启动页
+ */
 public class WelcomeActivity extends ListvViewActivity {
 
     private TextView timeTv;
@@ -17,6 +22,18 @@ public class WelcomeActivity extends ListvViewActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 判断是否是第一次开启应用
+        boolean isFirstOpen = SpUtils.getBoolean(this, Constant.FIRST_OPEN);
+        // 如果是第一次启动，则先进入功能引导页
+        if (!isFirstOpen) {
+            Intent intent = new Intent(this, WelcomeGuideActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        // 如果不是第一次启动app，则正常显示启动屏
         setContentView(R.layout.activity_welcome);
         getWindow().setBackgroundDrawableResource(R.mipmap.haha);
 
