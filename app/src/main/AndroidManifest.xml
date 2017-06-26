@@ -28,6 +28,7 @@
         <activity
             android:name=".UI.SignInAndSignUpView.LoginActivity"
             android:label="LoginActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".MainActivity" />
         <activity
