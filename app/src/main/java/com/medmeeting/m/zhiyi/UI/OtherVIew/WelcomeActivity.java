@@ -18,7 +18,7 @@ public class WelcomeActivity extends ListvViewActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        getWindow().setBackgroundDrawableResource(R.mipmap.hahaha);
+        getWindow().setBackgroundDrawableResource(R.mipmap.haha);
 
         timeTv = (TextView) findViewById(R.id.time);
 

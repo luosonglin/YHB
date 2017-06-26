@@ -1,11 +1,14 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.NewsActivity;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
@@ -18,7 +21,7 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, BlogDto.BlogBean.ListBean item) {
+    protected void convert(BaseViewHolder helper, final BlogDto.BlogBean.ListBean item) {
         Glide.with(mContext)
                 .load(item.getImages())
                 .crossFade()
@@ -38,8 +41,12 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
         helper.getView(R.id.item_news_cv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //test
-//                mContext.startActivity(new Intent(mContext, .class));
+                Intent intent = new Intent(mContext, NewsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("blogId", item.getId()+"");
+                bundle.putSerializable("blog", item);
+                intent.putExtras(bundle);
+                mContext.startActivity(intent);
             }
         });
     }
