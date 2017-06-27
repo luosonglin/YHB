@@ -17,7 +17,7 @@ public class LiveSearchDto {
 //    private int pageNum;
 //    private int pageSize;
 //    private int roomId;
-//    private String roomNumber;
+    private String roomNumber;
 //    private int roomUserId;
 //    private int userId;
 //    private List<Integer> labelIds;
@@ -72,13 +72,13 @@ public class LiveSearchDto {
 //        this.roomId = roomId;
 //    }
 //
-//    public String getRoomNumber() {
-//        return roomNumber;
-//    }
-//
-//    public void setRoomNumber(String roomNumber) {
-//        this.roomNumber = roomNumber;
-//    }
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
 //
 //    public int getRoomUserId() {
 //        return roomUserId;

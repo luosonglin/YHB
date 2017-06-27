@@ -75,6 +75,8 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
     private ListSearchListPresent present;
     private LiveSearchDto liveSearchDto = new LiveSearchDto();
 
+    private String type = "公开";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -230,7 +232,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                     public void onClick(View view) {
                         typeTv.setText("公开 ▼");
                         window.dismiss();
-                        springView.setVisibility(View.VISIBLE);
+                        type = "公开";
                     }
                 });
                 RelativeLayout relativeLayout2 = (RelativeLayout) popupView.findViewById(R.id.private_rlyt);
@@ -239,14 +241,22 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                     public void onClick(View view) {
                         typeTv.setText("私密 ▼");
                         window.dismiss();
-                        springView.setVisibility(View.GONE);
+                        type = "私密";
                     }
                 });
 
                 break;
             case R.id.search_tv:
-                liveSearchDto.setKeyword(searchEt.getText().toString());
+                if ("公开".equals(type)) {
+                    liveSearchDto.setKeyword(searchEt.getText().toString());
+                    liveSearchDto.setRoomNumber("");
+
+                } else if ("私密".equals(type)) {
+                    liveSearchDto.setKeyword("");
+                    liveSearchDto.setRoomNumber(searchEt.getText().toString());// test data 411826
+                }
                 present.LoadData(false, liveSearchDto);
+
                 break;
         }
     }
