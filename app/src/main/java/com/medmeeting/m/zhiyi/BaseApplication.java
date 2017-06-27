@@ -5,9 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
-import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,14 +24,14 @@ public class BaseApplication extends Application {
         context = this;
         instance = this;
 
-        //初始化异常管理工具
-        Recovery.getInstance()
-                .debug(true)//关闭后 在错误统一管理页面不显示异常数据
-                .recoverInBackground(false)
-                .recoverStack(true)
-                .mainPage(WelcomeActivity.class)//恢复页面
-//                .skip(H5PayActivity.class) //如果应用集成支付宝支付
-                .init(this);
+//        //初始化异常管理工具
+//        Recovery.getInstance()
+//                .debug(true)//关闭后 在错误统一管理页面不显示异常数据
+//                .recoverInBackground(false)
+//                .recoverStack(true)
+//                .mainPage(WelcomeActivity.class)//恢复页面
+////                .skip(H5PayActivity.class) //如果应用集成支付宝支付
+//                .init(this);
     }
 
     public static Context getContext() {

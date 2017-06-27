@@ -18,12 +18,13 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
+import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
 import java.io.File;
@@ -137,10 +138,10 @@ public class HttpData extends RetrofitUtils {
     }
 
     //get live tags
-    public void HttpDataGetLiveTags(Observer<LiveTagDto> observer) {
-        Observable observable = service_live.getLiveTagList();
-        Observable observableCache = providers.getLiveTagList(observable, new DynamicKey("live标签"), new EvictDynamicKey(false));
-        setSubscribe(observableCache, observer);
+    public void HttpDataGetLiveTags(Observer<HttpResult3<TagDto>> observer) {
+        Observable observable = service_live.getTags();
+//        Observable observableCache = providers.getLiveTagList(observable, new DynamicKey("live标签"), new EvictDynamicKey(false));
+        setSubscribe(observable, observer);
     }
 
     //test live list
@@ -165,6 +166,12 @@ public class HttpData extends RetrofitUtils {
     //GET /v1/anchor/{roomId}/liveProgram 获取直播节目列表
     public void HttpDataGetLivePrograms(Observer<HttpResult3<LiveDto>> observer, Integer roomId) {
         Observable observable = service_live.getLivePrograms(roomId);
+        setSubscribe(observable, observer);
+    }
+
+    //search live
+    public void HttpDataGetLives(Observer<HttpResult3<LiveDto>> observer, LiveSearchDto liveSearchDto) {
+        Observable observable = service_live.getLives(liveSearchDto);
         setSubscribe(observable, observer);
     }
 

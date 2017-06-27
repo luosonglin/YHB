@@ -3,12 +3,10 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -18,17 +16,16 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.medmeeting.m.zhiyi.MVP.Presenter.BannerListPresent;
-import com.medmeeting.m.zhiyi.MVP.View.BannerListView;
+import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.MVP.Presenter.ListSearchListPresent;
+import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.BannersAdapter;
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
-import com.xiaochao.lcrapiddeveloplibrary.SmartTab.SmartTabLayout;
-import com.xiaochao.lcrapiddeveloplibrary.SmartTab.UtilsV4.v4.FragmentPagerItem;
-import com.xiaochao.lcrapiddeveloplibrary.SmartTab.UtilsV4.v4.FragmentPagerItemAdapter;
-import com.xiaochao.lcrapiddeveloplibrary.SmartTab.UtilsV4.v4.FragmentPagerItems;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
+import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 
 import java.util.ArrayList;
@@ -38,7 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LiveSearchActivity extends AppCompatActivity implements SpringView.OnFreshListener, BannerListView {
+public class LiveSearchActivity extends AppCompatActivity implements SpringView.OnFreshListener, LiveListView {
 
     @Bind(R.id.toolbar_title)
     TextView toolbarTitleTv;
@@ -55,7 +52,6 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
     @Bind(R.id.search_tag_delete)
     ImageView searchTagIv;
 
-
     private static final String TAG = LiveSearchActivity.class.getSimpleName();
     @Bind(R.id.type)
     TextView typeTv;
@@ -71,13 +67,13 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
     private static final String LABELID = "labelId";
     private static final String KEYWORD = "keyword";
 
-    private ViewGroup tab;
-    private ViewPager viewpager;
+    ProgressActivity progress;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
     private SpringView springView;
-    private BannerListPresent present;
+    private ListSearchListPresent present;
+    private LiveSearchDto liveSearchDto = new LiveSearchDto();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +84,6 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
         initToolbar("搜索直播");
 
         initTagsView();
-
     }
 
     private void initToolbar(String title) {
@@ -112,99 +107,91 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
     }
 
     private void initTagsView() {
-        tab = (ViewGroup) findViewById(R.id.tab);
-        viewpager = (ViewPager) findViewById(R.id.viewpager);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.tags_rv_list);
-        springView = (SpringView) findViewById(R.id.tags_springview);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
+        springView = (SpringView) findViewById(R.id.springview);
 
         //设置下拉刷新监听
         springView.setListener(this);
         //设置下拉刷新样式
         springView.setType(SpringView.Type.FOLLOW);
         springView.setHeader(new DefaultHeader(this));
+
+        progress = (ProgressActivity) findViewById(R.id.progress);
         //设置RecyclerView的显示模式  当前List模式
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(LiveSearchActivity.this, 2));
+//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
+        //设置页面为加载中..
+        progress.showLoading();
         //设置适配器
-        mQuickAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
+//        mQuickAdapter = new TagAdapter(R.layout.item_tag, null);
+        mQuickAdapter = new LiveAdapter(R.layout.item_live, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
         mQuickAdapter.openLoadMore(6, true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
-        present = new BannerListPresent(this);
+        present = new ListSearchListPresent(this);
         //请求网络数据
-        present.LoadData(false);
-
-
-        tab.addView(LayoutInflater.from(this).inflate(R.layout.tab_top_layout, tab, false));
-        SmartTabLayout viewPagerTab = (SmartTabLayout) findViewById(R.id.viewpagertab);
-        FragmentPagerItems pages = new FragmentPagerItems(this);
-
-        pages.add(FragmentPagerItem.of("公开直播", LiveSearchPublicFragment.class));
-        pages.add(FragmentPagerItem.of("私密直播", LiveSearchPublicFragment.class));
-
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(), pages);
-
-        viewpager.setAdapter(adapter);
-        viewPagerTab.setViewPager(viewpager);
-
-        viewPagerTab.setOnTabClickListener(new SmartTabLayout.OnTabClickListener() {
-            @Override
-            public void onTabClicked(int position) {
-                switch (position) {
-                    case 0:
-                        springView.setVisibility(View.VISIBLE);
-                        break;
-                    case 1:
-                        springView.setVisibility(View.GONE);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+//        liveSearchDto.setKeyword("");
+//        present.LoadData(false, liveSearchDto);
+        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE2, Constant.EMPTY_CONTEXT2);
     }
-
 
     @Override
     public void showProgress() {
-
+        progress.showLoading();
     }
 
     @Override
     public void hideProgress() {
-
+        progress.showContent();
     }
 
     @Override
-    public void newDatas(List<BannerDto.BannersBean> newsList) {
-
+    public void newDatas(List<LiveDto> newsList) {
+        //进入显示的初始数据或者下拉刷新显示的数据
+        mQuickAdapter.setNewData(newsList);//新增数据
+        mQuickAdapter.openLoadMore(10, true);//设置是否可以下拉加载  以及加载条数
+        springView.onFinishFreshAndLoad();//刷新完成
     }
 
     @Override
-    public void addDatas(List<BannerDto.BannersBean> addList) {
-
+    public void addDatas(List<LiveDto> addList) {
+        //新增自动加载的的数据
+        mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
     }
 
     @Override
     public void showLoadFailMsg() {
-
+        //设置加载错误页显示
+        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                PageIndex = 1;
+//                present.LoadData("1",PageIndex,false);
+                present.LoadData(false, liveSearchDto);
+            }
+        });
     }
 
     @Override
     public void showLoadCompleteAllData() {
-
+        //所有数据加载完成后显示
+        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
+        View view = this.getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
+        mQuickAdapter.addFooterView(view);
     }
 
     @Override
     public void showNoData() {
-
+        //设置无数据显示页面
+        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
     }
+
 
     @Override
     public void onRefresh() {
@@ -243,6 +230,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                     public void onClick(View view) {
                         typeTv.setText("公开 ▼");
                         window.dismiss();
+                        springView.setVisibility(View.VISIBLE);
                     }
                 });
                 RelativeLayout relativeLayout2 = (RelativeLayout) popupView.findViewById(R.id.private_rlyt);
@@ -251,11 +239,14 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                     public void onClick(View view) {
                         typeTv.setText("私密 ▼");
                         window.dismiss();
+                        springView.setVisibility(View.GONE);
                     }
                 });
 
                 break;
             case R.id.search_tv:
+                liveSearchDto.setKeyword(searchEt.getText().toString());
+                present.LoadData(false, liveSearchDto);
                 break;
         }
     }

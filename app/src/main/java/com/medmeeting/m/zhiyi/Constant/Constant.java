@@ -12,6 +12,9 @@ public class Constant {
     public static String EMPTY_TITLE="没有找到数据";
     public static String EMPTY_CONTEXT="换个条件试试吧";
 
+    public static String EMPTY_TITLE2="没有数据";
+    public static String EMPTY_CONTEXT2="输入条件试试吧";
+
     //服务器路径
     public static final String API_SERVER = "http://medmeeting.com:8080";
     public static final String API_SERVER_MEETING = "http://www.medmeeting.com";

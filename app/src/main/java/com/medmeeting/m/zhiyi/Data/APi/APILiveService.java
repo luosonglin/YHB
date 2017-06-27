@@ -1,12 +1,12 @@
 package com.medmeeting.m.zhiyi.Data.APi;
 
-import com.medmeeting.m.zhiyi.UI.Entity.HttpResult2;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveTagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -19,9 +19,6 @@ import rx.Observable;
  * http://hd.medmeeting.com
  */
 public interface APILiveService {
-    //获取直播分类标签
-    @GET("/healife/vido/getVidoLabelList")
-    Observable<HttpResult2<LiveTagDto>> getLiveTagList();
 
     //获取直播节目一栏-分页
     //全部
@@ -43,4 +40,11 @@ public interface APILiveService {
     @GET("/v1/anchor/{roomId}/liveProgram")
     Observable<HttpResult3<LiveDto>> getLivePrograms(@Path("roomId") Integer roomId);   //LiveDto需换
 
+    //直播-公开-直播标签房间节目 GET /v1/open/liveLabel 获取直播标签列表 获取直播分类标签
+    @GET("v1/open/liveLabel?limit=100")
+    Observable<HttpResult3<TagDto>> getTags();
+
+    //搜索
+    @POST("v1/liveProgram/page")
+    Observable<HttpResult3<LiveDto>> getLives(@Body LiveSearchDto liveSearchDto);
 }
