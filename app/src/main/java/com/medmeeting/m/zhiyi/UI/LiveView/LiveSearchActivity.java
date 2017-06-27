@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.MVP.Presenter.BannerListPresent;
@@ -33,6 +36,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LiveSearchActivity extends AppCompatActivity implements SpringView.OnFreshListener, BannerListView {
 
@@ -53,6 +57,10 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
 
 
     private static final String TAG = LiveSearchActivity.class.getSimpleName();
+    @Bind(R.id.type)
+    TextView typeTv;
+    @Bind(R.id.search_tv)
+    TextView searchTv;
 
     private String classify = "";
     private List<String> classifys = new ArrayList<>();
@@ -67,7 +75,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
     private ViewPager viewpager;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mQuickAdapter;
-    private int PageIndex=1;
+    private int PageIndex = 1;
     private SpringView springView;
     private BannerListPresent present;
 
@@ -124,7 +132,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
-        mQuickAdapter.openLoadMore(6,true);
+        mQuickAdapter.openLoadMore(6, true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
         present = new BannerListPresent(this);
@@ -206,5 +214,49 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
     @Override
     public void onLoadmore() {
 
+    }
+
+    @OnClick({R.id.type, R.id.search_tv})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.type:
+                final View popupView = LiveSearchActivity.this.getLayoutInflater().inflate(R.layout.popupwindow_broker, null);
+
+                // 创建PopupWindow对象，指定宽度和高度
+                final PopupWindow window = new PopupWindow(popupView, 300, 300);
+                // 设置背景颜色
+                window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F8F8F8")));
+
+                // 设置可以获取焦点
+                window.setFocusable(true);
+                // 设置可以触摸弹出框以外的区域
+                window.setOutsideTouchable(true);
+
+                // 更新popupwindow的状态
+                window.update();
+                // 以下拉的方式显示，并且可以设置显示的位置
+                window.showAsDropDown(typeTv, 0, 20);
+
+                RelativeLayout relativeLayout = (RelativeLayout) popupView.findViewById(R.id.public_rlyt);
+                relativeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        typeTv.setText("公开 ▼");
+                        window.dismiss();
+                    }
+                });
+                RelativeLayout relativeLayout2 = (RelativeLayout) popupView.findViewById(R.id.private_rlyt);
+                relativeLayout2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        typeTv.setText("私密 ▼");
+                        window.dismiss();
+                    }
+                });
+
+                break;
+            case R.id.search_tv:
+                break;
+        }
     }
 }
