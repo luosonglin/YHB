@@ -183,7 +183,7 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
     }
 
     @Override
-    public void newDatas(List<MeetingDto.PageInfoBean.ListBean> newsList) {
+    public void newDatas(List<MeetingDto> newsList) {
         //进入显示的初始数据或者下拉刷新显示的数据
         mQuickAdapter.setNewData(newsList);//新增数据
         mQuickAdapter.openLoadMore(10,true);//设置是否可以下拉加载  以及加载条数
@@ -191,7 +191,7 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
     }
 
     @Override
-    public void addDatas(List<MeetingDto.PageInfoBean.ListBean> addList) {
+    public void addDatas(List<MeetingDto> addList) {
         //新增自动加载的的数据
         mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
     }

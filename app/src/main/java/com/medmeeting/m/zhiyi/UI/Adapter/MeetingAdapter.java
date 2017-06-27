@@ -16,13 +16,13 @@ import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
 import java.util.List;
 
-public class MeetingAdapter extends BaseQuickAdapter<MeetingDto.PageInfoBean.ListBean> {
-    public MeetingAdapter(int layoutResId, List<MeetingDto.PageInfoBean.ListBean> data) {
+public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
+    public MeetingAdapter(int layoutResId, List<MeetingDto> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final MeetingDto.PageInfoBean.ListBean item) {
+    protected void convert(BaseViewHolder helper, final MeetingDto item) {
         Glide.with(mContext)
                 .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
                 .crossFade()
@@ -30,7 +30,7 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto.PageInfoBean.Lis
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.address, item.getAddress())
+                .setText(R.id.address, item.getAddress()+"")
                 .setText(R.id.ha1, DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_07))
                 .setText(R.id.ha2, "~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
 

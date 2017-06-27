@@ -78,12 +78,6 @@
                     android:layout_marginRight="2dp"
                     android:orientation="horizontal">
 
-                    <!--<ImageView-->
-                        <!--android:layout_width="12dp"-->
-                        <!--android:layout_height="12dp"-->
-                        <!--android:layout_gravity="center_vertical"-->
-                        <!--android:src="@mipmap/ic_launcher" />-->
-
                     <TextView
                         android:id="@+id/ha1"
                         style="@style/TextStyle_gray"
@@ -101,13 +95,6 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:orientation="horizontal">
-
-                    <!--<ImageView-->
-                        <!--android:layout_width="12dp"-->
-                        <!--android:layout_height="12dp"-->
-                        <!--android:layout_gravity="center_vertical"-->
-                        <!--android:src="@mipmap/ic_launcher" />-->
-
                     <TextView
                         android:id="@+id/ha2"
                         style="@style/TextStyle_gray"

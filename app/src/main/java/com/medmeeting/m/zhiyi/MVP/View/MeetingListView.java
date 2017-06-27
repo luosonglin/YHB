@@ -10,9 +10,9 @@ public interface MeetingListView {
     //关闭加载页
     void hideProgress();
     //加载新数据
-    void newDatas(List<MeetingDto.PageInfoBean.ListBean> newsList);
+    void newDatas(List<MeetingDto> newsList);
     //添加更多数据
-    void addDatas(List<MeetingDto.PageInfoBean.ListBean> addList);
+    void addDatas(List<MeetingDto> addList);
     //显示加载失败
     void showLoadFailMsg();
     //显示已加载所有数据

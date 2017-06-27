@@ -1,25 +1,26 @@
 package com.medmeeting.m.zhiyi.MVP.Presenter;
 
 import com.medmeeting.m.zhiyi.MVP.Listener.OnLoadDataListListener;
-import com.medmeeting.m.zhiyi.MVP.Model.MeetingListModel;
+import com.medmeeting.m.zhiyi.MVP.Model.MyMeetingListModel;
 import com.medmeeting.m.zhiyi.MVP.View.MeetingListView;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 
 import java.util.List;
+import java.util.Map;
 
-public class MeetingListPresent implements OnLoadDataListListener<List<MeetingDto>> {
+public class MyMeetingListPresent implements OnLoadDataListListener<List<MeetingDto>> {
     private MeetingListView mView;
-    private MeetingListModel mModel;
+    private MyMeetingListModel mModel;
     private boolean isjz;
-    public MeetingListPresent(MeetingListView mView) {
+    public MyMeetingListPresent(MeetingListView mView) {
         this.mView = mView;
-        this.mModel=new MeetingListModel();
+        this.mModel=new MyMeetingListModel();
         mView.showProgress();
     }
 
-    public void LoadData(boolean isjz, int pageNum, int pageSize){
+    public void LoadData(boolean isjz, Map<String, Object> map){
         this.isjz=isjz;
-        mModel.LoadData(this, pageNum, pageSize);
+        mModel.LoadData(this, map);
     }
 
     @Override
@@ -46,4 +47,3 @@ public class MeetingListPresent implements OnLoadDataListListener<List<MeetingDt
         mView.showLoadFailMsg();
     }
 }
-

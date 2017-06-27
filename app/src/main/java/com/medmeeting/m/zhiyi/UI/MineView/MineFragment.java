@@ -19,6 +19,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.snappydb.SnappydbException;
 
@@ -213,6 +214,9 @@ public class MineFragment extends Fragment {
             case R.id.user_flyt:
                 break;
             case R.id.wodecanhui:
+                Intent intent = new Intent(getActivity(), MyMeetingActivity.class);
+                intent.putExtra("userId", userId);
+                startActivity(intent);
                 break;
             case R.id.wodeqianbao:
                 break;

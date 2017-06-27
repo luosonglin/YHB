@@ -11,8 +11,10 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
+import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
@@ -106,9 +108,19 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service.getMyInformation(userId);
         setSubscribe(observable, observer);
     }
+    //我的参会 待参会
+    public void HttpDataGetMyMeeting(Observer<HttpResult4<MeetingDto>> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.getWaitEntryEvents(map);
+        setSubscribe(observable, observer);
+    }
+    //我的参会 已结束
+    public void HttpDataGetMyFinishedMeeting(Observer<HttpResult4<FollowFinishedEvent>> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.getFollowFinishedEvents(map);
+        setSubscribe(observable, observer);
+    }
 
     //test get hot meetings
-    public void HttpDataGetHotMeetings(Observer<MeetingDto> observer, Integer pageNum, Integer pageSize){
+    public void HttpDataGetHotMeetings(Observer<HttpResult4<MeetingDto>> observer, Integer pageNum, Integer pageSize){
         Observable observable = service_meeting.getHotMeetings(pageNum, pageSize);
         setSubscribe(observable, observer);
 //        Observable observableCache = providers.getMeetingList(observable, new DynamicKey("热门会议"), new EvictDynamicKey(false));
