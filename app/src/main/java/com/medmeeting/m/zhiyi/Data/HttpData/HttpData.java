@@ -30,8 +30,6 @@ import com.medmeeting.m.zhiyi.Util.FileUtil;
 import java.io.File;
 import java.util.Map;
 
-import io.rx_cache.DynamicKey;
-import io.rx_cache.EvictDynamicKey;
 import io.rx_cache.Reply;
 import io.rx_cache.internal.RxCache;
 import rx.Observable;
@@ -87,9 +85,10 @@ public class HttpData extends RetrofitUtils {
     //get test banner
     public void HttpDataGetBanner(Observer<BannerDto> observer) {
         Observable observable = service.getBannerList().map(new HttpResultFunc<BannerDto>());
-        Observable observableCache = providers.getBannerList(observable, new DynamicKey("banner测试"), new EvictDynamicKey(false)).map(new HttpResultFuncCcche<BannerDto>());
-        Log.e(TAG, "HttpDataGetBanner");
-        setSubscribe(observableCache, observer);
+        setSubscribe(observable, observer);
+//        Observable observableCache = providers.getBannerList(observable, new DynamicKey("banner测试"), new EvictDynamicKey(false)).map(new HttpResultFuncCcche<BannerDto>());
+//        Log.e(TAG, "HttpDataGetBanner");
+//        setSubscribe(observableCache, observer);
     }
 
     //get test get phone code

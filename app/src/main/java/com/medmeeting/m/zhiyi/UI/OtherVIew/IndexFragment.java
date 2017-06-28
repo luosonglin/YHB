@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.OtherVIew;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,11 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Presenter.NewsListPresent;
 import com.medmeeting.m.zhiyi.MVP.View.NewsListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.NewsAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.RotationHeader;
@@ -34,6 +38,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Observer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,8 +67,11 @@ public class IndexFragment extends Fragment
     private String mParam1;
     private String mParam2;
 
+    private static final String TAG = IndexFragment.class.getSimpleName();
+
     private Banner mBanner;
     private List<String> bannerImages = new ArrayList<>();
+    private List<String> bannerTitles = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
     private ProgressActivity progress;
@@ -114,21 +122,45 @@ public class IndexFragment extends Fragment
         ButterKnife.bind(this, view);
 
         mBanner = (Banner) view.findViewById(R.id.banner);
-        //test data
-        bannerImages.add("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=485322380,1483671303&fm=26&gp=0.jpg");
-        bannerImages.add("http://wx1.sinaimg.cn/mw1024/a601622bgy1fdl511w7f5j20dv0aqgm1.jpg");
-        bannerImages.add("http://wx1.sinaimg.cn/mw1024/a601622bly1fbdk9hstbmj20qo0qodja.jpg");
-        bannerImages.add("http://ww4.sinaimg.cn/mw1024/a601622bgw1f8xr5r8n2gj20ku0go0tu.jpg");
-        bannerImages.add("http://ww4.sinaimg.cn/mw1024/a601622bgw1f8ro576rmkj20qy0zktb4.jpg");
-        mBanner.setImages(bannerImages != null ? bannerImages : null)
-                .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-//                .setBannerTitles(bannerTitles)
-                .setBannerAnimation(Transformer.Tablet)
-                .setImageLoader(new GlideImageLoader()).start();
-        mBanner.setOnBannerClickListener(new OnBannerClickListener() {
+        HttpData.getInstance().HttpDataGetBanner(new Observer<BannerDto>() {
             @Override
-            public void OnBannerClick(int position) {
-                Log.e("--", "点击：" + position + "");
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: "+e.getMessage()
+                        +"\n"+e.getCause()
+                        +"\n"+e.getLocalizedMessage()
+                        +"\n"+e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(final BannerDto bannerDto) {
+                for (BannerDto.BannersBean i : bannerDto.getBanners()) {
+                    bannerImages.add("http://www.medmeeting.com/upload/banner/" + i.getBanner());
+                    bannerTitles.add(i.getTitle());
+                }
+                mBanner.setImages(bannerImages)
+                        .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                        .setBannerTitles(bannerTitles)
+                        .setBannerAnimation(Transformer.Tablet)
+                        .setImageLoader(new GlideImageLoader())
+                        .start();
+                mBanner.setOnBannerClickListener(new OnBannerClickListener() {
+                    @Override
+                    public void OnBannerClick(int position) {
+                        Log.e("--", "点击：" + position + "");
+
+                        Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("eventId", bannerDto.getBanners().get(position-1).getId()+"");
+                        bundle.putString("eventTitle", bannerDto.getBanners().get(position-1).getTitle());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
             }
         });
 
