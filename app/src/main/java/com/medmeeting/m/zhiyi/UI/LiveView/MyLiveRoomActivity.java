@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
@@ -89,8 +88,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                 mRecyclerView.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Toast.makeText(MyLiveRoomActivity.this, "** " + mList.get(position) + " **", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MyLiveRoomActivity.this, LiveProgramDetailActivity.class);
+                        Intent intent = new Intent(MyLiveRoomActivity.this, MyLiveProgramDetailActivity.class);
                         intent.putExtra("roomId", mList.get(position).getId());
                         intent.putExtra("title", mList.get(position).getTitle());
                         intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());

@@ -50,7 +50,8 @@ public class LiveInvitationLetterActivity extends AppCompatActivity {
 
     private static final String URL = "file:///android_asset/test.html";
     private static final String URL_MeetingDetail = "http://wap.medmeeting.com/#!/mw/index/";//http://wap.medmeeting.com/#!/mw/index/:eventId/0
-    private static final String URL_Live = "http://wap.medmeeting.com/#!/live/invite/";
+//    private static final String URL_Live = "http://wap.medmeeting.com/#!/live/invite/";
+    private static final String URL_Live = "http://wap.medmeeting.com/#!/live/room/";
     private static String userAgent;
     private String version;
 

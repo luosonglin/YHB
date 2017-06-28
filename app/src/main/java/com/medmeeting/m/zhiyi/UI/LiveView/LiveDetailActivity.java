@@ -27,6 +27,9 @@ import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 直播间详情页
+ */
 public class LiveDetailActivity extends AppCompatActivity {
     private static final String TAG = LiveDetailActivity.class.getSimpleName();
     private Toolbar toolbar;

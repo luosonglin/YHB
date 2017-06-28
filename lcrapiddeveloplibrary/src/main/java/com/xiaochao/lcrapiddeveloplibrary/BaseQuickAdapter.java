@@ -53,6 +53,11 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
      */
     private View mEmptyView;
 
+    /**
+     * 用户ID
+     */
+    private String mUserId;
+
     protected static final String TAG = BaseQuickAdapter.class.getSimpleName();
     protected Context mContext;
     protected int mLayoutResId;
@@ -124,7 +129,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         this.pageSize = pageSize;
         mNextLoadEnable = enable;
     }
- 
+
     /**
      * call the method before you should call setPageSize() method to setting up the enablePagerSize value,whether it will  invalid
      * enable the loading more data function if enable's value is true,or disable
@@ -213,6 +218,21 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
     public BaseQuickAdapter(View contentView, List<T> data) {
         this( 0, data);
         mContentView = contentView;
+    }
+
+
+    /**
+     * 特殊用(本项目的LiveDetailAdapter需要)
+     * @param layoutResId
+     * @param data
+     * @param userId
+     */
+    public BaseQuickAdapter( int layoutResId, List<T> data, String userId) {
+        this.mData = data == null ? new ArrayList<T>() : data;
+        if (layoutResId != 0) {
+            this.mLayoutResId = layoutResId;
+        }
+        this.mUserId = userId;
     }
 
 

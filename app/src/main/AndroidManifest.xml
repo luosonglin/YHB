@@ -45,10 +45,13 @@
             android:name=".UI.LiveView.MyLiveRoomActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.LiveView.LiveProgramDetailActivity"
+            android:name=".UI.LiveView.MyLiveProgramDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.LiveView.LiveInvitationLetterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.LiveView.LiveProgramDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.OtherVIew.NewsActivity"

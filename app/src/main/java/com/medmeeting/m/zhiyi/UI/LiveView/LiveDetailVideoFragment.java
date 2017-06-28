@@ -17,6 +17,8 @@ import com.medmeeting.m.zhiyi.MVP.View.LiveDetailListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveDetailAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.snappydb.SnappydbException;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
@@ -35,6 +37,7 @@ public class LiveDetailVideoFragment extends Fragment implements BaseQuickAdapte
     private LiveDetailListPresent present;
 
     private static Integer roomId = 0;
+    private String userId;
 
     public static LiveDetailVideoFragment newInstance(Integer roomId1) {
         LiveDetailVideoFragment fragment = new LiveDetailVideoFragment();
@@ -70,6 +73,12 @@ public class LiveDetailVideoFragment extends Fragment implements BaseQuickAdapte
     }
 
     private void initView(View root) {
+        try {
+            userId = DBUtils.get(getActivity(), "userId");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+
         mRecyclerView = (RecyclerView) root.findViewById(R.id.rv_list);
         springView = (SpringView) root.findViewById(R.id.springview);
         //设置下拉刷新监听
@@ -88,7 +97,7 @@ public class LiveDetailVideoFragment extends Fragment implements BaseQuickAdapte
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-        mQuickAdapter = new LiveDetailAdapter(R.layout.item_live_detail, null);
+        mQuickAdapter = new LiveDetailAdapter(R.layout.item_live_detail, null, userId);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
