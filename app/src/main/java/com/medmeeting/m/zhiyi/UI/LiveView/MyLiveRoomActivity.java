@@ -88,7 +88,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                 mRecyclerView.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(MyLiveRoomActivity.this, MyLiveProgramDetailActivity.class);
+                        Intent intent = new Intent(MyLiveRoomActivity.this, MyLiveRoomDetailActivity.class);
                         intent.putExtra("roomId", mList.get(position).getId());
                         intent.putExtra("title", mList.get(position).getTitle());
                         intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());

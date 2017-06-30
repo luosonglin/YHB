@@ -44,7 +44,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     private ImageView coverPhotoTv;
     private TextView titleTv, userNameTv;
 
-
     // 记录首次按下位置
     private float mFirstPosition = 0;
     // 是否正在放大
@@ -57,7 +56,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_live_detail);
+        setContentView(R.layout.activity_live_program_detail);
         toolBar();
         initView(getIntent().getExtras().getString("coverPhote"),
                 getIntent().getExtras().getString("title"),
@@ -194,9 +193,9 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     private void setUpViewPager(ViewPager viewPager, Integer roomId, String des) {
         LiveProgramDetailActivity.IndexChildAdapter mIndexChildAdapter = new LiveProgramDetailActivity.IndexChildAdapter(LiveProgramDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
-        mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播");
-        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "视频");
-        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "简介");
+        mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播详情");
+        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "相关视频");
+        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "TA的直播");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);

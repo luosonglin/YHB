@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * 直播节目详情页
  */
-public class MyLiveProgramDetailActivity extends AppCompatActivity implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, BannerListView {
+public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, BannerListView {
 
 
     RecyclerView mRecyclerView;
@@ -73,7 +73,7 @@ public class MyLiveProgramDetailActivity extends AppCompatActivity implements Ba
         roomId = getIntent().getExtras().getInt("roomId");
 
         backgroundIv = (ImageView) findViewById(R.id.img);
-        Glide.with(MyLiveProgramDetailActivity.this)
+        Glide.with(MyLiveRoomDetailActivity.this)
                 .load(getIntent().getExtras().getString("coverPhoto"))
                 .crossFade()
 //                .placeholder(R.mipmap.ic_launcher)
@@ -82,7 +82,7 @@ public class MyLiveProgramDetailActivity extends AppCompatActivity implements Ba
         findViewById(R.id.invitation_letter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyLiveProgramDetailActivity.this, LiveInvitationLetterActivity.class);
+                Intent intent = new Intent(MyLiveRoomDetailActivity.this, LiveInvitationLetterActivity.class);
                 intent.putExtra("roomId", roomId);
                 startActivity(intent);
             }
@@ -129,13 +129,13 @@ public class MyLiveProgramDetailActivity extends AppCompatActivity implements Ba
         mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(MyLiveProgramDetailActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyLiveRoomDetailActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
             }
         });
         mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
             @Override
             public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(MyLiveProgramDetailActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyLiveRoomDetailActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
