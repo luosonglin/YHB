@@ -62,6 +62,10 @@
             android:name=".UI.LiveView.LiveProgramDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".UI.LiveView.LiveProgramDetailAuthorActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label=""/>
+        <activity
             android:name=".UI.OtherVIew.NewsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

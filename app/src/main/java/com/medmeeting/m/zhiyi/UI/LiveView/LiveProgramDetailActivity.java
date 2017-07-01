@@ -63,7 +63,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_program_detail);
         toolBar();
-        initView(getIntent().getExtras().getString("coverPhote"),
+        initView(getIntent().getExtras().getString("coverPhoto"),
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("authorName"));
     }

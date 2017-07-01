@@ -55,9 +55,9 @@ public class WelcomeActivity extends ListvViewActivity {
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                 finish();
             }
-        }, 5000);
+        }, 2000);
 
-        new CountDownTimer(6000, 1000) {
+        new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long l) {
                 timeTv.setText("" + l / 1000);

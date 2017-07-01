@@ -27,7 +27,7 @@ import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 import java.util.List;
 
 /**
- * 直播节目详情页
+ * 直播间详情页
  */
 public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, BannerListView {
 
