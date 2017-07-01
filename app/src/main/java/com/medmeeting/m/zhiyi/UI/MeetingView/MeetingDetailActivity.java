@@ -1,9 +1,13 @@
 package com.medmeeting.m.zhiyi.UI.MeetingView;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,24 +21,40 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
+import java.util.Map;
 
 public class MeetingDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TextView toolbarTitle;
+    private ImageView shareIv;
     private BridgeWebView mWebView;
     private static final String TAG = MeetingDetailActivity.class.getSimpleName();
 
-    private static final String URL = "file:///android_asset/test.html";
-    private static final String URL_MeetingDetail = "http://wap.medmeeting.com/#!/mw/index/";//http://wap.medmeeting.com/#!/mw/index/:eventId/0
+    private String URL;
     private static String userAgent;
     private String version;
     private String eventId;
@@ -49,10 +69,33 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-
+        shareIv = (ImageView) findViewById(R.id.share);
         mWebView = (BridgeWebView) findViewById(R.id.WebView);
 
         initToolbar();
+        initShare();
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        });
         initWebView();
     }
 
@@ -122,12 +165,12 @@ public class MeetingDetailActivity extends AppCompatActivity {
         Log.e(TAG, userAgent);
 
         if (openId != null) {
-            mWebView.loadUrl(URL_MeetingDetail + eventId + "/" + openId);
-            Log.e(TAG, URL_MeetingDetail + eventId + "/" + openId);
+            URL = Constant.URL_MeetingDetail + eventId + "/" + openId;
         } else {
-            mWebView.loadUrl(URL_MeetingDetail + eventId + "/0");
-            Log.e(TAG, URL_MeetingDetail + eventId + "/0");
+            URL = Constant.URL_MeetingDetail + eventId + "/0";
         }
+        mWebView.loadUrl(URL);
+        Log.e(TAG, URL);
 
         mWebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -226,5 +269,161 @@ public class MeetingDetailActivity extends AppCompatActivity {
         public String getInfo() {
             return "获取手机内的信息！！";
         }
+    }
+
+    public void initShare(){
+        shareIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShareBoardConfig config = new ShareBoardConfig();
+                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                mShareAction.open(config);
+            }
+        });
+        //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.CALL_PHONE,
+                    Manifest.permission.READ_LOGS,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.SET_DEBUG_APP,
+                    Manifest.permission.SYSTEM_ALERT_WINDOW,
+                    Manifest.permission.GET_ACCOUNTS,
+                    Manifest.permission.WRITE_APN_SETTINGS};
+            ActivityCompat.requestPermissions(this, mPermissionList, 123);
+        }
+
+        mShareListener = new CustomShareListener(this);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(MeetingDetailActivity.this)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
+                .setShareboardclickCallback(new ShareBoardlistener() {
+                    @Override
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+
+                        UMWeb web = new UMWeb(URL);
+                        web.setTitle(eventTitle);//标题
+                        web.setThumb(new UMImage(MeetingDetailActivity.this, R.mipmap.ic_launcher));  //缩略图
+                        web.setDescription("Leo test");//描述
+                        new ShareAction(MeetingDetailActivity.this)
+                                .withMedia(web)
+                                .setPlatform(share_media)
+                                .setCallback(mShareListener)
+                                .share();
+
+//                        new ShareAction(MeetingDetailActivity.this)
+//                                .withTitle(eventTitle)
+//                                .withText(eventTitle)
+//                                .withTargetUrl(URL)
+//                                //此处更改为了Silvia
+////                                .withTitle("2017上海交通大学附属第六人民医院耳鼻咽喉头颈外科学术论坛")
+////                                .withText("2017-08-07至2017-08-19" +"     \n     "+ "让青春舞动智慧的翅膀")
+////                                .withTargetUrl("http://wap.medmeeting.com/#!/mw/index/268/0")
+////                                .withMedia(new UMImage(MeetingDetailActivity.this, R.mipmap.silvia_3))
+//                                .setPlatform(share_media)
+//                                .setCallback(mShareListener)
+//                                .share();
+                    }
+                });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+    private UMShareListener mShareListener;
+    private ShareAction mShareAction;
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Log.d("plat","platform"+platform);
+
+            Toast.makeText(MeetingDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(MeetingDetailActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if(t!=null){
+                Log.d("throw","throw:"+t.getMessage());
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(MeetingDetailActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private static class CustomShareListener implements UMShareListener {
+
+        private WeakReference<MeetingDetailActivity> mActivity;
+
+        private CustomShareListener(MeetingDetailActivity activity) {
+            mActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            if (platform.name().equals("WEIXIN_FAVORITE")) {
+                Toast.makeText(mActivity.get(), platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
+            } else {
+                if (platform != SHARE_MEDIA.MORE) {
+                    Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            if (platform != SHARE_MEDIA.MORE) {
+                Toast.makeText(mActivity.get(), platform + "分享失败啦~~ \n" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (t != null) {
+                    com.umeng.socialize.utils.Log.e(TAG, "umeng throw:" + t.getMessage());
+                }
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(mActivity.get(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //qq微信新浪授权防杀死
+        UMShareAPI.get(this).onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //内存泄漏，在使用分享或者授权的Activity中，重写onDestory()方法：
+        UMShareAPI.get(this).release();
+    }
+
+    /**
+     * 屏幕横竖屏切换时避免出现window leak的问题
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mShareAction.close();
     }
 }

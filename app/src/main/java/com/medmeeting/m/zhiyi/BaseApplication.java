@@ -5,6 +5,11 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
+import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,19 +24,21 @@ public class BaseApplication extends Application {
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "YI HUI BAO Application is running~~~~~~~hahaha~~~~!");
+        Log.d(TAG, "医会宝2.0版本 Application is running~~~~~~~hahaha~~~~!");
         super.onCreate();
         context = this;
         instance = this;
 
-//        //初始化异常管理工具
-//        Recovery.getInstance()
-//                .debug(true)//关闭后 在错误统一管理页面不显示异常数据
-//                .recoverInBackground(false)
-//                .recoverStack(true)
-//                .mainPage(WelcomeActivity.class)//恢复页面
-////                .skip(H5PayActivity.class) //如果应用集成支付宝支付
-//                .init(this);
+        //初始化异常管理工具
+        Recovery.getInstance()
+                .debug(true)//关闭后 在错误统一管理页面不显示异常数据
+                .recoverInBackground(false)
+                .recoverStack(true)
+                .mainPage(WelcomeActivity.class)//恢复页面
+//                .skip(H5PayActivity.class) //如果应用集成支付宝支付
+                .init(this);
+
+        UMShareAPI.get(this);
     }
 
     public static Context getContext() {
@@ -111,5 +118,23 @@ public class BaseApplication extends Application {
         }
         System.exit(0);
     }
+
+    //各个平台的配置，建议放在全局Application或者程序入口
+    {
+        PlatformConfig.setWeixin("wx7e6722fad8a0975c", "390b7bcd6e6e4f82441cebcdebccb223");
+//        PlatformConfig.setWeixin("wx5b882abda749656d", "411f579410f6b81b875b2c2fbaa533f0");
+//        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setQQZone("1105918131", "uNzl6dleoc80UQle");
+        PlatformConfig.setSinaWeibo("188948618", "416592ff15fdad47403ad89e894d5fd4", "http://sns.whalecloud.com");
+        PlatformConfig.setAlipay("2015111700822536");
+    }
+    /**
+     * 应用签名：
+     * 2d1f5af844ab43da48e5ec917713e2bc
+     */
+
+
+
+
 }
 

@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
@@ -17,6 +20,7 @@ import com.medmeeting.m.zhiyi.Util.SpUtils;
  */
 public class WelcomeActivity extends ListvViewActivity {
 
+    private ImageView imageView;
     private TextView timeTv;
 
     @Override
@@ -35,7 +39,13 @@ public class WelcomeActivity extends ListvViewActivity {
 
         // 如果不是第一次启动app，则正常显示启动屏
         setContentView(R.layout.activity_welcome);
-        getWindow().setBackgroundDrawableResource(R.mipmap.haha);
+//        getWindow().setBackgroundDrawableResource(R.mipmap.haha);
+        imageView = (ImageView) findViewById(R.id.background);
+        Glide.with(WelcomeActivity.this)
+                .load(R.mipmap.haha)
+                .asGif()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .into(imageView);
 
         timeTv = (TextView) findViewById(R.id.time);
 
@@ -45,9 +55,9 @@ public class WelcomeActivity extends ListvViewActivity {
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                 finish();
             }
-        }, 1000);
+        }, 5000);
 
-        new CountDownTimer(2000, 1000) {
+        new CountDownTimer(6000, 1000) {
             @Override
             public void onTick(long l) {
                 timeTv.setText("" + l / 1000);

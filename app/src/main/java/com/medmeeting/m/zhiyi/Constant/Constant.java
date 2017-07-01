@@ -22,4 +22,7 @@ public class Constant {
     public static final String API_SERVER_LIVE = "http://api.medmeeting.com";
 
     public static final String FIRST_OPEN = "first_open";
+
+    //分享
+    public static final String URL_MeetingDetail = "http://wap.medmeeting.com/#!/mw/index/";
 }
