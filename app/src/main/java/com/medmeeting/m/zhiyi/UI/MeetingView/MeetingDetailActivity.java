@@ -73,29 +73,9 @@ public class MeetingDetailActivity extends AppCompatActivity {
         mWebView = (BridgeWebView) findViewById(R.id.WebView);
 
         initToolbar();
-        initShare();
-        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
-        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
-            @Override
-            public void onStart(SHARE_MEDIA share_media) {
+        initShare(savedInstanceState, getIntent().getExtras().getString("phone"),
+                getIntent().getExtras().getString("description"));
 
-            }
-
-            @Override
-            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA platform, int action) {
-
-            }
-        });
         initWebView();
     }
 
@@ -271,7 +251,29 @@ public class MeetingDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void initShare(){
+    public void initShare(Bundle savedInstanceState, final String phone, final String desc){
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        });
         shareIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -305,8 +307,8 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
                         UMWeb web = new UMWeb(URL);
                         web.setTitle(eventTitle);//标题
-                        web.setThumb(new UMImage(MeetingDetailActivity.this, R.mipmap.ic_launcher));  //缩略图
-                        web.setDescription("Leo test");//描述
+                        web.setThumb(new UMImage(MeetingDetailActivity.this, phone));  //缩略图
+                        web.setDescription(desc);//描述
                         new ShareAction(MeetingDetailActivity.this)
                                 .withMedia(web)
                                 .setPlatform(share_media)

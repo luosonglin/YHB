@@ -30,7 +30,7 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.address, item.getAddress()+"")
+                .setText(R.id.address, item.getAddress() + "")
                 .setText(R.id.ha1, DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_07))
                 .setText(R.id.ha2, "~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
 
@@ -46,8 +46,13 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MeetingDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("eventId", item.getId()+"");
+                bundle.putString("eventId", item.getId() + "");
                 bundle.putString("eventTitle", item.getTitle());
+                bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + item.getBanner());
+                bundle.putString("description", "时间： " + DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02)
+                        + " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02)
+                        + " \n "
+                        + "地点： " + item.getAddress());
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
             }
