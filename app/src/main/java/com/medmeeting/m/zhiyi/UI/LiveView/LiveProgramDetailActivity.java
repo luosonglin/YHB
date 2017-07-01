@@ -21,11 +21,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.Observer;
 
 /**
  * 直播节目详情页（普通用户）
@@ -61,8 +66,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         initView(getIntent().getExtras().getString("coverPhote"),
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("authorName"));
-        initTagsView(getIntent().getExtras().getInt("roomId"),
-                "haha");
     }
 
     private void toolBar() {
@@ -94,7 +97,32 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 .placeholder(R.mipmap.ic_launcher)
                 .into(coverPhotoTv);
         titleTv.setText(title);
-        userNameTv.setText("主理人：" + userName);
+        userNameTv.setText("主讲人：" + userName);
+
+        HttpData.getInstance().HttpDataGetLiveProgramDetail(new Observer<HttpResult3<Object, LiveDto>>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: "+e.getMessage()
+                        +"\n"+e.getCause()
+                        +"\n"+e.getLocalizedMessage()
+                        +"\n"+e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, LiveDto> liveDtoHttpResult3) {
+                Log.e(TAG, "onNext");
+                initTagsView(getIntent().getExtras().getInt("roomId"),
+                        liveDtoHttpResult3.getEntity().getAuthorName(),
+                        liveDtoHttpResult3.getEntity().getAuthorTitle(),
+                        liveDtoHttpResult3.getEntity().getCoverPhoto(),
+                        liveDtoHttpResult3.getEntity().getDes());
+            }
+        }, getIntent().getExtras().getInt("programId"));
 
         // 获取屏幕宽高
         metric = new DisplayMetrics();
@@ -173,7 +201,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     }
 
 
-    private void initTagsView(Integer roomId, String des) {
+    private void initTagsView(final Integer roomId, String name, String hospital, String userPic, String detail) {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -185,17 +213,18 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         viewPager.setLayoutParams(params);
         Log.e(TAG, viewPager.getHeight() + " " + viewPager.getLayoutParams().height);
 
-        setUpViewPager(viewPager, roomId, des);
+        setUpViewPager(viewPager, roomId, name, hospital, userPic, detail);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
-    private void setUpViewPager(ViewPager viewPager, Integer roomId, String des) {
+    private void setUpViewPager(ViewPager viewPager, Integer roomId, String name, String hospital, String userPic, String detail) {
         LiveProgramDetailActivity.IndexChildAdapter mIndexChildAdapter = new LiveProgramDetailActivity.IndexChildAdapter(LiveProgramDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
-        mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播详情");
+        mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(name, hospital, userPic, detail), "直播详情");
         mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "相关视频");
-        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "TA的直播");
+        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance("haa"), "TA的直播");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);

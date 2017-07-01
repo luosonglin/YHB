@@ -2,7 +2,7 @@ package com.medmeeting.m.zhiyi.UI.Entity;
 
 import java.util.List;
 
-public class HttpResult3<T> {
+public class HttpResult3<T, K> {
 
     /**
      * status : success
@@ -24,7 +24,7 @@ public class HttpResult3<T> {
     private String msg;
     private Object errorCode;
     private Object exp;
-    private Object entity;
+    private K entity;
     private int total;
     private int pageNum;
     private int pageSize;
@@ -66,11 +66,11 @@ public class HttpResult3<T> {
         this.exp = exp;
     }
 
-    public Object getEntity() {
+    public K getEntity() {
         return entity;
     }
 
-    public void setEntity(Object entity) {
+    public void setEntity(K entity) {
         this.entity = entity;
     }
 

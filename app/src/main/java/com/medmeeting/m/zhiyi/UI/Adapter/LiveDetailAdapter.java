@@ -53,6 +53,7 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
                     intent.putExtra("authorName", item.getAuthorName());
                     Log.e(TAG, "2: " + mUserId+" "+item.getUserId());
                 }
+                intent.putExtra("programId", item.getId());
                 intent.putExtra("roomId", item.getRoomId());
                 intent.putExtra("coverPhote", item.getCoverPhoto());
                 intent.putExtra("title", item.getTitle());

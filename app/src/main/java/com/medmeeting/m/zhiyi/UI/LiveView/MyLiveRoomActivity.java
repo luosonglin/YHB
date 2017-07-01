@@ -63,7 +63,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
         //内容
         mRecyclerView = (ItemRemoveRecyclerView) findViewById(R.id.id_item_remove_recyclerview);
         mList = new ArrayList<>();
-        HttpData.getInstance().HttpDataGetLiveRoom(new Observer<HttpResult3<LiveRoomDto>>() {
+        HttpData.getInstance().HttpDataGetLiveRoom(new Observer<HttpResult3<LiveRoomDto, Object>>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");
@@ -78,7 +78,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(HttpResult3<LiveRoomDto> liveRoomDtoHttpResult3) {
+            public void onNext(HttpResult3<LiveRoomDto, Object> liveRoomDtoHttpResult3) {
                 mList.addAll(liveRoomDtoHttpResult3.getData());
                 Log.e(TAG, "onNext");
 
@@ -102,7 +102,5 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                 });
             }
         });
-
-
     }
 }

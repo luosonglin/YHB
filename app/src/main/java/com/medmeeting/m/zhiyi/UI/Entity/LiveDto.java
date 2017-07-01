@@ -42,8 +42,8 @@ public class LiveDto {
     private String privacyType;
     private String chargeType;
     private Object price;
-    private Object firstOpenTime;
-    private Object realEndTime;
+    private long firstOpenTime;
+    private long realEndTime;
     private int onlineCount;
     private String liveStatus;
     private String status;
@@ -153,19 +153,19 @@ public class LiveDto {
         this.price = price;
     }
 
-    public Object getFirstOpenTime() {
+    public long getFirstOpenTime() {
         return firstOpenTime;
     }
 
-    public void setFirstOpenTime(Object firstOpenTime) {
+    public void setFirstOpenTime(long firstOpenTime) {
         this.firstOpenTime = firstOpenTime;
     }
 
-    public Object getRealEndTime() {
+    public long getRealEndTime() {
         return realEndTime;
     }
 
-    public void setRealEndTime(Object realEndTime) {
+    public void setRealEndTime(long realEndTime) {
         this.realEndTime = realEndTime;
     }
 

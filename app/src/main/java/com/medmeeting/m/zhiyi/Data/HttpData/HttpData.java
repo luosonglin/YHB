@@ -137,14 +137,14 @@ public class HttpData extends RetrofitUtils {
     }
 
     //get live tags
-    public void HttpDataGetLiveTags(Observer<HttpResult3<TagDto>> observer) {
+    public void HttpDataGetLiveTags(Observer<HttpResult3<TagDto, Object>> observer) {
         Observable observable = service_live.getTags();
 //        Observable observableCache = providers.getLiveTagList(observable, new DynamicKey("live标签"), new EvictDynamicKey(false));
         setSubscribe(observable, observer);
     }
 
     //test live list
-    public void HttpDataGetAllLives(Observer<HttpResult3<LiveDto>> observer, LiveSearchDto2 liveSearchDto) {
+    public void HttpDataGetAllLives(Observer<HttpResult3<LiveDto, Object>> observer, LiveSearchDto2 liveSearchDto) {
         Observable observable = service_live.getAllLiveList(liveSearchDto);
 //        Observable observableCache = providers.getLiveList(observable, new DynamicKey("live直播列表"), new EvictDynamicKey(false));
         setSubscribe(observable, observer);
@@ -157,20 +157,26 @@ public class HttpData extends RetrofitUtils {
     }
 
     //直播-主播-直播房间 GET /v1/anchor/liveRoom 获取主播房间列表
-    public void HttpDataGetLiveRoom(Observer<HttpResult3<LiveRoomDto>> observer) {
+    public void HttpDataGetLiveRoom(Observer<HttpResult3<LiveRoomDto, Object>> observer) {
         Observable observable = service_live.getLiveRoom();
         setSubscribe(observable, observer);
     }
 
     //GET /v1/anchor/{roomId}/liveProgram 获取直播节目列表
-    public void HttpDataGetLivePrograms(Observer<HttpResult3<LiveDto>> observer, Integer roomId) {
+    public void HttpDataGetLivePrograms(Observer<HttpResult3<LiveDto, Object>> observer, Integer roomId) {
         Observable observable = service_live.getLivePrograms(roomId);
         setSubscribe(observable, observer);
     }
 
     //search live
-    public void HttpDataGetLives(Observer<HttpResult3<LiveDto>> observer, LiveSearchDto liveSearchDto) {
+    public void HttpDataGetLives(Observer<HttpResult3<LiveDto, Object>> observer, LiveSearchDto liveSearchDto) {
         Observable observable = service_live.getLives(liveSearchDto);
+        setSubscribe(observable, observer);
+    }
+
+    //live program detail
+    public void HttpDataGetLiveProgramDetail(Observer<HttpResult3<Object, LiveDto>> observer, Integer programId) {
+        Observable observable = service_live.getLiveProgramDetail(programId);
         setSubscribe(observable, observer);
     }
 

@@ -14,7 +14,7 @@ public class LiveSearchListModel {
     private static final String TAG = LiveSearchListModel.class.getSimpleName();
 
     public void LoadData(final OnLoadDataListListener listener, LiveSearchDto liveSearchDto) {
-        HttpData.getInstance().HttpDataGetLives(new Observer<HttpResult3<LiveDto>>() {
+        HttpData.getInstance().HttpDataGetLives(new Observer<HttpResult3<LiveDto, Object>>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");
@@ -31,7 +31,7 @@ public class LiveSearchListModel {
             }
 
             @Override
-            public void onNext(HttpResult3<LiveDto> data) {
+            public void onNext(HttpResult3<LiveDto, Object> data) {
                 listener.onSuccess(data.getData());
                 Log.e(TAG, "onNext");
             }

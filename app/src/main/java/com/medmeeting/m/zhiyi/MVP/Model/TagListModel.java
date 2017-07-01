@@ -13,7 +13,7 @@ public class TagListModel {
     private static final String TAG = TagListModel.class.getSimpleName();
 
     public void LoadData(final OnLoadDataListListener listener){
-        HttpData.getInstance().HttpDataGetLiveTags(new Observer<HttpResult3<TagDto>>() {
+        HttpData.getInstance().HttpDataGetLiveTags(new Observer<HttpResult3<TagDto, Object>>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");
@@ -30,7 +30,7 @@ public class TagListModel {
             }
 
             @Override
-            public void onNext(HttpResult3<TagDto> data) {
+            public void onNext(HttpResult3<TagDto, Object> data) {
                 listener.onSuccess(data.getData());
                 Log.e(TAG, "onNext");
             }

@@ -23,7 +23,7 @@ public interface APILiveService {
     //获取直播节目一栏-分页
     //全部
     @POST("/v1/liveProgram/page")
-    Observable<HttpResult3<LiveDto>> getAllLiveList(@Body LiveSearchDto2 liveSearchDto);
+    Observable<HttpResult3<LiveDto, Object>> getAllLiveList(@Body LiveSearchDto2 liveSearchDto);
 
 //    @POST("/v1/liveProgram/page")
 //    Observable<LiveDto> getLiveList(@Body LiveSearchDto liveSearchDto);
@@ -34,17 +34,21 @@ public interface APILiveService {
 
     //获取主播房间列表
     @GET("/v1/anchor/liveRoom")
-    Observable<HttpResult3<LiveRoomDto>> getLiveRoom();
+    Observable<HttpResult3<LiveRoomDto, Object>> getLiveRoom();
 
     //GET /v1/anchor/{roomId}/liveProgram 获取直播节目列表
     @GET("/v1/anchor/{roomId}/liveProgram")
-    Observable<HttpResult3<LiveDto>> getLivePrograms(@Path("roomId") Integer roomId);   //LiveDto需换
+    Observable<HttpResult3<LiveDto, Object>> getLivePrograms(@Path("roomId") Integer roomId);   //LiveDto需换
 
     //直播-公开-直播标签房间节目 GET /v1/open/liveLabel 获取直播标签列表 获取直播分类标签
     @GET("v1/open/liveLabel?limit=100")
-    Observable<HttpResult3<TagDto>> getTags();
+    Observable<HttpResult3<TagDto, Object>> getTags();
 
     //搜索
     @POST("v1/liveProgram/page")
-    Observable<HttpResult3<LiveDto>> getLives(@Body LiveSearchDto liveSearchDto);
+    Observable<HttpResult3<LiveDto, Object>> getLives(@Body LiveSearchDto liveSearchDto);
+
+    //获取直播节目详情
+    @GET("v1/anchor/{roomId}/liveProgram/{programId}")
+    Observable<HttpResult3<Object, LiveDto>> getLiveProgramDetail(@Path("programId") Integer programId);
 }
