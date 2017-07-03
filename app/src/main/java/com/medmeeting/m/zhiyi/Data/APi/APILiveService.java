@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.Data.APi;
 
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
@@ -48,7 +49,11 @@ public interface APILiveService {
     @POST("v1/liveProgram/page")
     Observable<HttpResult3<LiveDto, Object>> getLives(@Body LiveSearchDto liveSearchDto);
 
-    //获取直播节目详情
+    //获取直播节目详情(主播)
     @GET("v1/anchor/{roomId}/liveProgram/{programId}")
     Observable<HttpResult3<Object, LiveDto>> getLiveProgramDetail(@Path("programId") Integer programId);
+
+    //获取直播节目详情(观众)
+    @GET("v1/open/program/{programId}")
+    Observable<HttpResult3<Object, LiveAudienceDetailDto>> getLiveProgramAudienceDetail(@Path("programId") Integer programId);
 }

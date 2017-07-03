@@ -70,6 +70,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/watch"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"

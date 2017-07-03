@@ -1,1 +1,1 @@
-include ':app', ':lcrapiddeveloplibrary'
+include ':app', ':lcrapiddeveloplibrary', ':videoplayer'

@@ -15,6 +15,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
@@ -174,9 +175,14 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    //live program detail
+    //live program detail 主播
     public void HttpDataGetLiveProgramDetail(Observer<HttpResult3<Object, LiveDto>> observer, Integer programId) {
         Observable observable = service_live.getLiveProgramDetail(programId);
+        setSubscribe(observable, observer);
+    }
+    //live program detail 观众
+    public void HttpDataGetLiveProgramAudienceDetail(Observer<HttpResult3<Object, LiveAudienceDetailDto>> observer, Integer programId) {
+        Observable observable = service_live.getLiveProgramAudienceDetail(programId);
         setSubscribe(observable, observer);
     }
 

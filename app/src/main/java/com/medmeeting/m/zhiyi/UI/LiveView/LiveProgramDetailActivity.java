@@ -30,7 +30,7 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
@@ -67,6 +67,8 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     //直播间头像
     private ImageView coverPhotoTv;
     private TextView titleTv, userNameTv;
+    //观看
+    private TextView watchTv;
 
     // 记录首次按下位置
     private float mFirstPosition = 0;
@@ -76,6 +78,11 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     private DisplayMetrics metric;
 
     private Integer roomId = 0;
+
+    //拉流地址
+    private String url;
+    private String chargeType;//收费类型（yes：收费，no：免费）
+    private float price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,7 +267,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         titleTv.setText(title);
         userNameTv.setText("主讲人：" + userName);
 
-        HttpData.getInstance().HttpDataGetLiveProgramDetail(new Observer<HttpResult3<Object, LiveDto>>() {
+        HttpData.getInstance().HttpDataGetLiveProgramAudienceDetail(new Observer<HttpResult3<Object, LiveAudienceDetailDto>>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");
@@ -275,13 +282,19 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(HttpResult3<Object, LiveDto> liveDtoHttpResult3) {
+            public void onNext(HttpResult3<Object, LiveAudienceDetailDto> liveDtoHttpResult3) {
                 Log.e(TAG, "onNext");
+
+                url = liveDtoHttpResult3.getEntity().getRtmpPlayUrl();
+                chargeType = liveDtoHttpResult3.getEntity().getChargeType();
+                price = liveDtoHttpResult3.getEntity().getPrice();
+
                 initTagsView(getIntent().getExtras().getInt("roomId"),
                         liveDtoHttpResult3.getEntity().getAuthorName(),
                         liveDtoHttpResult3.getEntity().getAuthorTitle(),
                         liveDtoHttpResult3.getEntity().getCoverPhoto(),
                         liveDtoHttpResult3.getEntity().getDes());
+
             }
         }, getIntent().getExtras().getInt("programId"));
 
@@ -334,6 +347,28 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        //点击"观看"
+        watchTv = (TextView) findViewById(R.id.watch);
+        if ("yes".equals(chargeType)) {
+            watchTv.setText("请支付" + price + "元");
+            watchTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        } else if ("no".equals(chargeType)) {
+            watchTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+                    intent.putExtra("rtmpPlayUrl", url);
+                    intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     // 回弹动画 (使用了属性动画)
