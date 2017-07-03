@@ -1,14 +1,17 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.zxing.activity.CaptureActivity;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 
@@ -78,5 +81,33 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.to_live).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, CaptureActivity.class);
+                startActivityForResult(intent, REQ_CODE);
+            }
+        });
+    }
+    private final static int REQ_CODE = 1102;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_CODE) {
+
+            if (data == null) return;
+
+            String result = data.getStringExtra(CaptureActivity.SCAN_QRCODE_RESULT);
+            Bitmap bitmap = data.getParcelableExtra(CaptureActivity.SCAN_QRCODE_BITMAP);
+
+            Log.e(TAG, "扫码结果：" + result + bitmap);
+
+//            if (result != null) {
+//                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveLoginWebActivity.class);
+//                intent.putExtra("QRCode", result + userId);
+//                startActivity(intent);
+//            }
+        }
     }
 }

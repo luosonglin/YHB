@@ -80,4 +80,5 @@ dependencies {
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_shareboard.jar')
+    compile 'com.github.open-android:Zxing:v1.0.3'
 }
