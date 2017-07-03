@@ -281,6 +281,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         +"\n"+e.getStackTrace());
             }
 
+
             @Override
             public void onNext(HttpResult3<Object, LiveAudienceDetailDto> liveDtoHttpResult3) {
                 Log.e(TAG, "onNext");
@@ -396,7 +397,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         anim.start();
     }
 
-
     private void initTagsView(final Integer roomId, String name, String hospital, String userPic, String detail) {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -412,7 +412,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         setUpViewPager(viewPager, roomId, name, hospital, userPic, detail);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     private void setUpViewPager(ViewPager viewPager, Integer roomId, String name, String hospital, String userPic, String detail) {
