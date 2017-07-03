@@ -37,7 +37,7 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
                 .setText(R.id.money, "¥" + item.getPrice())
                 .setText(R.id.type, "直播");
 
-        if (item.getPrice() == null) helper.setText(R.id.money, "免费");
+        if ("no".equals(item.getChargeType())) helper.setText(R.id.money, "免费");
 
         helper.getView(R.id.item_news_cv).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +52,8 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
                 } else {
                     //用户进的直播节目详情页
                     intent = new Intent(mContext, LiveProgramDetailActivity.class);
+                    intent.putExtra("chargeType", item.getChargeType());
+                    intent.putExtra("price", item.getPrice());
                     Log.e(TAG, "2: " + mUserId+" "+item.getUserId());
                 }
                 intent.putExtra("authorName", item.getAuthorName());

@@ -324,7 +324,7 @@ public class LiveDetailDto {
             private String authorTitle;
             private String privacyType;
             private String chargeType;
-            private Object price;
+            private float price;
             private Object firstOpenTime;
             private Object realEndTime;
             private int onlineCount;
@@ -427,11 +427,11 @@ public class LiveDetailDto {
                 this.chargeType = chargeType;
             }
 
-            public Object getPrice() {
+            public float getPrice() {
                 return price;
             }
 
-            public void setPrice(Object price) {
+            public void setPrice(float price) {
                 this.price = price;
             }
 

@@ -29,4 +29,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/pldroid-player-1.6.0.jar')
+    //DNS缓存管理服务, PLNetworkManager类的使用需添加 happydns 的依赖
+    compile 'com.qiniu:happy-dns:0.2.+'
 }

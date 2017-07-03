@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,10 +19,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,8 +86,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
     //拉流地址
     private String url;
-    private String chargeType;//收费类型（yes：收费，no：免费）
-    private float price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +94,9 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         toolBar();
         initView(getIntent().getExtras().getString("coverPhoto"),
                 getIntent().getExtras().getString("title"),
-                getIntent().getExtras().getString("authorName"));
+                getIntent().getExtras().getString("authorName"),
+                getIntent().getExtras().getString("chargeType"),
+                getIntent().getExtras().getFloat("price"));
         initShare(savedInstanceState, getIntent().getExtras().getInt("roomId"),
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("coverPhote"),
@@ -253,7 +258,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         mShareAction.close();
     }
 
-    private void initView(String coverPhone, String title, String userName) {
+    private void initView(String coverPhone, String title, String userName, String chargeType, float price) {
         //直播间封面
         coverPhotoTv = (ImageView) findViewById(R.id.coverPhoto);
         titleTv = (TextView) findViewById(R.id.title);
@@ -281,14 +286,11 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         +"\n"+e.getStackTrace());
             }
 
-
             @Override
             public void onNext(HttpResult3<Object, LiveAudienceDetailDto> liveDtoHttpResult3) {
                 Log.e(TAG, "onNext");
 
                 url = liveDtoHttpResult3.getEntity().getRtmpPlayUrl();
-                chargeType = liveDtoHttpResult3.getEntity().getChargeType();
-                price = liveDtoHttpResult3.getEntity().getPrice();
 
                 initTagsView(getIntent().getExtras().getInt("roomId"),
                         liveDtoHttpResult3.getEntity().getAuthorName(),
@@ -352,14 +354,15 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         //点击"观看"
         watchTv = (TextView) findViewById(R.id.watch);
         if ("yes".equals(chargeType)) {
-            watchTv.setText("请支付" + price + "元");
+            watchTv.setText("支付" + price + "元观看");
             watchTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    initPopupwindow();
                 }
             });
         } else if ("no".equals(chargeType)) {
+            watchTv.setText("观看");
             watchTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -462,6 +465,47 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitles.get(position);
         }
+    }
+
+    /**
+     * 以下为支付弹窗
+     */
+    private PopupWindow academicPopupWindow;
+    private void initPopupwindow() {
+        final View academicPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_pay_type, null);
+        academicPopupWindow = new PopupWindow(academicPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
+        final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.wechat);
+
+        a.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                getPayInfo(v, paymentId, "alipay");
+                academicPopupWindow.dismiss();
+            }
+        });
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                academicPopupWindow.dismiss();
+            }
+        });
+
+        LinearLayout academicPopupParentLayout = (LinearLayout) academicPopupwindowView.findViewById(R.id.popup_parent);
+        academicPopupParentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
+                    academicPopupWindow.dismiss();
+                }
+            }
+        });
+
+        academicPopupWindow.setOutsideTouchable(false);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        academicPopupWindow.setBackgroundDrawable(dw);
+        academicPopupWindow.showAtLocation(academicPopupwindowView, Gravity.BOTTOM, 0, 0);
     }
 }
 
