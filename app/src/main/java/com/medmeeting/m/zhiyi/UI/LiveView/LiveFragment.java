@@ -138,7 +138,7 @@ public class LiveFragment extends Fragment
         //设置RecyclerView的显示模式  当前List模式
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 //        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..

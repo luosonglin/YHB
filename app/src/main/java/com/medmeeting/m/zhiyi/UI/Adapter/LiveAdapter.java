@@ -24,16 +24,16 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
     @Override
     protected void convert(BaseViewHolder helper, final LiveDto item) {
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getCoverPhoto())
+                .load(item.getCoverPhoto())
                 .crossFade()
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.live_background)
                 .into((ImageView) helper.getView(R.id.image));
 
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getUserPic())
+                .load(item.getUserPic())
                 .crossFade()
                 .transform(new GlideCircleTransform(mContext))
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.avator_default)
                 .into((ImageView) helper.getView(R.id.avatar));
 
         helper.setText(R.id.sum, item.getId()+"")
@@ -41,7 +41,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .setText(R.id.name,item.getTitle())
                 .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06));
 
-        helper.getView(R.id.item_live_flyt).setOnClickListener(new View.OnClickListener() {
+        helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                mContext.startActivity(mContext, );
