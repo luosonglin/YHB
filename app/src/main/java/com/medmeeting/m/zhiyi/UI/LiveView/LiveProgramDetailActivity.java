@@ -61,9 +61,7 @@ import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -651,7 +649,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     /**
      * call alipay sdk pay. 调用SDK支付
      */
-    public void pay(View v, String amount, String title, String description, String paymentId, String orderInfo) {
+    public void pay(View v, String amount, String title, String description, String paymentId, final String payInfo) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -662,25 +660,27 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     }).show();
             return;
         }
-//        String orderInfo = getOrderInfo(title, description, amount, paymentId);//此处由后端返回
+//        String orderInfo = getOrderInfo(title, description, amount, paymentId);
 
         /*
          * 特别注意，这里的签名逻辑需要放在服务端，切勿将私钥泄露在代码中！
          */
-        String sign = sign(orderInfo);
-        try {
-            /*
-              仅需对sign 做URL编码
-             */
-            sign = URLEncoder.encode(sign, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        String sign = sign(orderInfo);
+//        try {
+//            /*
+//              仅需对sign 做URL编码
+//             */
+//            sign = URLEncoder.encode(sign, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
         /*
          * 完整的符合支付宝参数规范的订单信息
          */
-        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
+//        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
+
+        //此处payInfo由后端返回
 
         Runnable payRunnable = new Runnable() {
 
