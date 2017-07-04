@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class LiveWechatPayDto {
 
     /**
-     * timeStamp : 1499137355
+     * timestamp : 1499137355
      * package : Sign=WXPay
      * appid : wx7e6722fad8a0975c
      * sign : C49A0FEC8FCC1A3FE2020783CC0E9B2B
@@ -13,7 +13,7 @@ public class LiveWechatPayDto {
      * prepayid : wx20170704110235eb674476c30374197038
      * noncestr : er8nxaq4snnb4lvwboo20ymq19ibukmm
      */
-    private String timeStamp;
+    private String timestamp;
     @SerializedName("package")
     private String packageX;
     private String appid;
@@ -23,11 +23,11 @@ public class LiveWechatPayDto {
     private String noncestr;
 
     public String getTimeStamp() {
-        return timeStamp;
+        return timestamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimeStamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getPackageX() {
