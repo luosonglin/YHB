@@ -11,25 +11,30 @@ android {
         versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file('yihuibao_luo.jks')
+            storePassword "luosonglin123456"
+            keyAlias "yihuibao"
+            keyPassword "wanyi_luosonglin"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
-//        debug {
-//            minifyEnabled false
-//            signingConfig signingConfigs.debug
-//            proguardFiles 'proguard-rules.pro'
-//        }
+        debug {
+            //debug时使用release签名
+            signingConfig signingConfigs.release
+            //Zip代码压缩优化
+            zipAlignEnabled true
+            //移除无用资源
+            shrinkResources true
+        }
     }
-    signingConfigs {
-//        debug {
-//            storeFile file('debug.keystore')
-//            storePassword "android"
-//            keyAlias "androiddebugkey"
-//            keyPassword "android"
-//        }
-    }
+
 }
 
 dependencies {
@@ -83,4 +88,5 @@ dependencies {
     compile 'com.github.open-android:Zxing:v1.0.3'
     compile project(':videoplayer')
     compile files('libs/alipaySdk-20170309.jar')
+    compile files('libs/libammsdk.jar')
 }

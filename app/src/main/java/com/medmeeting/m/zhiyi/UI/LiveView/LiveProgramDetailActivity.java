@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -46,12 +47,15 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.umeng.socialize.shareboard.SnsPlatform;
@@ -135,7 +139,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void initShare(Bundle savedInstanceState, final int roomId, final String title, final String phone, final String description){
+    public void initShare(Bundle savedInstanceState, final int roomId, final String title, final String phone, final String description) {
         //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
         UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
             @Override
@@ -192,7 +196,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
                         UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + roomId);
                         web.setTitle(title);//标题
-                        web.setThumb(new UMImage(LiveProgramDetailActivity.this, phone));  //缩略图
+//                        web.setThumb(new UMImage(LiveProgramDetailActivity.this, phone));  //缩略图
                         web.setDescription(description);//描述
                         new ShareAction(LiveProgramDetailActivity.this)
                                 .withMedia(web)
@@ -202,13 +206,16 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     }
                 });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
     private UMShareListener mShareListener;
     private ShareAction mShareAction;
+
     private static class CustomShareListener implements UMShareListener {
 
         private WeakReference<LiveProgramDetailActivity> mActivity;
@@ -295,10 +302,10 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage()
+                        + "\n" + e.getCause()
+                        + "\n" + e.getLocalizedMessage()
+                        + "\n" + e.getStackTrace());
             }
 
             @Override
@@ -488,6 +495,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
      * 以下为支付弹窗
      */
     private PopupWindow academicPopupWindow;
+
     private void initPopupwindow() {
         final View academicPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_pay_type, null);
         academicPopupWindow = new PopupWindow(academicPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
@@ -495,6 +503,9 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
         final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.wechat);
 
+        /**
+         * 支付宝
+         */
         a.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -502,9 +513,14 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 academicPopupWindow.dismiss();
             }
         });
+
+        /**
+         * 微信
+         */
         b.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                getPayInfo(v, "WXPAY", "APP", programId);
                 academicPopupWindow.dismiss();
             }
         });
@@ -532,28 +548,56 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     private float amount;
 
     //获取支付订单信息
-    private void getPayInfo(final View v, String paymentChannel, String platformType, int programId){
-        HttpData.getInstance().HttpDataGetLiveOrder(new Observer<HttpResult3<Object, LivePayDto>>() {
-            @Override
-            public void onCompleted() {
+    private void getPayInfo(final View v, String paymentChannel, String platformType, int programId) {
+        if ("ALIPAY".equals(paymentChannel)) {
+            HttpData.getInstance().HttpDataGetLiveOrder(new Observer<HttpResult3<Object, LivePayDto>>() {
+                @Override
+                public void onCompleted() {
 
-            }
+                }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
-            }
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, "onError: " + e.getMessage()
+                            + "\n" + e.getCause()
+                            + "\n" + e.getLocalizedMessage()
+                            + "\n" + e.getStackTrace());
+                }
 
-            @Override
-            public void onNext(HttpResult3<Object, LivePayDto> payinfo) {
-                pay(v, payinfo.getEntity().getAmount()+"", payinfo.getEntity().getTradeTitle(), "某商品", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
-            }
-        }, new LiveOrderDto("", paymentChannel, platformType, programId));
+                @Override
+                public void onNext(HttpResult3<Object, LivePayDto> payinfo) {
+                    pay(v, payinfo.getEntity().getAmount() + "", payinfo.getEntity().getTradeTitle(), "某商品", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
+                }
+            }, new LiveOrderDto("", paymentChannel, platformType, programId));
+        } else if ("WXPAY".equals(paymentChannel)) {
+            HttpData.getInstance().HttpDataGetLiveOrder(new Observer<HttpResult3<Object, LivePayDto>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult3<Object, LivePayDto> livePayDtoHttpResult3) {
+                    payByWechat(livePayDtoHttpResult3.getEntity().getRequestPay().getPartnerid(),
+                            livePayDtoHttpResult3.getEntity().getPrepayId(),
+                            livePayDtoHttpResult3.getEntity().getRequestPay().getNoncestr(),
+                            livePayDtoHttpResult3.getEntity().getRequestPay().getTimeStamp(),
+                            livePayDtoHttpResult3.getEntity().getRequestPay().getPackageX(),
+                            livePayDtoHttpResult3.getEntity().getRequestPay().getSign());
+                }
+            }, new LiveOrderDto("", paymentChannel, platformType, programId));
+        }
     }
 
+    /**
+     * 支付宝支付配置
+     * ======================================================================================================================================================
+     */
     // 商户PID
     public static final String PARTNER = "2088311846356487";
     // 商户收款账号
@@ -599,12 +643,13 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 default:
                     break;
             }
-        };
+        }
+
+        ;
     };
 
     /**
      * call alipay sdk pay. 调用SDK支付
-     *
      */
     public void pay(View v, String amount, String title, String description, String paymentId, String orderInfo) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
@@ -660,7 +705,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
     /**
      * create the order info. 创建订单信息
-     *
      */
     private String getOrderInfo(String subject, String body, String price, String paymentId) {
 
@@ -713,7 +757,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
     /**
      * get the out_trade_no for an order. 生成商户订单号，该值在商户端应保持唯一（可自定义格式规范）
-     *
      */
     private String getOutTradeNo() {
         SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss", Locale.getDefault());
@@ -729,8 +772,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     /**
      * sign the order info. 对订单信息进行签名
      *
-     * @param content
-     *            待签名订单信息
+     * @param content 待签名订单信息
      */
     private String sign(String content) {
         return com.medmeeting.m.zhiyi.paydemo.SignUtils.sign(content, RSA_PRIVATE);
@@ -738,10 +780,57 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
     /**
      * get the sign type we use. 获取签名方式
-     *
      */
     private String getSignType() {
         return "sign_type=\"RSA\"";
+    }
+
+
+    /**
+     * 微信支付配置
+     * ======================================================================================================================================================
+     */
+    private IWXAPI api = WXAPIFactory.createWXAPI(this, null);
+
+    private void payByWechat(final String partnerId, final String prepayId, final String nonceStr, final String timeStamp, final String packageValue, final String sign) {
+        Log.e(TAG, "payByWechat");
+
+        api.registerApp(Constant.WeChat_AppID);
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                /** 检测是否有微信软件 */
+                if (isWXAppInstalledAndSupported(LiveProgramDetailActivity.this, api)) {
+                    try {
+                        PayReq req = new PayReq();
+                        req.appId = "wx7e6722fad8a0975c";
+                        req.partnerId = partnerId;
+                        req.prepayId = prepayId;
+                        req.nonceStr = nonceStr;
+                        req.timeStamp = timeStamp;
+                        req.packageValue = packageValue;
+                        req.sign = sign;
+                        req.extData = "哈哈，松林测试";//"app data"; // optional
+                        api.sendReq(req);
+                    } catch (Exception e) {
+                        Log.e("PAY_GET", e.getMessage());
+                        Toast.makeText(LiveProgramDetailActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    ToastUtils.show(LiveProgramDetailActivity.this, "亲，您还没有安装微信");
+                }
+            }
+        });
+    }
+    private static boolean isWXAppInstalledAndSupported(Context context, IWXAPI api) {
+        // LogOutput.d(TAG, "isWXAppInstalledAndSupported");
+        boolean sIsWXAppInstalledAndSupported = api.isWXAppInstalled() && api.isWXAppSupportAPI();
+        if (!sIsWXAppInstalledAndSupported) {
+            Log.w(TAG, "~~~~~~~~~~~~~~微信客户端未安装，请确认");
+            ToastUtils.show(context, "微信客户端未安装，请确认");
+        }
+
+        return sIsWXAppInstalledAndSupported;
     }
 }
 

@@ -106,3 +106,14 @@
 
     -keep class com.linkedin.** { *; }
     -keepattributes Signature
+
+#    微信SDK混淆
+    -keep class com.tencent.mm.opensdk.** {
+       *;
+    }
+    -keep class com.tencent.wxop.** {
+       *;
+    }
+    -keep class com.tencent.mm.sdk.** {
+       *;
+    }

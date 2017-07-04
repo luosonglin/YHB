@@ -13,7 +13,7 @@ public class LivePayDto {
     private String prepayId;
     private String tradeTitle;
     private float amount;
-    private Object requestPay;
+    private LiveWechatPayDto requestPay;
     private String alipayOrderString;
 
     public String getPrepayId() {
@@ -40,11 +40,11 @@ public class LivePayDto {
         this.amount = amount;
     }
 
-    public Object getRequestPay() {
+    public LiveWechatPayDto getRequestPay() {
         return requestPay;
     }
 
-    public void setRequestPay(Object requestPay) {
+    public void setRequestPay(LiveWechatPayDto requestPay) {
         this.requestPay = requestPay;
     }
 

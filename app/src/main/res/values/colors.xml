@@ -153,4 +153,7 @@
     <color name="black">#000000</color><!--黑色 -->
 
     <color name="transparent">@android:color/transparent</color> <!-- 透明色 -->
+
+    <color name="navpage">#FFE1E8EB</color> <!--WXPayEntryActivity-->
+
 </resources>

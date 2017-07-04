@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -121,7 +122,7 @@ public class BaseApplication extends Application {
 
     //各个平台的配置，建议放在全局Application或者程序入口
     {
-        PlatformConfig.setWeixin("wx7e6722fad8a0975c", "390b7bcd6e6e4f82441cebcdebccb223");
+        PlatformConfig.setWeixin(Constant.WeChat_AppID, "390b7bcd6e6e4f82441cebcdebccb223");
 //        PlatformConfig.setWeixin("wx5b882abda749656d", "411f579410f6b81b875b2c2fbaa533f0");
 //        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setQQZone("1105918131", "uNzl6dleoc80UQle");
