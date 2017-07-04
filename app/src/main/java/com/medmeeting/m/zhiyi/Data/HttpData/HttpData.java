@@ -18,6 +18,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
@@ -183,6 +185,11 @@ public class HttpData extends RetrofitUtils {
     //live program detail 观众
     public void HttpDataGetLiveProgramAudienceDetail(Observer<HttpResult3<Object, LiveAudienceDetailDto>> observer, Integer programId) {
         Observable observable = service_live.getLiveProgramAudienceDetail(programId);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetLiveOrder(Observer<HttpResult3<Object, LivePayDto>> observer, LiveOrderDto liveOrderDto) {
+        Observable observable = service_live.getLiveOrder(liveOrderDto);
         setSubscribe(observable, observer);
     }
 

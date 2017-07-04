@@ -4,6 +4,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
@@ -56,4 +58,9 @@ public interface APILiveService {
     //获取直播节目详情(观众)
     @GET("v1/open/program/{programId}")
     Observable<HttpResult3<Object, LiveAudienceDetailDto>> getLiveProgramAudienceDetail(@Path("programId") Integer programId);
+
+    //直播门票下单
+    @POST("/v1/liveProgram/livePay")
+    Observable<HttpResult3<Object, LivePayDto>> getLiveOrder(@Body LiveOrderDto liveOrderDto);
+
 }

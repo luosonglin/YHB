@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,8 +137,8 @@ public class LiveFragment extends Fragment
         progress = (ProgressActivity) view.findViewById(R.id.progress);
         //设置RecyclerView的显示模式  当前List模式
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
+//        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..
