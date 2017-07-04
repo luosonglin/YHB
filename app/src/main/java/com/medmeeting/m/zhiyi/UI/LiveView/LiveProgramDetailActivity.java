@@ -5,11 +5,13 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -564,7 +566,11 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
                 @Override
                 public void onNext(HttpResult3<Object, LivePayDto> payinfo) {
-                    pay(v, payinfo.getEntity().getAmount() + "", payinfo.getEntity().getTradeTitle(), "某商品", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
+                    if(checkAliPayInstalled(LiveProgramDetailActivity.this)) {
+                        pay(v, payinfo.getEntity().getAmount() + "", payinfo.getEntity().getTradeTitle(), "某商品", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
+                    } else {
+                        ToastUtils.show(LiveProgramDetailActivity.this, "支付宝APP尚未安装，请重新选择其他支付方式");
+                    }
                 }
             }, new LiveOrderDto("", paymentChannel, platformType, programId));
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -785,7 +791,17 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         return "sign_type=\"RSA\"";
     }
 
-
+    /**
+     * 判断支付宝是否安装
+     * @param context
+     * @return
+     */
+    public static boolean checkAliPayInstalled(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
+    }
     /**
      * 微信支付配置
      * ======================================================================================================================================================
