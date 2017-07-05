@@ -433,7 +433,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+//            showProgress(false);
 
             map.put("phone", mPhone);
             map.put("code", mPassword);
@@ -447,6 +447,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 public void onError(Throwable e) {
                     mCodeView.setError("验证码错误");
                     mCodeView.requestFocus();
+                    showProgress(false);
 
                     Log.e(TAG, "onError: "+e.getMessage()
                             +"\n"+e.getCause()

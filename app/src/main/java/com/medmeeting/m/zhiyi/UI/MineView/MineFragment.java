@@ -20,6 +20,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.snappydb.SnappydbException;
 
@@ -114,6 +115,15 @@ public class MineFragment extends Fragment {
             String mParam1 = getArguments().getString(ARG_PARAM1);
             String mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        try {
+            userId = DBUtils.get(getActivity(), "userId");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+
+        if (userId == null && "".equals(userId)) {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
     }
 
     @Override
@@ -130,11 +140,6 @@ public class MineFragment extends Fragment {
     }
 
     private void initView() {
-        try {
-            userId = DBUtils.get(getActivity(), "userId");
-        } catch (SnappydbException e) {
-            e.printStackTrace();
-        }
 
         HttpData.getInstance().HttpDataGetMyInfo(new Observer<MyInfoDto>() {
             @Override

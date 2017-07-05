@@ -588,7 +588,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 @Override
                 public void onNext(HttpResult3<Object, LivePayDto> livePayDtoHttpResult3) {
                     payByWechat(livePayDtoHttpResult3.getEntity().getRequestPay().getPartnerid(),
-                            livePayDtoHttpResult3.getEntity().getPrepayId(),
+                            livePayDtoHttpResult3.getEntity().getRequestPay().getPrepayid(),
                             livePayDtoHttpResult3.getEntity().getRequestPay().getNoncestr(),
                             livePayDtoHttpResult3.getEntity().getRequestPay().getTimeStamp(),
                             livePayDtoHttpResult3.getEntity().getRequestPay().getPackageX(),
