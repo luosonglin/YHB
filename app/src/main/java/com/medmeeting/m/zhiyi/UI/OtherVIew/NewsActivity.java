@@ -3,14 +3,13 @@ package com.medmeeting.m.zhiyi.UI.OtherVIew;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateUtils;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
+import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.squareup.picasso.Picasso;
 
@@ -28,20 +27,14 @@ public class NewsActivity extends AppCompatActivity {
     Toolbar toolbar;
     @Bind(R.id.name)
     TextView name;
-    @Bind(R.id.hospital)
-    TextView hospital;
-    @Bind(R.id.doctor_llyt)
-    LinearLayout doctorLlyt;
+    @Bind(R.id.time)
+    TextView time;
     @Bind(R.id.pic)
     CircleImageView avatar;
-    @Bind(R.id.user_rlyt)
-    RelativeLayout userRlyt;
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.content)
     TextView content;
-    @Bind(R.id.blog_llyt)
-    LinearLayout blogLlyt;
     @Bind(R.id.content_wei_bo)
     RelativeLayout contentWeiBo;
     @Bind(R.id.blog_image)
@@ -90,9 +83,7 @@ public class NewsActivity extends AppCompatActivity {
         Picasso.with(this).load(blogDetail.getUserPic())
                 .error(R.mipmap.avator_default)
                 .into(avatar);
-        hospital.setText(DateUtils.formatDateTime(this,
-                blogDetail.getCreatedAt(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME));
+        time.setText(DateUtil.formatDate(blogDetail.getCreatedAt(), DateUtil.TYPE_05));
 
         title.setText(blogDetail.getTitle());
         content.setText(blogDetail.getContent());

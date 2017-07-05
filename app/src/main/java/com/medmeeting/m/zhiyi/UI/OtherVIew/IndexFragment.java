@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
@@ -36,7 +36,6 @@ import com.youth.banner.listener.OnBannerClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observer;
 
@@ -50,16 +49,12 @@ import rx.Observer;
  */
 public class IndexFragment extends Fragment
         implements BaseQuickAdapter.RequestLoadMoreListener,
-            SpringView.OnFreshListener,
-            NewsListView {
+        SpringView.OnFreshListener,
+        NewsListView {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @Bind(R.id.location)
-    TextView location;
-    @Bind(R.id.rv_list)
-    RecyclerView rvList;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -133,7 +128,7 @@ public class IndexFragment extends Fragment
 
         progress = (ProgressActivity) view.findViewById(R.id.progress);
         //分割线
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         //设置RecyclerView的显示模式  当前List模式
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //如果Item高度固定  增加该属性能够提高效率
@@ -155,10 +150,10 @@ public class IndexFragment extends Fragment
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage()
+                        + "\n" + e.getCause()
+                        + "\n" + e.getLocalizedMessage()
+                        + "\n" + e.getStackTrace());
             }
 
             @Override
@@ -170,7 +165,7 @@ public class IndexFragment extends Fragment
                 mBanner.setImages(bannerImages)
                         .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                         .setBannerTitles(bannerTitles)
-                        .setBannerAnimation(Transformer.Tablet)
+                        .setBannerAnimation(Transformer.BackgroundToForeground)
                         .setImageLoader(new GlideImageLoader())
                         .start();
                 mBanner.setOnBannerClickListener(new OnBannerClickListener() {
@@ -178,8 +173,8 @@ public class IndexFragment extends Fragment
                     public void OnBannerClick(int position) {
                         Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("eventId", bannerDto.getBanners().get(position-1).getId()+"");
-                        bundle.putString("eventTitle", bannerDto.getBanners().get(position-1).getTitle());
+                        bundle.putString("eventId", bannerDto.getBanners().get(position - 1).getId() + "");
+                        bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
@@ -191,7 +186,7 @@ public class IndexFragment extends Fragment
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
-        mQuickAdapter.openLoadMore(6,true);
+        mQuickAdapter.openLoadMore(6, true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
 //        present = new BookListPresent(this);
@@ -272,18 +267,21 @@ public class IndexFragment extends Fragment
 //        present.LoadData("1",PageIndex,true);
         present.LoadData(true, PageIndex, PageSize);
     }
+
     //下拉刷新
     @Override
     public void onRefresh() {
-        PageIndex=1;
+        PageIndex = 1;
 //        present.LoadData("1",PageIndex,false);
         present.LoadData(false, PageIndex, PageSize);
     }
+
     //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
     @Override
     public void onLoadmore() {
 
     }
+
     /*
     * MVP模式的相关状态
     *
@@ -302,7 +300,7 @@ public class IndexFragment extends Fragment
     public void newDatas(List<BlogDto.BlogBean.ListBean> newsList) {
         //进入显示的初始数据或者下拉刷新显示的数据
         mQuickAdapter.setNewData(newsList);//新增数据
-        mQuickAdapter.openLoadMore(10,true);//设置是否可以下拉加载  以及加载条数
+        mQuickAdapter.openLoadMore(10, true);//设置是否可以下拉加载  以及加载条数
         springView.onFinishFreshAndLoad();//刷新完成
     }
 
@@ -318,7 +316,7 @@ public class IndexFragment extends Fragment
         progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PageIndex=1;
+                PageIndex = 1;
 //                present.LoadData("1",PageIndex,false);
                 present.LoadData(false, PageIndex, PageSize);
             }
@@ -336,7 +334,7 @@ public class IndexFragment extends Fragment
     @Override
     public void showNoData() {
         //设置无数据显示页面
-        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE,Constant.EMPTY_CONTEXT);
+        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
     }
 
 }

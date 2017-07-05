@@ -12,121 +12,84 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:overScrollMode="never"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="干物妹标题标题标题标题"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
             <RelativeLayout
                 android:id="@+id/user_rlyt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="8dp">
 
                 <LinearLayout
                     android:id="@+id/doctor_llyt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@+id/pic"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="土间 埋"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_marginLeft="4dp"
-                            android:gravity="center"
-                            android:src="@mipmap/v_yellow"
-                            android:layout_marginTop="2dp"
-                            tools:ignore="ContentDescription" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/hospital"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="3-1 17:22"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/pic"
-                    android:layout_width="46dp"
-                    android:layout_height="46dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignTop="@+id/doctor_llyt"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/avator_white"
-                    android:src="@mipmap/avator_default" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/blog_llyt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="14dp"
-                android:orientation="vertical">
-
-                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:orientation="horizontal">
 
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/pic"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignTop="@+id/doctor_llyt"
+                        android:background="@drawable/avator_white"
+                        android:src="@mipmap/avator_default" />
+
                     <TextView
-                        android:id="@+id/title"
-                        android:layout_width="match_parent"
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="干物妹标题标题标题标题"
-                        android:textColor="@color/black" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="6dp"
+                        android:text=""
+                        android:textColor="@color/grey"
+                        android:textSize="10sp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:orientation="vertical">
+                    android:layout_alignParentRight="true"
+                    android:text=""
+                    android:textSize="10sp" />
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="..."
-                        android:textColor="@color/black" />
-                </LinearLayout>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="..."
+                android:textColor="@color/black"
+                android:textSize="14sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginTop="6dp">
 
                 <com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView
@@ -134,195 +97,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:spacing="4dp" />
-
             </LinearLayout>
 
-            <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="6dp"-->
-                <!--android:background="@color/grey" />-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="36dp"-->
-                <!--android:orientation="vertical">-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="36dp"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:gravity="center"-->
-                        <!--android:text="转发"-->
-                        <!--android:textSize="12sp"-->
-                        <!--android:visibility="gone" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/comment_tv"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:layout_weight="2"-->
-                        <!--android:gravity="center"-->
-                        <!--android:text="评论"-->
-                        <!--android:textSize="12sp" />-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/like_tv"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:layout_weight="2"-->
-                        <!--android:gravity="center"-->
-                        <!--android:text="赞"-->
-                        <!--android:textSize="12sp" />-->
-                <!--</LinearLayout>-->
-
-                <!--<View-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="6dp"-->
-                    <!--android:background="@color/grey" />-->
-
-                <!--<android.support.v7.widget.RecyclerView-->
-                    <!--android:id="@+id/comment_rv"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginLeft="12dp"-->
-                    <!--android:layout_marginRight="12dp"-->
-                    <!--android:divider="#9f9d9d"-->
-                    <!--android:dividerHeight="10dp" />-->
-
-                <!--<android.support.v7.widget.RecyclerView-->
-                    <!--android:id="@+id/like_rv"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginLeft="12dp"-->
-                    <!--android:layout_marginRight="12dp"-->
-                    <!--android:divider="#9f9d9d"-->
-                    <!--android:dividerHeight="10dp"-->
-                    <!--android:visibility="gone" />-->
-
-            <!--</LinearLayout>-->
         </LinearLayout>
     </ScrollView>
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="40dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="@color/white"-->
-        <!--android:orientation="vertical">-->
-
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="1dp"-->
-            <!--android:background="@color/grey" />-->
-
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_marginTop="2dp"-->
-            <!--android:layout_marginBottom="2dp">-->
-
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/comment_rlyt"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="8"-->
-                <!--android:focusable="true"-->
-                <!--android:focusableInTouchMode="true">-->
-
-                <!--<EditText-->
-                    <!--android:id="@+id/comment"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:layout_marginTop="2dp"-->
-                    <!--android:hint="请输入您的评论"-->
-                    <!--android:paddingTop="2dp"-->
-                    <!--android:paddingLeft="18dp"-->
-                    <!--android:paddingRight="0dp"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="1dp"-->
-                    <!--android:textSize="16sp"-->
-                    <!--android:gravity="center_vertical"-->
-                    <!--android:background="@drawable/textview_radius_grey"-->
-                    <!--android:ems="14"/>-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/send_rlyt"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1">-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:orientation="horizontal">-->
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/comment_icon"-->
-                        <!--android:layout_width="40dp"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:background="@color/skyblue"-->
-                        <!--android:text="发送"-->
-                        <!--android:textSize="12sp"-->
-                        <!--android:gravity="center"-->
-                        <!--android:textColor="@color/white"-->
-                        <!--android:layout_marginLeft="1dp"-->
-                        <!--android:layout_marginRight="10dp"-->
-                        <!--android:layout_marginTop="4dp"-->
-                        <!--android:layout_marginBottom="4dp"/>-->
-                <!--</LinearLayout>-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/like_rlyt"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1">-->
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/like_icon"-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:src="@mipmap/like_blog_no"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:layout_marginLeft="10dp"-->
-                    <!--android:layout_marginRight="10dp"-->
-                    <!--tools:ignore="ContentDescription" />-->
-
-            <!--</RelativeLayout>-->
-            <!--<RelativeLayout-->
-                <!--android:id="@+id/collection_rlyt"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1">-->
-                <!--<ImageView-->
-                    <!--android:id="@+id/collection_icon"-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:src="@mipmap/collection_no"-->
-                    <!--android:layout_centerInParent="true"-->
-                    <!--android:layout_marginLeft="10dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--tools:ignore="ContentDescription" />-->
-            <!--</RelativeLayout>-->
-
-        <!--</LinearLayout>-->
-
-    <!--</LinearLayout>-->
-
 </RelativeLayout>

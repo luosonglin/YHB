@@ -35,7 +35,7 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
                 .load(item.getUserPic())
                 .crossFade()
                 .transform(new GlideCircleTransform(mContext))
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.avator_default)
                 .into((ImageView) helper.getView(R.id.avatar));
 
         helper.getView(R.id.item_news_cv).setOnClickListener(new View.OnClickListener() {

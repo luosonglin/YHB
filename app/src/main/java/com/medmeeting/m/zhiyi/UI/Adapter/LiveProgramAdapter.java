@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
-import com.medmeeting.m.zhiyi.Util.DateUtils;
+import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -24,7 +24,7 @@ public class LiveProgramAdapter extends BaseQuickAdapter<BannerDto.BannersBean> 
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.time, DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_06))
+                .setText(R.id.time, DateUtil.formatDate(item.getStartDate(), DateUtil.TYPE_06))
                 .setText(R.id.sum, "已报名：" + item.getId()+" 人")
                 .setText(R.id.money, "¥" + item.getId());
     }

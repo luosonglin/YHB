@@ -7,35 +7,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:text=""
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <!--设置-->
-        <TextView
-            android:id="@+id/setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:text=""
-            android:padding="12dp"
-            android:textColor="@color/grey"
-            android:textSize="12sp" />
-    </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,26 +21,55 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="0dp"
                 android:background="@color/skyblue">
                 <!--android:background="@mipmap/mine_fragment_bg"-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/identity"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:background="#a0e1c99d"-->
-                    <!--android:gravity="center_vertical"-->
-                    <!--android:paddingLeft="40dp"-->
-                    <!--android:paddingRight="0dp"-->
-                    <!--android:text="你还没有实名认证，点击前往认证 >>"-->
-                    <!--android:textColor="@color/black"-->
-                    <!--android:textSize="10sp" />-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/skyblue">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <!--设置-->
+                    <TextView
+                        android:id="@+id/setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1"
+                        android:padding="12dp"
+                        android:text="设置"
+                        android:textColor="@color/grey"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <!--<TextView-->
+                <!--android:id="@+id/identity"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:background="#a0e1c99d"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="40dp"-->
+                <!--android:paddingRight="0dp"-->
+                <!--android:text="你还没有实名认证，点击前往认证 >>"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="10sp" />-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
                     android:orientation="vertical">
 
                     <RelativeLayout
