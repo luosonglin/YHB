@@ -58,8 +58,6 @@ public class IndexFragment extends Fragment
     private static final String ARG_PARAM2 = "param2";
     @Bind(R.id.location)
     TextView location;
-    @Bind(R.id.banner)
-    Banner banner;
     @Bind(R.id.rv_list)
     RecyclerView rvList;
 
@@ -69,7 +67,6 @@ public class IndexFragment extends Fragment
 
     private static final String TAG = IndexFragment.class.getSimpleName();
 
-    private Banner mBanner;
     private List<String> bannerImages = new ArrayList<>();
     private List<String> bannerTitles = new ArrayList<>();
 
@@ -80,6 +77,8 @@ public class IndexFragment extends Fragment
     private int PageSize = 10;
     private SpringView springView;
     private NewsListPresent present;
+    private View mHeaderView;
+    private Banner mBanner;
 
     private OnFragmentInteractionListener mListener;
 
@@ -121,7 +120,33 @@ public class IndexFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_index, container, false);
         ButterKnife.bind(this, view);
 
-        mBanner = (Banner) view.findViewById(R.id.banner);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
+        springView = (SpringView) view.findViewById(R.id.springview);
+        //设置下拉刷新监听
+        springView.setListener(this);
+        //设置下拉刷新样式
+        springView.setType(SpringView.Type.OVERLAP);
+        springView.setHeader(new RotationHeader(getActivity()));
+//        springView.setFooter(new DefaultFooter(this));
+//        springView.setHeader(new RotationHeader(this));
+//        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
+
+        progress = (ProgressActivity) view.findViewById(R.id.progress);
+        //分割线
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        //设置RecyclerView的显示模式  当前List模式
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //如果Item高度固定  增加该属性能够提高效率
+        mRecyclerView.setHasFixedSize(true);
+        //设置页面为加载中..
+        progress.showLoading();
+        //设置适配器
+//        mQuickAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
+        mQuickAdapter = new NewsAdapter(R.layout.item_news, null);
+
+        //头view
+        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
+        mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
         HttpData.getInstance().HttpDataGetBanner(new Observer<BannerDto>() {
             @Override
             public void onCompleted() {
@@ -151,8 +176,6 @@ public class IndexFragment extends Fragment
                 mBanner.setOnBannerClickListener(new OnBannerClickListener() {
                     @Override
                     public void OnBannerClick(int position) {
-                        Log.e("--", "点击：" + position + "");
-
                         Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("eventId", bannerDto.getBanners().get(position-1).getId()+"");
@@ -161,32 +184,10 @@ public class IndexFragment extends Fragment
                         startActivity(intent);
                     }
                 });
+                mQuickAdapter.addHeaderView(mHeaderView);
             }
         });
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
-        springView = (SpringView) view.findViewById(R.id.springview);
-        //设置下拉刷新监听
-        springView.setListener(this);
-        //设置下拉刷新样式
-        springView.setType(SpringView.Type.OVERLAP);
-        springView.setHeader(new RotationHeader(getActivity()));
-//        springView.setFooter(new DefaultFooter(this));
-//        springView.setHeader(new RotationHeader(this));
-//        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
-
-        progress = (ProgressActivity) view.findViewById(R.id.progress);
-        //分割线
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        //设置RecyclerView的显示模式  当前List模式
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //如果Item高度固定  增加该属性能够提高效率
-        mRecyclerView.setHasFixedSize(true);
-        //设置页面为加载中..
-        progress.showLoading();
-        //设置适配器
-//        mQuickAdapter = new BannersAdapter(R.layout.list_view_item_layout, null);
-        mQuickAdapter = new NewsAdapter(R.layout.item_news, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
