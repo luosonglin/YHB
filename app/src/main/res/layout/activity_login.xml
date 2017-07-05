@@ -139,7 +139,7 @@
                                     android:imeActionId="@+id/login"
                                     android:imeActionLabel="Sign in"
                                     android:imeOptions="actionUnspecified"
-                                    android:inputType="textPassword"
+                                    android:inputType="number"
                                     android:maxLines="1"
                                     android:paddingLeft="28dp"
                                     android:paddingRight="28dp"
