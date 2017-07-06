@@ -3,7 +3,7 @@ package com.medmeeting.m.zhiyi.UI.OtherVIew;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +16,7 @@ import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
 import com.medmeeting.m.zhiyi.Util.SpUtils;
 
 /**
- *  启动页
+ * 启动页
  */
 public class WelcomeActivity extends ListvViewActivity {
 
@@ -48,24 +48,28 @@ public class WelcomeActivity extends ListvViewActivity {
                 .into(imageView);
 
         timeTv = (TextView) findViewById(R.id.time);
-
-        new Handler().postDelayed(new Runnable() {
+        timeTv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
+            public void onClick(View view) {
+                countDownTimer.cancel();
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                 finish();
             }
-        }, 2000);
+        });
 
-        new CountDownTimer(3000, 1000) {
-            @Override
-            public void onTick(long l) {
-                timeTv.setText("" + l / 1000);
-            }
-
-            @Override
-            public void onFinish() {
-            }
-        }.start();
+        countDownTimer.start();
     }
+
+    private CountDownTimer countDownTimer = new CountDownTimer(6000, 1000) {
+        @Override
+        public void onTick(long l) {
+            timeTv.setText("跳过   " + l / 1000 + "秒");
+        }
+
+        @Override
+        public void onFinish() {
+            startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+            finish();
+        }
+    };
 }

@@ -25,7 +25,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
-import com.xiaochao.lcrapiddeveloplibrary.container.RotationHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 import com.youth.banner.Banner;
@@ -121,7 +120,8 @@ public class IndexFragment extends Fragment
         springView.setListener(this);
         //设置下拉刷新样式
         springView.setType(SpringView.Type.OVERLAP);
-        springView.setHeader(new RotationHeader(getActivity()));
+
+//        springView.setHeader(new RotationHeader(getActivity()));
 //        springView.setFooter(new DefaultFooter(this));
 //        springView.setHeader(new RotationHeader(this));
 //        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
@@ -165,7 +165,7 @@ public class IndexFragment extends Fragment
                 mBanner.setImages(bannerImages)
                         .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                         .setBannerTitles(bannerTitles)
-                        .setBannerAnimation(Transformer.BackgroundToForeground)
+                        .setBannerAnimation(Transformer.Default)
                         .setImageLoader(new GlideImageLoader())
                         .start();
                 mBanner.setOnBannerClickListener(new OnBannerClickListener() {

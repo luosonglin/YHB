@@ -20,7 +20,7 @@ import com.medmeeting.m.zhiyi.UI.Adapter.MeetingAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultFooter;
-import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
+import com.xiaochao.lcrapiddeveloplibrary.container.MeituanHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 
@@ -95,6 +95,8 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
         initListener();
         return view;
     }
+    private int[] pullAnimSrcs = new int[]{R.drawable.mt_pull,R.drawable.mt_pull01,R.drawable.mt_pull02,R.drawable.mt_pull03,R.drawable.mt_pull04,R.drawable.mt_pull05};
+    private int[] refreshAnimSrcs = new int[]{R.drawable.mt_refreshing01,R.drawable.mt_refreshing02,R.drawable.mt_refreshing03,R.drawable.mt_refreshing04,R.drawable.mt_refreshing05,R.drawable.mt_refreshing06};
 
     private void initView(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
@@ -103,7 +105,9 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
         springView.setListener(this);
         //设置下拉刷新样式
         springView.setType(SpringView.Type.FOLLOW);
-        springView.setHeader(new DefaultHeader(getActivity()));
+
+        springView.setHeader(new MeituanHeader(getActivity(), pullAnimSrcs, refreshAnimSrcs));
+//        springView.setHeader(new DefaultHeader(getActivity()));
         springView.setFooter(new DefaultFooter(getActivity()));
 //        springView.setHeader(new RotationHeader(this));
 //        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用

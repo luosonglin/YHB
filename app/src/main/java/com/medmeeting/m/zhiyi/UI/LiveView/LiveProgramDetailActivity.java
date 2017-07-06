@@ -509,8 +509,12 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         a.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPayInfo(v, "ALIPAY", "APP", programId);
-                academicPopupWindow.dismiss();
+                if (checkAliPayInstalled(LiveProgramDetailActivity.this)) {
+                    getPayInfo(v, "ALIPAY", "APP", programId);
+                    academicPopupWindow.dismiss();
+                } else {
+                    ToastUtils.show(LiveProgramDetailActivity.this, "支付宝APP尚未安装，请重新选择其他支付方式");
+                }
             }
         });
 
@@ -520,8 +524,13 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPayInfo(v, "WXPAY", "APP", programId);
-                academicPopupWindow.dismiss();
+                /** 检测是否有微信软件 */
+                if (isWXAppInstalledAndSupported(LiveProgramDetailActivity.this, api)) {
+                    getPayInfo(v, "WXPAY", "APP", programId);
+                    academicPopupWindow.dismiss();
+                } else {
+                    ToastUtils.show(LiveProgramDetailActivity.this, "亲，您还没有安装微信");
+                }
             }
         });
 
@@ -566,11 +575,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
                 @Override
                 public void onNext(HttpResult3<Object, LivePayDto> payinfo) {
-                    if(checkAliPayInstalled(LiveProgramDetailActivity.this)) {
-                        pay(v, payinfo.getEntity().getAmount() + "", payinfo.getEntity().getTradeTitle(), "某商品", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
-                    } else {
-                        ToastUtils.show(LiveProgramDetailActivity.this, "支付宝APP尚未安装，请重新选择其他支付方式");
-                    }
+                    pay(v, payinfo.getEntity().getAmount() + "", payinfo.getEntity().getTradeTitle(), "某商品", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
                 }
             }, new LiveOrderDto("", paymentChannel, platformType, programId));
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -793,6 +798,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
     /**
      * 判断支付宝是否安装
+     *
      * @param context
      * @return
      */
@@ -802,6 +808,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         ComponentName componentName = intent.resolveActivity(context.getPackageManager());
         return componentName != null;
     }
+
     /**
      * 微信支付配置
      * ======================================================================================================================================================
@@ -815,29 +822,25 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                /** 检测是否有微信软件 */
-                if (isWXAppInstalledAndSupported(LiveProgramDetailActivity.this, api)) {
-                    try {
-                        PayReq req = new PayReq();
-                        req.appId = "wx7e6722fad8a0975c";
-                        req.partnerId = partnerId;
-                        req.prepayId = prepayId;
-                        req.nonceStr = nonceStr;
-                        req.timeStamp = timeStamp;
-                        req.packageValue = packageValue;
-                        req.sign = sign;
-                        req.extData = "哈哈，松林测试";//"app data"; // optional
-                        api.sendReq(req);
-                    } catch (Exception e) {
-                        Log.e("PAY_GET", e.getMessage());
-                        Toast.makeText(LiveProgramDetailActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    ToastUtils.show(LiveProgramDetailActivity.this, "亲，您还没有安装微信");
+                try {
+                    PayReq req = new PayReq();
+                    req.appId = "wx7e6722fad8a0975c";
+                    req.partnerId = partnerId;
+                    req.prepayId = prepayId;
+                    req.nonceStr = nonceStr;
+                    req.timeStamp = timeStamp;
+                    req.packageValue = packageValue;
+                    req.sign = sign;
+                    req.extData = "哈哈，松林测试";//"app data"; // optional
+                    api.sendReq(req);
+                } catch (Exception e) {
+                    Log.e("PAY_GET", e.getMessage());
+                    Toast.makeText(LiveProgramDetailActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
     private static boolean isWXAppInstalledAndSupported(Context context, IWXAPI api) {
         // LogOutput.d(TAG, "isWXAppInstalledAndSupported");
         boolean sIsWXAppInstalledAndSupported = api.isWXAppInstalled() && api.isWXAppSupportAPI();
