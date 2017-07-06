@@ -119,7 +119,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         initShare(savedInstanceState, getIntent().getExtras().getInt("roomId"),
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("coverPhote"),
-                "haha");//getIntent().getExtras().getString("description")
+                "欢迎观看"+getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
     }
 
     private void toolBar() {

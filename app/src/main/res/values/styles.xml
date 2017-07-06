@@ -111,4 +111,10 @@
         <!-- <item name="android:background">@drawable/nav_page</item> -->
         <item name="android:background">@color/navpage</item>
     </style>
+
+    <!-- pupupwindow的弹出和消失动画 -->
+    <style name="popup_window_anim">
+        <item name="android:windowEnterAnimation">@anim/popupwindow_in</item>
+        <item name="android:windowExitAnimation">@anim/popupwindow_out</item>
+    </style>
 </resources>

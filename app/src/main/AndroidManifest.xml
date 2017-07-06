@@ -72,6 +72,12 @@
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".UI.LiveView.LiveBuildRoomActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.LiveView.LiveBuildProgramActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".UI.OtherVIew.NewsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

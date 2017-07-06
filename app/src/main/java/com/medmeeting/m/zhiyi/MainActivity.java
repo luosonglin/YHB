@@ -11,18 +11,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.Entity.BookListDto;
 import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildProgramActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
+import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
 import com.snappydb.SnappydbException;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -226,7 +227,7 @@ public class MainActivity extends AppCompatActivity
             mPopMenu = new PopMenu.Builder().attachToActivity(MainActivity.this)
                     .addMenuItem(new PopMenuItem("大会签到", getResources().getDrawable(R.mipmap.tabbar_compose_idea)))
                     .addMenuItem(new PopMenuItem("交换名片", getResources().getDrawable(R.mipmap.tabbar_compose_photo)))
-                    .addMenuItem(new PopMenuItem("发帖子", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
+                    .addMenuItem(new PopMenuItem("创建直播", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
                     .addMenuItem(new PopMenuItem("发病例", getResources().getDrawable(R.mipmap.tabbar_compose_lbs)))
                     .addMenuItem(new PopMenuItem("我的钱包", getResources().getDrawable(R.mipmap.tabbar_compose_review)))
                     .addMenuItem(new PopMenuItem("发起直播", getResources().getDrawable(R.mipmap.tabbar_compose_more)))
@@ -262,9 +263,10 @@ public class MainActivity extends AppCompatActivity
         Intent intent;
         switch (position) {
             case 0:
+                startActivity(new Intent(MainActivity.this, LiveBuildProgramActivity.class));
                 break;
             case 1:
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));
                 break;
             case 2:
                 intent = new Intent(MainActivity.this, ListvViewActivity.class);
