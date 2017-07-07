@@ -88,4 +88,9 @@ dependencies {
     compile project(':videoplayer')
     compile files('libs/alipaySdk-20170309.jar')
     compile files('libs/libammsdk.jar')
+    //图片选择器
+    compile 'me.iwf.photopicker:PhotoPicker:0.9.5@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+    //七牛云储存
+    compile 'com.qiniu:qiniu-android-sdk:7.3.+'
 }

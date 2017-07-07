@@ -25,6 +25,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
+import com.medmeeting.m.zhiyi.UI.Entity.QiniuToken;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
@@ -188,8 +189,15 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    //get live order
     public void HttpDataGetLiveOrder(Observer<HttpResult3<Object, LivePayDto>> observer, LiveOrderDto liveOrderDto) {
         Observable observable = service_live.getLiveOrder(liveOrderDto);
+        setSubscribe(observable, observer);
+    }
+
+    //get qiniu token
+    public void HttpDataGetQiniuToken(Observer<QiniuToken> observer, String bucketName) {
+        Observable observable = service.getQiniuToken(bucketName);
         setSubscribe(observable, observer);
     }
 

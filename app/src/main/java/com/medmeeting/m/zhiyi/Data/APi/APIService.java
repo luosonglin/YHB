@@ -5,6 +5,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
+import com.medmeeting.m.zhiyi.UI.Entity.QiniuToken;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 
@@ -41,4 +42,8 @@ public interface APIService {
     //个人重心
     @GET("/api/v1/app/{user_id}")
     Observable<MyInfoDto> getMyInformation(@Path("user_id") Integer userId);
+
+    //获取七牛云存储的uploadToken
+    @GET("/api/v1/qiniu/{bucketName}/")
+    Observable<QiniuToken> getQiniuToken(@Path("bucketName") String bucketName);
 }
