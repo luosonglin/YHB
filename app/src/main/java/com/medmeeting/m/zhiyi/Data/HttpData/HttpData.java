@@ -25,10 +25,11 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
-import com.medmeeting.m.zhiyi.UI.Entity.QiniuToken;
+import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
 import java.io.File;
@@ -53,22 +54,23 @@ public class HttpData extends RetrofitUtils {
             .persistence(cacheDirectory)
             .using(CacheProviders.class);
 
-//    protected static final APIService service_meeting = getMeetingRetrofit().create(APIService.class);
+    private static String userToken = "";
 
     protected static final APIService service = getRetrofit().create(APIService.class);
     protected static final APIMeetingService service_meeting = getMeetingRetrofit().create(APIMeetingService.class);
-    protected static final APILiveService service_live = getLiveRetrofit().create(APILiveService.class);
+    protected static final APILiveService service_live = getLiveRetrofit(userToken).create(APILiveService.class);
 
     private static final String TAG = HttpData.class.getSimpleName();
 
     //在访问HttpMethods时创建单例
-    private static class SingletonHolder{
+    private static class SingletonHolder {
         private static final HttpData INSTANCE = new HttpData();
     }
 
     //获取单例
-    public static HttpData getInstance(){
+    public static HttpData getInstance(String token) {
         Log.e("HttpData", "getInstance");
+        userToken = token;
         return SingletonHolder.INSTANCE;
     }
 
@@ -112,11 +114,13 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service.getMyInformation(userId);
         setSubscribe(observable, observer);
     }
+
     //我的参会 待参会
     public void HttpDataGetMyMeeting(Observer<HttpResult4<MeetingDto>> observer, Map<String, Object> map) {
         Observable observable = service_meeting.getWaitEntryEvents(map);
         setSubscribe(observable, observer);
     }
+
     //我的参会 已结束
     public void HttpDataGetMyFinishedMeeting(Observer<HttpResult4<FollowFinishedEvent>> observer, Map<String, Object> map) {
         Observable observable = service_meeting.getFollowFinishedEvents(map);
@@ -124,7 +128,7 @@ public class HttpData extends RetrofitUtils {
     }
 
     //test get hot meetings
-    public void HttpDataGetHotMeetings(Observer<HttpResult4<MeetingDto>> observer, Integer pageNum, Integer pageSize){
+    public void HttpDataGetHotMeetings(Observer<HttpResult4<MeetingDto>> observer, Integer pageNum, Integer pageSize) {
         Observable observable = service_meeting.getHotMeetings(pageNum, pageSize);
         setSubscribe(observable, observer);
 //        Observable observableCache = providers.getMeetingList(observable, new DynamicKey("热门会议"), new EvictDynamicKey(false));
@@ -183,6 +187,7 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getLiveProgramDetail(programId);
         setSubscribe(observable, observer);
     }
+
     //live program detail 观众
     public void HttpDataGetLiveProgramAudienceDetail(Observer<HttpResult3<Object, LiveAudienceDetailDto>> observer, Integer programId) {
         Observable observable = service_live.getLiveProgramAudienceDetail(programId);
@@ -196,7 +201,7 @@ public class HttpData extends RetrofitUtils {
     }
 
     //get qiniu token
-    public void HttpDataGetQiniuToken(Observer<QiniuToken> observer, String bucketName) {
+    public void HttpDataGetQiniuToken(Observer<QiniuTokenDto> observer, String bucketName) {
         Observable observable = service.getQiniuToken(bucketName);
         setSubscribe(observable, observer);
     }
@@ -212,8 +217,22 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.deleteLiveRoom(roomId);
         setSubscribe(observable, observer);
     }
+
+    //add live program
+    public void HttpDataAddLiveProgram(Observer<HttpResult3> observer, Integer roomId, LiveDto liveDto) {
+        Observable observable = service_live.addLiveProgram(roomId, liveDto);
+        setSubscribe(observable, observer);
+    }
+
+    //get user token
+    public void HttpDataGetToken(Observer<HttpResult3<Object, UserTokenDto>> observer, Integer userId) {
+        Observable observable = service_live.getUserToken(userId);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
+     *
      * @param observable
      * @param observer
      * @param <T>
@@ -229,24 +248,25 @@ public class HttpData extends RetrofitUtils {
     /**
      * 用来统一处理Http的resultCode,并将HttpResult的Data部分剥离出来返回给subscriber
      *
-     * @param <T>   Subscriber真正需要的数据类型，也就是Data部分的数据类型
+     * @param <T> Subscriber真正需要的数据类型，也就是Data部分的数据类型
      */
-    private  class HttpResultFunc<T> implements Func1<HttpResult<T>, T> {
+    private class HttpResultFunc<T> implements Func1<HttpResult<T>, T> {
 
         @Override
         public T call(HttpResult<T> httpResult) {
 
-                if (httpResult.getCode() != 200) {
-                    throw new ApiException(httpResult);
-                }
+            if (httpResult.getCode() != 200) {
+                throw new ApiException(httpResult);
+            }
 
             return httpResult.getData();
         }
     }
+
     /**
      * 用来统一处理RxCacha的结果
      */
-    private  class HttpResultFuncCcche<T> implements Func1<Reply<T>, T> {
+    private class HttpResultFuncCcche<T> implements Func1<Reply<T>, T> {
 
         @Override
         public T call(Reply<T> httpResult) {

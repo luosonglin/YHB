@@ -10,6 +10,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -23,6 +24,10 @@ import rx.Observable;
  * http://hd.medmeeting.com
  */
 public interface APILiveService {
+
+    ///v1/token/{userId} 根据用户id获取token，为了兼容
+    @GET("/v1/token/{userId}")
+    Observable<HttpResult3<Object, UserTokenDto>> getUserToken(@Path("userId") Integer userId);
 
     //获取直播节目一栏-分页
     //全部
@@ -71,4 +76,8 @@ public interface APILiveService {
     //DELETE /v1/anchor/liveRoom/{roomId} 删除直播房间
     @DELETE("/v1/anchor/liveRoom/{roomId}")
     Observable<HttpResult3> deleteLiveRoom(@Path("roomId") Integer roomId);
+
+    //POST /v1/anchor/{roomId}/liveProgram 新增直播节目
+    @POST("/v1/anchor/{roomId}/liveProgram")
+    Observable<HttpResult3> addLiveProgram(@Path("roomId") Integer roomId, @Body LiveDto liveDto);
 }

@@ -19,6 +19,8 @@ public abstract class RetrofitUtils {
     private static OkHttpClient mOkHttpClient;
     private static OkHttpClient mOkHttpClientLive;
 
+    private static String userToken = "";
+
     /**
      * 获取Retrofit对象
      *
@@ -29,7 +31,7 @@ public abstract class RetrofitUtils {
         if (null == mRetrofit) {
 
             if (null == mOkHttpClient) {
-                mOkHttpClient = OkHttpUtils.getOkHttpClient();
+                mOkHttpClient = OkHttpUtils.getOkHttpClient(userToken);
             }
 
             //Retrofit2后使用build设计模式
@@ -58,7 +60,7 @@ public abstract class RetrofitUtils {
         if (null == mRetrofitMeeting) {
 
             if (null == mOkHttpClient) {
-                mOkHttpClient = OkHttpUtils.getOkHttpClient();
+                mOkHttpClient = OkHttpUtils.getOkHttpClient(userToken);
             }
 
             //Retrofit2后使用build设计模式
@@ -82,12 +84,13 @@ public abstract class RetrofitUtils {
      *
      * @return
      */
-    protected static Retrofit getLiveRetrofit() {
+    protected static Retrofit getLiveRetrofit(String token) {
 
         if (null == mOkHttpClientLive) {
 
             if (null == mOkHttpClientLive) {
-                mOkHttpClientLive = OkHttpUtils.getOkHttpClient();
+                userToken = token;
+                mOkHttpClientLive = OkHttpUtils.getOkHttpClient(userToken);
             }
 
             //Retrofit2后使用build设计模式

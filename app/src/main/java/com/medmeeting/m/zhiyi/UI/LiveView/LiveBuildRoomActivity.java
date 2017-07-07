@@ -24,7 +24,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
-import com.medmeeting.m.zhiyi.UI.Entity.QiniuToken;
+import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.http.ResponseInfo;
@@ -67,6 +67,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     LinearLayout buildllyt;
     private Toolbar toolbar;
     private static final String TAG = LiveBuildRoomActivity.class.getSimpleName();
+    private String token = "";
     private TagAdapter mBaseQuickAdapter;
     //新增直播间
     private int userId;  //用户ID
@@ -120,7 +121,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                 videoDesc = introduction.getText().toString().trim();
                 LiveRoomDto liveRoomDto = new LiveRoomDto(videoTitle, videoPhoto, videoLabel, videoDesc);
 
-                HttpData.getInstance().HttpDataAddLiveRoom(new Observer<HttpResult3>() {
+                HttpData.getInstance(token).HttpDataAddLiveRoom(new Observer<HttpResult3>() {
                     @Override
                     public void onCompleted() {
                         Log.e(TAG, "onCompleted");
@@ -168,7 +169,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     private String images = "";
 
     private void getQiniuToken(final String file) {
-        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuToken>() {
+        HttpData.getInstance(token).HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");
@@ -183,7 +184,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(QiniuToken q) {
+            public void onNext(QiniuTokenDto q) {
                 if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
                     return;
                 }
@@ -258,7 +259,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         mBaseQuickAdapter = new TagAdapter(R.layout.item_tag, null);
         recyclerView.setAdapter(mBaseQuickAdapter);
 
-        HttpData.getInstance().HttpDataGetLiveTags(new Observer<HttpResult3<TagDto, Object>>() {
+        HttpData.getInstance(token).HttpDataGetLiveTags(new Observer<HttpResult3<TagDto, Object>>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");

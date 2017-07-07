@@ -1,5 +1,7 @@
 package com.medmeeting.m.zhiyi.Data.Retrofit;
 
+import android.content.Context;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -16,13 +18,17 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class OkHttpUtils {
 
     private static OkHttpClient mOkHttpClient;
+    private static Context mContext;
+    private static String userToken;
 
     /**
      * 获取OkHttpClient对象
      */
-    public static OkHttpClient getOkHttpClient() {
+    public static OkHttpClient getOkHttpClient(String token) {
 
         if (null == mOkHttpClient) {
+
+            userToken = token;
 
             //同样okhttp3后也使用build设计模式
             mOkHttpClient = new OkHttpClient.Builder()
@@ -51,9 +57,11 @@ public class OkHttpUtils {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request originalRequest = chain.request();
-            Request authorised = originalRequest.newBuilder()
+            Request authorised = null;
+            authorised = originalRequest.newBuilder()
 //                    .header("FromSource", "1.0")
-                    .header("Authorization", "Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuadvuaelyIsInVzZXJJZCI6IjciLCJjcmVhdGVkIjoxNDk5MTY1MzMzNDA3LCJleHAiOjE0OTc0NjIzNjYxMTEsImlzcyI6ImhlYWxpZmUiLCJhdWQiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiJ9.vbT88lTmgegWm_Nu8EBWE92WwoXoTFFQs841wONO1KA")
+//                    .header("Authorization", "Bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuadvuaelyIsInVzZXJJZCI6IjciLCJjcmVhdGVkIjoxNDk5MTY1MzMzNDA3LCJleHAiOjE0OTc0NjIzNjYxMTEsImlzcyI6ImhlYWxpZmUiLCJhdWQiOiIwOThmNmJjZDQ2MjFkMzczY2FkZTRlODMyNjI3YjRmNiJ9.vbT88lTmgegWm_Nu8EBWE92WwoXoTFFQs841wONO1KA")
+                    .header("Authorization", userToken)
                     .build();
             return chain.proceed(authorised);
         }

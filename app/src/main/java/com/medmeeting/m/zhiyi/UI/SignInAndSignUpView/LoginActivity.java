@@ -38,8 +38,10 @@ import android.widget.TextView;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -465,9 +467,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         e.printStackTrace();
                     }
 
-                    Log.d(TAG, "Login succeed!");
-                    finish();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3<Object, UserTokenDto> token) {
+                            try {
+                                DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" +token.getEntity().getAccessToken());
+                            } catch (SnappydbException e) {
+                                e.printStackTrace();
+                            }
+
+                            Log.d(TAG, "Login succeed!");
+                            finish();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        }
+                    }, signUpDto.getData().getUser().getId());
                 }
             }, map);
 

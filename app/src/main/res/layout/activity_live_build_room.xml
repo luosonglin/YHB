@@ -234,12 +234,12 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="新建直播间"
-                android:textColor="@color/grey" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:text="新建直播间"-->
+                <!--android:textColor="@color/grey" />-->
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 

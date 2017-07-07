@@ -35,7 +35,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     RecyclerView mRecyclerView;
     ProgressActivity progress;
     private Toolbar toolbar;
-    private TextView pageName, titleTv;
+    private TextView pageName, titleTv, addTv;
     private ImageView backgroundIv;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
@@ -72,6 +72,15 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
 
         roomId = getIntent().getExtras().getInt("roomId");
 
+        addTv = (TextView) findViewById(R.id.add);
+        addTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyLiveRoomDetailActivity.this, LiveBuildProgramActivity.class);
+                intent.putExtra("roomId", roomId);
+                startActivity(intent);
+            }
+        });
         backgroundIv = (ImageView) findViewById(R.id.img);
         Glide.with(MyLiveRoomDetailActivity.this)
                 .load(getIntent().getExtras().getString("coverPhoto"))

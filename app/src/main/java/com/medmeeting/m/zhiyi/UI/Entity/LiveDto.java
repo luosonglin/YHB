@@ -57,6 +57,19 @@ public class LiveDto {
     private int payCount;
     private String des;
 
+    public LiveDto(String title, String coverPhoto, long startTime, long endTime, String authorName, String authorTitle, String privacyType, String chargeType, Object price, String des) {
+        this.title = title;
+        this.coverPhoto = coverPhoto;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.authorName = authorName;
+        this.authorTitle = authorTitle;
+        this.privacyType = privacyType;
+        this.chargeType = chargeType;
+        this.price = price;
+        this.des = des;
+    }
+
     public int getId() {
         return id;
     }
