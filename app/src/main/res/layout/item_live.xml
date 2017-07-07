@@ -4,23 +4,27 @@
     android:id="@+id/item_live_cv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
     android:background="@drawable/live_item_shape"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="4dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="2dp"
     app:cardElevation="@null"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
-    <!--app:cardBackgroundColor="@drawable/live_item_shape"-->
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:scaleType="fitXY"
@@ -31,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_below="@+id/image"
-            android:layout_marginTop="-20dp">
+            android:layout_marginTop="-17dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatar"
@@ -45,8 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
                 android:layout_marginLeft="50dp"
+                android:layout_marginRight="10dp"
                 android:orientation="vertical">
 
                 <RelativeLayout
@@ -56,13 +60,13 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
                         android:layout_alignParentRight="true"
+                        android:layout_gravity="center"
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="10dp"
                             android:src="@mipmap/live_video_icon" />
@@ -73,7 +77,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical|right"
                             android:text="100000"
-                            android:textColor="@color/white" />
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -85,9 +90,10 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="2dp"
                     android:ellipsize="marquee"
+                    android:gravity="right"
                     android:lines="1"
                     android:text="haha"
-                    android:gravity="center"/>
+                    android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -95,6 +101,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/r2"
+            android:layout_marginTop="-4dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginLeft="10dp"
             android:orientation="vertical">
 
@@ -105,10 +113,10 @@
                 android:layout_gravity="left"
                 android:ellipsize="marquee"
                 android:lines="1"
-                android:padding="2dp"
+                android:paddingLeft="2dp"
                 android:text="简介"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/time"
@@ -119,7 +127,7 @@
                 android:lines="1"
                 android:paddingLeft="2dp"
                 android:text="2017-04-08"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
         </LinearLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>
