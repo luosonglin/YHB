@@ -12,6 +12,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -66,4 +67,8 @@ public interface APILiveService {
     //POST /v1/anchor/liveRoom 新增直播房间信息
     @POST("/v1/anchor/liveRoom")
     Observable<HttpResult3> addLiveRoom(@Body LiveRoomDto liveRoomDto);
+
+    //DELETE /v1/anchor/liveRoom/{roomId} 删除直播房间
+    @DELETE("/v1/anchor/liveRoom/{roomId}")
+    Observable<HttpResult3> deleteLiveRoom(@Path("roomId") Integer roomId);
 }

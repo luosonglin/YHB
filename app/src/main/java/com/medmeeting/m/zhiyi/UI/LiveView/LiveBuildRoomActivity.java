@@ -138,6 +138,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                     public void onNext(HttpResult3 httpResult3) {
                         if ("success".equals(httpResult3.getStatus())) {
                             startActivity(new Intent(LiveBuildRoomActivity.this, MyLiveRoomActivity.class));
+                            finish();
                         } else {
                             ToastUtils.show(LiveBuildRoomActivity.this, httpResult3.getMsg());
                         }

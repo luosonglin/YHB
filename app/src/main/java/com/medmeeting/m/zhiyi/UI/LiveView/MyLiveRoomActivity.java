@@ -96,8 +96,28 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onDeleteClick(int position) {
-                        adapter.removeItem(position);
+                    public void onDeleteClick(final int position) {
+                        HttpData.getInstance().HttpDataDeleteLiveRoom(new Observer<HttpResult3>() {
+                            @Override
+                            public void onCompleted() {
+                                Log.d(TAG, "onCompleted");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "onError: "+e.getMessage()
+                                        +"\n"+e.getCause()
+                                        +"\n"+e.getLocalizedMessage()
+                                        +"\n"+e.getStackTrace());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3 httpResult3) {
+                                adapter.removeItem(position);
+                                Log.d(TAG, "onNext");
+                            }
+                        }, mList.get(position).getId());
+
                     }
                 });
             }

@@ -207,6 +207,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    //delete live room
+    public void HttpDataDeleteLiveRoom(Observer<HttpResult3> observer, Integer roomId) {
+        Observable observable = service_live.deleteLiveRoom(roomId);
+        setSubscribe(observable, observer);
+    }
     /**
      * 插入观察者
      * @param observable
