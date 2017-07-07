@@ -54,11 +54,9 @@ public class HttpData extends RetrofitUtils {
             .persistence(cacheDirectory)
             .using(CacheProviders.class);
 
-    private static String userToken = "";
-
     protected static final APIService service = getRetrofit().create(APIService.class);
     protected static final APIMeetingService service_meeting = getMeetingRetrofit().create(APIMeetingService.class);
-    protected static final APILiveService service_live = getLiveRetrofit(userToken).create(APILiveService.class);
+    protected static final APILiveService service_live = getLiveRetrofit().create(APILiveService.class);
 
     private static final String TAG = HttpData.class.getSimpleName();
 
@@ -68,9 +66,8 @@ public class HttpData extends RetrofitUtils {
     }
 
     //获取单例
-    public static HttpData getInstance(String token) {
+    public static HttpData getInstance() {
         Log.e("HttpData", "getInstance");
-        userToken = token;
         return SingletonHolder.INSTANCE;
     }
 

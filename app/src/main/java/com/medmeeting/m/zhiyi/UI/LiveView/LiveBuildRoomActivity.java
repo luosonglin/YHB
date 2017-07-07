@@ -67,7 +67,6 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     LinearLayout buildllyt;
     private Toolbar toolbar;
     private static final String TAG = LiveBuildRoomActivity.class.getSimpleName();
-    private String token = "";
     private TagAdapter mBaseQuickAdapter;
     //新增直播间
     private int userId;  //用户ID
@@ -121,7 +120,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                 videoDesc = introduction.getText().toString().trim();
                 LiveRoomDto liveRoomDto = new LiveRoomDto(videoTitle, videoPhoto, videoLabel, videoDesc);
 
-                HttpData.getInstance(token).HttpDataAddLiveRoom(new Observer<HttpResult3>() {
+                HttpData.getInstance().HttpDataAddLiveRoom(new Observer<HttpResult3>() {
                     @Override
                     public void onCompleted() {
                         Log.e(TAG, "onCompleted");
@@ -169,7 +168,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     private String images = "";
 
     private void getQiniuToken(final String file) {
-        HttpData.getInstance(token).HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
+        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");
@@ -259,7 +258,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         mBaseQuickAdapter = new TagAdapter(R.layout.item_tag, null);
         recyclerView.setAdapter(mBaseQuickAdapter);
 
-        HttpData.getInstance(token).HttpDataGetLiveTags(new Observer<HttpResult3<TagDto, Object>>() {
+        HttpData.getInstance().HttpDataGetLiveTags(new Observer<HttpResult3<TagDto, Object>>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");

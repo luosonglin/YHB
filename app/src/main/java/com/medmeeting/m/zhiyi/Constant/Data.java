@@ -27,6 +27,7 @@ public class Data {
     public static String CHAT_DATA_TEXT="欢迎您下载Android快速开发框架Demo,框架持续更新中,有兴趣的同学可以在GITHUB和我一起完善这个项目,如果您有什么更好的想法和意见您也可以与我联系!!!!!!!!!!";
     public static String CHAT_DATA_URL="http://d.hiphotos.baidu.com/zhidao/wh%3D600%2C800/sign=27d514408cb1cb133e3c3415ed647a76/b7003af33a87e95026578cc311385343faf2b4d8.jpg";
 
+    public static String userToken = "";
 
     public static List<MainDateDto> getData(){
         List<MainDateDto> data=new ArrayList<MainDateDto>();
@@ -53,5 +54,13 @@ public class Data {
             }
         }
         return list;
+    }
+
+    public static String getUserToken() {
+        return userToken;
+    }
+
+    public static void setUserToken(String userToken) {
+        Data.userToken = userToken;
     }
 }

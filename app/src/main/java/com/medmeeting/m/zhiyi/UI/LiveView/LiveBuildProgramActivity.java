@@ -31,14 +31,12 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
-import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
-import com.snappydb.SnappydbException;
 
 import org.json.JSONObject;
 
@@ -99,7 +97,6 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
     LinearLayout buildllyt;
 
     private static final String TAG = LiveBuildProgramActivity.class.getSimpleName();
-    private String token = "";
 
     //新增直播间
     private int userId;  //用户ID
@@ -136,12 +133,6 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        try {
-            token = DBUtils.get(LiveBuildProgramActivity.this, "userToken");
-        } catch (SnappydbException e) {
-            e.printStackTrace();
-        }
     }
 
     private void initView() {
@@ -247,7 +238,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 authorTitle = title.getText().toString().trim();
                 vidoDesc = introduction.getText().toString().trim();
                 LiveDto liveDto = new LiveDto(vidoTitle, videoPhoto, expectBeginTime, expectEndTime, authorName, authorTitle, privacyType, chargeType, price, vidoDesc);
-                HttpData.getInstance(token).HttpDataAddLiveProgram(new Observer<HttpResult3>() {
+                HttpData.getInstance().HttpDataAddLiveProgram(new Observer<HttpResult3>() {
                     @Override
                     public void onCompleted() {
                         Log.e(TAG, "onCompleted");
@@ -295,7 +286,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
     private String images = "";
 
     private void getQiniuToken(final String file) {
-        HttpData.getInstance(token).HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
+        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted");

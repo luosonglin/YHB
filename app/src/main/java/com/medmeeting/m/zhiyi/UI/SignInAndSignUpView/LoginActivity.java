@@ -35,6 +35,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
@@ -480,11 +481,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         @Override
                         public void onNext(HttpResult3<Object, UserTokenDto> token) {
-                            try {
-                                DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" +token.getEntity().getAccessToken());
-                            } catch (SnappydbException e) {
-                                e.printStackTrace();
-                            }
+//                            try {
+//                                DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" +token.getEntity().getAccessToken());
+//                            } catch (SnappydbException e) {
+//                                e.printStackTrace();
+//                            }
+                            Data.setUserToken(token.getEntity().getTokenType() + "_" +token.getEntity().getAccessToken());
 
                             Log.d(TAG, "Login succeed!");
                             finish();
