@@ -105,7 +105,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.e(TAG, "onError: "+e.getMessage()
+                                Log.e(TAG, "HttpDataDeleteLiveRoom onError: "+e.getMessage()
                                         +"\n"+e.getCause()
                                         +"\n"+e.getLocalizedMessage()
                                         +"\n"+e.getStackTrace());
@@ -117,7 +117,6 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                                 Log.d(TAG, "onNext");
                             }
                         }, mList.get(position).getId());
-
                     }
                 });
             }

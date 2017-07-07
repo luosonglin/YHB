@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.UI.Entity.BookListDto;
 import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildProgramActivity;
@@ -127,7 +128,20 @@ public class MainActivity extends AppCompatActivity
             mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
         }
         setTabSelection(tabOrders);
+
+        initUserToken();
     }
+
+    private void initUserToken() {
+        if ("".equals(Data.getUserToken())) {
+            try {
+                Data.setUserToken(DBUtils.get(MainActivity.this, "userToken"));
+            } catch (SnappydbException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void setTabSelection(View view) {
         int id = view.getId();
 
