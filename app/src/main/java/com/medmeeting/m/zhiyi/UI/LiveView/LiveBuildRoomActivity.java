@@ -23,8 +23,10 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuToken;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
@@ -68,16 +70,10 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     private TagAdapter mBaseQuickAdapter;
     //新增直播间
     private int userId;  //用户ID
-    private String vidoTitle = "";  //直播间标题
-    private long expectBeginTime;  //预计开始时间（预约模式为马上直播时，可传null）
-    private long expectEndTime;  //预计结束时间
-    private String vidoLabel = "";  //直播间标题
-    private String payType = "fee";  //付费方式（免费：fee，收费：toll）
-    private String price = "0";  //价格
-    private String pushSwitch = "pub";  //是否公开(公开:pub,隐私:pri)
-    private String vidoDesc = "";  //直播间描述
-    private String expectType = "";  //预约模式(liveNow:马上直播,expect:预约直播)
-    private String titlePhoto = "";  //直播间封面图片
+    private String videoTitle = "";  //直播间标题
+    private String videoLabel = "";  //直播间标题
+    private String videoDesc = "";  //直播间描述
+    private String videoPhoto = "";  //直播间封面图片
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +115,34 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                 initTagsPopupWindow();
                 break;
             case R.id.buildllyt:
+                videoTitle = theme.getText().toString().trim();
+                videoLabel = classifyTv.getText().toString().trim();
+                videoDesc = introduction.getText().toString().trim();
+                LiveRoomDto liveRoomDto = new LiveRoomDto(videoTitle, videoPhoto, videoLabel, videoDesc);
+
+                HttpData.getInstance().HttpDataAddLiveRoom(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: "+e.getMessage()
+                                +"\n"+e.getCause()
+                                +"\n"+e.getLocalizedMessage()
+                                +"\n"+e.getStackTrace());
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 httpResult3) {
+                        if ("success".equals(httpResult3.getStatus())) {
+                            startActivity(new Intent(LiveBuildRoomActivity.this, MyLiveRoomActivity.class));
+                        } else {
+                            ToastUtils.show(LiveBuildRoomActivity.this, httpResult3.getMsg());
+                        }
+                    }
+                }, liveRoomDto);
                 break;
         }
     }
@@ -212,7 +236,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                                 }
                                 Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
 
-                                titlePhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key;
+                                videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key;
                             }
                         }, null);
             }

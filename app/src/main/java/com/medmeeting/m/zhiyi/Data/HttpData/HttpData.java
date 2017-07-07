@@ -201,6 +201,12 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    //add live room
+    public void HttpDataAddLiveRoom(Observer<HttpResult3> observer, LiveRoomDto liveRoomDto) {
+        Observable observable = service_live.addLiveRoom(liveRoomDto);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      * @param observable

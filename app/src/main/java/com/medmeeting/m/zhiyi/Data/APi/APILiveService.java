@@ -63,4 +63,7 @@ public interface APILiveService {
     @POST("/v1/liveProgram/livePay")
     Observable<HttpResult3<Object, LivePayDto>> getLiveOrder(@Body LiveOrderDto liveOrderDto);
 
+    //POST /v1/anchor/liveRoom 新增直播房间信息
+    @POST("/v1/anchor/liveRoom")
+    Observable<HttpResult3> addLiveRoom(@Body LiveRoomDto liveRoomDto);
 }

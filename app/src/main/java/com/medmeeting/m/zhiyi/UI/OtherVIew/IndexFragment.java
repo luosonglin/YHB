@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -128,7 +127,7 @@ public class IndexFragment extends Fragment
 
         progress = (ProgressActivity) view.findViewById(R.id.progress);
         //分割线
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         //设置RecyclerView的显示模式  当前List模式
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //如果Item高度固定  增加该属性能够提高效率
@@ -165,7 +164,7 @@ public class IndexFragment extends Fragment
                 mBanner.setImages(bannerImages)
                         .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                         .setBannerTitles(bannerTitles)
-                        .setBannerAnimation(Transformer.Default)
+                        .setBannerAnimation(Transformer.BackgroundToForeground)
                         .setImageLoader(new GlideImageLoader())
                         .start();
                 mBanner.setOnBannerClickListener(new OnBannerClickListener() {

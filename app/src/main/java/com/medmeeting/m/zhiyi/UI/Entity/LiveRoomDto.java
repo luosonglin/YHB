@@ -29,6 +29,13 @@ public class LiveRoomDto {
     private long createTime;
     private long updateTime;
 
+    public LiveRoomDto(String title, String coverPhoto, String labelIds, String des) {
+        this.title = title;
+        this.coverPhoto = coverPhoto;
+        this.labelIds = labelIds;
+        this.des = des;
+    }
+
     public int getId() {
         return id;
     }
