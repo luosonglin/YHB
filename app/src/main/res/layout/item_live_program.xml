@@ -80,6 +80,14 @@
             </LinearLayout>
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/lock"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_margin="6dp"
+            android:layout_toLeftOf="@+id/image_rlyt"
+            android:src="@mipmap/live_lock"/>
+
         <RelativeLayout
             android:id="@+id/image_rlyt"
             android:layout_width="140dp"

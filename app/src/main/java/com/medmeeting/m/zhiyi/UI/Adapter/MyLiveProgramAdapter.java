@@ -26,11 +26,18 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
                 .into((ImageView) helper.getView(R.id.image));
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06))
-                .setText(R.id.sum, "已报名：" + item.getPayCount()+" 人");
+                .setText(R.id.sum, "已报名：" + item.getPayCount() + " 人");
+
         if (item.getChargeType().equals("yes")) {
             helper.setText(R.id.money, "¥" + item.getPrice());
         } else if (item.getChargeType().equals("no")) {
             helper.getView(R.id.money).setVisibility(View.INVISIBLE);
+        }
+
+        if (item.getPrivacyType().equals("private")) {
+            helper.getView(R.id.lock).setVisibility(View.VISIBLE);
+        } else if (item.getPrivacyType().equals("public")) {
+            helper.getView(R.id.lock).setVisibility(View.GONE);
         }
     }
 }
