@@ -63,4 +63,8 @@ public class Data {
     public static void setUserToken(String userToken) {
         Data.userToken = userToken;
     }
+
+    public static void clearUserToken() {
+        Data.userToken = "";
+    }
 }

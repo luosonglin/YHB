@@ -160,6 +160,9 @@
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
+        <activity
+            android:name=".UI.MineView.SettingActivity"
+            android:label="" />
     </application>
 
 </manifest>

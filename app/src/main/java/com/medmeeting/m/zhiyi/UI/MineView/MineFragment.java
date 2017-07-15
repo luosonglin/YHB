@@ -215,6 +215,7 @@ public class MineFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting:
+                startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
             case R.id.user_flyt:
                 break;
