@@ -57,7 +57,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:maxLines="1"
-                                android:text="添加一个直播封面"
+                                android:text="添加一个直播间封面"
                                 android:textColor="@color/white" />
 
                         </LinearLayout>
@@ -89,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:text="直播主题"
+                            android:text="直播间主题"
                             android:textColor="#666666" />
 
                         <EditText
@@ -100,7 +100,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:background="@color/white"
-                            android:hint="添加一个直播主题"
+                            android:hint="添加一个直播间主题"
                             android:maxLines="1"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -130,7 +130,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
                             android:layout_weight="1"
-                            android:text="直播分类"
+                            android:text="直播间分类"
                             android:textColor="#666666" />
 
                         <TextView
@@ -171,7 +171,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:text="直播介绍"
+                            android:text="直播间介绍"
                             android:textColor="#666666" />
 
                     </LinearLayout>
@@ -193,7 +193,7 @@
                             android:layout_marginRight="20dp"
                             android:background="@color/white"
                             android:gravity="top"
-                            android:hint="请输入直播介绍"
+                            android:hint="请输入直播间介绍"
                             android:padding="4dp"
                             android:paddingTop="2dp"
                             android:textSize="14sp" />

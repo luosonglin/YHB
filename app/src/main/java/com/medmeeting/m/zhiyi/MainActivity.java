@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity
             mPopMenu = new PopMenu.Builder().attachToActivity(MainActivity.this)
                     .addMenuItem(new PopMenuItem("大会签到", getResources().getDrawable(R.mipmap.tabbar_compose_idea)))
                     .addMenuItem(new PopMenuItem("交换名片", getResources().getDrawable(R.mipmap.tabbar_compose_photo)))
-                    .addMenuItem(new PopMenuItem("创建直播", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
+                    .addMenuItem(new PopMenuItem("建直播间", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
 //                    .addMenuItem(new PopMenuItem("发病例", getResources().getDrawable(R.mipmap.tabbar_compose_lbs)))
 //                    .addMenuItem(new PopMenuItem("我的钱包", getResources().getDrawable(R.mipmap.tabbar_compose_review)))
 //                    .addMenuItem(new PopMenuItem("发起直播", getResources().getDrawable(R.mipmap.tabbar_compose_more)))

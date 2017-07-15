@@ -30,7 +30,6 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex=1;
     private SpringView springView;
-    //    private BookListPresent present;
     private LiveMyPayListPresent present;
 
     @Override

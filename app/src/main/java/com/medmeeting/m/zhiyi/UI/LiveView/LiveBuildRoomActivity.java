@@ -47,7 +47,7 @@ import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
 import rx.Observer;
 
-public class LiveBuildRoomActivity extends AppCompatActivity {
+public class LiveBuildRoomActivity extends AppCompatActivity implements BaseQuickAdapter.OnRecyclerViewItemClickListener {
 
     @Bind(R.id.live_pic)
     ImageView livePic;
@@ -128,10 +128,10 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: "+e.getMessage()
-                                +"\n"+e.getCause()
-                                +"\n"+e.getLocalizedMessage()
-                                +"\n"+e.getStackTrace());
+                        Log.e(TAG, "onError: " + e.getMessage()
+                                + "\n" + e.getCause()
+                                + "\n" + e.getLocalizedMessage()
+                                + "\n" + e.getStackTrace());
                     }
 
                     @Override
@@ -244,13 +244,14 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         }.start();
     }
 
+    final List<TagDto> tags = new ArrayList<>();
+    final List<TagDto> tags_confirm = new ArrayList<>();
     /**
      * 标签弹窗
      */
     private void initTagsPopupWindow() {
         final View popupView = LiveBuildRoomActivity.this.getLayoutInflater().inflate(R.layout.popupwindow_live_classify, null);
 
-        final List<TagDto> tags = new ArrayList<>();
         RecyclerView recyclerView = (RecyclerView) popupView.findViewById(R.id.classify);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setHasFixedSize(true);
@@ -306,12 +307,46 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             }
         });
 
-        mBaseQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+//        mBaseQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+////                classifyTv.setText(tags.get(position).getLabelName());
+////                window.dismiss();
+//
+//            }
+//        });
+        mBaseQuickAdapter.setOnRecyclerViewItemClickListener(this);
+
+        TextView confirmTv = (TextView) popupView.findViewById(R.id.confirm_tag);
+        confirmTv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                classifyTv.setText(tags.get(position).getLabelName());
-                window.dismiss();
+            public void onClick(View view) {
+                if (tags_confirm.size() <= 3) {
+                    String classify = "";
+                    for (TagDto i : tags_confirm) {
+                        classify += " " + i.getLabelName();
+                        Log.e(TAG, i.getLabelName());
+                    }
+                    classifyTv.setText(classify);
+
+                    window.dismiss();
+                } else if (tags_confirm.size() == 0) {
+                    ToastUtils.show(LiveBuildRoomActivity.this, "请选择直播分类标签");
+                } else {
+                    ToastUtils.show(LiveBuildRoomActivity.this, "只能选3个标签，请重新筛选");
+                }
             }
         });
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        if (!tags_confirm.contains(tags.get(position))) {
+            tags_confirm.add(tags.get(position));
+        } else {
+            tags_confirm.remove(tags.get(position));
+        }
+        mBaseQuickAdapter.notifyItemChanged(position);
     }
 }

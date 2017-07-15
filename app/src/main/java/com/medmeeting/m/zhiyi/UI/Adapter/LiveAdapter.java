@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveDetailActivity;
@@ -26,6 +27,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .load(item.getCoverPhoto())
                 .crossFade()
                 .placeholder(R.mipmap.live_background)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into((ImageView) helper.getView(R.id.image));
 
         Glide.with(mContext)
@@ -33,6 +35,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .crossFade()
                 .transform(new GlideCircleTransform(mContext))
                 .placeholder(R.mipmap.avator_default)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into((ImageView) helper.getView(R.id.avatar));
 
         helper.setText(R.id.sum, item.getId()+"")
