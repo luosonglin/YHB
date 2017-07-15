@@ -1,11 +1,13 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailAuthorActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
@@ -18,7 +20,7 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, LiveDto item) {
+    protected void convert(BaseViewHolder helper, final LiveDto item) {
         Glide.with(mContext)
                 .load(item.getCoverPhoto())
                 .crossFade()
@@ -39,5 +41,20 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
         } else if (item.getPrivacyType().equals("public")) {
             helper.getView(R.id.lock).setVisibility(View.GONE);
         }
+
+        helper.getView(R.id.item_news_cv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, LiveProgramDetailAuthorActivity.class);
+                intent.putExtra("userPic", item.getUserPic());
+                intent.putExtra("authorTitle", item.getAuthorTitle());
+                intent.putExtra("authorName", item.getAuthorName());
+                intent.putExtra("programId", item.getId());
+                intent.putExtra("roomId", item.getRoomId());
+                intent.putExtra("coverPhoto", item.getCoverPhoto());
+                intent.putExtra("title", item.getTitle());
+                mContext.startActivity(intent);
+            }
+        });
     }
 }
