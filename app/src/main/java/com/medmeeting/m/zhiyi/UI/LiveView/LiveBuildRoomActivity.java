@@ -230,7 +230,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity implements BaseQuic
                                             .crossFade()
                                             .placeholder(R.mipmap.live_title_pic)
                                             .into(livePic);
-                                    livePicTipTv.setText("修改直播封面");
+                                    livePicTipTv.setText("修改直播间封面");
                                 } else {
                                     Log.i("qiniu", "Upload Fail");
                                     //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
