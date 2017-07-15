@@ -233,7 +233,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 privacyType = "private";
                 break;
             case R.id.buildllyt:
-                vidoTitle = title.getText().toString().trim();
+                vidoTitle = theme.getText().toString().trim();
                 authorName = name.getText().toString().trim();
                 authorTitle = title.getText().toString().trim();
                 vidoDesc = introduction.getText().toString().trim();

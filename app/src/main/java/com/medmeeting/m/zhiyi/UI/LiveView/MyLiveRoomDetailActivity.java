@@ -14,11 +14,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Constant.Constant;
-import com.medmeeting.m.zhiyi.MVP.Presenter.BannerListPresent;
-import com.medmeeting.m.zhiyi.MVP.View.BannerListView;
+import com.medmeeting.m.zhiyi.MVP.Presenter.MyLiveProgramListPresent;
+import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.LiveProgramAdapter;
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Adapter.MyLiveProgramAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
@@ -29,18 +29,18 @@ import java.util.List;
 /**
  * 直播间详情页
  */
-public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, BannerListView {
+public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, LiveListView {
 
 
     RecyclerView mRecyclerView;
     ProgressActivity progress;
     private Toolbar toolbar;
-    private TextView pageName, titleTv, addTv;
+    private TextView roomIdTv, pageName, titleTv, addTv;
     private ImageView backgroundIv;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
     private SpringView springView;
-    private BannerListPresent present;
+    private MyLiveProgramListPresent present;
     private Integer roomId = 0;
 
     @Override
@@ -71,6 +71,8 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         titleTv.setText(getIntent().getExtras().getString("title"));
 
         roomId = getIntent().getExtras().getInt("roomId");
+        roomIdTv = (TextView) findViewById(R.id.room_id);
+        roomIdTv.setText("房间No." + roomId);
 
         addTv = (TextView) findViewById(R.id.add);
         addTv.setOnClickListener(new View.OnClickListener() {
@@ -116,8 +118,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-//        mQuickAdapter = new ListViewAdapter(R.layout.list_view_item_layout,null);
-        mQuickAdapter = new LiveProgramAdapter(R.layout.item_live_program, null);
+        mQuickAdapter = new MyLiveProgramAdapter(R.layout.item_live_program, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
@@ -125,10 +126,10 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
 //        present = new BookListPresent(this);
-        present = new BannerListPresent(this);
+        present = new MyLiveProgramListPresent(this);
         //请求网络数据
 //        present.LoadData("1",PageIndex,false);
-        present.LoadData(false);
+        present.LoadData(false, roomId);
     }
 
     private void initListener() {
@@ -155,7 +156,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     public void onLoadMoreRequested() {
         PageIndex++;
 //        present.LoadData("1",PageIndex,true);
-        present.LoadData(true);
+        present.LoadData(true, roomId);
     }
 
     //下拉刷新
@@ -163,7 +164,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     public void onRefresh() {
         PageIndex = 1;
 //        present.LoadData("1",PageIndex,false);
-        present.LoadData(false);
+        present.LoadData(false, roomId);
     }
 
     //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
@@ -187,7 +188,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     }
 
     @Override
-    public void newDatas(List<BannerDto.BannersBean> newsList) {
+    public void newDatas(List<LiveDto> newsList) {
         //进入显示的初始数据或者下拉刷新显示的数据
         mQuickAdapter.setNewData(newsList);//新增数据
         mQuickAdapter.openLoadMore(10, true);//设置是否可以下拉加载  以及加载条数
@@ -195,7 +196,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     }
 
     @Override
-    public void addDatas(List<BannerDto.BannersBean> addList) {
+    public void addDatas(List<LiveDto> addList) {
         //新增自动加载的的数据
         mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
     }
@@ -208,7 +209,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
             public void onClick(View v) {
                 PageIndex = 1;
 //                present.LoadData("1",PageIndex,false);
-                present.LoadData(false);
+                present.LoadData(false, roomId);
             }
         });
     }

@@ -35,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter {
         Glide.with(mContext)
                 .load(mList.get(position).getCoverPhoto())
                 .crossFade()
-                .placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.mipmap.ic_launcher)
                 .into(viewHolder.background);
     }
 

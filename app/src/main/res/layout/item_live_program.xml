@@ -10,45 +10,42 @@
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="12dp">
+        android:layout_height="80dp"
+        android:gravity="center">
 
         <LinearLayout
-            android:layout_width="230dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="12dp"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_toLeftOf="@+id/image_rlyt"
+            android:padding="6dp">
 
             <TextView
                 android:id="@+id/name"
-                style="@style/TextStyle_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
+                android:layout_marginLeft="4dp"
                 android:ellipsize="marquee"
                 android:lines="1"
-                android:text="我要拜堂成亲的人明明是唐家大公子" />
+                android:text="***"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/time"
                 style="@style/TextStyle_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="6dp"
-                android:text="2017-04-08 16:53"
-                android:paddingLeft="16dp"
+                android:text="***"
                 android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
-                android:paddingLeft="16dp"
                 android:layout_marginTop="6dp">
 
                 <TextView
@@ -56,7 +53,7 @@
                     style="@style/TextStyle_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="18dp"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginLeft="4dp"
                     android:layout_marginRight="6dp"
                     android:background="@drawable/textview_all_blue"
                     android:gravity="center"
@@ -80,68 +77,74 @@
                     android:text="¥108"
                     android:textColor="@color/skyblue"
                     android:textSize="10sp" />
-
             </LinearLayout>
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/image_rlyt"
             android:layout_width="140dp"
-            android:layout_height="70dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="4dp">
 
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:src="@mipmap/ic_launcher" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:layout_alignParentBottom="true">
+
                 <LinearLayout
                     android:id="@+id/to_app"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="4dp"
                     android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@mipmap/to_app_open_icon"/>
+                        android:src="@mipmap/to_app_open_icon" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:text="开播"
-                        android:textSize="10sp"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/to_pc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="12dp"
                     android:orientation="horizontal">
+
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@mipmap/to_pc_open_icon"/>
+                        android:src="@mipmap/to_pc_open_icon" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:text="去PC直播"
-                        android:textSize="10sp"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </android.support.v7.widget.CardView>
