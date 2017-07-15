@@ -106,6 +106,9 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     //拉流地址
     private String url;
 
+    //payFalg (integer, optional): 是否购票 0:未购票，大于0:已购票 ,
+    private Integer payFlag = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +122,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         initShare(savedInstanceState, getIntent().getExtras().getInt("roomId"),
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("coverPhote"),
-                "欢迎观看"+getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
+                "欢迎观看" + getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
     }
 
     private void toolBar() {
@@ -294,6 +297,9 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         titleTv.setText(title);
         userNameTv.setText("主讲人：" + userName);
 
+        //点击"观看"
+        watchTv = (TextView) findViewById(R.id.watch);
+
         HttpData.getInstance().HttpDataGetLiveProgramAudienceDetail(new Observer<HttpResult3<Object, LiveAudienceDetailDto>>() {
             @Override
             public void onCompleted() {
@@ -309,18 +315,55 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(HttpResult3<Object, LiveAudienceDetailDto> liveDtoHttpResult3) {
+            public void onNext(final HttpResult3<Object, LiveAudienceDetailDto> liveDtoHttpResult3) {
                 Log.e(TAG, "onNext");
 
                 programId = liveDtoHttpResult3.getEntity().getId();
                 url = liveDtoHttpResult3.getEntity().getRtmpPlayUrl();
                 amount = liveDtoHttpResult3.getEntity().getPrice();
+                payFlag = liveDtoHttpResult3.getEntity().getPayFalg();
 
                 initTagsView(getIntent().getExtras().getInt("roomId"),
                         liveDtoHttpResult3.getEntity().getAuthorName(),
                         liveDtoHttpResult3.getEntity().getAuthorTitle(),
                         liveDtoHttpResult3.getEntity().getCoverPhoto(),
                         liveDtoHttpResult3.getEntity().getDes());
+
+
+                if ("yes".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
+                    if (payFlag == 0) {//0:未购票
+                        watchTv.setText("支付" + amount + "元观看");
+                        watchTv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                initPopupwindow();
+                            }
+                        });
+                    } else if (payFlag > 0) { //大于0:已购票
+                        watchTv.setText("观看");
+                        watchTv.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+                                intent.putExtra("rtmpPlayUrl", url);
+                                intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
+                } else if ("no".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
+                    watchTv.setText("观看");
+                    watchTv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+                            intent.putExtra("rtmpPlayUrl", liveDtoHttpResult3.getEntity().getRtmpPlayUrl());
+                            intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
+                            startActivity(intent);
+                        }
+                    });
+                }
 
             }
         }, getIntent().getExtras().getInt("programId"));
@@ -375,28 +418,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
             }
         });
 
-        //点击"观看"
-        watchTv = (TextView) findViewById(R.id.watch);
-        if ("yes".equals(chargeType)) {
-            watchTv.setText("支付" + price + "元观看");
-            watchTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    initPopupwindow();
-                }
-            });
-        } else if ("no".equals(chargeType)) {
-            watchTv.setText("观看");
-            watchTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                    intent.putExtra("rtmpPlayUrl", url);
-                    intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
-                    startActivity(intent);
-                }
-            });
-        }
+
     }
 
     // 回弹动画 (使用了属性动画)

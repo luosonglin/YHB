@@ -163,15 +163,15 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity{
 //        mVideoView.setVideoPath(DEFAULT_TEST_URL);
 
         //默认为全屏横屏模式
-        mRotation = (mRotation + 270) % 360;
+        mRotation = (mRotation + 0) % 360;
         mVideoView.setDisplayOrientation(mRotation);
 
         mVideoView.start();
 
         //init 互动view
 
-        onlineVidoId = getIntent().getExtras().getInt("onlineVidoId");
-        Log.e(TAG, "onlineVidoId" + onlineVidoId);
+        onlineVidoId = getIntent().getExtras().getInt("programId");
+        Log.e(TAG, "programId" + onlineVidoId);
     }
 
     @Override
