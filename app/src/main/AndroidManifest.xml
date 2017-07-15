@@ -163,6 +163,9 @@
         <activity
             android:name=".UI.MineView.SettingActivity"
             android:label="" />
+        <activity
+            android:name=".UI.LiveView.MyPayLiveRoomActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

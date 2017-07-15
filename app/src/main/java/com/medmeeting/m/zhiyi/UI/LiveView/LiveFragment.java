@@ -130,21 +130,14 @@ public class LiveFragment extends Fragment
         //设置下拉刷新样式
         springView.setType(SpringView.Type.FOLLOW);
         springView.setHeader(new DefaultHeader(getActivity()));
-//        springView.setFooter(new DefaultFooter(this));
-//        springView.setHeader(new RotationHeader(this));
-//        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
-
         progress = (ProgressActivity) view.findViewById(R.id.progress);
         //设置RecyclerView的显示模式  当前List模式
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-//        mQuickAdapter = new ListViewAdapter(R.layout.list_view_item_layout,null);
         mQuickAdapter = new LiveAdapter(R.layout.item_live, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
@@ -152,11 +145,8 @@ public class LiveFragment extends Fragment
         mQuickAdapter.openLoadMore(6, true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
-//        present = new BookListPresent(this);
         present = new LiveListPresent(this);
         //请求网络数据
-//        present.LoadData("1",PageIndex,false);
-
         present.LoadData(false, liveSearchDto2);
     }
 

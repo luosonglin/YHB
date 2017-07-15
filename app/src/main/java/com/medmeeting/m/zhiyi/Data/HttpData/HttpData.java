@@ -227,6 +227,12 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    //get my pay live list
+    public void HttpDataGetMyPayLives(Observer<HttpResult3<LiveDto, Object>> observer) {
+        Observable observable = service_live.getMyPayLives();
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *

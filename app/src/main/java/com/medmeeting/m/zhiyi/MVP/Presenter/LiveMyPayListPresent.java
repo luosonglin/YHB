@@ -1,32 +1,30 @@
 package com.medmeeting.m.zhiyi.MVP.Presenter;
 
 import com.medmeeting.m.zhiyi.MVP.Listener.OnLoadDataListListener;
-import com.medmeeting.m.zhiyi.MVP.Model.LiveListModel;
+import com.medmeeting.m.zhiyi.MVP.Model.LiveMyPayListModel;
 import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 
 import java.util.List;
 
-public class LiveListPresent implements OnLoadDataListListener<List<LiveDto>> {
+public class LiveMyPayListPresent implements OnLoadDataListListener<List<LiveDto>> {
     private LiveListView mView;
-    private LiveListModel mModel;
+    private LiveMyPayListModel mModel;
     private boolean isjz;
 
-    public LiveListPresent(LiveListView mView) {
+    public LiveMyPayListPresent(LiveListView mView) {
         this.mView = mView;
-        this.mModel = new LiveListModel();
+        this.mModel = new LiveMyPayListModel();
         mView.showProgress();
     }
 
     /**
-     * 全部直播列表
+     * 付费直播列表
      * @param isjz
-     * @param liveSearchDto
      */
-    public void LoadData(boolean isjz, LiveSearchDto2 liveSearchDto) {
+    public void LoadData(boolean isjz) {
         this.isjz = isjz;
-        mModel.LoadData(this, liveSearchDto);
+        mModel.LoadData(this);
     }
 
     @Override

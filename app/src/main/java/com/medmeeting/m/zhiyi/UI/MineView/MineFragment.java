@@ -19,6 +19,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -211,7 +212,7 @@ public class MineFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodetiezi, R.id.wodebingli, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang})
+    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodetiezi, R.id.wodebingli, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting:
@@ -238,6 +239,9 @@ public class MineFragment extends Fragment {
                 startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
                 break;
             case R.id.wodewendang:
+                break;
+            case R.id.wodefufeizhibo:
+                startActivity(new Intent(getActivity(), MyPayLiveRoomActivity.class));
                 break;
         }
     }

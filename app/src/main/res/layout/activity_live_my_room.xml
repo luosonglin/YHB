@@ -36,7 +36,7 @@
                 android:padding="20dp"
                 android:text="新建"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="13sp" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
     <!--&lt;!&ndash;ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面&ndash;&gt;-->

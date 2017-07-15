@@ -80,4 +80,8 @@ public interface APILiveService {
     //POST /v1/anchor/{roomId}/liveProgram 新增直播节目
     @POST("/v1/anchor/{roomId}/liveProgram")
     Observable<HttpResult3> addLiveProgram(@Path("roomId") Integer roomId, @Body LiveDto liveDto);
+
+    //GET /v1/liveProgram/myPay 获取已购门票的直播列表
+    @GET("/v1/liveProgram/myPay")
+    Observable<HttpResult3<LiveDto, Object>> getMyPayLives();
 }
