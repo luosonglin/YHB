@@ -118,6 +118,18 @@ public class LiveBuildRoomActivity extends AppCompatActivity implements BaseQuic
                 videoTitle = theme.getText().toString().trim();
                 videoLabel = classifyTv.getText().toString().trim();
                 videoDesc = introduction.getText().toString().trim();
+                if (videoTitle.equals("")) {
+                    ToastUtils.show(LiveBuildRoomActivity.this, "请填写标题");
+                    return;
+                }
+                if (videoLabel.equals("")) {
+                    ToastUtils.show(LiveBuildRoomActivity.this, "请选择分类标签");
+                    return;
+                }
+                if (videoDesc.equals("")) {
+                    ToastUtils.show(LiveBuildRoomActivity.this, "请填写直播介绍");
+                    return;
+                }
                 LiveRoomDto liveRoomDto = new LiveRoomDto(videoTitle, videoPhoto, videoLabel, videoDesc);
 
                 HttpData.getInstance().HttpDataAddLiveRoom(new Observer<HttpResult3>() {
