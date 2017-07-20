@@ -156,4 +156,10 @@
 
     <color name="navpage">#FFE1E8EB</color> <!--WXPayEntryActivity-->
 
+    <color name="pldroid_streaming_white">#fff</color>
+    <color name="pldroid_streaming_red">#f00</color>
+    <color name="pldroid_streaming_yellow">#FFFF00</color>
+
+    <color name="live_blue">#3094FA</color>
+
 </resources>

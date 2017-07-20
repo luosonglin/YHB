@@ -49,6 +49,7 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
                     Log.e(TAG, "1: " + mUserId+" "+item.getUserId());
                     intent.putExtra("userPic", item.getUserPic());
                     intent.putExtra("authorTitle", item.getAuthorTitle());
+//                    intent.putExtra("pushUrl", item.ge)
                 } else {
                     //用户进的直播节目详情页
                     intent = new Intent(mContext, LiveProgramDetailActivity.class);

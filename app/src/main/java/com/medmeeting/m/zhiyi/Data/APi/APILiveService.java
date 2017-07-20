@@ -4,6 +4,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
@@ -61,6 +62,10 @@ public interface APILiveService {
     @GET("v1/anchor/{roomId}/liveProgram/{programId}")
     Observable<HttpResult3<Object, LiveDto>> getLiveProgramDetail(@Path("programId") Integer programId);
 
+    //GET /v1/anchor/{roomId}/liveProgram/open/{programId} 开启直播，返回推流信息
+//    @GET("/v1/anchor/{roomId}/liveProgram/open/{programId}")
+//    Observable<>
+
     //获取直播节目详情(观众)
     @GET("v1/open/program/{programId}")
     Observable<HttpResult3<Object, LiveAudienceDetailDto>> getLiveProgramAudienceDetail(@Path("programId") Integer programId);
@@ -84,4 +89,8 @@ public interface APILiveService {
     //GET /v1/liveProgram/myPay 获取已购门票的直播列表
     @GET("/v1/liveProgram/myPay")
     Observable<HttpResult3<LiveDto, Object>> getMyPayLives();
+
+    //POST /v1/open/user/scanCodeLogin 移动端确认登陆, [extend]字段传递:直播节目ID
+    @POST("/v1/open/user/scanCodeLogin")
+    Observable<HttpResult3> loginWeb(@Body LiveLoginWebDto liveLoginWebDto);
 }

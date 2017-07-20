@@ -8,4 +8,62 @@
     <string name="app_tip">提示</string>
     <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
+
+    <string name="logining">正在登陆…</string>
+    <string name="title_activity_bind_user_info_acctivity">BindUserInfoAcctivity</string>
+    <string name="title_activity_meeting_enrol">MeetingEnrolActivity</string>
+    <string name="title_activity_meeting_bind_phone">MeetingBindPhoneActivity</string>
+    <string name="title_activity_case_detail">CaseDetailActivity</string>
+    <string name="title_activity_guide_pages">GuidePagesActivity</string>
+    <string name="title_activity_live_invitation_letter">LiveInvitationLetterActivity</string>
+
+
+    <string name="hw_codec_camera_streaming_txt">HW Codec Camera Streaming</string>
+    <string name="sw_codec_camera_streaming_txt">SW Codec Camera Streaming</string>
+    <string name="pure_audio_streaming_txt">Audio Streaming</string>
+    <string name="screen_recorder_streaming_txt">Screen Recorder Streaming</string>
+    <string name="ext_cap_streaming_txt">Ext Capture Streaming</string>
+
+    <string name="string_state_ready">READY</string>
+    <string name="string_state_preparing">PREPARING</string>
+    <string name="string_state_connecting">CONNECTING</string>
+    <string name="string_state_streaming">STREAMING</string>
+    <string name="string_state_netblocking">NETBLOCKING, STOPPING</string>
+    <string name="string_state_con_timeout">CONNECTION TIMEOUT</string>
+    <string name="title_activity_audio_streaming">AudioStreamingActivity</string>
+
+    <string name="flash_light_on">ON</string>
+    <string name="flash_light_off">OFF</string>
+
+    <string name="cd_et_input_url">cd_et_input_url</string>
+    <string name="cd_btn_hw_codec">cd_btn_hw_codec</string>
+    <string name="cd_btn_sw_codec">cd_btn_sw_codec</string>
+    <string name="cd_btn_pure_audio">cd_btn_pure_audio</string>
+    <string name="cd_tv_version_info">cd_tv_version_info</string>
+    <string name="cd_tv_log_info">cd_tv_log_info</string>
+    <string name="cd_et_input_method">cd_et_input_method</string>
+    <string name="cd_btn_camera_switcher">cd_btn_camera_switcher</string>
+    <string name="cd_tv_stream_status">cd_tv_stream_status</string>
+    <string name="cd_btn_torch">cd_btn_torch</string>
+    <string name="cd_btn_capture">cd_btn_capture</string>
+    <string name="cd_btn_orientation">cd_btn_orientation</string>
+    <string name="cd_btn_mute">cd_btn_mute</string>
+    <string name="cd_btn_fb">cd_btn_fb</string>
+    <string name="cd_tv_streaming_state_hint">cd_tv_streaming_state_hint</string>
+    <string name="cd_shutter_button">cd_shutter_button</string>
+    <string name="cd_btn_screen_recorder">cd_btn_screen_recorder</string>
+    <string name="cd_btn_ext_cap">cd_btn_ext_cap</string>
+    <string name="cd_preview_mirror">cd_preview_mirror</string>
+    <string name="cd_encoding_mirror">cd_encoding_mirror</string>
+
+    <string-array name="stepLabels">
+        <item>Approval</item>
+        <item>Processed</item>
+        <item>Shipped</item>
+        <item>Delivery</item>
+    </string-array>
+
+    <string name="indicator_tip"> &lt;&lt;&lt;  左滑</string>
+
+    <string name="rc_send">发送</string>
 </resources>
