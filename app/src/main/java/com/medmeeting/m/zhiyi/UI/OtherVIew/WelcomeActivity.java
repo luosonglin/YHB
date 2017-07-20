@@ -42,7 +42,7 @@ public class WelcomeActivity extends ListvViewActivity {
 //        getWindow().setBackgroundDrawableResource(R.mipmap.haha);
         imageView = (ImageView) findViewById(R.id.background);
         Glide.with(WelcomeActivity.this)
-                .load(R.mipmap.haha)
+                .load(R.mipmap.appbg)
                 .asGif()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
@@ -60,7 +60,7 @@ public class WelcomeActivity extends ListvViewActivity {
         countDownTimer.start();
     }
 
-    private CountDownTimer countDownTimer = new CountDownTimer(6000, 1000) {
+    private CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
         @Override
         public void onTick(long l) {
             timeTv.setText("跳过   " + l / 1000 + "秒");

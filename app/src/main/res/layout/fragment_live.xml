@@ -58,11 +58,11 @@
         android:background="@mipmap/live_search"/>
 
     <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->
-    <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity xmlns:progressActivity="http://schemas.android.com/apk/res-auto"
+    <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey1">
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                 android:id="@+id/springview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/grey1">
+                android:background="@color/white">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_list"
