@@ -10,6 +10,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 
@@ -63,8 +64,8 @@ public interface APILiveService {
     Observable<HttpResult3<Object, LiveDto>> getLiveProgramDetail(@Path("programId") Integer programId);
 
     //GET /v1/anchor/{roomId}/liveProgram/open/{programId} 开启直播，返回推流信息
-//    @GET("/v1/anchor/{roomId}/liveProgram/open/{programId}")
-//    Observable<>
+    @GET("/v1/anchor/{roomId}/liveProgram/open/{programId}")
+    Observable<HttpResult3<Object, LiveStream>> getLiveStream(@Path("programId") Integer programId);
 
     //获取直播节目详情(观众)
     @GET("v1/open/program/{programId}")

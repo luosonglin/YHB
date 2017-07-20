@@ -129,3 +129,7 @@
     -keep class com.youth.banner.** {
         *;
      }
+
+
+# 七牛 推流
+-keep class com.qiniu.pili.droid.streaming.** { *; }

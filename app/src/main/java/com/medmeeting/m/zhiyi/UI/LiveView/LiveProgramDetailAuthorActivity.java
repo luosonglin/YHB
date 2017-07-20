@@ -24,7 +24,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.zxing.activity.CaptureActivity;
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.Config;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.SWCodecCameraStreamingActivity;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
@@ -47,6 +50,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import rx.Observer;
 
 /**
  * 主播用的直播节目详情页
@@ -122,8 +127,8 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
-                        .setTitle("")
-                        .setMessage("请用PC浏览器打开 zb.medmeeting.com 进行扫码登录")
+                        .setTitle("请用PC浏览器打开")
+                        .setMessage(" zb.medmeeting.com 进行扫码登录")
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -138,14 +143,32 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                             }
                         })
                         .show();
-
             }
         });
         findViewById(R.id.to_push).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
-//                startStreamingActivity(intent, response.body().getEntity().getPushUrl());
+
+                HttpData.getInstance().HttpDataGetLiveStream(new Observer<HttpResult3<Object, LiveStream>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<Object, LiveStream> objectLiveStreamHttpResult3) {
+                        if (objectLiveStreamHttpResult3.getStatus().equals("success")) {
+                            Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
+                            startStreamingActivity(intent, objectLiveStreamHttpResult3.getEntity().getPushUrl());
+                        }
+                    }
+                }, programId);
+
             }
         });
     }

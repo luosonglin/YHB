@@ -125,6 +125,12 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //七牛云储存
     compile 'com.qiniu:qiniu-android-sdk:7.3.+'
+
+    //七牛直播 推流
+    compile files('libs/pldroid-media-streaming-2.1.3.jar')
+    compile 'com.qiniu.pili:pili-android-qos:0.8.+'
+    compile 'com.qiniu:happy-dns:0.2.7'
+
     //im
     compile project(':imlib')
     compile files('libs/pldroid-media-streaming-2.1.3.jar')

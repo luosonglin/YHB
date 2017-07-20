@@ -72,7 +72,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
 
         roomId = getIntent().getExtras().getInt("roomId");
         roomIdTv = (TextView) findViewById(R.id.room_id);
-        roomIdTv.setText("房间No." + roomId);
+        roomIdTv.setText("房间No." + getIntent().getExtras().getString("number"));
 
         addTv = (TextView) findViewById(R.id.add);
         addTv.setOnClickListener(new View.OnClickListener() {

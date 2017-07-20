@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
+import com.qiniu.pili.droid.streaming.StreamingEnv;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
@@ -40,6 +41,13 @@ public class BaseApplication extends Application {
                 .init(this);
 
         UMShareAPI.get(this);
+
+        //直播推流
+        StreamingEnv.init(getApplicationContext());
+
+//        //融云
+//        context = this;
+//        LiveKit.init(context, String.valueOf("qd46yzrfq3lwf"));//FakeServer.getAppKey()
     }
 
     public static Context getContext() {

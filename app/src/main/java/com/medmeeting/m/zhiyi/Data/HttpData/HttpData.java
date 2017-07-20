@@ -24,6 +24,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
@@ -237,6 +238,12 @@ public class HttpData extends RetrofitUtils {
     //login web
     public void HttpDataLoginWeb(Observer<HttpResult3> observer, LiveLoginWebDto liveLoginWebDto) {
         Observable observable = service_live.loginWeb(liveLoginWebDto);
+        setSubscribe(observable, observer);
+    }
+
+    //get live stream
+    public void HttpDataGetLiveStream(Observer<HttpResult3<Object, LiveStream>> observer, Integer programId) {
+        Observable observable = service_live.getLiveStream(programId);
         setSubscribe(observable, observer);
     }
 

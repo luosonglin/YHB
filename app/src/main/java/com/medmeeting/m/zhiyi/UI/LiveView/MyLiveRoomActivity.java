@@ -92,6 +92,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                         intent.putExtra("roomId", mList.get(position).getId());
                         intent.putExtra("title", mList.get(position).getTitle());
                         intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());
+                        intent.putExtra("number", mList.get(position).getNumber());
                         startActivity(intent);
                     }
 
