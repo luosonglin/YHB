@@ -29,6 +29,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_gravity="bottom" />
 
     <Button
@@ -38,6 +39,7 @@
         android:textColor="@color/pldroid_streaming_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="20dp"/>
 
     <LinearLayout
@@ -68,6 +70,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="left|center"
+        android:visibility="gone"
         android:gravity="center_vertical">
 
         <Button
@@ -93,6 +96,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="right|center"
+        android:visibility="gone"
         android:gravity="center_vertical">
 
         <Button
@@ -141,6 +145,7 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="60dp"
         android:max="100"
+        android:visibility="gone"
         android:progress="100"/>
 
     <include layout="@layout/camera_button_holder" />
