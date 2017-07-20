@@ -31,7 +31,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.Config;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.SWCodecCameraStreamingActivity;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
-import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -219,10 +218,9 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 mShareAction.open(config);
                 return true;
             case R.id.analyse:
-//                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveInvitationLetterActivity.class);
-//                intent.putExtra("roomId", getIntent().getExtras().getInt("roomId"));
-//                startActivity(intent);
-                ToastUtils.show(LiveProgramDetailAuthorActivity.this, "稍后开启");
+                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity.class);
+                intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

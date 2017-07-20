@@ -11,6 +11,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 
@@ -94,4 +95,12 @@ public interface APILiveService {
     //POST /v1/open/user/scanCodeLogin 移动端确认登陆, [extend]字段传递:直播节目ID
     @POST("/v1/open/user/scanCodeLogin")
     Observable<HttpResult3> loginWeb(@Body LiveLoginWebDto liveLoginWebDto);
+
+    //GET /v1/anchor/livePay/{programId}/list 获取直播节目的已购门票记录
+    @GET("/v1/anchor/livePay/{programId}/list")
+    Observable<HttpResult3<Object, LiveTicketDto>> getPayList(@Path("programId") Integer programId);
+
+    //POST /v1/anchor/livePay/{programId}/extract 新增 节目门票 提现申请
+    @POST("/v1/anchor/livePay/{programId}/extract")
+    Observable<HttpResult3> extract(@Path("programId") Integer programId);
 }
