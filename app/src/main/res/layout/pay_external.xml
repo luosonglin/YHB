@@ -24,7 +24,6 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/product_subject"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -73,7 +72,6 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/product_price"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -83,7 +81,6 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/pay"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -92,7 +89,6 @@
             tools:ignore="HardcodedText" />
 
         <Button
-            android:id="@+id/h5pay"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

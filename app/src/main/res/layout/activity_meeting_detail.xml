@@ -54,7 +54,6 @@
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
-        android:id="@+id/content_meeting_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="MissingConstraints"
@@ -84,7 +83,6 @@
             android:background="@color/white">
 
             <TextView
-                android:id="@+id/b"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="40dp"

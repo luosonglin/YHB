@@ -512,5 +512,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
     }
+
+    @Override
+    public boolean onKeyDown(final int pKeyCode, final KeyEvent pKeyEvent) {
+        switch (pKeyCode) {
+            case KeyEvent.KEYCODE_BACK:
+
+                return false;   //
+            case KeyEvent.KEYCODE_MENU:
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+            case KeyEvent.KEYCODE_DPAD_UP:
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+            case KeyEvent.KEYCODE_ENTER:
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+                return true;
+            default:
+                return super.onKeyDown(pKeyCode, pKeyEvent);
+        }
+    }
 }
 

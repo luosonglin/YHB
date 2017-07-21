@@ -72,7 +72,6 @@
 
             <!--显示头部滑块-->
             <RelativeLayout
-                android:id="@+id/tab_llyt"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
                 android:layout_alignParentTop="true"

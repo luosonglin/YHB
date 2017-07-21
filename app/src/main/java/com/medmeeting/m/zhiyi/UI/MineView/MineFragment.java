@@ -142,33 +142,37 @@ public class MineFragment extends Fragment {
 
     private void initView() {
 
-        HttpData.getInstance().HttpDataGetMyInfo(new Observer<MyInfoDto>() {
-            @Override
-            public void onCompleted() {
+        if(userId == null) {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        } else {
+            HttpData.getInstance().HttpDataGetMyInfo(new Observer<MyInfoDto>() {
+                @Override
+                public void onCompleted() {
 
-            }
+                }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
-            }
+                @Override
+                public void onError(Throwable e) {
+                    Log.e(TAG, "onError: " + e.getMessage()
+                            + "\n" + e.getCause()
+                            + "\n" + e.getLocalizedMessage()
+                            + "\n" + e.getStackTrace());
+                }
 
-            @Override
-            public void onNext(MyInfoDto item) {
-                Glide.with(getActivity())
-                        .load(item.getData().getUser().getUserPic())
-                        .crossFade()
-                        .placeholder(R.mipmap.ic_launcher)
-                        .into(headIv);
-                nameTv.setText(item.getData().getUser().getName() == null ?
-                        item.getData().getUser().getNickName() : item.getData().getUser().getName());
-                hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
-                titleTv.setText(item.getData().getUser().getTitle()+" ");
-            }
-        }, Integer.parseInt(userId));
+                @Override
+                public void onNext(MyInfoDto item) {
+                    Glide.with(getActivity())
+                            .load(item.getData().getUser().getUserPic())
+                            .crossFade()
+                            .placeholder(R.mipmap.ic_launcher)
+                            .into(headIv);
+                    nameTv.setText(item.getData().getUser().getName() == null ?
+                            item.getData().getUser().getNickName() : item.getData().getUser().getName());
+                    hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
+                    titleTv.setText(item.getData().getUser().getTitle() + " ");
+                }
+            }, Integer.parseInt(userId));
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
