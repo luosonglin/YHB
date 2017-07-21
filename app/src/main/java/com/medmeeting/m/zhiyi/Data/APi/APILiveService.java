@@ -103,4 +103,8 @@ public interface APILiveService {
     //POST /v1/anchor/livePay/{programId}/extract 新增 节目门票 提现申请
     @POST("/v1/anchor/livePay/{programId}/extract")
     Observable<HttpResult3> extract(@Path("programId") Integer programId);
+
+    //DELETE /v1/anchor/{roomId}/liveProgram/{programId} 删除直播节目
+    @DELETE("/v1/anchor/{roomId}/liveProgram/{programId}")
+    Observable<HttpResult3> deleteProgram(@Path("programId") Integer programId);
 }

@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
@@ -27,7 +28,9 @@ public class MyLiveRoomActivity extends AppCompatActivity {
     private ArrayList<LiveRoomDto> mList;
 
     private Toolbar toolbar;
+    private TextView addTv;
     private MyAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,13 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                 finish();
             }
         });
+        addTv = (TextView) findViewById(R.id.add);
+        addTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class));
+            }
+        });
     }
 
     private void initView() {
@@ -63,10 +73,10 @@ public class MyLiveRoomActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage()
+                        + "\n" + e.getCause()
+                        + "\n" + e.getLocalizedMessage()
+                        + "\n" + e.getStackTrace());
             }
 
             @Override
@@ -98,10 +108,10 @@ public class MyLiveRoomActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.e(TAG, "HttpDataDeleteLiveRoom onError: "+e.getMessage()
-                                        +"\n"+e.getCause()
-                                        +"\n"+e.getLocalizedMessage()
-                                        +"\n"+e.getStackTrace());
+                                Log.e(TAG, "HttpDataDeleteLiveRoom onError: " + e.getMessage()
+                                        + "\n" + e.getCause()
+                                        + "\n" + e.getLocalizedMessage()
+                                        + "\n" + e.getStackTrace());
                             }
 
                             @Override

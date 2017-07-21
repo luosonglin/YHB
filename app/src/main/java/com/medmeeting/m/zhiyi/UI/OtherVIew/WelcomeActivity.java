@@ -43,7 +43,7 @@ public class WelcomeActivity extends ListvViewActivity {
         imageView = (ImageView) findViewById(R.id.background);
         Glide.with(WelcomeActivity.this)
                 .load(R.mipmap.appbg)
-                .asGif()
+//                .asGif()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
 

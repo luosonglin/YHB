@@ -119,7 +119,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 getIntent().getExtras().getString("authorName"),
                 getIntent().getExtras().getString("chargeType"),
                 getIntent().getExtras().getFloat("price"));
-        initShare(savedInstanceState, getIntent().getExtras().getInt("roomId"),
+        initShare(savedInstanceState, getIntent().getExtras().getInt("programId"),
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("coverPhote"),
                 "欢迎观看" + getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")

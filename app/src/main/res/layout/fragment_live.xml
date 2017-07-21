@@ -79,7 +79,7 @@
                     android:id="@+id/rv_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/grey1" />
+                    android:background="@color/white" />
             </com.xiaochao.lcrapiddeveloplibrary.widget.SpringView>
 
         </LinearLayout>

@@ -38,7 +38,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into((ImageView) helper.getView(R.id.avatar));
 
-        helper.setText(R.id.sum, item.getId()+"")
+        helper.setText(R.id.sum, item.getOnlineCount()+"")
                 .setText(R.id.title,item.getRoomTitle()+"")
                 .setText(R.id.name,item.getTitle())
                 .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06));

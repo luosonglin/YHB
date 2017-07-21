@@ -63,7 +63,6 @@ public class LiveDetailActivity extends AppCompatActivity {
     private ImageView coverPhotoTv;
     private TextView titleTv, userNameTv;
 
-
     // 记录首次按下位置
     private float mFirstPosition = 0;
     // 是否正在放大

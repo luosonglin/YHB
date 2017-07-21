@@ -11,7 +11,6 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -71,10 +70,33 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_program_detail_author);
         toolBar();
         initView();
-        initShare(savedInstanceState, getIntent().getExtras().getInt("roomId"),
+        initShare(getIntent().getExtras().getInt("programId"),
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("coverPhote"),
                 getIntent().getExtras().getString("description"));
+
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        });
 
     }
 
@@ -185,12 +207,12 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             String result = data.getStringExtra(CaptureActivity.SCAN_QRCODE_RESULT);
             Bitmap bitmap = data.getParcelableExtra(CaptureActivity.SCAN_QRCODE_BITMAP);
 
-            Log.e(TAG, "扫码结果：" + result + " "+ bitmap);
+            Log.e(TAG, "扫码结果：" + result + " " + bitmap);
 
             if (result != null) {
                 Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveLoginWebActivity.class);
                 intent.putExtra("QRCode", result);
-                intent.putExtra("extend", programId+"");
+                intent.putExtra("extend", programId + "");
                 startActivity(intent);
             }
         }
@@ -222,55 +244,58 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
                 startActivity(intent);
                 return true;
+            case R.id.delete:
+                new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
+                        .setMessage("确定删除该节目？")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialogInterface, int i) {
+                                HttpData.getInstance().HttpDataDeleteProgram(new Observer<HttpResult3>() {
+                                    @Override
+                                    public void onCompleted() {
+
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(HttpResult3 httpResult3) {
+                                        if (httpResult3.getStatus().equals("success")) {
+                                            dialogInterface.dismiss();
+                                            onResume();
+                                        }
+                                    }
+                                }, programId);
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     /**
      * 分享
-     * @param savedInstanceState
-     * @param roomId
+     *
+     * @param programId
      * @param title
-     * @param phone
+     * @param photo
      * @param description
      */
-    public void initShare(Bundle savedInstanceState, final int roomId, final String title, final String phone, final String description){
-        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
-        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
-            @Override
-            public void onStart(SHARE_MEDIA share_media) {
-
-            }
-
-            @Override
-            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA platform, int action) {
-
-            }
-        });
-        //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_LOGS,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.SET_DEBUG_APP,
-                    Manifest.permission.SYSTEM_ALERT_WINDOW,
-                    Manifest.permission.GET_ACCOUNTS,
-                    Manifest.permission.WRITE_APN_SETTINGS};
-            ActivityCompat.requestPermissions(this, mPermissionList, 123);
-        }
+    public void initShare(final int programId, final String title, final String photo, final String description) {
+        Log.e(TAG, "0 url" + url
+                + "\n" + "title" + title
+                + "\n" + "photo" + photo
+                + "\n" + "description" + description);
 
         mShareListener = new LiveProgramDetailAuthorActivity.CustomShareListener(this);
         /*增加自定义按钮的分享面板*/
@@ -280,10 +305,16 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                     @Override
                     public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
 
-                        UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + roomId);
+                        UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + programId);
                         web.setTitle(title);//标题
-//                        web.setThumb(new UMImage(LiveProgramDetailAuthorActivity.this, phone));  //缩略图
+//                        web.setThumb(new UMImage(LiveProgramDetailAuthorActivity.this, photo));  //缩略图
                         web.setDescription(description);//描述
+
+                        Log.e(TAG, "1 url" + "http://wap.medmeeting.com/#!/live/room/show/" + programId
+                                + "\n" + "title" + title
+                                + "\n" + "photo" + photo
+                                + "\n" + "description" + description);
+
                         new ShareAction(LiveProgramDetailAuthorActivity.this)
                                 .withMedia(web)
                                 .setPlatform(share_media)
@@ -295,6 +326,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
 
     private UMShareListener mShareListener;
     private ShareAction mShareAction;
+
     private static class CustomShareListener implements UMShareListener {
 
         private WeakReference<LiveProgramDetailAuthorActivity> mActivity;

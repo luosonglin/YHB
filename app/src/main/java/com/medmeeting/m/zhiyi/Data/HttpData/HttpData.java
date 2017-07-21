@@ -260,6 +260,12 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    //delete live program
+    public void HttpDataDeleteProgram(Observer<HttpResult3> observer, Integer programId) {
+        Observable observable = service_live.deleteProgram(programId);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *
