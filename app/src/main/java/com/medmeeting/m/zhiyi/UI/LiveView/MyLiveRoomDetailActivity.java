@@ -56,6 +56,8 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     private MyLiveProgramListPresent present;
     private Integer roomId = 0;
 
+    private UMShareListener mShareListener;
+    private ShareAction mShareAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,14 +133,14 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         findViewById(R.id.invitation_letter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
-
                 initShare(getIntent().getExtras().getInt("roomId"),
                         getIntent().getExtras().getString("title"),
                         getIntent().getExtras().getString("coverPhote"),
                         "欢迎观看" + getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
+
+                ShareBoardConfig config = new ShareBoardConfig();
+                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                mShareAction.open(config);
             }
         });
 
@@ -298,8 +300,6 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
-    private UMShareListener mShareListener;
-    private ShareAction mShareAction;
 
     private static class CustomShareListener implements UMShareListener {
 
