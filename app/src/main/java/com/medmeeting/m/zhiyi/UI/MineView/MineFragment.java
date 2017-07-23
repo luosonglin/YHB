@@ -172,6 +172,11 @@ public class MineFragment extends Fragment {
                     hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
                     titleTv.setText(item.getData().getUser().getTitle() + " ");
 
+                    try {
+                        DBUtils.put(getActivity(), "authentication", item.getData().getUser().getAuthenStatus() + "");
+                    } catch (SnappydbException e) {
+                        e.printStackTrace();
+                    }
                     //A:已认证'',''B:待审核'',''C:大咖认证'',''''X:未认证'
                     switch (item.getData().getUser().getAuthenStatus()) {
                         case "A":
