@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_parent"
+    android:layout_width="270dp"
+    android:layout_height="70dp"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="14dp"
+        android:background="@mipmap/tip"
+        android:text="医会宝旨在打造医生学术交流社区，提倡实名认证，一经通过，姓名不可修改"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        />
+
+    <View
+        android:layout_width="12dp"
+        android:layout_height="20dp"/>
+</LinearLayout>

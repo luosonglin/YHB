@@ -11,6 +11,7 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
+import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -203,6 +204,12 @@ public class HttpData extends RetrofitUtils {
     //get qiniu token
     public void HttpDataGetQiniuToken(Observer<QiniuTokenDto> observer, String bucketName) {
         Observable observable = service.getQiniuToken(bucketName);
+        setSubscribe(observable, observer);
+    }
+
+    //authentic
+    public void HttpDataAuthentication(Observer<DoctorAuthentication> observer, Map<String, Object> options) {
+        Observable observable = service.Authentication(options);
         setSubscribe(observable, observer);
     }
 

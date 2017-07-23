@@ -160,4 +160,8 @@
     <color name="pldroid_streaming_red">#f00</color>
     <color name="pldroid_streaming_yellow">#FFFF00</color>
 
+
+    <color name="item_background_translucent">#77000000</color>
+    <color name="item_background_translucent_two">#b0000000</color>
+
 </resources>

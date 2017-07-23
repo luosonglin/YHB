@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,8 +47,8 @@ public class MineFragment extends Fragment {
 
     @Bind(R.id.setting)
     TextView setting;
-//    @Bind(R.id.identity)
-//    TextView identity;
+    @Bind(R.id.identity)
+    TextView identity;
     @Bind(R.id.head_ic)
     ImageView headIv;
     @Bind(R.id.name)
@@ -82,7 +83,7 @@ public class MineFragment extends Fragment {
     @Bind(R.id.wodewendang)
     RelativeLayout wodewendang;
 
-//    private String identityHtml;
+    private String identityHtml;
     private String userId = null;
 
     private OnFragmentInteractionListener mListener;
@@ -170,6 +171,42 @@ public class MineFragment extends Fragment {
                             item.getData().getUser().getNickName() : item.getData().getUser().getName());
                     hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
                     titleTv.setText(item.getData().getUser().getTitle() + " ");
+
+                    //A:已认证'',''B:待审核'',''C:大咖认证'',''''X:未认证'
+                    switch (item.getData().getUser().getAuthenStatus()) {
+                        case "A":
+                            identity.setVisibility(View.GONE);
+                            specialistIv.setVisibility(View.VISIBLE);
+                            specialistIv.setImageResource(R.mipmap.specialis_yellow);
+                            break;
+                        case "B":
+                            identityHtml = "&nbsp;"
+                                    + "<font size=\"10\" color=\"#000000\"> 您已实名认证，请静候相关人员核实 </font>"
+                                    + "<font size=\"38\" color=\"#32A2F8\">" + "</font>";
+                            identity.setText(Html.fromHtml(identityHtml));
+                            identity.setClickable(false);
+                            specialistIv.setVisibility(View.GONE);
+                            break;
+                        case "C":
+                            identity.setVisibility(View.GONE);
+                            specialistIv.setVisibility(View.VISIBLE);
+                            specialistIv.setImageResource(R.mipmap.specialist_red);
+                            break;
+                        default:
+                            identityHtml = "&nbsp;"
+                                    + "<font size=\"10\" color=\"#000000\"> 你还没有实名认证，点击前往认证 </font>"
+                                    + "<font size=\"38\" color=\"#32A2F8\">" + " >>" + "</font>";
+                            identity.setVisibility(View.VISIBLE);
+                            identity.setText(Html.fromHtml(identityHtml));
+                            identity.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    startActivity(new Intent(getActivity(), IdentityActivity.class));
+                                }
+                            });
+                            specialistIv.setVisibility(View.GONE);
+                            break;
+                    }
                 }
             }, Integer.parseInt(userId));
         }

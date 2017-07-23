@@ -1,11 +1,13 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,19 +21,30 @@ import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.MyLiveProgramAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 直播间详情页
  */
 public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, LiveListView {
 
-
+    private static final String TAG = MyLiveRoomDetailActivity.class.getSimpleName();
     RecyclerView mRecyclerView;
     ProgressActivity progress;
     private Toolbar toolbar;
@@ -43,10 +56,34 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     private MyLiveProgramListPresent present;
     private Integer roomId = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_my_program_detail);
+
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        });
         toolBar();
         initView();
     }
@@ -90,12 +127,18 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
 //                .placeholder(R.mipmap.ic_launcher)
                 .into(backgroundIv);
 
+        //分享
         findViewById(R.id.invitation_letter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyLiveRoomDetailActivity.this, LiveInvitationLetterActivity.class);
-                intent.putExtra("roomId", roomId);
-                startActivity(intent);
+                ShareBoardConfig config = new ShareBoardConfig();
+                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                mShareAction.open(config);
+
+                initShare(getIntent().getExtras().getInt("roomId"),
+                        getIntent().getExtras().getString("title"),
+                        getIntent().getExtras().getString("coverPhote"),
+                        "欢迎观看" + getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
             }
         });
 
@@ -226,5 +269,99 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     public void showNoData() {
         //设置无数据显示页面
         progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
+    }
+
+    public void initShare(final int roomId, final String title, final String phone, final String description) {
+        mShareListener = new MyLiveRoomDetailActivity.CustomShareListener(this);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(MyLiveRoomDetailActivity.this)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
+                .setShareboardclickCallback(new ShareBoardlistener() {
+                    @Override
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                        UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/" + roomId);
+                        web.setTitle(title);//标题
+//                        web.setThumb(new UMImage(LiveProgramDetailActivity.this, phone));  //缩略图
+                        web.setDescription(description);//描述
+                        new ShareAction(MyLiveRoomDetailActivity.this)
+                                .withMedia(web)
+                                .setPlatform(share_media)
+                                .setCallback(mShareListener)
+                                .share();
+                    }
+                });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    private UMShareListener mShareListener;
+    private ShareAction mShareAction;
+
+    private static class CustomShareListener implements UMShareListener {
+
+        private WeakReference<MyLiveRoomDetailActivity> mActivity;
+
+        private CustomShareListener(MyLiveRoomDetailActivity activity) {
+            mActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+
+            if (platform.name().equals("WEIXIN_FAVORITE")) {
+                Toast.makeText(mActivity.get(), platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
+            } else {
+                if (platform != SHARE_MEDIA.MORE) {
+                    Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            if (platform != SHARE_MEDIA.MORE) {
+                Toast.makeText(mActivity.get(), platform + "分享失败啦~~ \n" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                if (t != null) {
+                    Log.e(TAG, "umeng throw:" + t.getMessage());
+                }
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(mActivity.get(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //qq微信新浪授权防杀死
+        UMShareAPI.get(this).onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //内存泄漏，在使用分享或者授权的Activity中，重写onDestory()方法：
+        UMShareAPI.get(this).release();
+    }
+
+    /**
+     * 屏幕横竖屏切换时避免出现window leak的问题
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mShareAction.close();
     }
 }
