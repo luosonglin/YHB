@@ -1,7 +1,9 @@
 package com.medmeeting.m.zhiyi.UI.LiveView.live;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.gles.FBO;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.RotateLayout;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.dns.DnsManager;
 import com.qiniu.android.dns.IResolver;
 import com.qiniu.android.dns.NetworkInfo;
@@ -89,6 +92,8 @@ public class StreamingBaseActivity extends Activity implements
     private Button mEncodingOrientationSwitcherBtn;
     private Button mFaceBeautyBtn;
     private RotateLayout mRotateLayout;
+
+    private Button mLogoutBtn;
 
     protected TextView mLogTextView;
     protected TextView mStatusTextView;
@@ -463,8 +468,9 @@ public class StreamingBaseActivity extends Activity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String flashlight = enabled ? getString(R.string.flash_light_off) : getString(R.string.flash_light_on);
-                mTorchBtn.setText(flashlight);
+//                String flashlight = enabled ? getString(R.string.flash_light_off) : getString(R.string.flash_light_on);
+//                mTorchBtn.setText(flashlight);
+                mTorchBtn.setBackgroundResource(enabled? R.mipmap.icon_close_light: R.mipmap.icon_open_light);
             }
         });
     }
@@ -587,6 +593,35 @@ public class StreamingBaseActivity extends Activity implements
         mLogTextView = (TextView) findViewById(R.id.log_info);
         mStatView = (TextView) findViewById(R.id.stream_status);
 
+        mLogoutBtn = (Button) findViewById(R.id.logout_btn);
+        mLogoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(StreamingBaseActivity.this)
+                        .setTitle("关闭提示")
+                        .setMessage("如暂时退出直播，请点击左边'退出直播'按钮\n如要彻底关闭该场直播，请点击右边'关闭直播'按钮")
+                        .setNegativeButton("退出直播", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                               finish();
+                            }
+                        })
+                        .setPositiveButton("关闭直播", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ToastUtils.show(StreamingBaseActivity.this, "2");
+                            }
+                        })
+//                        .setNeutralButton("", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                ToastUtils.show(StreamingBaseActivity.this, "3");
+//                            }
+//                        })
+                        .show();
+            }
+        });
+
         mFaceBeautyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -707,18 +742,18 @@ public class StreamingBaseActivity extends Activity implements
     private void initButtonText() {
         updateFBButtonText();
         updateCameraSwitcherButtonText(mCameraStreamingSetting.getReqCameraId());
-        mCaptureFrameBtn.setText("Capture");
+//        mCaptureFrameBtn.setText("Capture");
         updateFBButtonText();
         updateMuteButtonText();
         updateOrientationBtnText();
     }
 
     private void updateOrientationBtnText() {
-        if (mIsEncOrientationPort) {
-            mEncodingOrientationSwitcherBtn.setText("Land");
-        } else {
-            mEncodingOrientationSwitcherBtn.setText("Port");
-        }
+//        if (mIsEncOrientationPort) {
+//            mEncodingOrientationSwitcherBtn.setText("Land");
+//        } else {
+//            mEncodingOrientationSwitcherBtn.setText("Port");
+//        }
     }
 
     protected void setFocusAreaIndicator() {
@@ -745,11 +780,11 @@ public class StreamingBaseActivity extends Activity implements
         if (mCameraSwitchBtn == null) {
             return;
         }
-        if (camId == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            mCameraSwitchBtn.setText("Back");
-        } else {
-            mCameraSwitchBtn.setText("Front");
-        }
+//        if (camId == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+//            mCameraSwitchBtn.setText("Back");
+//        } else {
+//            mCameraSwitchBtn.setText("Front");
+//        }
     }
 
     private void saveToSDCard(String filename, Bitmap bmp) throws IOException {

@@ -26,11 +26,14 @@ public class SWCodecCameraStreamingActivity extends StreamingBaseActivity {
                 (CameraPreviewFrameView) findViewById(R.id.cameraPreview_surfaceView);
         cameraPreviewFrameView.setListener(this);
 
+        //logo水印
         WatermarkSetting watermarksetting = new WatermarkSetting(this);
-//        watermarksetting.setResourceId(R.mipmap.logo)
-//                .setAlpha(100)
-//                .setSize(WatermarkSetting.WATERMARK_SIZE.MEDIUM)
-//                .setCustomPosition(0.5f, 0.5f);
+        watermarksetting.setResourceId(R.mipmap.logo)
+                .setAlpha(100)
+                .setSize(WatermarkSetting.WATERMARK_SIZE.SMALL)
+                .setCustomPosition(0.5f, 0.5f)
+                //如果根据此默认设置，水印在播放端看着非常模糊的话，可以尝试加入如下设置
+                .setInJustDecodeBoundsEnabled(false);
 
         mMediaStreamingManager = new MediaStreamingManager(this, afl, cameraPreviewFrameView,
                 AVCodecType.SW_VIDEO_WITH_SW_AUDIO_CODEC); // sw codec

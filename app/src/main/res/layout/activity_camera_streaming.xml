@@ -8,16 +8,14 @@
         android:id="@+id/cameraPreview_afl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal" >
 
         <com.medmeeting.m.zhiyi.UI.LiveView.live.CameraPreviewFrameView
             android:id="@+id/cameraPreview_surfaceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
-
-        <include layout="@layout/focus_indicator"
-            android:visibility="gone"/>
+        <include layout="@layout/focus_indicator"/>
 
     </com.qiniu.pili.droid.streaming.widget.AspectFrameLayout>
 
@@ -25,31 +23,30 @@
         android:id="@+id/log_info"
         android:contentDescription="@string/cd_tv_log_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:layout_height="match_parent" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:visibility="gone"/>
 
     <Button
-        android:id="@+id/camera_switch_btn"
-        android:contentDescription="@string/cd_btn_camera_switcher"
-        android:layout_gravity="top|center"
+        android:id="@+id/logout_btn"
+        android:contentDescription="@string/cd_btn_orientation"
         android:textColor="@color/pldroid_streaming_white"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginTop="20dp"/>
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="right|top"
+        android:background="@mipmap/icon_logout"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="left|top"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical" >
 
         <include layout="@layout/status"
             android:layout_width="wrap_content"
@@ -61,11 +58,10 @@
             android:background="@android:color/transparent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/pldroid_streaming_white"
+            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="12dp"/>
-
+            android:layout_margin="10dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -73,8 +69,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="left|center"
-        android:visibility="gone"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/preview_mirror_btn"
@@ -97,48 +93,83 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="right|center"
-        android:visibility="gone"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:layout_gravity="bottom|right"
         android:gravity="center_vertical">
 
         <Button
-            android:id="@+id/orientation_btn"
-            android:contentDescription="@string/cd_btn_orientation"
+            android:id="@+id/share_btn"
+            android:contentDescription="@string/cd_btn_camera_switcher"
             android:textColor="@color/pldroid_streaming_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@mipmap/icon_share"/>
         <Button
-            android:id="@+id/mute_btn"
-            android:contentDescription="@string/cd_btn_mute"
+            android:id="@+id/dan_btn"
+            android:contentDescription="@string/cd_btn_camera_switcher"
             android:textColor="@color/pldroid_streaming_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@mipmap/icon_dan"/>
+        <!-- ******** -->
         <Button
-            android:id="@+id/fb_btn"
-            android:contentDescription="@string/cd_btn_fb"
+            android:id="@+id/camera_switch_btn"
+            android:contentDescription="@string/cd_btn_camera_switcher"
             android:textColor="@color/pldroid_streaming_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/capture_btn"
-            android:contentDescription="@string/cd_btn_capture"
-            android:textColor="@color/pldroid_streaming_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@mipmap/icon_back"/>
 
         <Button
             android:id="@+id/torch_btn"
             android:contentDescription="@string/cd_btn_torch"
             android:textColor="@color/pldroid_streaming_white"
             android:text="@string/flash_light_on"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@mipmap/icon_open_light"
+            android:visibility="visible"/>
 
+        <Button
+            android:id="@+id/orientation_btn"
+            android:contentDescription="@string/cd_btn_orientation"
+            android:textColor="@color/pldroid_streaming_white"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@mipmap/icon_land_post"/>
+
+        <Button
+            android:id="@+id/mute_btn"
+            android:contentDescription="@string/cd_btn_mute"
+            android:textColor="@color/pldroid_streaming_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/fb_btn"
+            android:contentDescription="@string/cd_btn_fb"
+            android:textColor="@color/pldroid_streaming_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/capture_btn"
+            android:contentDescription="@string/cd_btn_capture"
+            android:textColor="@color/pldroid_streaming_white"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="@mipmap/icon_capture"/>
     </LinearLayout>
 
     <SeekBar
@@ -148,8 +179,8 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="60dp"
         android:max="100"
-        android:visibility="gone"
-        android:progress="100"/>
+        android:progress="100"
+        android:visibility="gone"/>
 
     <include layout="@layout/camera_button_holder"
         android:visibility="gone"/>
