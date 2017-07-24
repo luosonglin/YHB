@@ -140,15 +140,7 @@ public class LiveDetailActivity extends AppCompatActivity {
         });
         //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
         if (Build.VERSION.SDK_INT >= 23) {
-            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.CALL_PHONE,
-                    Manifest.permission.READ_LOGS,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.SET_DEBUG_APP,
-                    Manifest.permission.SYSTEM_ALERT_WINDOW,
-                    Manifest.permission.GET_ACCOUNTS,
+            String[] mPermissionList = new String[]{
                     Manifest.permission.WRITE_APN_SETTINGS};
             ActivityCompat.requestPermissions(this, mPermissionList, 123);
         }

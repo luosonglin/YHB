@@ -623,6 +623,7 @@ public class StreamingBaseActivity extends Activity implements
             }
         });
 
+        //底部圆形按钮
         mShutterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

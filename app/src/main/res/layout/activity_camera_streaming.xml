@@ -8,7 +8,7 @@
         android:id="@+id/cameraPreview_afl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal" >
+        android:layout_gravity="center_horizontal">
 
         <com.medmeeting.m.zhiyi.UI.LiveView.live.CameraPreviewFrameView
             android:id="@+id/cameraPreview_surfaceView"
@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:layout_gravity="center" />
 
-        <include layout="@layout/focus_indicator"/>
+        <include layout="@layout/focus_indicator"
+            android:visibility="gone"/>
 
     </com.qiniu.pili.droid.streaming.widget.AspectFrameLayout>
 
@@ -24,7 +25,8 @@
         android:id="@+id/log_info"
         android:contentDescription="@string/cd_tv_log_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -47,7 +49,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="left|top"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical">
 
         <include layout="@layout/status"
             android:layout_width="wrap_content"
@@ -61,7 +63,8 @@
             android:textColor="@color/pldroid_streaming_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:textSize="12dp"/>
 
     </LinearLayout>
 
@@ -148,6 +151,7 @@
         android:visibility="gone"
         android:progress="100"/>
 
-    <include layout="@layout/camera_button_holder" />
+    <include layout="@layout/camera_button_holder"
+        android:visibility="gone"/>
 
 </FrameLayout>
