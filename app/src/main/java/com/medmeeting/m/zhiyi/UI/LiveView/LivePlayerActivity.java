@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,9 +9,17 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.animation.HeartLayout;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.fragment.BottomPanelFragment;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.GiftMessage;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.InputPanel;
 import com.medmeeting.m.zhiyi.videoplayer.Utils;
 import com.medmeeting.m.zhiyi.videoplayer.VideoPlayerBaseActivity;
 import com.pili.pldroid.player.AVOptions;
@@ -19,8 +28,16 @@ import com.pili.pldroid.player.PLNetworkManager;
 import com.pili.pldroid.player.widget.PLVideoTextureView;
 
 import java.net.UnknownHostException;
+import java.util.Random;
 
-public class LivePlayerActivity extends VideoPlayerBaseActivity{
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.MessageContent;
+import io.rong.message.TextMessage;
+
+/**
+ * 观众播放器页
+ */
+public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handler.Callback{
 
     private static final String TAG = LivePlayerActivity.class.getSimpleName();
 
@@ -40,6 +57,14 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity{
     private int mIsLiveStreaming = 1;
 
     //以下为直播室互动参数
+    private Handler handler = new Handler(this);
+    private ChatListView chatListView;
+    private ChatListAdapter chatListAdapter;
+    private BottomPanelFragment bottomPanel;
+    private ImageView btnGift;
+    private ImageView btnHeart;
+    private HeartLayout heartLayout;
+    private Random random = new Random();
 
     private int onlineVidoId;
 
@@ -169,9 +194,46 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity{
         mVideoView.start();
 
         //init 互动view
+        LiveKit.addEventHandler(handler);
+        chatListView = (ChatListView) findViewById(R.id.chat_listview);
+        chatListAdapter = new ChatListAdapter();
+        chatListView.setAdapter(chatListAdapter);
+        bottomPanel = (BottomPanelFragment) getSupportFragmentManager().findFragmentById(R.id.bottom_bar);
+        btnGift = (ImageView) bottomPanel.getView().findViewById(R.id.btn_gift);
+        btnHeart = (ImageView) bottomPanel.getView().findViewById(R.id.btn_heart);
+        heartLayout = (HeartLayout) findViewById(R.id.heart_layout);
+        btnGift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GiftMessage msg = new GiftMessage("2", "送您一个礼物");
+                LiveKit.sendMessage(msg);
+            }
+        });
+        btnHeart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                heartLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+                        heartLayout.addHeart(rgb);
+                    }
+                });
+                GiftMessage msg = new GiftMessage("1", "点赞了");
+                LiveKit.sendMessage(msg);
+            }
+        });
+        bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
+            @Override
+            public void onSendClick(String text) {
+                final TextMessage content = TextMessage.obtain(text);
+                LiveKit.sendMessage(content);
+            }
+        });
 
         onlineVidoId = getIntent().getExtras().getInt("programId");
         Log.e(TAG, "programId" + onlineVidoId);
+        joinChatRoom(onlineVidoId+"");
     }
 
     @Override
@@ -195,6 +257,31 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity{
         mVideoView.stopPlayback();
         // 停止 DNS 缓存管理服务
         PLNetworkManager.getInstance().stopDnsCacheService(this);
+
+
+        LiveKit.quitChatRoom(new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+//                final InformationNotificationMessage content = InformationNotificationMessage.obtain("离开了房间");
+//                LiveKit.sendMessage(content);
+
+                // 配合ios
+                TextMessage content = TextMessage.obtain("离开了房间");
+                LiveKit.sendMessage(content);
+                Log.e(TAG, content + " " + content.getUserInfo().getName());
+
+                LiveKit.removeEventHandler(handler);
+                LiveKit.logout();
+                Toast.makeText(LivePlayerActivity.this, "退出聊天室成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                LiveKit.removeEventHandler(handler);
+                LiveKit.logout();
+                Toast.makeText(LivePlayerActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void onClickRotate(View v) {
@@ -456,5 +543,52 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity{
             mVideoView.start();
         }
     };
+
+    /**
+     * im
+     */
+    @Override
+    public boolean handleMessage(android.os.Message msg) {
+        switch (msg.what) {
+            case LiveKit.MESSAGE_ARRIVED: {
+                MessageContent content = (MessageContent) msg.obj;
+                chatListAdapter.addMessage(content);
+                break;
+            }
+            case LiveKit.MESSAGE_SENT: {
+                MessageContent content = (MessageContent) msg.obj;
+                chatListAdapter.addMessage(content);
+                break;
+            }
+            case LiveKit.MESSAGE_SEND_ERROR: {
+                break;
+            }
+            default:
+        }
+        chatListAdapter.notifyDataSetChanged();
+        return false;
+    }
+
+    private void joinChatRoom(final String roomId) {
+        LiveKit.joinChatRoom(roomId, 5, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+//                final InformationNotificationMessage content = InformationNotificationMessage.obtain("进入了房间");
+//                LiveKit.sendMessage(content);
+
+                // 配合ios
+                TextMessage content = TextMessage.obtain("进入了房间");
+                LiveKit.sendMessage(content);
+
+                Log.e(TAG+" joinChatRoom: ", content + "" + content.getUserInfo().getName());
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Toast.makeText(LivePlayerActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "聊天室加入失败! errorCode = " + errorCode);
+            }
+        });
+    }
 }
 

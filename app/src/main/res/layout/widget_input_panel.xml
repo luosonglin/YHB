@@ -17,14 +17,14 @@
         <RelativeLayout
             android:id="@+id/input_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:background="@drawable/rc_editor_bg_selector">
 
             <EditText
                 android:id="@+id/input_editor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/input_emoji_btn"
                 android:background="@android:color/transparent"
@@ -58,7 +58,7 @@
             android:textSize="14sp"/>
     </LinearLayout>
 
-    <com.medmeeting.m.zhiyi.activities.live.liveshow.ui.widget.EmojiBoard
+    <com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.EmojiBoard
         android:id="@+id/input_emoji_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

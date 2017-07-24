@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
 import com.qiniu.pili.droid.streaming.StreamingEnv;
 import com.umeng.socialize.PlatformConfig;
@@ -45,9 +46,11 @@ public class BaseApplication extends Application {
         //直播推流
         StreamingEnv.init(getApplicationContext());
 
-//        //融云
-//        context = this;
-//        LiveKit.init(context, String.valueOf("qd46yzrfq3lwf"));//FakeServer.getAppKey()
+        //融云
+        //#define RIGHTRONGCLOUD_IM_APPKEY @"qd46yzrfq3lwf"//融云正式
+        //#define RIGHTRONGCLOUD_IM_APPSECRET @"xVOEBe44fhL"//融云正式
+        context = this;
+        LiveKit.init(context, String.valueOf("qd46yzrfq3lwf"));//FakeServer.getAppKey()
     }
 
     public static Context getContext() {

@@ -28,7 +28,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:onClick="onClickRotate"
-            android:src="@mipmap/ic_rotate_right"/>
+            android:src="@mipmap/icon_land_post"/>
 
         <ImageView
             android:layout_width="30dp"
@@ -39,6 +39,7 @@
             android:src="@mipmap/ic_switch_screen"/>
 
         <ImageView
+            android:id="@+id/btn_gift"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
@@ -46,6 +47,7 @@
             android:src="@mipmap/live_gift"/>
 
         <ImageView
+            android:id="@+id/btn_heart"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"

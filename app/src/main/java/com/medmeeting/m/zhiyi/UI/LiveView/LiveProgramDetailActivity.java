@@ -48,8 +48,12 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
+import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.snappydb.SnappydbException;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -72,6 +76,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.UserInfo;
 import rx.Observer;
 
 /**
@@ -283,7 +289,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         mShareAction.close();
     }
 
-    private void initView(String coverPhone, String title, String userName, String chargeType, float price) {
+    private void initView(String coverPhone, String title, final String userName, String chargeType, float price) {
         //直播间封面
         coverPhotoTv = (ImageView) findViewById(R.id.coverPhoto);
         titleTv = (TextView) findViewById(R.id.title);
@@ -344,10 +350,17 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         watchTv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                                intent.putExtra("rtmpPlayUrl", url);
-                                intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
-                                startActivity(intent);
+
+                                try {
+                                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), DBUtils.get(LiveProgramDetailActivity.this, "userName"), url);
+                                } catch (SnappydbException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+                                    intent.putExtra("rtmpPlayUrl", url);
+                                    intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
+                                    startActivity(intent);
+                                }
                             }
                         });
                     }
@@ -357,10 +370,16 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     watchTv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                            intent.putExtra("rtmpPlayUrl", liveDtoHttpResult3.getEntity().getRtmpPlayUrl());
-                            intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
-                            startActivity(intent);
+                            try {
+                                loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), DBUtils.get(LiveProgramDetailActivity.this, "userName"), url);
+                            } catch (SnappydbException e) {
+                                e.printStackTrace();
+                            } finally {
+                                Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+                                intent.putExtra("rtmpPlayUrl", liveDtoHttpResult3.getEntity().getRtmpPlayUrl());
+                                intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
+                                startActivity(intent);
+                            }
                         }
                     });
                 }
@@ -417,7 +436,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 return false;
             }
         });
-
 
     }
 
@@ -853,7 +871,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     req.timeStamp = timeStamp;
                     req.packageValue = packageValue;
                     req.sign = sign;
-                    req.extData = "哈哈，松林测试";//"app data"; // optional
+                    req.extData = "";//"app data"; // optional
                     api.sendReq(req);
                 } catch (Exception e) {
                     Log.e("PAY_GET", e.getMessage());
@@ -873,6 +891,54 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
         return sIsWXAppInstalledAndSupported;
     }
+
+    /**
+     * 加入融云直播间
+     */
+    private void loginRongCloudChatRoom(String userId, final String name, final String url) {
+        UserInfo user = new UserInfo(userId, name, Uri.parse(url));
+        LiveKit.setCurrentUser(user);
+        Log.e(TAG + " loginRongCloudChatRoom", user.getName() + " " + LiveKit.getCurrentUser().getName());
+        LiveKit.initMessageType();
+
+        HttpData.getInstance().HttpDataGetUserIm(new Observer<HttpResult3<Object, RCUserDto>>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: "+e.getMessage()
+                        +"\n"+e.getCause()
+                        +"\n"+e.getLocalizedMessage()
+                        +"\n"+e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, RCUserDto> data) {
+                Log.e(TAG, "onNext");
+                LiveKit.connect(data.getEntity().getToken(),
+                        new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+                                Log.e(TAG, "connect onTokenIncorrect");
+                                // 检查appKey 与token是否匹配.
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+                                Log.e(TAG, "connect onSuccess");
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                Log.e(TAG, "connect onError = " + errorCode);
+                                // 根据errorCode 检查原因.
+                            }
+                        });
+            }
+        });
+
+    }
 }
-
-

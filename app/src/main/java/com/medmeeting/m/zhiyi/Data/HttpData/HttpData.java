@@ -30,6 +30,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
@@ -270,6 +271,12 @@ public class HttpData extends RetrofitUtils {
     //delete live program
     public void HttpDataDeleteProgram(Observer<HttpResult3> observer, Integer programId) {
         Observable observable = service_live.deleteProgram(programId);
+        setSubscribe(observable, observer);
+    }
+
+    //get user im
+    public void HttpDataGetUserIm(Observer<HttpResult3<Object, RCUserDto>> observer) {
+        Observable observable = service_live.getUserIm();
         setSubscribe(observable, observer);
     }
 

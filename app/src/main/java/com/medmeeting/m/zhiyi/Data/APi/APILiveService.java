@@ -12,6 +12,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
+import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 
@@ -107,4 +108,10 @@ public interface APILiveService {
     //DELETE /v1/anchor/{roomId}/liveProgram/{programId} 删除直播节目
     @DELETE("/v1/anchor/{roomId}/liveProgram/{programId}")
     Observable<HttpResult3> deleteProgram(@Path("programId") Integer programId);
+
+    //GET /v1/userIm 获取用户IM信息
+    @GET("/v1/userIm")
+    Observable<HttpResult3<Object, RCUserDto>> getUserIm();
+
+
 }
