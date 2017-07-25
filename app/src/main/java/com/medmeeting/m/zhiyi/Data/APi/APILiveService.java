@@ -113,5 +113,7 @@ public interface APILiveService {
     @GET("/v1/userIm")
     Observable<HttpResult3<Object, RCUserDto>> getUserIm();
 
-
+    //GET /v1/anchor/{roomId}/liveProgram/close/{programId} 关闭直播
+    @GET("/v1/anchor/{roomId}/liveProgram/close/{programId}")
+    Observable<HttpResult3> closeProgram(@Path("programId") Integer programId);
 }

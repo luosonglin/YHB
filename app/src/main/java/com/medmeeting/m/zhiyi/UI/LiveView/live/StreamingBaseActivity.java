@@ -23,10 +23,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.gles.FBO;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.RotateLayout;
-import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.dns.DnsManager;
 import com.qiniu.android.dns.IResolver;
 import com.qiniu.android.dns.NetworkInfo;
@@ -60,6 +61,8 @@ import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import rx.Observer;
+
 public class StreamingBaseActivity extends Activity implements
         View.OnLayoutChangeListener,
         StreamStatusCallback,
@@ -74,13 +77,13 @@ public class StreamingBaseActivity extends Activity implements
 
     private static final int ZOOM_MINIMUM_WAIT_MILLIS = 33; //ms
 
-    private static final int MSG_START_STREAMING    = 0;
-    private static final int MSG_STOP_STREAMING     = 1;
-    private static final int MSG_SET_ZOOM           = 2;
-    private static final int MSG_MUTE               = 3;
-    private static final int MSG_FB                 = 4;
-    private static final int MSG_PREVIEW_MIRROR     = 5;
-    private static final int MSG_ENCODING_MIRROR    = 6;
+    private static final int MSG_START_STREAMING = 0;
+    private static final int MSG_STOP_STREAMING = 1;
+    private static final int MSG_SET_ZOOM = 2;
+    private static final int MSG_MUTE = 3;
+    private static final int MSG_FB = 4;
+    private static final int MSG_PREVIEW_MIRROR = 5;
+    private static final int MSG_ENCODING_MIRROR = 6;
 
     private Context mContext;
 
@@ -227,6 +230,7 @@ public class StreamingBaseActivity extends Activity implements
 //                SharedLibraryNameHelper.PLSharedLibraryType.PL_SO_TYPE_H264, "pldroid_streaming_h264_encoder_v7a");
 
         String publishUrlFromServer = getIntent().getStringExtra(Config.EXTRA_KEY_PUB_URL);
+        Integer programId = getIntent().getExtras().getInt("programId");
         Log.i(TAG, "publishUrlFromServer:" + publishUrlFromServer);
 
         mContext = this;
@@ -289,7 +293,7 @@ public class StreamingBaseActivity extends Activity implements
         mMicrophoneStreamingSetting = new MicrophoneStreamingSetting();
         mMicrophoneStreamingSetting.setBluetoothSCOEnabled(false);
 
-        initUIs();
+        initUIs(programId);
     }
 
     @Override
@@ -470,7 +474,7 @@ public class StreamingBaseActivity extends Activity implements
             public void run() {
 //                String flashlight = enabled ? getString(R.string.flash_light_off) : getString(R.string.flash_light_on);
 //                mTorchBtn.setText(flashlight);
-                mTorchBtn.setBackgroundResource(enabled? R.mipmap.icon_close_light: R.mipmap.icon_open_light);
+                mTorchBtn.setBackgroundResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
             }
         });
     }
@@ -576,7 +580,7 @@ public class StreamingBaseActivity extends Activity implements
         });
     }
 
-    private void initUIs() {
+    private void initUIs(final Integer programId) {
         View rootView = findViewById(R.id.content);
         rootView.addOnLayoutChangeListener(this);
 
@@ -603,13 +607,33 @@ public class StreamingBaseActivity extends Activity implements
                         .setNegativeButton("退出直播", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                               finish();
+                                finish();
                             }
                         })
                         .setPositiveButton("关闭直播", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                ToastUtils.show(StreamingBaseActivity.this, "2");
+                                HttpData.getInstance().HttpDataCloseProgram(new Observer<HttpResult3>() {
+                                    @Override
+                                    public void onCompleted() {
+                                        Log.e(TAG, "onCompleted");
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e(TAG, "onError: "+e.getMessage()
+                                                +"\n"+e.getCause()
+                                                +"\n"+e.getLocalizedMessage()
+                                                +"\n"+e.getStackTrace());
+                                    }
+
+                                    @Override
+                                    public void onNext(HttpResult3 httpResult3) {
+                                        Log.e(TAG, "onNext");
+                                        if (httpResult3.getStatus().equals("success"))
+                                            finish();
+                                    }
+                                }, programId);
                             }
                         })
 //                        .setNeutralButton("", new DialogInterface.OnClickListener() {

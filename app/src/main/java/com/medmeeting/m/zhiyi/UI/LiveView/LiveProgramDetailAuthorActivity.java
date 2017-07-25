@@ -185,11 +185,10 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                     public void onNext(HttpResult3<Object, LiveStream> objectLiveStreamHttpResult3) {
                         if (objectLiveStreamHttpResult3.getStatus().equals("success")) {
                             Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
-                            startStreamingActivity(intent, objectLiveStreamHttpResult3.getEntity().getPushUrl());
+                            startStreamingActivity(intent, objectLiveStreamHttpResult3.getEntity().getPushUrl(), programId);
                         }
                     }
                 }, programId);
-
             }
         });
     }
@@ -409,7 +408,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 
-    private void startStreamingActivity(final Intent intent, String pushUrl1) {
+    private void startStreamingActivity(final Intent intent, String pushUrl1, final Integer programId) {
         if (!isPermissionOK()) {
             return;
         }
@@ -457,6 +456,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                     return;
                 }
                 intent.putExtra(Config.EXTRA_KEY_PUB_URL, publishUrl);
+                intent.putExtra("programId", programId);
                 startActivity(intent);
             }
         }).start();
