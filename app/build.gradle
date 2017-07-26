@@ -119,7 +119,7 @@ dependencies {
     compile 'info.hoang8f:android-segmented:1.0.6'
     testCompile 'junit:junit:4.12'
     compile files('libs/libapshare.jar')
-    compile files('libs/open_sdk_r5781.jar')
+//    compile files('libs/open_sdk_r5781.jar')
     compile files('libs/SocialSDK_alipay.jar')
     compile files('libs/SocialSDK_QQ_Full.jar')
     compile files('libs/SocialSDK_Sina_Full.jar')
@@ -141,18 +141,17 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //七牛云储存
     compile 'com.qiniu:qiniu-android-sdk:7.3.+'
-
     //七牛直播 推流
     compile files('libs/pldroid-media-streaming-2.1.3.jar')
     compile 'com.qiniu.pili:pili-android-qos:0.8.+'
     compile 'com.qiniu:happy-dns:0.2.7'
-
     //im
     compile project(':imlib')
     compile files('libs/pldroid-media-streaming-2.1.3.jar')
+    //    //添加分包设置
 
-//    //添加分包设置
-//    compile 'com.android.support:multidex:1.0.1'
+    //    compile 'com.android.support:multidex:1.0.1'
+    compile files('libs/open_sdk_r5788_lite.jar')
 }
 //Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 //> com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException:
