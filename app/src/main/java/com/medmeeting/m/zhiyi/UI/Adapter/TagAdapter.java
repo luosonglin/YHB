@@ -30,5 +30,7 @@ public class TagAdapter extends BaseQuickAdapter<TagDto> {
 //            }
 //        });
 
+        helper.setOnClickListener(R.id.name, new OnItemChildClickListener());
+
     }
 }

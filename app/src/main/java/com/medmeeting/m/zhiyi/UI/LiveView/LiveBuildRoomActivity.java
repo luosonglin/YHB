@@ -54,7 +54,7 @@ import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
 import rx.Observer;
 
-public class LiveBuildRoomActivity extends AppCompatActivity implements BaseQuickAdapter.OnRecyclerViewItemClickListener {
+public class LiveBuildRoomActivity extends AppCompatActivity {
 
     @Bind(R.id.live_pic)
     ImageView livePic;
@@ -176,14 +176,13 @@ public class LiveBuildRoomActivity extends AppCompatActivity implements BaseQuic
         List<String> photos = null;
         if (data != null) {
             photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+            for (String i : photos) {
+                Log.e(TAG, i);
+            }
+            showProgress(true);
+            ToastUtils.show(LiveBuildRoomActivity.this, "正在上传封面图片...");
+            getQiniuToken(photos.get(0));
         }
-
-        for (String i : photos) {
-            Log.e(TAG, i);
-        }
-        showProgress(true);
-        ToastUtils.show(LiveBuildRoomActivity.this, "正在上传封面图片...");
-        getQiniuToken(photos.get(0));
     }
 
     private List<String> qiniuData = new ArrayList<>();
@@ -342,15 +341,24 @@ public class LiveBuildRoomActivity extends AppCompatActivity implements BaseQuic
             }
         });
 
-//        mBaseQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-////                classifyTv.setText(tags.get(position).getLabelName());
-////                window.dismiss();
-//
-//            }
-//        });
-        mBaseQuickAdapter.setOnRecyclerViewItemClickListener(this);
+        tags_confirm.clear();
+        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                TagDto tagDto = (TagDto) adapter.getItem(position);
+                switch (view.getId()) {
+                    case R.id.name:
+                        if (!tags_confirm.contains(tagDto)) {
+                            tags_confirm.add(tagDto);
+                            view.setBackgroundResource(R.drawable.textview_all_blue);
+                        } else {
+                            tags_confirm.remove(tagDto);
+                            view.setBackgroundResource(R.drawable.textview_radius_grey);
+                        }
+                        break;
+                }
+            }
+        });
 
         TextView confirmTv = (TextView) popupView.findViewById(R.id.confirm_tag);
         confirmTv.setOnClickListener(new View.OnClickListener() {
@@ -372,18 +380,8 @@ public class LiveBuildRoomActivity extends AppCompatActivity implements BaseQuic
                 }
             }
         });
-
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        if (!tags_confirm.contains(tags.get(position))) {
-            tags_confirm.add(tags.get(position));
-        } else {
-            tags_confirm.remove(tags.get(position));
-        }
-        mBaseQuickAdapter.notifyItemChanged(position);
-    }
 
     /**
      * Shows the progress UI and hides the login form.

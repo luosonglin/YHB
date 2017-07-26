@@ -8,10 +8,10 @@
     <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
 
 
-    <string name="string_state_ready">READY</string>
-    <string name="string_state_preparing">PREPARING</string>
-    <string name="string_state_connecting">CONNECTING</string>
-    <string name="string_state_streaming">STREAMING</string>
+    <string name="string_state_ready">准备</string>
+    <string name="string_state_preparing">准备中</string>
+    <string name="string_state_connecting">连接中</string>
+    <string name="string_state_streaming">推流中</string>
 
     <string name="flash_light_on">ON</string>
     <string name="flash_light_off">OFF</string>

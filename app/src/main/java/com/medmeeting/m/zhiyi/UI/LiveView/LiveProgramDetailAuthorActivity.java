@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,9 +28,14 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
+import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.Config;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.SWCodecCameraStreamingActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.snappydb.SnappydbException;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -49,6 +55,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.UserInfo;
 import rx.Observer;
 
 /**
@@ -184,8 +192,16 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                     @Override
                     public void onNext(HttpResult3<Object, LiveStream> objectLiveStreamHttpResult3) {
                         if (objectLiveStreamHttpResult3.getStatus().equals("success")) {
-                            Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
-                            startStreamingActivity(intent, objectLiveStreamHttpResult3.getEntity().getPushUrl(), programId);
+                            try {
+                                loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailAuthorActivity.this, "userId"), DBUtils.get(LiveProgramDetailAuthorActivity.this, "userName"), url);
+                            } catch (SnappydbException e) {
+                                e.printStackTrace();
+                            } finally {
+                                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
+                                startStreamingActivity(intent, objectLiveStreamHttpResult3.getEntity().getPushUrl(), programId);
+                            }
+                        } else {
+                            ToastUtils.show(LiveProgramDetailAuthorActivity.this, objectLiveStreamHttpResult3.getMsg());
                         }
                     }
                 }, programId);
@@ -249,6 +265,12 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(final DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface dialogInterface, int i) {
                                 HttpData.getInstance().HttpDataDeleteProgram(new Observer<HttpResult3>() {
                                     @Override
                                     public void onCompleted() {
@@ -264,16 +286,10 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                                     public void onNext(HttpResult3 httpResult3) {
                                         if (httpResult3.getStatus().equals("success")) {
                                             dialogInterface.dismiss();
-                                            onResume();
+                                            finish();
                                         }
                                     }
                                 }, programId);
-                            }
-                        })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
                             }
                         })
                         .show();
@@ -616,5 +632,54 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    /**
+     * 加入融云直播间
+     */
+    private void loginRongCloudChatRoom(String userId, final String name, final String url) {
+        UserInfo user = new UserInfo(userId, name, Uri.parse(url));
+        LiveKit.setCurrentUser(user);
+        Log.e(TAG + " loginRongCloudChatRoom", user.getName() + " " + LiveKit.getCurrentUser().getName());
+        LiveKit.initMessageType();
+
+        HttpData.getInstance().HttpDataGetUserIm(new Observer<HttpResult3<Object, RCUserDto>>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: "+e.getMessage()
+                        +"\n"+e.getCause()
+                        +"\n"+e.getLocalizedMessage()
+                        +"\n"+e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, RCUserDto> data) {
+                Log.e(TAG, "onNext");
+                LiveKit.connect(data.getEntity().getToken(),
+                        new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+                                Log.e(TAG, "connect onTokenIncorrect");
+                                // 检查appKey 与token是否匹配.
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+                                Log.e(TAG, "connect onSuccess");
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                Log.e(TAG, "connect onError = " + errorCode);
+                                // 根据errorCode 检查原因.
+                            }
+                        });
+            }
+        });
     }
 }

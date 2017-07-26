@@ -27,7 +27,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .load(item.getCoverPhoto())
                 .crossFade()
                 .placeholder(R.mipmap.live_background)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into((ImageView) helper.getView(R.id.image));
 
         Glide.with(mContext)

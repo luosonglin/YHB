@@ -1,175 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <com.qiniu.pili.droid.streaming.widget.AspectFrameLayout
         android:id="@+id/cameraPreview_afl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal" >
+        android:layout_gravity="center_horizontal">
 
         <com.medmeeting.m.zhiyi.UI.LiveView.live.CameraPreviewFrameView
             android:id="@+id/cameraPreview_surfaceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
-        <include layout="@layout/focus_indicator"/>
+
+        <include layout="@layout/focus_indicator" />
 
     </com.qiniu.pili.droid.streaming.widget.AspectFrameLayout>
 
     <TextView
         android:id="@+id/log_info"
-        android:contentDescription="@string/cd_tv_log_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:contentDescription="@string/cd_tv_log_info" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/logout_btn"
-        android:contentDescription="@string/cd_btn_orientation"
-        android:textColor="@color/pldroid_streaming_white"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_margin="10dp"
         android:layout_gravity="right|top"
-        android:background="@mipmap/icon_logout"/>
+        android:layout_margin="10dp"
+        android:background="@mipmap/icon_logout"
+        android:contentDescription="@string/cd_btn_orientation"
+        android:textColor="@color/pldroid_streaming_white" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="left|top"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-        <include layout="@layout/status"
+        <include
+            layout="@layout/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/stream_status"
-            android:contentDescription="@string/cd_tv_stream_status"
-            android:background="@android:color/transparent"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/pldroid_streaming_white"
-            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp" />
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cd_tv_stream_status"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/pldroid_streaming_white"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="left|center"
         android:gravity="center_vertical"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <Button
             android:id="@+id/preview_mirror_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/cd_preview_mirror"
             android:text="Mirror\n(Preview)"
-            android:textColor="@color/pldroid_streaming_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/pldroid_streaming_white" />
 
         <Button
             android:id="@+id/encoding_mirror_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/cd_encoding_mirror"
             android:text="Mirror\n(Encode)"
-            android:textColor="@color/pldroid_streaming_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/pldroid_streaming_white" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp"
         android:layout_gravity="bottom|right"
-        android:gravity="center_vertical">
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/share_btn"
-            android:contentDescription="@string/cd_btn_camera_switcher"
-            android:textColor="@color/pldroid_streaming_white"
+            android:id="@+id/chat_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="4dp"
-            android:background="@mipmap/icon_share"/>
+            android:background="@mipmap/live_chat_btn"
+            android:contentDescription="@string/cd_btn_camera_switcher"
+            android:textColor="@color/pldroid_streaming_white"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/dan_btn"
-            android:contentDescription="@string/cd_btn_camera_switcher"
-            android:textColor="@color/pldroid_streaming_white"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="4dp"
-            android:background="@mipmap/icon_dan"/>
+            android:background="@mipmap/icon_dan"
+            android:contentDescription="@string/cd_btn_camera_switcher"
+            android:textColor="@color/pldroid_streaming_white" />
         <!-- ******** -->
         <Button
             android:id="@+id/camera_switch_btn"
-            android:contentDescription="@string/cd_btn_camera_switcher"
-            android:textColor="@color/pldroid_streaming_white"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="4dp"
-            android:background="@mipmap/icon_back"/>
+            android:background="@mipmap/icon_back"
+            android:contentDescription="@string/cd_btn_camera_switcher"
+            android:textColor="@color/pldroid_streaming_white" />
 
         <Button
             android:id="@+id/torch_btn"
-            android:contentDescription="@string/cd_btn_torch"
-            android:textColor="@color/pldroid_streaming_white"
-            android:text="@string/flash_light_on"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="4dp"
             android:background="@mipmap/icon_open_light"
-            android:visibility="visible"/>
+            android:contentDescription="@string/cd_btn_torch"
+            android:text=""
+            android:textColor="@color/pldroid_streaming_white"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/orientation_btn"
-            android:contentDescription="@string/cd_btn_orientation"
-            android:textColor="@color/pldroid_streaming_white"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="4dp"
-            android:background="@mipmap/icon_land_post"/>
+            android:background="@mipmap/icon_land_post"
+            android:contentDescription="@string/cd_btn_orientation"
+            android:textColor="@color/pldroid_streaming_white" />
 
         <Button
             android:id="@+id/mute_btn"
-            android:contentDescription="@string/cd_btn_mute"
-            android:textColor="@color/pldroid_streaming_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:visibility="gone"/>
+            android:contentDescription="@string/cd_btn_mute"
+            android:textColor="@color/pldroid_streaming_white"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/fb_btn"
-            android:contentDescription="@string/cd_btn_fb"
-            android:textColor="@color/pldroid_streaming_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:visibility="gone"/>
+            android:contentDescription="@string/cd_btn_fb"
+            android:textColor="@color/pldroid_streaming_white"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/capture_btn"
-            android:contentDescription="@string/cd_btn_capture"
-            android:textColor="@color/pldroid_streaming_white"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="4dp"
-            android:background="@mipmap/icon_capture"/>
+            android:background="@mipmap/icon_capture"
+            android:contentDescription="@string/cd_btn_capture"
+            android:textColor="@color/pldroid_streaming_white" />
     </LinearLayout>
 
     <SeekBar
@@ -180,9 +185,36 @@
         android:layout_marginBottom="60dp"
         android:max="100"
         android:progress="100"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
-    <include layout="@layout/camera_button_holder"
-        android:visibility="gone"/>
+    <include
+        layout="@layout/camera_button_holder"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="14dp">
+
+        <com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView
+            android:id="@+id/chat_listview"
+            android:layout_width="200dp"
+            android:layout_height="250dp"
+            android:layout_above="@+id/bottom_bar"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none"
+            android:transcriptMode="alwaysScroll" />
+
+        <fragment
+            android:id="@+id/bottom_bar"
+            android:name="com.medmeeting.m.zhiyi.UI.LiveView.live.fragment.BottomPanelFragment2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
 
 </FrameLayout>

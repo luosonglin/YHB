@@ -26,8 +26,13 @@ import android.widget.Toast;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.fragment.BottomPanelFragment2;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.gles.FBO;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.RotateLayout;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.InputPanel;
 import com.qiniu.android.dns.DnsManager;
 import com.qiniu.android.dns.IResolver;
 import com.qiniu.android.dns.NetworkInfo;
@@ -61,6 +66,9 @@ import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.MessageContent;
+import io.rong.message.TextMessage;
 import rx.Observer;
 
 public class StreamingBaseActivity extends Activity implements
@@ -71,9 +79,10 @@ public class StreamingBaseActivity extends Activity implements
         AudioSourceCallback,
         CameraPreviewFrameView.Listener,
         StreamingSessionListener,
-        StreamingStateChangedListener {
+        StreamingStateChangedListener,
+        Handler.Callback{
 
-    private static final String TAG = "StreamingBaseActivity";
+    private static final String TAG = StreamingBaseActivity.class.getSimpleName();
 
     private static final int ZOOM_MINIMUM_WAIT_MILLIS = 33; //ms
 
@@ -94,6 +103,7 @@ public class StreamingBaseActivity extends Activity implements
     private Button mCaptureFrameBtn;
     private Button mEncodingOrientationSwitcherBtn;
     private Button mFaceBeautyBtn;
+    private Button mDanBtn;
     private RotateLayout mRotateLayout;
 
     private Button mLogoutBtn;
@@ -198,6 +208,18 @@ public class StreamingBaseActivity extends Activity implements
         }
     };
 
+    /**
+     * im
+     */
+    private Handler handler = new Handler(this);
+    private ChatListView chatListView;
+    private ChatListAdapter chatListAdapter;
+    private BottomPanelFragment2 bottomPanel;
+//    private ImageView btnGift;
+//    private ImageView btnHeart;
+//    private HeartLayout heartLayout;
+//    private Random random = new Random();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -294,6 +316,47 @@ public class StreamingBaseActivity extends Activity implements
         mMicrophoneStreamingSetting.setBluetoothSCOEnabled(false);
 
         initUIs(programId);
+
+        //init 互动view
+        LiveKit.addEventHandler(handler);
+        chatListView = (ChatListView) findViewById(R.id.chat_listview);
+        chatListAdapter = new ChatListAdapter();
+        chatListView.setAdapter(chatListAdapter);
+//        bottomPanel = (BottomPanelFragment) getSupportFragmentManager().getfindFragmentById(R.id.bottom_bar);
+        bottomPanel = (BottomPanelFragment2) getFragmentManager().findFragmentById(R.id.bottom_bar);
+//        btnGift = (ImageView) bottomPanel.getView().findViewById(R.id.btn_gift);
+//        btnHeart = (ImageView) bottomPanel.getView().findViewById(R.id.btn_heart);
+//        heartLayout = (HeartLayout) findViewById(R.id.heart_layout);
+//        btnGift.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                GiftMessage msg = new GiftMessage("2", "送您一个礼物");
+//                LiveKit.sendMessage(msg);
+//            }
+//        });
+//        btnHeart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                heartLayout.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+//                        heartLayout.addHeart(rgb);
+//                    }
+//                });
+//                GiftMessage msg = new GiftMessage("1", "点赞了");
+//                LiveKit.sendMessage(msg);
+//            }
+//        });
+        bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
+            @Override
+            public void onSendClick(String text) {
+                final TextMessage content = TextMessage.obtain(text);
+                LiveKit.sendMessage(content);
+            }
+        });
+
+        joinChatRoom(programId);
     }
 
     @Override
@@ -473,7 +536,7 @@ public class StreamingBaseActivity extends Activity implements
             @Override
             public void run() {
 //                String flashlight = enabled ? getString(R.string.flash_light_off) : getString(R.string.flash_light_on);
-//                mTorchBtn.setText(flashlight);
+                mTorchBtn.setText("");
                 mTorchBtn.setBackgroundResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
             }
         });
@@ -590,6 +653,7 @@ public class StreamingBaseActivity extends Activity implements
         mCameraSwitchBtn = (Button) findViewById(R.id.camera_switch_btn);
         mCaptureFrameBtn = (Button) findViewById(R.id.capture_btn);
         mFaceBeautyBtn = (Button) findViewById(R.id.fb_btn);
+        mDanBtn = (Button) findViewById(R.id.dan_btn);
         mStatusTextView = (TextView) findViewById(R.id.streamingStatus);
         Button previewMirrorBtn = (Button) findViewById(R.id.preview_mirror_btn);
         Button encodingMirrorBtn = (Button) findViewById(R.id.encoding_mirror_btn);
@@ -651,6 +715,19 @@ public class StreamingBaseActivity extends Activity implements
             public void onClick(View v) {
                 if (!mHandler.hasMessages(MSG_FB)) {
                     mHandler.sendEmptyMessage(MSG_FB);
+                }
+            }
+        });
+
+        mDanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (chatListView.getVisibility() == View.VISIBLE){
+                    chatListView.setVisibility(View.GONE);
+                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan_close);
+                } else {
+                    chatListView.setVisibility(View.VISIBLE);
+                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan);
                 }
             }
         });
@@ -824,7 +901,7 @@ public class StreamingBaseActivity extends Activity implements
                 if (bos != null) bos.close();
             }
 
-            final String info = "Save frame to:" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename;
+            final String info = "截图保存在: " + Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -887,8 +964,7 @@ public class StreamingBaseActivity extends Activity implements
             setRequestedOrientation(mIsEncOrientationPort ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mMediaStreamingManager.notifyActivityOrientationChanged();
             updateOrientationBtnText();
-            Toast.makeText(StreamingBaseActivity.this, Config.HINT_ENCODING_ORIENTATION_CHANGED,
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(StreamingBaseActivity.this, Config.HINT_ENCODING_ORIENTATION_CHANGED, Toast.LENGTH_SHORT).show();
             Log.i(TAG, "EncodingOrientationSwitcher -");
         }
     }
@@ -924,5 +1000,52 @@ public class StreamingBaseActivity extends Activity implements
                 }
             });
         }
+    }
+
+    /**
+     * im
+     */
+    @Override
+    public boolean handleMessage(android.os.Message msg) {
+        switch (msg.what) {
+            case LiveKit.MESSAGE_ARRIVED: {
+                MessageContent content = (MessageContent) msg.obj;
+                chatListAdapter.addMessage(content);
+                break;
+            }
+            case LiveKit.MESSAGE_SENT: {
+                MessageContent content = (MessageContent) msg.obj;
+                chatListAdapter.addMessage(content);
+                break;
+            }
+            case LiveKit.MESSAGE_SEND_ERROR: {
+                break;
+            }
+            default:
+        }
+        chatListAdapter.notifyDataSetChanged();
+        return false;
+    }
+
+    private void joinChatRoom(final Integer roomId) {
+        LiveKit.joinChatRoom(roomId+"", 5, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+//                final InformationNotificationMessage content = InformationNotificationMessage.obtain("进入了房间");
+//                LiveKit.sendMessage(content);
+
+                // 配合ios
+                TextMessage content = TextMessage.obtain("进入了房间");
+                LiveKit.sendMessage(content);
+
+                Log.e(TAG+"joinChatRoom: ", content + "" + content.getUserInfo().getName());
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Toast.makeText(StreamingBaseActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "聊天室加入失败! errorCode = " + errorCode);
+            }
+        });
     }
 }

@@ -464,6 +464,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     try {
                         DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
                         DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
+                        DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
                         DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
                     } catch (SnappydbException e) {
                         e.printStackTrace();
