@@ -325,6 +325,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 Log.e(TAG, "onNext");
 
                 programId = liveDtoHttpResult3.getEntity().getId();
+                Log.e(TAG+"haha", programId+"");
                 url = liveDtoHttpResult3.getEntity().getRtmpPlayUrl();
                 amount = liveDtoHttpResult3.getEntity().getPrice();
                 payFlag = liveDtoHttpResult3.getEntity().getPayFalg();
@@ -358,7 +359,8 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                 } finally {
                                     Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
                                     intent.putExtra("rtmpPlayUrl", url);
-                                    intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
+//                                    intent.putExtra("onlineVidoId", programId);//getIntent().getExtras().getInt("programId"));
+                                    intent.putExtra("programId", programId);
                                     startActivity(intent);
                                 }
                             }
@@ -377,7 +379,8 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                             } finally {
                                 Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
                                 intent.putExtra("rtmpPlayUrl", liveDtoHttpResult3.getEntity().getRtmpPlayUrl());
-                                intent.putExtra("onlineVidoId", getIntent().getExtras().getInt("programId"));
+//                                intent.putExtra("onlineVidoId", programId);//getIntent().getExtras().getInt("programId"));
+                                intent.putExtra("programId", programId);
                                 startActivity(intent);
                             }
                         }

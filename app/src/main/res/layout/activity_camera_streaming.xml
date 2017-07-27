@@ -193,17 +193,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="14dp">
+        android:layout_gravity="bottom">
 
         <com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView
             android:id="@+id/chat_listview"
             android:layout_width="200dp"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_above="@+id/bottom_bar"
             android:divider="@null"
             android:listSelector="@android:color/transparent"
             android:scrollbars="none"
+            android:layout_marginLeft="14dp"
             android:transcriptMode="alwaysScroll" />
 
         <fragment
@@ -212,7 +212,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="4dp"/>
+            android:layout_margin="10dp"/>
 
     </RelativeLayout>
 

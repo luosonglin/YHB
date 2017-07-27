@@ -216,10 +216,6 @@ public class StreamingBaseActivity extends Activity implements
     private ChatListView chatListView;
     private ChatListAdapter chatListAdapter;
     private BottomPanelFragment2 bottomPanel;
-//    private ImageView btnGift;
-//    private ImageView btnHeart;
-//    private HeartLayout heartLayout;
-//    private Random random = new Random();
     private ImageView btnDan;
     private ImageView btnCameraSwitch;
     private ImageView btnTorch;
@@ -419,6 +415,7 @@ public class StreamingBaseActivity extends Activity implements
             }
         });
 
+        Log.e(TAG, "programId" + programId);
         joinChatRoom(programId);
     }
 

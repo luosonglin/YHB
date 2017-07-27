@@ -15,48 +15,48 @@
 
         <ImageView
             android:id="@+id/btn_input"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:src="@mipmap/live_chat_btn" />
 
         <ImageView
             android:id="@+id/dan_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:src="@mipmap/icon_dan" />
 
         <ImageView
             android:id="@+id/camera_switch_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:src="@mipmap/icon_back" />
 
         <ImageView
             android:id="@+id/torch_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:src="@mipmap/icon_open_light" />
 
         <ImageView
             android:id="@+id/orientation_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:src="@mipmap/icon_land_post" />
 
         <ImageView
             android:id="@+id/capture_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:src="@mipmap/icon_capture" />

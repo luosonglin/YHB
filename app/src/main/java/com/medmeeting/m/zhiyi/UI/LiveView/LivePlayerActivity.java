@@ -66,7 +66,7 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
     private HeartLayout heartLayout;
     private Random random = new Random();
 
-    private int onlineVidoId;
+    private int programId;
 
     /**
      * 配置播放参数
@@ -231,9 +231,9 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
             }
         });
 
-        onlineVidoId = getIntent().getExtras().getInt("programId");
-        Log.e(TAG, "programId" + onlineVidoId);
-        joinChatRoom(onlineVidoId+"");
+        programId = getIntent().getExtras().getInt("programId");
+        Log.e(TAG, "programId" + programId);
+        joinChatRoom(programId+"");
     }
 
     @Override
