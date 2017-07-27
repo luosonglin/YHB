@@ -70,76 +70,81 @@ public class LiveTicketActivity extends AppCompatActivity implements BaseQuickAd
             public void onNext(HttpResult3<Object, LiveTicketDto> data) {
                 moneyTv.setText("合计收入/人数：¥" + data.getEntity().getAmountSum()+"元/"+data.getEntity().getPayList().size()+"人");
 
-                switch (data.getEntity().getExtractStatus()) {
-                    case "PENDING": //待处理
-                        statusTv.setText("提现中");
-                        statusTv.setBackgroundResource(R.color.grey1);
-                        break;
-                    case "ADOPT":   //通过
-                        statusTv.setText("已提现");
-                        statusTv.setBackgroundResource(R.color.grey1);
-                        break;
-                    case "REJECT":  //驳回
-                        statusTv.setText("已驳回");
-                        statusTv.setBackgroundResource(R.color.grey1);
-                        break;
-                    default:
-                        statusTv.setText("提现");
-                        statusTv.setBackgroundResource(R.color.skyblue);
-                        break;
+                if (data.getEntity().getExtractStatus() != null) {
+                    switch (data.getEntity().getExtractStatus()) {
+                        case "PENDING": //待处理
+                            statusTv.setText("提现中");
+                            statusTv.setBackgroundResource(R.color.grey1);
+                            break;
+                        case "ADOPT":   //通过
+                            statusTv.setText("已提现");
+                            statusTv.setBackgroundResource(R.color.grey1);
+                            break;
+                        case "REJECT":  //驳回
+                            statusTv.setText("已驳回");
+                            statusTv.setBackgroundResource(R.color.grey1);
+                            break;
+                        default:
+                            statusTv.setText("提现");
+                            statusTv.setBackgroundResource(R.color.skyblue);
+                            break;
 
+                    }
+                } else {    //null
+                    statusTv.setText("提现");
+                    statusTv.setBackgroundResource(R.color.skyblue);
+                }
+
+                if(statusTv.getText().toString().trim().equals("提现")) {
+                    statusTv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            new AlertDialog.Builder(LiveTicketActivity.this)
+                                    .setMessage("确定提现吗？")
+                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(final DialogInterface dialogInterface, int i) {
+                                            HttpData.getInstance().HttpDataExtract(new Observer<HttpResult3>() {
+                                                @Override
+                                                public void onCompleted() {
+
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+
+                                                }
+
+                                                @Override
+                                                public void onNext(HttpResult3 httpResult3) {
+                                                    if (httpResult3.getStatus().equals("success")) {
+                                                        ToastUtils.show(LiveTicketActivity.this, "提现成功");
+                                                        statusTv.setText("已驳回");
+                                                        statusTv.setBackgroundResource(R.color.grey1);
+                                                    } else if (httpResult3.getStatus().equals("error")) {
+                                                        ToastUtils.show(LiveTicketActivity.this, httpResult3.getMsg());
+                                                    }
+                                                    onResume();
+                                                    dialogInterface.dismiss();
+                                                }
+                                            }, programId);
+                                        }
+                                    })
+                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .create()
+                                    .show();
+                        }
+                    });
                 }
 
             }
         }, programId);
-
-        if(statusTv.getText().equals("提现")) {
-            statusTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    new AlertDialog.Builder(LiveTicketActivity.this)
-                            .setMessage("确定提现吗？")
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(final DialogInterface dialogInterface, int i) {
-                                    HttpData.getInstance().HttpDataExtract(new Observer<HttpResult3>() {
-                                        @Override
-                                        public void onCompleted() {
-
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-
-                                        }
-
-                                        @Override
-                                        public void onNext(HttpResult3 httpResult3) {
-                                            if (httpResult3.getStatus().equals("success")) {
-                                                ToastUtils.show(LiveTicketActivity.this, "提现成功");
-                                                statusTv.setText("已驳回");
-                                                statusTv.setBackgroundResource(R.color.grey1);
-                                            } else if (httpResult3.getStatus().equals("error")) {
-                                                ToastUtils.show(LiveTicketActivity.this, httpResult3.getMsg());
-                                            }
-                                            dialogInterface.dismiss();
-                                        }
-                                    }, programId);
-                                }
-                            })
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create()
-                            .show();
-
-                }
-            });
-        }
     }
 
     private void toolBar() {
