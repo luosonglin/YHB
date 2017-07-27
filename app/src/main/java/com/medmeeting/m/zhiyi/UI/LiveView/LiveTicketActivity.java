@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
@@ -193,19 +192,19 @@ public class LiveTicketActivity extends AppCompatActivity implements BaseQuickAd
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
 
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(LiveTicketActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(LiveTicketActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+//        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                Toast.makeText(LiveTicketActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(View view, int position) {
+//                Toast.makeText(LiveTicketActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
     }
 
     //自动加载

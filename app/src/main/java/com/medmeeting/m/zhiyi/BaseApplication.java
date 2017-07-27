@@ -1,8 +1,8 @@
 package com.medmeeting.m.zhiyi;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
@@ -16,7 +16,7 @@ import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {//Application {
 
     private static final String TAG = "BaseApplication";
     private static Context context;

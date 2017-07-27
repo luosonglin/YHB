@@ -56,7 +56,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:text="ha"
-                    android:textSize="18sp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
                     android:textColor="@color/black"/>
 
                 <TextView
@@ -65,7 +66,9 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
                     android:lines="1"
-                    android:text="ha" />
+                    android:gravity="center_vertical"
+                    android:text="ha"
+                    android:textSize="12sp"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
