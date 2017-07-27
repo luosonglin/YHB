@@ -46,6 +46,9 @@ public class InputPanel extends LinearLayout {
         sendBtn = (TextView) findViewById(R.id.input_send);
         emojiBoard = (EmojiBoard) findViewById(R.id.input_emoji_board);
 
+        //去掉emoji
+        emojiBtn.setVisibility(GONE);
+
         textEditor.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

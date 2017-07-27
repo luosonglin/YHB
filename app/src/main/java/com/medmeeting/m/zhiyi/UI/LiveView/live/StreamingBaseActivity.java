@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -182,14 +183,14 @@ public class StreamingBaseActivity extends Activity implements
                 case MSG_MUTE:
                     mIsNeedMute = !mIsNeedMute;
                     mMediaStreamingManager.mute(mIsNeedMute);
-                    updateMuteButtonText();
+//                    updateMuteButtonText();
                     break;
                 case MSG_FB:
                     mIsNeedFB = !mIsNeedFB;
                     mMediaStreamingManager.setVideoFilterType(mIsNeedFB ?
                             CameraStreamingSetting.VIDEO_FILTER_TYPE.VIDEO_FILTER_BEAUTY
                             : CameraStreamingSetting.VIDEO_FILTER_TYPE.VIDEO_FILTER_NONE);
-                    updateFBButtonText();
+//                    updateFBButtonText();
                     break;
                 case MSG_PREVIEW_MIRROR:
                     mIsPreviewMirror = !mIsPreviewMirror;
@@ -219,6 +220,11 @@ public class StreamingBaseActivity extends Activity implements
 //    private ImageView btnHeart;
 //    private HeartLayout heartLayout;
 //    private Random random = new Random();
+    private ImageView btnDan;
+    private ImageView btnCameraSwitch;
+    private ImageView btnTorch;
+    private ImageView btnEncodingOrientationSwitcher;
+    private ImageView btnCaptureFrame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -324,7 +330,64 @@ public class StreamingBaseActivity extends Activity implements
         chatListView.setAdapter(chatListAdapter);
 //        bottomPanel = (BottomPanelFragment) getSupportFragmentManager().getfindFragmentById(R.id.bottom_bar);
         bottomPanel = (BottomPanelFragment2) getFragmentManager().findFragmentById(R.id.bottom_bar);
-//        btnGift = (ImageView) bottomPanel.getView().findViewById(R.id.btn_gift);
+        btnDan = (ImageView) bottomPanel.getView().findViewById(R.id.dan_btn);
+        btnDan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (chatListView.getVisibility() == View.VISIBLE){
+                    chatListView.setVisibility(View.GONE);
+//                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan_close);
+                    btnDan.setImageResource(R.mipmap.icon_dan_close);
+                } else {
+                    chatListView.setVisibility(View.VISIBLE);
+//                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan);
+                    btnDan.setImageResource(R.mipmap.icon_dan);
+                }
+            }
+        });
+        btnCameraSwitch = (ImageView) bottomPanel.getView().findViewById(R.id.camera_switch_btn);
+        btnCameraSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mHandler.removeCallbacks(mSwitcher);
+                mHandler.postDelayed(mSwitcher, 100);
+            }
+        });
+        btnTorch = (ImageView) bottomPanel.getView().findViewById(R.id.torch_btn);
+        btnTorch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!mIsTorchOn) {
+                            mIsTorchOn = true;
+                            mMediaStreamingManager.turnLightOn();
+                        } else {
+                            mIsTorchOn = false;
+                            mMediaStreamingManager.turnLightOff();
+                        }
+                        setTorchEnabled(mIsTorchOn);
+                    }
+                }).start();
+            }
+        });
+        btnEncodingOrientationSwitcher = (ImageView) bottomPanel.getView().findViewById(R.id.orientation_btn);
+        btnEncodingOrientationSwitcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mHandler.removeCallbacks(mEncodingOrientationSwitcher);
+                mHandler.post(mEncodingOrientationSwitcher);
+            }
+        });
+        btnCaptureFrame = (ImageView) bottomPanel.getView().findViewById(R.id.capture_btn);
+        btnCaptureFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mHandler.removeCallbacks(mScreenShooter);
+                mHandler.postDelayed(mScreenShooter, 100);
+            }
+        });
 //        btnHeart = (ImageView) bottomPanel.getView().findViewById(R.id.btn_heart);
 //        heartLayout = (HeartLayout) findViewById(R.id.heart_layout);
 //        btnGift.setOnClickListener(new View.OnClickListener() {
@@ -536,8 +599,9 @@ public class StreamingBaseActivity extends Activity implements
             @Override
             public void run() {
 //                String flashlight = enabled ? getString(R.string.flash_light_off) : getString(R.string.flash_light_on);
-                mTorchBtn.setText("");
-                mTorchBtn.setBackgroundResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
+//                mTorchBtn.setText("");
+//                mTorchBtn.setBackgroundResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
+                btnTorch.setImageResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
             }
         });
     }
@@ -623,9 +687,11 @@ public class StreamingBaseActivity extends Activity implements
                         @Override
                         public void run() {
                             if (isSupportedTorch) {
-                                mTorchBtn.setVisibility(View.VISIBLE);
+//                                mTorchBtn.setVisibility(View.VISIBLE);
+                                btnTorch.setVisibility(View.VISIBLE);
                             } else {
-                                mTorchBtn.setVisibility(View.GONE);
+//                                mTorchBtn.setVisibility(View.GONE);
+                                btnTorch.setVisibility(View.GONE);
                             }
                         }
                     });
@@ -647,13 +713,13 @@ public class StreamingBaseActivity extends Activity implements
         View rootView = findViewById(R.id.content);
         rootView.addOnLayoutChangeListener(this);
 
-        mMuteButton = (Button) findViewById(R.id.mute_btn);
+//        mMuteButton = (Button) findViewById(R.id.mute_btn);
         mShutterButton = (Button) findViewById(R.id.toggleRecording_button);
-        mTorchBtn = (Button) findViewById(R.id.torch_btn);
-        mCameraSwitchBtn = (Button) findViewById(R.id.camera_switch_btn);
-        mCaptureFrameBtn = (Button) findViewById(R.id.capture_btn);
-        mFaceBeautyBtn = (Button) findViewById(R.id.fb_btn);
-        mDanBtn = (Button) findViewById(R.id.dan_btn);
+//        mTorchBtn = (Button) findViewById(R.id.torch_btn);
+//        mCameraSwitchBtn = (Button) findViewById(R.id.camera_switch_btn);
+//        mCaptureFrameBtn = (Button) findViewById(R.id.capture_btn);
+//        mFaceBeautyBtn = (Button) findViewById(R.id.fb_btn);
+//        mDanBtn = (Button) findViewById(R.id.dan_btn);
         mStatusTextView = (TextView) findViewById(R.id.streamingStatus);
         Button previewMirrorBtn = (Button) findViewById(R.id.preview_mirror_btn);
         Button encodingMirrorBtn = (Button) findViewById(R.id.encoding_mirror_btn);
@@ -710,36 +776,36 @@ public class StreamingBaseActivity extends Activity implements
             }
         });
 
-        mFaceBeautyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mHandler.hasMessages(MSG_FB)) {
-                    mHandler.sendEmptyMessage(MSG_FB);
-                }
-            }
-        });
+//        mFaceBeautyBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!mHandler.hasMessages(MSG_FB)) {
+//                    mHandler.sendEmptyMessage(MSG_FB);
+//                }
+//            }
+//        });
 
-        mDanBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (chatListView.getVisibility() == View.VISIBLE){
-                    chatListView.setVisibility(View.GONE);
-                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan_close);
-                } else {
-                    chatListView.setVisibility(View.VISIBLE);
-                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan);
-                }
-            }
-        });
+//        mDanBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (chatListView.getVisibility() == View.VISIBLE){
+//                    chatListView.setVisibility(View.GONE);
+//                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan_close);
+//                } else {
+//                    chatListView.setVisibility(View.VISIBLE);
+//                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan);
+//                }
+//            }
+//        });
 
-        mMuteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mHandler.hasMessages(MSG_MUTE)) {
-                    mHandler.sendEmptyMessage(MSG_MUTE);
-                }
-            }
-        });
+//        mMuteButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!mHandler.hasMessages(MSG_MUTE)) {
+//                    mHandler.sendEmptyMessage(MSG_MUTE);
+//                }
+//            }
+//        });
 
         previewMirrorBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -771,50 +837,50 @@ public class StreamingBaseActivity extends Activity implements
             }
         });
 
-        mTorchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!mIsTorchOn) {
-                            mIsTorchOn = true;
-                            mMediaStreamingManager.turnLightOn();
-                        } else {
-                            mIsTorchOn = false;
-                            mMediaStreamingManager.turnLightOff();
-                        }
-                        setTorchEnabled(mIsTorchOn);
-                    }
-                }).start();
-            }
-        });
+//        mTorchBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (!mIsTorchOn) {
+//                            mIsTorchOn = true;
+//                            mMediaStreamingManager.turnLightOn();
+//                        } else {
+//                            mIsTorchOn = false;
+//                            mMediaStreamingManager.turnLightOff();
+//                        }
+//                        setTorchEnabled(mIsTorchOn);
+//                    }
+//                }).start();
+//            }
+//        });
 
-        mCameraSwitchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacks(mSwitcher);
-                mHandler.postDelayed(mSwitcher, 100);
-            }
-        });
+//        mCameraSwitchBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mHandler.removeCallbacks(mSwitcher);
+//                mHandler.postDelayed(mSwitcher, 100);
+//            }
+//        });
 
-        mCaptureFrameBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacks(mScreenShooter);
-                mHandler.postDelayed(mScreenShooter, 100);
-            }
-        });
+//        mCaptureFrameBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mHandler.removeCallbacks(mScreenShooter);
+//                mHandler.postDelayed(mScreenShooter, 100);
+//            }
+//        });
 
 
-        mEncodingOrientationSwitcherBtn = (Button) findViewById(R.id.orientation_btn);
-        mEncodingOrientationSwitcherBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHandler.removeCallbacks(mEncodingOrientationSwitcher);
-                mHandler.post(mEncodingOrientationSwitcher);
-            }
-        });
+//        mEncodingOrientationSwitcherBtn = (Button) findViewById(R.id.orientation_btn);
+//        mEncodingOrientationSwitcherBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mHandler.removeCallbacks(mEncodingOrientationSwitcher);
+//                mHandler.post(mEncodingOrientationSwitcher);
+//            }
+//        });
 
         SeekBar seekBarBeauty = (SeekBar) findViewById(R.id.beautyLevel_seekBar);
         seekBarBeauty.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -841,12 +907,12 @@ public class StreamingBaseActivity extends Activity implements
     }
 
     private void initButtonText() {
-        updateFBButtonText();
+//        updateFBButtonText();
         updateCameraSwitcherButtonText(mCameraStreamingSetting.getReqCameraId());
 //        mCaptureFrameBtn.setText("Capture");
-        updateFBButtonText();
-        updateMuteButtonText();
-        updateOrientationBtnText();
+//        updateFBButtonText();
+//        updateMuteButtonText();
+//        updateOrientationBtnText();
     }
 
     private void updateOrientationBtnText() {
@@ -865,17 +931,17 @@ public class StreamingBaseActivity extends Activity implements
         }
     }
 
-    private void updateFBButtonText() {
-        if (mFaceBeautyBtn != null) {
-            mFaceBeautyBtn.setText(mIsNeedFB ? "FB Off" : "FB On");
-        }
-    }
+//    private void updateFBButtonText() {
+//        if (mFaceBeautyBtn != null) {
+//            mFaceBeautyBtn.setText(mIsNeedFB ? "FB Off" : "FB On");
+//        }
+//    }
 
-    private void updateMuteButtonText() {
-        if (mMuteButton != null) {
-            mMuteButton.setText(mIsNeedMute ? "Unmute" : "Mute");
-        }
-    }
+//    private void updateMuteButtonText() {
+//        if (mMuteButton != null) {
+//            mMuteButton.setText(mIsNeedMute ? "Unmute" : "Mute");
+//        }
+//    }
 
     private void updateCameraSwitcherButtonText(int camId) {
         if (mCameraSwitchBtn == null) {
@@ -963,7 +1029,7 @@ public class StreamingBaseActivity extends Activity implements
             mMediaStreamingManager.setStreamingProfile(mProfile);
             setRequestedOrientation(mIsEncOrientationPort ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mMediaStreamingManager.notifyActivityOrientationChanged();
-            updateOrientationBtnText();
+//            updateOrientationBtnText();
 //            Toast.makeText(StreamingBaseActivity.this, Config.HINT_ENCODING_ORIENTATION_CHANGED, Toast.LENGTH_SHORT).show();
             Log.i(TAG, "EncodingOrientationSwitcher -");
         }

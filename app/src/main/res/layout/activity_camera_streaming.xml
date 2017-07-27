@@ -90,10 +90,9 @@
             android:contentDescription="@string/cd_encoding_mirror"
             android:text="Mirror\n(Encode)"
             android:textColor="@color/pldroid_streaming_white" />
-
     </LinearLayout>
 
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
@@ -119,7 +118,7 @@
             android:background="@mipmap/icon_dan"
             android:contentDescription="@string/cd_btn_camera_switcher"
             android:textColor="@color/pldroid_streaming_white" />
-        <!-- ******** -->
+
         <Button
             android:id="@+id/camera_switch_btn"
             android:layout_width="40dp"
@@ -175,7 +174,7 @@
             android:background="@mipmap/icon_capture"
             android:contentDescription="@string/cd_btn_capture"
             android:textColor="@color/pldroid_streaming_white" />
-    </LinearLayout>
+    </LinearLayout>-->
 
     <SeekBar
         android:id="@+id/beautyLevel_seekBar"
@@ -195,7 +194,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="60dp"
         android:layout_marginLeft="14dp">
 
         <com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView
@@ -213,7 +211,8 @@
             android:name="com.medmeeting.m.zhiyi.UI.LiveView.live.fragment.BottomPanelFragment2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="4dp"/>
 
     </RelativeLayout>
 

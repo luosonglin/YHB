@@ -23,7 +23,7 @@ public class BottomPanelFragment2 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bottombar, container);
+        View view = inflater.inflate(R.layout.fragment_bottombar_author, container);
         buttonPanel = (ViewGroup) view.findViewById(R.id.button_panel);
         btnInput = (ImageView) view.findViewById(R.id.btn_input);
         inputPanel = (InputPanel) view.findViewById(R.id.input_panel);
@@ -31,8 +31,6 @@ public class BottomPanelFragment2 extends Fragment {
         btnInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                buttonPanel.setVisibility(View.GONE);
-
                 if (inputPanel.getVisibility() != View.VISIBLE) {
                     inputPanel.setVisibility(View.VISIBLE);
                 } else {
