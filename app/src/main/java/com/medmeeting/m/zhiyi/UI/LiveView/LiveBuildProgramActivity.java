@@ -1,5 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +28,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -112,6 +117,9 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
     private String videoPhoto = "";  //直播间封面图片
     private String authorName;
     private String authorTitle;
+
+    @Bind(R.id.progress)
+    View mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,6 +303,8 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
             for (String i : photos) {
                 Log.e(TAG, i);
             }
+            showProgress(true);
+            ToastUtils.show(LiveBuildProgramActivity.this, "正在上传封面图片...");
             getQiniuToken(photos.get(0));
         }
     }
@@ -322,6 +332,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
             @Override
             public void onNext(QiniuTokenDto q) {
                 if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
+                    showProgress(false);
                     return;
                 }
                 qiniuToken = q.getData().getUploadToken();
@@ -365,9 +376,17 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                                     Glide.with(LiveBuildProgramActivity.this)
                                             .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
                                             .crossFade()
-                                            .placeholder(R.mipmap.live_title_pic)
-                                            .into(livePic);
-                                    livePicTipTv.setText("修改直播封面");
+//                                            .placeholder(R.mipmap.live_title_pic)
+                                            .into(new GlideDrawableImageViewTarget(livePic) {
+                                                @Override
+                                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                                    //在这里添加一些图片加载完成的操作
+                                                    super.onResourceReady(resource, animation);
+                                                    showProgress(false);
+                                                    livePicTipTv.setText("修改直播封面");
+                                                }
+                                            });
+                                    ToastUtils.show(LiveBuildProgramActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
                                 } else {
                                     Log.i("qiniu", "Upload Fail");
                                     //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
@@ -533,5 +552,30 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
     // 所有特殊字符
     private String regEx = "[`~!@#$%^&*()+-=|{}':;',\\[\\]<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
 
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
 
 }

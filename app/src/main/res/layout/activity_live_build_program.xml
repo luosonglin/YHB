@@ -429,6 +429,14 @@
                 android:text="创建"
                 android:textColor="@color/white" />
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/progressbar"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <android.support.design.widget.AppBarLayout
