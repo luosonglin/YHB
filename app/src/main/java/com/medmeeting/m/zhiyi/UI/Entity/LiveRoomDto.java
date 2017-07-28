@@ -23,7 +23,7 @@ public class LiveRoomDto {
     private String number;
     private String title;
     private String coverPhoto;
-    private String labelIds;
+    private String labelIds;    //此处后端API是个坑
     private String des;
     private String status;
     private long createTime;

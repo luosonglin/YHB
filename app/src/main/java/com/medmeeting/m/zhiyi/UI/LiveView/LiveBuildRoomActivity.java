@@ -81,6 +81,8 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     private int userId;  //用户ID
     private String videoTitle = "";  //直播间标题
     private String videoLabel = "";  //直播间标题
+    private String videoLabelIds="";
+
     private String videoDesc = "";  //直播间描述
     private String videoPhoto = "";  //直播间封面图片
 
@@ -148,7 +150,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                     ToastUtils.show(LiveBuildRoomActivity.this, "请填写直播介绍");
                     return;
                 }
-                LiveRoomDto liveRoomDto = new LiveRoomDto(videoTitle, videoPhoto, videoLabel, videoDesc);
+                LiveRoomDto liveRoomDto = new LiveRoomDto(videoTitle, videoPhoto, videoLabelIds, videoDesc);
 
                 buildllyt.setClickable(false);
                 HttpData.getInstance().HttpDataAddLiveRoom(new Observer<HttpResult3>() {
@@ -353,6 +355,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         });
 
         tags_confirm.clear();
+        videoLabelIds="";
         mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -378,11 +381,12 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                 if (tags_confirm.size() <= 3) {
                     String classify = "";
                     for (TagDto i : tags_confirm) {
+                        videoLabelIds += i.getId() +",";
                         classify += " " + i.getLabelName();
                         Log.e(TAG, i.getLabelName());
                     }
                     classifyTv.setText(classify);
-
+                    videoLabelIds = videoLabelIds.substring(0, videoLabelIds.length()-1);
                     window.dismiss();
                 } else if (tags_confirm.size() == 0) {
                     ToastUtils.show(LiveBuildRoomActivity.this, "请选择直播分类标签");
