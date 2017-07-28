@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -123,6 +125,12 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                 break;
             case R.id.classify:
                 initTagsPopupWindow();
+                // 隐藏键盘
+//                ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(LiveBuildRoomActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(theme.getWindowToken(), 0);
+                imm.hideSoftInputFromWindow(introduction.getWindowToken(), 0);
                 break;
             case R.id.buildllyt:
                 videoTitle = theme.getText().toString().trim();
@@ -142,6 +150,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                 }
                 LiveRoomDto liveRoomDto = new LiveRoomDto(videoTitle, videoPhoto, videoLabel, videoDesc);
 
+                buildllyt.setClickable(false);
                 HttpData.getInstance().HttpDataAddLiveRoom(new Observer<HttpResult3>() {
                     @Override
                     public void onCompleted() {
@@ -161,8 +170,10 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                         if ("success".equals(httpResult3.getStatus())) {
                             startActivity(new Intent(LiveBuildRoomActivity.this, MyLiveRoomActivity.class));
                             finish();
+                            buildllyt.setClickable(false);
                         } else {
                             ToastUtils.show(LiveBuildRoomActivity.this, httpResult3.getMsg());
+                            buildllyt.setClickable(true);
                         }
                     }
                 }, liveRoomDto);

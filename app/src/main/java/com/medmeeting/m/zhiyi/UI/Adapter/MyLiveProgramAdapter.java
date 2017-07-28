@@ -28,7 +28,24 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
                 .into((ImageView) helper.getView(R.id.image));
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06))
-                .setText(R.id.sum, "已报名：" + item.getPayCount() + " 人");
+                .setText(R.id.sum, "已报名：" + item.getPayCount() + " 人")
+                .setText(R.id.status, item.getLiveStatus());
+
+        switch (item.getLiveStatus()) {
+            case "end":
+                helper.setText(R.id.status, "已结束");
+                break;
+            case "wait":
+//                if () startTime
+                helper.setText(R.id.status, "断开中");
+                break;
+            case "ready":
+                helper.setText(R.id.status, "准备中");
+                break;
+            case "play":
+                helper.setText(R.id.status, "直播中");
+                break;
+        }
 
         if (item.getChargeType().equals("yes")) {
             helper.setText(R.id.money, "¥" + item.getPrice());

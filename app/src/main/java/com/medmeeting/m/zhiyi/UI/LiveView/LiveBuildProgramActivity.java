@@ -237,7 +237,24 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 authorName = name.getText().toString().trim();
                 authorTitle = title.getText().toString().trim();
                 vidoDesc = introduction.getText().toString().trim();
+                if (vidoTitle.equals("")) {
+                    ToastUtils.show(LiveBuildProgramActivity.this, "请填写节目主题");
+                    return;
+                }
+                if (authorName.equals("")) {
+                    ToastUtils.show(LiveBuildProgramActivity.this, "请填写主讲人姓名");
+                    return;
+                }
+                if (authorTitle.equals("")) {
+                    ToastUtils.show(LiveBuildProgramActivity.this, "请填写主讲人职称");
+                    return;
+                }
+                if (vidoDesc.equals("")) {
+                    ToastUtils.show(LiveBuildProgramActivity.this, "请填写直播节目介绍");
+                    return;
+                }
                 LiveDto liveDto = new LiveDto(vidoTitle, videoPhoto, expectBeginTime, expectEndTime, authorName, authorTitle, privacyType, chargeType, price, vidoDesc);
+                buildllyt.setClickable(false);
                 HttpData.getInstance().HttpDataAddLiveProgram(new Observer<HttpResult3>() {
                     @Override
                     public void onCompleted() {
@@ -255,10 +272,12 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                     @Override
                     public void onNext(HttpResult3 httpResult3) {
                         if ("success".equals(httpResult3.getStatus())) {
-                            startActivity(new Intent(LiveBuildProgramActivity.this, MyLiveRoomActivity.class));
+//                            startActivity(new Intent(LiveBuildProgramActivity.this, MyLiveRoomActivity.class));
                             finish();
+                            buildllyt.setClickable(false);
                         } else {
                             ToastUtils.show(LiveBuildProgramActivity.this, httpResult3.getMsg());
+                            buildllyt.setClickable(true);
                         }
                     }
                 }, getIntent().getExtras().getInt("roomId"), liveDto);
@@ -272,12 +291,11 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         List<String> photos = null;
         if (data != null) {
             photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+            for (String i : photos) {
+                Log.e(TAG, i);
+            }
+            getQiniuToken(photos.get(0));
         }
-
-        for (String i : photos) {
-            Log.e(TAG, i);
-        }
-        getQiniuToken(photos.get(0));
     }
 
     private List<String> qiniuData = new ArrayList<>();
@@ -379,6 +397,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
     private Date mStartDate;
     private Date mEndDate;
     private Date currentDate;
+
     @TargetApi(Build.VERSION_CODES.M)
     private void showDateTimePopupwindow(final String sign) {
         final View mLiveSettingPopupWindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_date_time, null);

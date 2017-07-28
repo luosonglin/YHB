@@ -116,4 +116,8 @@ public interface APILiveService {
     //GET /v1/anchor/{roomId}/liveProgram/close/{programId} 关闭直播
     @GET("/v1/anchor/{roomId}/liveProgram/close/{programId}")
     Observable<HttpResult3> closeProgram(@Path("programId") Integer programId);
+
+    //GET /v1/anchor/{roomId}/liveProgram/{programId} 获取直播节目详情
+    @GET("/v1/anchor/{roomId}/liveProgram/{programId}")
+    Observable<HttpResult3<Object, LiveDto>> getProgramDetail(@Path("programId") Integer programId);
 }

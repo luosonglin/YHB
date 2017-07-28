@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@color/grey"
+        android:padding="1dp"
         android:orientation="vertical">
         <!--android:layout_marginBottom="10dp"-->
 
@@ -63,7 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:calendarViewShown="true"
-            android:datePickerMode="spinner"/>
+            android:datePickerMode="spinner"
+            android:layout_marginBottom="1dp"/>
         <!--android:datePickerMode="calendar"
         定义部件的外观，有spinner和calendar两种选择（Api 21 以上才能用）-->
 
@@ -71,6 +73,7 @@
             android:id="@+id/timePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:timePickerMode="spinner"/>
     </LinearLayout>
 

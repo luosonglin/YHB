@@ -364,4 +364,10 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         super.onConfigurationChanged(newConfig);
         mShareAction.close();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initView();
+    }
 }

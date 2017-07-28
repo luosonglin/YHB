@@ -27,6 +27,7 @@ import com.google.zxing.activity.CaptureActivity;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.Config;
@@ -66,7 +67,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
 
     private static final String TAG = LiveProgramDetailAuthorActivity.class.getSimpleName();
     private Toolbar toolbar;
-    private TextView titleTv, name, title;
+    private TextView titleTv, name, title, programIdTv;
     private ImageView backgroundIv, userPic;
     private Integer roomId = 0;
     private Integer programId = 0;
@@ -130,6 +131,9 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         roomId = getIntent().getExtras().getInt("roomId");
         programId = getIntent().getExtras().getInt("programId");
 
+        programIdTv = (TextView) findViewById(R.id.program_id);
+        programIdTv.setText("节目No." + programId);
+
         backgroundIv = (ImageView) findViewById(R.id.img);
         Glide.with(LiveProgramDetailAuthorActivity.this)
                 .load(getIntent().getExtras().getString("coverPhoto"))
@@ -150,7 +154,27 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         title.setText(getIntent().getExtras().getString("authorTitle"));
 
         detailTv = (TextView) findViewById(R.id.detail);
-        detailTv.setText("");
+        HttpData.getInstance().HttpDataGetProgramDetail(new Observer<HttpResult3<Object, LiveDto>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, LiveDto> data) {
+                detailTv.setText(data.getEntity().getDes()+"");
+
+                if(data.getEntity().getLiveStatus().equals("end")) {
+                    findViewById(R.id.to_live).setVisibility(View.GONE);
+                    findViewById(R.id.to_push).setVisibility(View.GONE);
+                }
+            }
+        }, programId);
 
         findViewById(R.id.to_live).setOnClickListener(new View.OnClickListener() {
             @Override

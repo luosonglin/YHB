@@ -730,14 +730,14 @@ public class StreamingBaseActivity extends Activity implements
             public void onClick(View view) {
                 new AlertDialog.Builder(StreamingBaseActivity.this)
                         .setTitle("关闭提示")
-                        .setMessage("如暂时退出直播，请点击左边'退出直播'按钮\n如要彻底关闭该场直播，请点击右边'关闭直播'按钮")
-                        .setNegativeButton("退出直播", new DialogInterface.OnClickListener() {
+                        .setMessage("如暂时退出直播，请点击左边'退出直播'按钮，\n如要彻底关闭该场直播，请点击右边'关闭直播'按钮")
+                        .setNegativeButton("暂时退出直播", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 finish();
                             }
                         })
-                        .setPositiveButton("关闭直播", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("彻底关闭直播", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 HttpData.getInstance().HttpDataCloseProgram(new Observer<HttpResult3>() {
@@ -1106,7 +1106,7 @@ public class StreamingBaseActivity extends Activity implements
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                Toast.makeText(StreamingBaseActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(StreamingBaseActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "聊天室加入失败! errorCode = " + errorCode);
             }
         });

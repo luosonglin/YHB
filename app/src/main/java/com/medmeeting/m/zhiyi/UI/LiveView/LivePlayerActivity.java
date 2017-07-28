@@ -585,7 +585,7 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                Toast.makeText(LivePlayerActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(LivePlayerActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "聊天室加入失败! errorCode = " + errorCode);
             }
         });

@@ -13,6 +13,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.ItemRemoveRecyclerView;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.MyAdapter;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.OnItemClickListener;
@@ -116,7 +117,11 @@ public class MyLiveRoomActivity extends AppCompatActivity {
 
                             @Override
                             public void onNext(HttpResult3 httpResult3) {
-                                adapter.removeItem(position);
+                                if (httpResult3.getStatus().equals("success")) {
+                                    adapter.removeItem(position);
+                                } else  {
+                                    ToastUtils.show(MyLiveRoomActivity.this, httpResult3.getMsg());
+                                }
                                 Log.d(TAG, "onNext");
                             }
                         }, mList.get(position).getId());

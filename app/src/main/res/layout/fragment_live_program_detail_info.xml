@@ -86,7 +86,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="12dp"
-                android:text="在直播是国内最大的手机视频直播平台，聚集着大量爱分享的年轻人，时刻直播正在发生的精彩生活。让手机摄像头一秒钟变成价值上百万的专业视频直播设备，轻松与全世界分享你的生活和情感。在这里，你就是明星。"
                 android:textColor="#666666"
                 android:textSize="14sp" />
         </LinearLayout>
