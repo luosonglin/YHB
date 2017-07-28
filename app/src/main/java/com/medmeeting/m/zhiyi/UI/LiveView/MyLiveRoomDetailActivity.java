@@ -181,19 +181,19 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
 
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(MyLiveRoomDetailActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(MyLiveRoomDetailActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+//        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                Toast.makeText(MyLiveRoomDetailActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(View view, int position) {
+//                Toast.makeText(MyLiveRoomDetailActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
     }
 
     //自动加载
