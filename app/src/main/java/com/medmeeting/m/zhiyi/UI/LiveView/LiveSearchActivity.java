@@ -233,6 +233,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                         typeTv.setText("公开 ▼");
                         window.dismiss();
                         type = "公开";
+                        searchEt.setHint("请输入直播间、直播等描述信息");
                     }
                 });
                 RelativeLayout relativeLayout2 = (RelativeLayout) popupView.findViewById(R.id.private_rlyt);
@@ -242,9 +243,9 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                         typeTv.setText("私密 ▼");
                         window.dismiss();
                         type = "私密";
+                        searchEt.setHint("请输入房间号ID");
                     }
                 });
-
                 break;
             case R.id.search_tv:
                 if ("公开".equals(type)) {

@@ -28,7 +28,7 @@ public class SWCodecCameraStreamingActivity extends StreamingBaseActivity {
 
         //logo水印
         WatermarkSetting watermarksetting = new WatermarkSetting(this);
-        watermarksetting.setResourceId(R.mipmap.logo)
+        watermarksetting.setResourceId(R.mipmap.transparent)
                 .setAlpha(100)
                 .setSize(WatermarkSetting.WATERMARK_SIZE.SMALL)
                 .setCustomPosition(0.5f, 0.5f)
