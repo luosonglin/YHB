@@ -41,7 +41,7 @@
             android:layout_marginRight="60dp"
             android:background="@drawable/live_search_bar_bg"
             android:focusable="true"
-            android:hint="请输入直播间、直播等描述信息"
+            android:hint="请输入直播间、直播、描述信息"
             android:imeOptions="actionSearch"
             android:maxLines="1"
             android:paddingLeft="8dp"

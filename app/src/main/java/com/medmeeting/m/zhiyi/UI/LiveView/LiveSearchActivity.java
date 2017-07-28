@@ -233,7 +233,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                         typeTv.setText("公开 ▼");
                         window.dismiss();
                         type = "公开";
-                        searchEt.setHint("请输入直播间、直播等描述信息");
+                        searchEt.setHint("请输入直播间、直播、描述信息");
                     }
                 });
                 RelativeLayout relativeLayout2 = (RelativeLayout) popupView.findViewById(R.id.private_rlyt);
