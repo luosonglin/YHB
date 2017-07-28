@@ -161,6 +161,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                                 expectType = "liveNow";
                                 startTime.setText("现在直播");
                                 endTime.setText("");
+                                expectBeginTime = System.currentTimeMillis();
                             }
                         })
                         .setPositiveButton("预约时间", new DialogInterface.OnClickListener() {
