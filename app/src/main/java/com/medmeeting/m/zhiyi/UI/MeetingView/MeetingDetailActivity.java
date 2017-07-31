@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
@@ -22,13 +23,14 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.snappydb.SnappydbException;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -49,7 +51,7 @@ import java.util.Map;
 public class MeetingDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private TextView toolbarTitle;
+//    private TextView toolbarTitle;
     private ImageView shareIv;
     private BridgeWebView mWebView;
     private static final String TAG = MeetingDetailActivity.class.getSimpleName();
@@ -59,7 +61,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private String version;
     private String eventId;
     private String eventTitle;
-    private String userId = "7";
+    private String userId;
     private String openId= null;
 
     @Override
@@ -68,7 +70,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meeting_detail);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+//        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         shareIv = (ImageView) findViewById(R.id.share);
         mWebView = (BridgeWebView) findViewById(R.id.WebView);
 
@@ -80,25 +82,59 @@ public class MeetingDetailActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        eventTitle = getIntent().getExtras().getString("eventTitle");
-        toolbarTitle.setText(eventTitle);
-        toolbarTitle.setTextColor(Color.BLACK);
-        toolbarTitle.setFocusable(true);
+//        eventTitle = getIntent().getExtras().getString("eventTitle");
+//        toolbarTitle.setText(eventTitle);
+//        toolbarTitle.setTextColor(Color.BLACK);
+//        toolbarTitle.setFocusable(true);
 
         toolbar.setTitle("");
         toolbar.setTitleTextColor(Color.BLACK);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+//        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+//                finish();
+//                onBackPressed();
+
+                //退出web还是退出activity
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack(); //goBack()表示返回WebView的上一页面
+                } else {
+                    onBackPressed();
+                }
             }
         });
+
+//        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.umeng_socialize_menu_default));
+        toolbar.setOnMenuItemClickListener(onMenuItemClick);
     }
+
+    private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            String msg = "";
+            switch (menuItem.getItemId()) {
+                case R.id.action_edit:
+                    msg += "Click edit";
+                    break;
+                case R.id.action_share:
+                    msg += "Click share";
+                    break;
+                case R.id.action_settings:
+                    msg += "Click setting";
+                    break;
+            }
+
+            if(!msg.equals("")) {
+                Toast.makeText(MeetingDetailActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+    };
 
     /**
      * 初始化WebView配置
@@ -106,6 +142,12 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private void initWebView() {
 
         eventId = getIntent().getExtras().getString("eventId");
+
+        try {
+            userId = DBUtils.get(MeetingDetailActivity.this, "userId");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
 
         WebSettings settings = mWebView.getSettings();
 

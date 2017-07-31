@@ -36,6 +36,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.http.ResponseInfo;
@@ -290,6 +291,11 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                         } else {
                             ToastUtils.show(LiveBuildProgramActivity.this, httpResult3.getMsg());
                             buildllyt.setClickable(true);
+                            if (httpResult3.getMsg().equals("invalid_token")) {
+                                ToastUtils.show(LiveBuildProgramActivity.this, "账号有问题，请测试人员重新登录");
+                                startActivity(new Intent(LiveBuildProgramActivity.this, LoginActivity.class));
+                                finish();
+                            }
                         }
                     }
                 }, getIntent().getExtras().getInt("roomId"), liveDto);
