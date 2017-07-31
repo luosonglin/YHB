@@ -28,7 +28,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:scaleType="fitXY"
-            android:src="@mipmap/haha" />
+            android:src="@mipmap/live_background" />
 
         <RelativeLayout
             android:id="@+id/r2"
