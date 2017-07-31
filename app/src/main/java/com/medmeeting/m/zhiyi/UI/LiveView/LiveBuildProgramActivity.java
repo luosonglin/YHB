@@ -203,7 +203,10 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 final EditText et = new EditText(this);
 //                et.setInputType(EditorInfo.TYPE_CLASS_PHONE);
                 et.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);//弹出数字键盘，只能输入数字
-                new AlertDialog.Builder(this).setTitle("填写金额")
+                new AlertDialog.Builder(this)
+                        .setTitle("")
+                        .setIcon(R.mipmap.logo)
+                        .setMessage("填写金额")
                         .setView(et)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
@@ -427,6 +430,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         TextView confirm = (TextView) mLiveSettingPopupWindowView.findViewById(R.id.confirm);
         final DatePicker datePicker = (DatePicker) mLiveSettingPopupWindowView.findViewById(R.id.datePicker);
         final TimePicker timePicker = (TimePicker) mLiveSettingPopupWindowView.findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(true);
         LinearLayout popupDateTime = (LinearLayout) mLiveSettingPopupWindowView.findViewById(R.id.popup_date_time);
 
         //set the current date in a DatePicker
@@ -469,7 +473,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
 
                 if ("START".equals(sign)) {
 
-                    startDateTime = year + "-" + (month + 1) + "-" + day + " " + hour + ":" + minute;
+                    startDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
 
                     //判断开始时间是否早于当前时间
                     try {
@@ -500,7 +504,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                             return;
                         }
                     }
-                    endDateTime = year + "-" + (month + 1) + "-" + day + " " + hour + ":" + minute;
+                    endDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
 
                     //判断结束时间是否早于开始时间
                     try {
@@ -544,7 +548,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         });
 
         mLiveSettingPopupWindow.setOutsideTouchable(false);
-        ColorDrawable dw = new ColorDrawable(0x00000000);
+        ColorDrawable dw = new ColorDrawable(0x838accef);
         mLiveSettingPopupWindow.setBackgroundDrawable(dw);
         mLiveSettingPopupWindow.showAtLocation(mLiveSettingPopupWindowView, Gravity.BOTTOM, 0, 0);
     }

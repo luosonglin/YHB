@@ -729,15 +729,16 @@ public class StreamingBaseActivity extends Activity implements
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(StreamingBaseActivity.this)
-                        .setTitle("关闭提示")
-                        .setMessage("如暂时退出直播，请点击左边'退出直播'按钮，\n如要彻底关闭该场直播，请点击右边'关闭直播'按钮")
-                        .setNegativeButton("暂时退出直播", new DialogInterface.OnClickListener() {
+                        .setIcon(R.mipmap.logo)
+                        .setTitle("")
+                        .setMessage("您确定要退出直播吗？")
+                        .setNegativeButton("暂时退出", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 finish();
                             }
                         })
-                        .setPositiveButton("彻底关闭直播", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("彻底关闭", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 HttpData.getInstance().HttpDataCloseProgram(new Observer<HttpResult3>() {

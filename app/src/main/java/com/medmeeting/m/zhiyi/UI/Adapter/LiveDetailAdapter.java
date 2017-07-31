@@ -53,8 +53,6 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
                 } else {
                     //用户进的直播节目详情页
                     intent = new Intent(mContext, LiveProgramDetailActivity.class);
-                    intent.putExtra("chargeType", item.getChargeType());
-                    intent.putExtra("price", item.getPrice());
                     Log.e(TAG, "2: " + mUserId+" "+item.getUserId());
                 }
                 intent.putExtra("authorName", item.getAuthorName());

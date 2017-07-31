@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveDetailActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -42,7 +43,21 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .setText(R.id.name,item.getTitle())
                 .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06));
 
-        helper.getView(R.id.item_live_cv).setOnClickListener(new View.OnClickListener() {
+        helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, LiveProgramDetailActivity.class);
+                intent.putExtra("authorName", item.getAuthorName());
+                intent.putExtra("programId", item.getId());
+                intent.putExtra("roomId", item.getRoomId());
+                intent.putExtra("coverPhoto", item.getCoverPhoto());
+                intent.putExtra("title", item.getTitle());
+                mContext.startActivity(intent);
+            }
+        });
+
+
+        helper.getView(R.id.r2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, LiveDetailActivity.class);
@@ -54,5 +69,19 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 mContext.startActivity(intent);
             }
         });
+        helper.getView(R.id.l1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, LiveDetailActivity.class);
+                intent.putExtra("roomId", item.getRoomId());
+                intent.putExtra("coverPhote", item.getCoverPhoto());
+                intent.putExtra("title", item.getTitle());
+                intent.putExtra("authorName", item.getAuthorName());
+                intent.putExtra("description", item.getDes());
+                mContext.startActivity(intent);
+            }
+        });
+
+
     }
 }

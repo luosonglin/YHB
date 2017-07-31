@@ -2,26 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/popup_date_time"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#b0000000"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
     android:gravity="bottom"
     android:orientation="vertical">
-
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@color/grey_normal"-->
-    <!--android:gravity="bottom"-->
-    <!--android:orientation="vertical">-->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/grey1">
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/back"
@@ -29,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:padding="10dp"
             android:text="退出"
             android:textColor="@color/skyblue" />
 
@@ -45,27 +34,24 @@
             android:textColor="@color/skyblue" />
     </RelativeLayout>
 
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="1dp"-->
-    <!--android:background="#ffc9c9c9" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey1"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@color/grey"
-        android:padding="1dp"
-        android:orientation="vertical">
-        <!--android:layout_marginBottom="10dp"-->
+        android:background="@color/white"
+        android:orientation="horizontal">
 
         <DatePicker
             android:id="@+id/datePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:calendarViewShown="true"
-            android:datePickerMode="spinner"
-            android:layout_marginBottom="1dp"/>
+            android:layout_weight="1"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"/>
         <!--android:datePickerMode="calendar"
         定义部件的外观，有spinner和calendar两种选择（Api 21 以上才能用）-->
 
@@ -73,10 +59,9 @@
             android:id="@+id/timePicker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:timePickerMode="spinner"/>
+            android:layout_weight="1"
+            android:timePickerMode="spinner"
+            />
     </LinearLayout>
 
-    <!--</LinearLayout>-->
-    <!--</ScrollView>-->
 </LinearLayout>

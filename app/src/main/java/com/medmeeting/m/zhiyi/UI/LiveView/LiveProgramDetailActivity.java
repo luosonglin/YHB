@@ -122,9 +122,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         toolBar();
         initView(getIntent().getExtras().getString("coverPhoto"),
                 getIntent().getExtras().getString("title"),
-                getIntent().getExtras().getString("authorName"),
-                getIntent().getExtras().getString("chargeType"),
-                getIntent().getExtras().getFloat("price"));
+                getIntent().getExtras().getString("authorName"));
         initShare(savedInstanceState, getIntent().getExtras().getInt("programId"),
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("coverPhote"),
@@ -289,7 +287,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         mShareAction.close();
     }
 
-    private void initView(String coverPhone, String title, final String userName, String chargeType, float price) {
+    private void initView(String coverPhone, String title, final String userName) {
         //直播间封面
         coverPhotoTv = (ImageView) findViewById(R.id.coverPhoto);
         titleTv = (TextView) findViewById(R.id.title);
@@ -335,7 +333,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         liveDtoHttpResult3.getEntity().getAuthorTitle(),
                         liveDtoHttpResult3.getEntity().getCoverPhoto(),
                         liveDtoHttpResult3.getEntity().getDes());
-
 
                 if ("yes".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
                     if (payFlag == 0) {//0:未购票
