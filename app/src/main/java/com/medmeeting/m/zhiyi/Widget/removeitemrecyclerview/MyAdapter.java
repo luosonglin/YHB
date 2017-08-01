@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 
@@ -34,6 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter {
 
         Glide.with(mContext)
                 .load(mList.get(position).getCoverPhoto())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .into(viewHolder.background);
     }

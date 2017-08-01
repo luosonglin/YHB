@@ -553,7 +553,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     getPayInfo(v, "ALIPAY", "APP", programId);
                     academicPopupWindow.dismiss();
                 } else {
-                    ToastUtils.show(LiveProgramDetailActivity.this, "支付宝APP尚未安装，请重新选择其他支付方式");
+                    ToastUtils.show(LiveProgramDetailActivity.this, "支付宝APP尚未安装，\n请重新选择其他支付方式");
                 }
             }
         });
@@ -569,7 +569,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     getPayInfo(v, "WXPAY", "APP", programId);
                     academicPopupWindow.dismiss();
                 } else {
-                    ToastUtils.show(LiveProgramDetailActivity.this, "亲，您还没有安装微信");
+                    ToastUtils.show(LiveProgramDetailActivity.this, "微信APP尚未安装，\n请重新选择其他支付方式");
                 }
             }
         });
@@ -675,6 +675,8 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         Toast.makeText(LiveProgramDetailActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LiveProgramDetailActivity.this, MyPayLiveRoomActivity.class));
+                        finish();
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）

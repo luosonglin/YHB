@@ -554,7 +554,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         });
 
         mLiveSettingPopupWindow.setOutsideTouchable(false);
-        ColorDrawable dw = new ColorDrawable(0x838accef);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
         mLiveSettingPopupWindow.setBackgroundDrawable(dw);
         mLiveSettingPopupWindow.showAtLocation(mLiveSettingPopupWindowView, Gravity.BOTTOM, 0, 0);
     }

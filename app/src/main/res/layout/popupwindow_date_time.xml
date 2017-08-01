@@ -3,7 +3,7 @@
     android:id="@+id/popup_date_time"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/transparent"
     android:gravity="bottom"
     android:orientation="vertical">
     <RelativeLayout
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <DatePicker
             android:id="@+id/datePicker"

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.MyLiveProgramListPresent;
 import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
@@ -125,6 +126,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         backgroundIv = (ImageView) findViewById(R.id.img);
         Glide.with(MyLiveRoomDetailActivity.this)
                 .load(getIntent().getExtras().getString("coverPhoto"))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
 //                .placeholder(R.mipmap.ic_launcher)
                 .into(backgroundIv);
