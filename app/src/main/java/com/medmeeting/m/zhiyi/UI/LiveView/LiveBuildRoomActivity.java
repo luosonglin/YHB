@@ -262,21 +262,8 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                                 //res包含hash、key等信息，具体字段取决于上传策略的设置
                                 if (info.isOK()) {
                                     Log.i("qiniu", "Upload Success");
-                                    Glide.with(LiveBuildRoomActivity.this)
-                                            .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
-                                            .crossFade()
-//                                            .placeholder(R.mipmap.live_title_pic)
-//                                            .into(livePic);
-                                            .into(new GlideDrawableImageViewTarget(livePic) {
-                                                @Override
-                                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                                                    //在这里添加一些图片加载完成的操作
-                                                    super.onResourceReady(resource, animation);
-                                                    showProgress(false);
-                                                    livePicTipTv.setText("修改直播间封面");
-                                                }
-                                            });
-                                    ToastUtils.show(LiveBuildRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
+
+
                                 } else {
                                     Log.i("qiniu", "Upload Fail");
                                     //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
@@ -288,6 +275,21 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                         }, null);
             }
         }.start();
+        Glide.with(LiveBuildRoomActivity.this)
+                .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
+                .crossFade()
+//                                            .placeholder(R.mipmap.live_title_pic)
+//                                            .into(livePic);
+                .into(new GlideDrawableImageViewTarget(livePic) {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                        //在这里添加一些图片加载完成的操作
+                        super.onResourceReady(resource, animation);
+                        showProgress(false);
+                        livePicTipTv.setText("修改直播间封面");
+                        ToastUtils.show(LiveBuildRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
+                    }
+                });
     }
 
     final List<TagDto> tags = new ArrayList<>();
@@ -397,7 +399,6 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         });
     }
 
-
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -422,5 +423,18 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Glide.with(getApplicationContext()).pauseRequests();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //此处避免you cannot start a load for a destroyed activity，因为glide不在主线程
+        Glide.with(getApplicationContext()).pauseRequests();
     }
 }
