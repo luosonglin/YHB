@@ -442,7 +442,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         //set the current date in a DatePicker
         Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
-        month = c.get(Calendar.MONTH);
+        month = c.get(Calendar.MONTH)+1;  //Calendar.getInstance().get(Calendar.MONTH) 月份少1，因为Calendar api月份是从0开始计数的
         day = c.get(Calendar.DAY_OF_MONTH);
         Log.e(TAG, "begin " + year + "-" + month + "-" + day);
         datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
@@ -464,6 +464,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
             hour = timePicker.getCurrentHour();
             minute = timePicker.getCurrentMinute();
         }
+        Log.e(TAG, "hour " + hour + " minute "+ minute);
 
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
