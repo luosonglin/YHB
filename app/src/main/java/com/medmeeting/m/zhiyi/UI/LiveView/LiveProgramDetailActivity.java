@@ -323,7 +323,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 Log.e(TAG, "onNext");
 
                 programId = liveDtoHttpResult3.getEntity().getId();
-                Log.e(TAG+"haha", programId+"");
+                Log.e(TAG + "haha", programId + "");
                 url = liveDtoHttpResult3.getEntity().getRtmpPlayUrl();
                 amount = liveDtoHttpResult3.getEntity().getPrice();
                 payFlag = liveDtoHttpResult3.getEntity().getPayFalg();
@@ -333,6 +333,17 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         liveDtoHttpResult3.getEntity().getAuthorTitle(),
                         liveDtoHttpResult3.getEntity().getCoverPhoto(),
                         liveDtoHttpResult3.getEntity().getDes());
+
+                switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
+                    case "ready":
+                        break;
+                    case "play":
+                        break;
+                    case "wait":
+                        break;
+                    case "end":
+                        break;
+                }
 
                 if ("yes".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
                     if (payFlag == 0) {//0:未购票
@@ -344,44 +355,49 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                             }
                         });
                     } else if (payFlag > 0) { //大于0:已购票
+                        if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("play")) {
+                            watchTv.setText("观看");
+                            watchTv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    try {
+                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), DBUtils.get(LiveProgramDetailActivity.this, "userName"), url);
+                                    } catch (SnappydbException e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+                                        intent.putExtra("rtmpPlayUrl", url);
+                                        intent.putExtra("programId", programId);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+                        } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("ready")) {
+                            watchTv.setText("准备中");
+                        }
+                    }
+
+                } else if ("no".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
+                    if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("play")) {
                         watchTv.setText("观看");
                         watchTv.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
                                 try {
                                     loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), DBUtils.get(LiveProgramDetailActivity.this, "userName"), url);
                                 } catch (SnappydbException e) {
                                     e.printStackTrace();
                                 } finally {
                                     Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                                    intent.putExtra("rtmpPlayUrl", url);
-//                                    intent.putExtra("onlineVidoId", programId);//getIntent().getExtras().getInt("programId"));
+                                    intent.putExtra("rtmpPlayUrl", liveDtoHttpResult3.getEntity().getRtmpPlayUrl());
                                     intent.putExtra("programId", programId);
                                     startActivity(intent);
                                 }
                             }
                         });
+                    } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("ready")) {
+                        watchTv.setText("准备中");
                     }
-
-                } else if ("no".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
-                    watchTv.setText("观看");
-                    watchTv.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            try {
-                                loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), DBUtils.get(LiveProgramDetailActivity.this, "userName"), url);
-                            } catch (SnappydbException e) {
-                                e.printStackTrace();
-                            } finally {
-                                Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                                intent.putExtra("rtmpPlayUrl", liveDtoHttpResult3.getEntity().getRtmpPlayUrl());
-//                                intent.putExtra("onlineVidoId", programId);//getIntent().getExtras().getInt("programId"));
-                                intent.putExtra("programId", programId);
-                                startActivity(intent);
-                            }
-                        }
-                    });
                 }
 
             }
@@ -911,10 +927,10 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage()
+                        + "\n" + e.getCause()
+                        + "\n" + e.getLocalizedMessage()
+                        + "\n" + e.getStackTrace());
             }
 
             @Override

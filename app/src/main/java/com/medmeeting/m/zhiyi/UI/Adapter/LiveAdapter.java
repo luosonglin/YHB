@@ -43,6 +43,20 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .setText(R.id.name,item.getTitle())
                 .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06));
 
+        switch (item.getLiveStatus()) {
+            case "ready":
+                helper.setText(R.id.status, "准备中");
+                break;
+            case "play":
+                helper.setText(R.id.status, "直播中");
+                break;
+            case "wait":
+                helper.setText(R.id.status, "离开");
+                break;
+            case "end":
+                helper.setText(R.id.status, "已结束");
+                break;
+        }
         helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
