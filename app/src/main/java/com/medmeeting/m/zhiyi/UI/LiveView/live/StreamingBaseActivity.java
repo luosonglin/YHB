@@ -68,6 +68,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.ChatRoomInfo;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
 import rx.Observer;
@@ -81,7 +82,7 @@ public class StreamingBaseActivity extends Activity implements
         CameraPreviewFrameView.Listener,
         StreamingSessionListener,
         StreamingStateChangedListener,
-        Handler.Callback{
+        Handler.Callback {
 
     private static final String TAG = StreamingBaseActivity.class.getSimpleName();
 
@@ -108,6 +109,7 @@ public class StreamingBaseActivity extends Activity implements
     private RotateLayout mRotateLayout;
 
     private Button mLogoutBtn;
+    private Button mSumBtn;
 
     protected TextView mLogTextView;
     protected TextView mStatusTextView;
@@ -330,7 +332,7 @@ public class StreamingBaseActivity extends Activity implements
         btnDan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (chatListView.getVisibility() == View.VISIBLE){
+                if (chatListView.getVisibility() == View.VISIBLE) {
                     chatListView.setVisibility(View.GONE);
 //                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan_close);
                     btnDan.setImageResource(R.mipmap.icon_dan_close);
@@ -439,6 +441,27 @@ public class StreamingBaseActivity extends Activity implements
     protected void onDestroy() {
         super.onDestroy();
         mMediaStreamingManager.destroy();
+
+        LiveKit.quitChatRoom(new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+                // 配合ios
+                TextMessage content = TextMessage.obtain("离开了房间");
+                LiveKit.sendMessage(content);
+                Log.e(TAG, content + " " + content.getUserInfo().getName());
+
+                LiveKit.removeEventHandler(handler);
+                LiveKit.logout();
+                Toast.makeText(StreamingBaseActivity.this, "退出聊天室成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                LiveKit.removeEventHandler(handler);
+                LiveKit.logout();
+                Toast.makeText(StreamingBaseActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     protected void setShutterButtonPressed(final boolean pressed) {
@@ -749,10 +772,10 @@ public class StreamingBaseActivity extends Activity implements
 
                                     @Override
                                     public void onError(Throwable e) {
-                                        Log.e(TAG, "onError: "+e.getMessage()
-                                                +"\n"+e.getCause()
-                                                +"\n"+e.getLocalizedMessage()
-                                                +"\n"+e.getStackTrace());
+                                        Log.e(TAG, "onError: " + e.getMessage()
+                                                + "\n" + e.getCause()
+                                                + "\n" + e.getLocalizedMessage()
+                                                + "\n" + e.getStackTrace());
                                     }
 
                                     @Override
@@ -773,6 +796,7 @@ public class StreamingBaseActivity extends Activity implements
                         .show();
             }
         });
+
 
 //        mFaceBeautyBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -1092,7 +1116,8 @@ public class StreamingBaseActivity extends Activity implements
     }
 
     private void joinChatRoom(final Integer roomId) {
-        LiveKit.joinChatRoom(roomId+"", 5, new RongIMClient.OperationCallback() {
+
+        LiveKit.joinChatRoom(roomId + "", 50, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
 //                final InformationNotificationMessage content = InformationNotificationMessage.obtain("进入了房间");
@@ -1102,13 +1127,27 @@ public class StreamingBaseActivity extends Activity implements
                 TextMessage content = TextMessage.obtain("进入了房间");
                 LiveKit.sendMessage(content);
 
-                Log.e(TAG+"joinChatRoom: ", content + "" + content.getUserInfo().getName());
+                Log.e(TAG + "joinChatRoom: ", content + "" + content.getUserInfo().getName());
             }
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
 //                Toast.makeText(StreamingBaseActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "聊天室加入失败! errorCode = " + errorCode);
+            }
+        });
+
+        mSumBtn = (Button) findViewById(R.id.people_sum_btn);
+        LiveKit.getChatRoomSum(roomId + "", 500, new RongIMClient.ResultCallback<ChatRoomInfo>() {
+            @Override
+            public void onSuccess(ChatRoomInfo chatRoomInfo) {
+                mSumBtn.setText("" + chatRoomInfo.getTotalMemberCount());
+                Log.e(TAG + "eee", chatRoomInfo.getTotalMemberCount() + "");
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e(TAG + "eee", errorCode.getMessage());
             }
         });
     }

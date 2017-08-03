@@ -201,7 +201,6 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         findViewById(R.id.to_push).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 HttpData.getInstance().HttpDataGetLiveStream(new Observer<HttpResult3<Object, LiveStream>>() {
                     @Override
                     public void onCompleted() {
@@ -682,7 +681,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(HttpResult3<Object, RCUserDto> data) {
+            public void onNext(final HttpResult3<Object, RCUserDto> data) {
                 Log.e(TAG, "onNext");
                 LiveKit.connect(data.getEntity().getToken(),
                         new RongIMClient.ConnectCallback() {
@@ -694,7 +693,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
 
                             @Override
                             public void onSuccess(String s) {
-                                Log.e(TAG, "connect onSuccess");
+                                Log.e(TAG, "connect onSuccess "+s+" "+data.getEntity().getToken());
                             }
 
                             @Override

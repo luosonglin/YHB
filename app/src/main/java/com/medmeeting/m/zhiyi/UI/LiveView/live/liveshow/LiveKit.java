@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 import io.rong.imlib.AnnotationNotFoundException;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.ChatRoomInfo;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
@@ -314,5 +315,17 @@ android wen ge
             m.obj = obj;
             handler.sendMessage(m);
         }
+    }
+
+    /**
+     * 聊天室在线人数。
+     *
+     * @param roomId          聊天室 Id
+     * @param defMemberCount
+     * @param callback        状态回调
+     */
+    public static void getChatRoomSum(String roomId, int defMemberCount, final RongIMClient.ResultCallback<ChatRoomInfo> callback) {
+        currentRoomId = roomId;
+        RongIMClient.getInstance().getChatRoomInfo(currentRoomId, defMemberCount, ChatRoomInfo.ChatRoomMemberOrder.RC_CHAT_ROOM_MEMBER_DESC, callback);
     }
 }

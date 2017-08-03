@@ -44,6 +44,18 @@
         android:contentDescription="@string/cd_btn_orientation"
         android:textColor="@color/pldroid_streaming_white" />
 
+    <Button
+        android:id="@+id/people_sum_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_gravity="left|top"
+        android:layout_margin="10dp"
+        android:background="@mipmap/live_people_sum"
+        android:contentDescription="@string/cd_btn_orientation"
+        android:textColor="@color/pldroid_streaming_white"
+        android:paddingLeft="24dp"
+        android:text=""/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -199,7 +211,7 @@
 
         <com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView
             android:id="@+id/chat_listview"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
             android:divider="@null"
             android:listSelector="@android:color/transparent"
