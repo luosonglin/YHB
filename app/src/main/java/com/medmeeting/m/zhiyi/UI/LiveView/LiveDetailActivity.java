@@ -239,14 +239,14 @@ public class LiveDetailActivity extends AppCompatActivity {
     private void initView(String coverPhone, String title, String userName) {
         //直播间封面
         coverPhotoTv = (ImageView) findViewById(R.id.coverPhoto);
-        titleTv = (TextView) findViewById(R.id.title);
-        userNameTv = (TextView) findViewById(R.id.userName);
         Glide.with(LiveDetailActivity.this)
                 .load(coverPhone)
                 .crossFade()
                 .transform(new GlideCircleTransform(LiveDetailActivity.this))
                 .placeholder(R.mipmap.ic_launcher)
                 .into(coverPhotoTv);
+        titleTv = (TextView) findViewById(R.id.title);
+        userNameTv = (TextView) findViewById(R.id.userName);
         titleTv.setText(title);
         userNameTv.setText("主理人：" + userName);
 
@@ -257,6 +257,12 @@ public class LiveDetailActivity extends AppCompatActivity {
         // 获取控件
         scrollView = (ScrollView) findViewById(R.id.scrollView);
         imageView = (ImageView) findViewById(R.id.img);
+//        Glide.with(LiveDetailActivity.this)
+//                .load(coverPhone)
+//                .crossFade()
+//                .transform(new GlideCircleTransform(LiveDetailActivity.this))
+//                .placeholder(R.mipmap.ic_launcher)
+//                .into(imageView);
 
         // 设置图片初始大小 这里我设为满屏的16:9
         ViewGroup.LayoutParams lp = imageView.getLayoutParams();
