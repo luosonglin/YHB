@@ -6,13 +6,18 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Constant.Data;
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
@@ -26,6 +31,8 @@ import com.snappydb.SnappydbException;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imlib.RongIMClient;
+import rx.Observer;
 
 public class MainActivity extends AppCompatActivity
         implements IndexFragment.OnFragmentInteractionListener,
@@ -37,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     private static final String TABMERCHANDISE = "TABMERCHANDISE";
     private static final String TABPURCHASE = "TABPURCHASE";
     private static final String TABSELFTAG = "TABSELFTAG";
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private PopMenu mPopMenu;
 
@@ -127,6 +136,46 @@ public class MainActivity extends AppCompatActivity
         setTabSelection(tabOrders);
 
         initUserToken();
+
+        HttpData.getInstance().HttpDataGetUserIm(new Observer<HttpResult3<Object, RCUserDto>>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: "+e.getMessage()
+                        +"\n"+e.getCause()
+                        +"\n"+e.getLocalizedMessage()
+                        +"\n"+e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(final HttpResult3<Object, RCUserDto> data) {
+                Log.e(TAG, "onNext");
+                LiveKit.connect(data.getEntity().getToken(),
+                        new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+                                Log.e(TAG, "connect onTokenIncorrect");
+                                // 检查appKey 与token是否匹配.
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+                                Log.e(TAG, "connect onSuccess "+s+" "+data.getEntity().getToken());
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode errorCode) {
+                                Log.e(TAG, "connect onError = " + errorCode);
+                                // 根据errorCode 检查原因.
+                            }
+                        });
+            }
+        });
+
     }
 
     private void initUserToken() {

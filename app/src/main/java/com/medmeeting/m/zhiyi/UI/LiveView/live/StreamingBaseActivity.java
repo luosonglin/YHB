@@ -244,16 +244,6 @@ public class StreamingBaseActivity extends Activity implements
         setRequestedOrientation(Config.SCREEN_ORIENTATION);
 
         setContentView(R.layout.activity_camera_streaming);
-//
-//        SharedLibraryNameHelper.getInstance().renameSharedLibrary(
-//                SharedLibraryNameHelper.PLSharedLibraryType.PL_SO_TYPE_AAC,
-//                getApplicationInfo().nativeLibraryDir + "/libpldroid_streaming_aac_encoder_v7a.so");
-//
-//        SharedLibraryNameHelper.getInstance().renameSharedLibrary(
-//                SharedLibraryNameHelper.PLSharedLibraryType.PL_SO_TYPE_CORE, "pldroid_streaming_core");
-//
-//        SharedLibraryNameHelper.getInstance().renameSharedLibrary(
-//                SharedLibraryNameHelper.PLSharedLibraryType.PL_SO_TYPE_H264, "pldroid_streaming_h264_encoder_v7a");
 
         String publishUrlFromServer = getIntent().getStringExtra(Config.EXTRA_KEY_PUB_URL);
         Integer programId = getIntent().getExtras().getInt("programId");
@@ -288,15 +278,12 @@ public class StreamingBaseActivity extends Activity implements
 
         mProfile.setVideoQuality(StreamingProfile.VIDEO_QUALITY_MEDIUM2)
                 .setAudioQuality(StreamingProfile.AUDIO_QUALITY_MEDIUM2)
-//                .setAVProfile(avProfile)
-//                .setPreferredVideoEncodingSize(960, 544)
                 .setEncodingSizeLevel(Config.ENCODING_LEVEL)
                 .setEncoderRCMode(StreamingProfile.EncoderRCModes.BITRATE_PRIORITY)
                 .setDnsManager(getMyDnsManager())
                 .setAdaptiveBitrateEnable(true)
                 .setFpsControllerEnable(true)
                 .setStreamStatusConfig(new StreamingProfile.StreamStatusConfig(3))
-//                .setEncodingOrientation(StreamingProfile.ENCODING_ORIENTATION.PORT)
                 .setSendingBufferProfile(new StreamingProfile.SendingBufferProfile(0.2f, 0.8f, 3.0f, 20 * 1000));
 
         CAMERA_FACING_ID cameraFacingId = chooseCameraFacingId();
@@ -306,9 +293,7 @@ public class StreamingBaseActivity extends Activity implements
                 .setContinuousFocusModeEnabled(true)    //打开自动对焦功能
                 .setRecordingHint(false)    //在部分机型开启 Recording Hint 之后，会出现画面卡帧等风险，所以请慎用该 API。如果需要实现高 fps 推流，可以考虑开启并加入白名单机制。
                 .setCameraFacingId(cameraFacingId)
-//                .setCameraSourceImproved(true)
                 .setResetTouchFocusDelayInMs(3000)
-//                .setFocusMode(CameraStreamingSetting.FOCUS_MODE_CONTINUOUS_PICTURE)
                 .setCameraPrvSizeLevel(CameraStreamingSetting.PREVIEW_SIZE_LEVEL.MEDIUM)
                 .setCameraPrvSizeRatio(CameraStreamingSetting.PREVIEW_SIZE_RATIO.RATIO_16_9)
                 .setBuiltInFaceBeautyEnabled(true)
@@ -326,7 +311,6 @@ public class StreamingBaseActivity extends Activity implements
         chatListView = (ChatListView) findViewById(R.id.chat_listview);
         chatListAdapter = new ChatListAdapter();
         chatListView.setAdapter(chatListAdapter);
-//        bottomPanel = (BottomPanelFragment) getSupportFragmentManager().getfindFragmentById(R.id.bottom_bar);
         bottomPanel = (BottomPanelFragment2) getFragmentManager().findFragmentById(R.id.bottom_bar);
         btnDan = (ImageView) bottomPanel.getView().findViewById(R.id.dan_btn);
         btnDan.setOnClickListener(new View.OnClickListener() {
@@ -334,11 +318,9 @@ public class StreamingBaseActivity extends Activity implements
             public void onClick(View view) {
                 if (chatListView.getVisibility() == View.VISIBLE) {
                     chatListView.setVisibility(View.GONE);
-//                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan_close);
                     btnDan.setImageResource(R.mipmap.icon_dan_close);
                 } else {
                     chatListView.setVisibility(View.VISIBLE);
-//                    mDanBtn.setBackgroundResource(R.mipmap.icon_dan);
                     btnDan.setImageResource(R.mipmap.icon_dan);
                 }
             }
@@ -386,29 +368,6 @@ public class StreamingBaseActivity extends Activity implements
                 mHandler.postDelayed(mScreenShooter, 100);
             }
         });
-//        btnHeart = (ImageView) bottomPanel.getView().findViewById(R.id.btn_heart);
-//        heartLayout = (HeartLayout) findViewById(R.id.heart_layout);
-//        btnGift.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                GiftMessage msg = new GiftMessage("2", "送您一个礼物");
-//                LiveKit.sendMessage(msg);
-//            }
-//        });
-//        btnHeart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                heartLayout.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-//                        heartLayout.addHeart(rgb);
-//                    }
-//                });
-//                GiftMessage msg = new GiftMessage("1", "点赞了");
-//                LiveKit.sendMessage(msg);
-//            }
-//        });
         bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
             @Override
             public void onSendClick(String text) {
@@ -442,26 +401,26 @@ public class StreamingBaseActivity extends Activity implements
         super.onDestroy();
         mMediaStreamingManager.destroy();
 
-        LiveKit.quitChatRoom(new RongIMClient.OperationCallback() {
-            @Override
-            public void onSuccess() {
-                // 配合ios
-                TextMessage content = TextMessage.obtain("离开了房间");
-                LiveKit.sendMessage(content);
-                Log.e(TAG, content + " " + content.getUserInfo().getName());
-
-                LiveKit.removeEventHandler(handler);
-                LiveKit.logout();
-                Toast.makeText(StreamingBaseActivity.this, "退出聊天室成功", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                LiveKit.removeEventHandler(handler);
-                LiveKit.logout();
-                Toast.makeText(StreamingBaseActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        LiveKit.quitChatRoom(new RongIMClient.OperationCallback() {
+//            @Override
+//            public void onSuccess() {
+//                // 配合ios
+//                TextMessage content = TextMessage.obtain("离开了房间");
+//                LiveKit.sendMessage(content);
+//                Log.e(TAG, content + " " + content.getUserInfo().getName());
+//
+//                LiveKit.removeEventHandler(handler);
+//                LiveKit.logout();
+//                Toast.makeText(StreamingBaseActivity.this, "退出聊天室成功", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onError(RongIMClient.ErrorCode errorCode) {
+//                LiveKit.removeEventHandler(handler);
+//                LiveKit.logout();
+//                Toast.makeText(StreamingBaseActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     protected void setShutterButtonPressed(final boolean pressed) {

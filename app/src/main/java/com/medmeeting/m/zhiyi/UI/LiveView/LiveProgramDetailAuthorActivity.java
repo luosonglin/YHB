@@ -29,7 +29,6 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
-import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.Config;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.SWCodecCameraStreamingActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
@@ -56,7 +55,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 import rx.Observer;
 
@@ -666,44 +664,44 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         Log.e(TAG + " loginRongCloudChatRoom", user.getName() + " " + LiveKit.getCurrentUser().getName());
         LiveKit.initMessageType();
 
-        HttpData.getInstance().HttpDataGetUserIm(new Observer<HttpResult3<Object, RCUserDto>>() {
-            @Override
-            public void onCompleted() {
-                Log.e(TAG, "onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
-            }
-
-            @Override
-            public void onNext(final HttpResult3<Object, RCUserDto> data) {
-                Log.e(TAG, "onNext");
-                LiveKit.connect(data.getEntity().getToken(),
-                        new RongIMClient.ConnectCallback() {
-                            @Override
-                            public void onTokenIncorrect() {
-                                Log.e(TAG, "connect onTokenIncorrect");
-                                // 检查appKey 与token是否匹配.
-                            }
-
-                            @Override
-                            public void onSuccess(String s) {
-                                Log.e(TAG, "connect onSuccess "+s+" "+data.getEntity().getToken());
-                            }
-
-                            @Override
-                            public void onError(RongIMClient.ErrorCode errorCode) {
-                                Log.e(TAG, "connect onError = " + errorCode);
-                                // 根据errorCode 检查原因.
-                            }
-                        });
-            }
-        });
+//        HttpData.getInstance().HttpDataGetUserIm(new Observer<HttpResult3<Object, RCUserDto>>() {
+//            @Override
+//            public void onCompleted() {
+//                Log.e(TAG, "onCompleted");
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                Log.e(TAG, "onError: "+e.getMessage()
+//                        +"\n"+e.getCause()
+//                        +"\n"+e.getLocalizedMessage()
+//                        +"\n"+e.getStackTrace());
+//            }
+//
+//            @Override
+//            public void onNext(final HttpResult3<Object, RCUserDto> data) {
+//                Log.e(TAG, "onNext");
+//                LiveKit.connect(data.getEntity().getToken(),
+//                        new RongIMClient.ConnectCallback() {
+//                            @Override
+//                            public void onTokenIncorrect() {
+//                                Log.e(TAG, "connect onTokenIncorrect");
+//                                // 检查appKey 与token是否匹配.
+//                            }
+//
+//                            @Override
+//                            public void onSuccess(String s) {
+//                                Log.e(TAG, "connect onSuccess "+s+" "+data.getEntity().getToken());
+//                            }
+//
+//                            @Override
+//                            public void onError(RongIMClient.ErrorCode errorCode) {
+//                                Log.e(TAG, "connect onError = " + errorCode);
+//                                // 根据errorCode 检查原因.
+//                            }
+//                        });
+//            }
+//        });
     }
 
     @Override
