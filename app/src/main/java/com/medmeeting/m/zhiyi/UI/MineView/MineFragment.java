@@ -167,10 +167,7 @@ public class MineFragment extends Fragment {
                             .crossFade()
                             .placeholder(R.mipmap.ic_launcher)
                             .into(headIv);
-                    nameTv.setText(item.getData().getUser().getName() == null ?
-                            item.getData().getUser().getNickName() : item.getData().getUser().getName());
-                    hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
-                    titleTv.setText(item.getData().getUser().getTitle() + " ");
+
 
                     try {
                         DBUtils.put(getActivity(), "authentication", item.getData().getUser().getAuthenStatus() + "");
@@ -183,6 +180,9 @@ public class MineFragment extends Fragment {
                             identity.setVisibility(View.GONE);
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.specialis_yellow);
+                            nameTv.setText(item.getData().getUser().getName());
+                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
+                            titleTv.setText(item.getData().getUser().getTitle() + " ");
                             break;
                         case "B":
                             identityHtml = "&nbsp;"
@@ -191,11 +191,17 @@ public class MineFragment extends Fragment {
                             identity.setText(Html.fromHtml(identityHtml));
                             identity.setClickable(false);
                             specialistIv.setVisibility(View.GONE);
+                            nameTv.setText(item.getData().getUser().getName());
+                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
+                            titleTv.setText(item.getData().getUser().getTitle() + " ");
                             break;
                         case "C":
                             identity.setVisibility(View.GONE);
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.specialist_red);
+                            nameTv.setText(item.getData().getUser().getName());
+                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
+                            titleTv.setText(item.getData().getUser().getTitle() + " ");
                             break;
                         default:
                             identityHtml = "&nbsp;"
@@ -210,6 +216,9 @@ public class MineFragment extends Fragment {
                                 }
                             });
                             specialistIv.setVisibility(View.GONE);
+                            nameTv.setText(item.getData().getUser().getNickName());
+                            hospitalTv.setText(" ");
+                            titleTv.setText(" ");
                             break;
                     }
                 }
