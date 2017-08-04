@@ -2,10 +2,7 @@ package com.medmeeting.m.zhiyi.UI.OtherVIew;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -21,7 +18,7 @@ import com.medmeeting.m.zhiyi.Util.SpUtils;
 public class WelcomeActivity extends ListvViewActivity {
 
     private ImageView imageView;
-    private TextView timeTv;
+//    private TextView timeTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +36,6 @@ public class WelcomeActivity extends ListvViewActivity {
 
         // 如果不是第一次启动app，则正常显示启动屏
         setContentView(R.layout.activity_welcome);
-//        getWindow().setBackgroundDrawableResource(R.mipmap.haha);
         imageView = (ImageView) findViewById(R.id.background);
         Glide.with(WelcomeActivity.this)
                 .load(R.mipmap.appbg)
@@ -47,29 +43,29 @@ public class WelcomeActivity extends ListvViewActivity {
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
 
-        timeTv = (TextView) findViewById(R.id.time);
-        timeTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                countDownTimer.cancel();
+//        timeTv = (TextView) findViewById(R.id.time);
+//        timeTv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                countDownTimer.cancel();
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                 finish();
-            }
-        });
+//            }
+//        });
 
-        countDownTimer.start();
+//        countDownTimer.start();
     }
 
-    private CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
-        @Override
-        public void onTick(long l) {
-            timeTv.setText("跳过   " + l / 1000 + "秒");
-        }
-
-        @Override
-        public void onFinish() {
-            startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
-            finish();
-        }
-    };
+//    private CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
+//        @Override
+//        public void onTick(long l) {
+//            timeTv.setText("跳过   " + l / 1000 + "秒");
+//        }
+//
+//        @Override
+//        public void onFinish() {
+//            startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+//            finish();
+//        }
+//    };
 }

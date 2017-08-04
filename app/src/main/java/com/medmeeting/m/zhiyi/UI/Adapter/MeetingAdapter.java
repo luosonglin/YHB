@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
@@ -25,8 +26,9 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
     protected void convert(BaseViewHolder helper, final MeetingDto item) {
         Glide.with(mContext)
                 .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
-                .placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
@@ -36,9 +38,10 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
 
         Glide.with(mContext)
                 .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .transform(new GlideCircleTransform(mContext))
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.avator_default)
                 .into((ImageView) helper.getView(R.id.avatar));
 
         helper.getView(R.id.item_meeting).setOnClickListener(new View.OnClickListener() {
