@@ -192,7 +192,7 @@ public class PopMenu {
 
         mCloseIv = new ImageView(mActivity);
         mCloseIv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        mCloseIv.setImageResource(R.mipmap.tabbar_compose_background_icon_close);
+        mCloseIv.setImageResource(R.mipmap.tab_plus_g);
         mCloseIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,7 +201,7 @@ public class PopMenu {
         });
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-        layoutParams.bottomMargin = dp2px(mActivity, 20);
+        layoutParams.bottomMargin = dp2px(mActivity, 8);
         mAnimateLayout.addView(mCloseIv, layoutParams);
     }
 

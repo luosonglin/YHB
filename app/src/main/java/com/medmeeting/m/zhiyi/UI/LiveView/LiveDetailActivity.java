@@ -97,7 +97,7 @@ public class LiveDetailActivity extends AppCompatActivity {
 //        toolbar.setSubtitle(R.string.app_name);//二级标题
 //        toolbar.setLogo(R.mipmap.ic_launcher);//设置logo
         getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_white));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

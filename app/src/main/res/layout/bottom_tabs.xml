@@ -25,20 +25,20 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tab_community"
+        android:id="@+id/tab_doctor"
         style="@style/TabBar">
 
         <ImageView
-            android:id="@+id/tab_community_img"
+            android:id="@+id/tab_doctor_img"
             android:layout_height="24dp"
             android:layout_width="24dp"
             android:layout_marginTop="2dp"
-            android:src="@mipmap/tab3_b" />
+            android:src="@mipmap/tab2_b" />
 
         <TextView
-            android:id="@+id/tab_community_title"
+            android:id="@+id/tab_doctor_title"
             style="@style/TabBarTitle"
-            android:text="直播" />
+            android:text="会议" />
     </LinearLayout>
 
     <LinearLayout
@@ -61,23 +61,23 @@
     </LinearLayout>
 
 
-
     <LinearLayout
-        android:id="@+id/tab_doctor"
+        android:id="@+id/tab_community"
         style="@style/TabBar">
 
         <ImageView
-            android:id="@+id/tab_doctor_img"
+            android:id="@+id/tab_community_img"
             android:layout_height="24dp"
             android:layout_width="24dp"
             android:layout_marginTop="2dp"
-            android:src="@mipmap/tab2_b" />
+            android:src="@mipmap/tab3_b" />
 
         <TextView
-            android:id="@+id/tab_doctor_title"
+            android:id="@+id/tab_community_title"
             style="@style/TabBarTitle"
-            android:text="会议" />
+            android:text="直播" />
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/tab_mine"
