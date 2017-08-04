@@ -161,6 +161,7 @@
         <!--播放器-->
         <activity
             android:name=".UI.LiveView.LivePlayerActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppThemeFullscreen" />
 
         <receiver android:name=".wxapi.AppRegister">
