@@ -1,7 +1,11 @@
 package com.medmeeting.m.zhiyi.UI.MineView;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +22,9 @@ import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CleanUtils;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class SettingActivity extends AppCompatActivity {
     private static final String TAG = SettingActivity.class.getSimpleName();
     private Toolbar toolbar;
@@ -26,10 +33,14 @@ public class SettingActivity extends AppCompatActivity {
     private TextView cache;
     private TextView logout;
 
+    @Bind(R.id.progress)
+    View mProgressView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        ButterKnife.bind(this);
 
         toolBar();
         initView();
@@ -65,6 +76,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog();
+                showProgress(true);
             }
         });
 
@@ -101,7 +113,9 @@ public class SettingActivity extends AppCompatActivity {
                 case 0:
                     Toast.makeText(SettingActivity.this, "清理完成", Toast.LENGTH_SHORT).show();
                     try {
-                        cache.setText(CleanUtils.getTotalCacheSize(SettingActivity.this));
+//                        cache.setText(CleanUtils.getTotalCacheSize(SettingActivity.this));
+                        cache.setText("0 MB");
+                        showProgress(false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -129,5 +143,31 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 }

@@ -14,7 +14,6 @@ public class CleanUtils {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
             cacheSize += getFolderSize(context.getExternalCacheDir());
-
         }
 
         return getFormatSize(cacheSize);
