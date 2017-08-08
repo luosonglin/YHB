@@ -164,9 +164,9 @@ public class LiveDetailDto {
         private String coverPhoto;
         private String labelIds;
         private String des;
-        private Object status;
-        private Object createTime;
-        private Object updateTime;
+        private String status;
+        private long createTime;
+        private long updateTime;
         private String userName;
         private String userTitle;
         private String userHospital;
@@ -228,27 +228,27 @@ public class LiveDetailDto {
             this.des = des;
         }
 
-        public Object getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(Object status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 
-        public Object getCreateTime() {
+        public long getCreateTime() {
             return createTime;
         }
 
-        public void setCreateTime(Object createTime) {
+        public void setCreateTime(long createTime) {
             this.createTime = createTime;
         }
 
-        public Object getUpdateTime() {
+        public long getUpdateTime() {
             return updateTime;
         }
 
-        public void setUpdateTime(Object updateTime) {
+        public void setUpdateTime(long updateTime) {
             this.updateTime = updateTime;
         }
 

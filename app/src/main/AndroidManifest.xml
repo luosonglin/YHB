@@ -99,6 +99,10 @@
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".UI.LiveView.LiveUpdateRoomActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".UI.LiveView.LiveBuildProgramActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />

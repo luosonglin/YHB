@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity
         if ("".equals(Data.getUserToken())) {
             try {
                 Data.setUserToken(DBUtils.get(MainActivity.this, "userToken"));
+                Data.setUserId(Integer.parseInt(DBUtils.get(MainActivity.this, "userId")));
             } catch (SnappydbException e) {
                 e.printStackTrace();
             }

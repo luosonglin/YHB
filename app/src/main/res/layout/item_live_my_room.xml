@@ -65,6 +65,36 @@
         </android.support.v7.widget.CardView>
 
         <RelativeLayout
+            android:id="@+id/item_update"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4.2dp"
+            android:background="@drawable/textview_all_blue">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/item_update" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:gravity="center"
+                    android:text="编辑"
+                    android:textColor="#ffffff"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/item_delete"
             android:layout_width="50dp"
             android:layout_height="match_parent"

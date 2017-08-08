@@ -69,4 +69,17 @@ public class Data {
     public static void clearUserToken() {
         Data.userToken = "";
     }
+
+    public static Integer userId = 0;
+
+    public static Integer getUserId() {
+        return userId;
+    }
+
+    public static void setUserId(Integer userId) {
+        Data.userId = userId;
+    }
+    public static void clearUserId() {
+        Data.userId = 0;
+    }
 }

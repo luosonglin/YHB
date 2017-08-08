@@ -41,8 +41,6 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-
-
     <com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.ItemRemoveRecyclerView
         android:id="@+id/id_item_remove_recyclerview"
         android:layout_width="match_parent"

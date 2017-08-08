@@ -57,6 +57,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class));
+                finish();
             }
         });
     }
@@ -125,6 +126,16 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                                 Log.d(TAG, "onNext");
                             }
                         }, mList.get(position).getId());
+                    }
+
+                    @Override
+                    public void onUpdateClick(int position) {
+                        ToastUtils.show(MyLiveRoomActivity.this, "haha");
+                        Intent intent = new Intent(MyLiveRoomActivity.this, LiveUpdateRoomActivity.class);
+                        intent.putExtra("roomId", mList.get(position).getId());
+                        intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());
+                        intent.putExtra("labelIds", mList.get(position).getLabelIds());
+                        startActivity(intent);
                     }
                 });
             }

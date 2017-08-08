@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.Data.APi;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
@@ -20,6 +21,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import rx.Observable;
 
@@ -44,6 +46,10 @@ public interface APILiveService {
     //获取直播房间详情，包括直播节目列表
     @GET("/v1/open/room/{roomId}")
     Observable<LiveDetailDto> getLiveDetail(@Path("roomId") Integer roomId);
+
+    //GET /v1/anchor/liveRoom/{roomId} 获取直播房间详情
+    @GET("/v1/anchor/liveRoom/{roomId}")
+    Observable<HttpResult3<Object, LiveDetailInfoDto>> getLiveDetailInfo(@Path("roomId") Integer roomId);
 
     //获取主播房间列表
     @GET("/v1/anchor/liveRoom")
@@ -80,6 +86,10 @@ public interface APILiveService {
     //POST /v1/anchor/liveRoom 新增直播房间信息
     @POST("/v1/anchor/liveRoom")
     Observable<HttpResult3> addLiveRoom(@Body LiveRoomDto liveRoomDto);
+
+    //PUT /v1/anchor/liveRoom 更新直播房间信息
+    @PUT("/v1/anchor/liveRoom")
+    Observable<HttpResult3> updateLiveRoom(@Body LiveRoomDto liveRoomDto);
 
     //DELETE /v1/anchor/liveRoom/{roomId} 删除直播房间
     @DELETE("/v1/anchor/liveRoom/{roomId}")

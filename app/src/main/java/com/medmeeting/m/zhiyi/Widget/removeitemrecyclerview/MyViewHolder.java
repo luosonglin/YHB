@@ -11,15 +11,17 @@ import com.medmeeting.m.zhiyi.R;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
     public TextView content;
-    public RelativeLayout delete;
     public LinearLayout layout;
     public ImageView background;
+    public RelativeLayout delete;
+    public RelativeLayout update;
 
     public MyViewHolder(View itemView) {
         super(itemView);
         content = (TextView) itemView.findViewById(R.id.item_content);
-        delete = (RelativeLayout) itemView.findViewById(R.id.item_delete);
         layout = (LinearLayout) itemView.findViewById(R.id.item_layout);
         background = (ImageView) itemView.findViewById(R.id.background);
+        delete = (RelativeLayout) itemView.findViewById(R.id.item_delete);
+        update = (RelativeLayout) itemView.findViewById(R.id.item_update);
     }
 }

@@ -73,6 +73,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Data.clearUserToken();
+                Data.clearUserId();
                 startActivity(new Intent(SettingActivity.this, LoginActivity.class));
             }
         });

@@ -461,6 +461,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onNext(SignUpDto signUpDto) {
 
+                    Data.setUserId(signUpDto.getData().getUser().getId());
+
                     try {
                         DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
                         DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
