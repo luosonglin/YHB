@@ -139,6 +139,24 @@ public class HttpData extends RetrofitUtils {
         Log.e(TAG, "HttpDataGetHotMeetings: " + observable);
     }
 
+    /**
+     * 以下用于会议详情页
+     */
+    public void HttpDataGetEventStatus(Observer<HttpResult4> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.getEventStatus(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataCheckFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.checkFollowEvent(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.followEvent(map);
+        setSubscribe(observable, observer);
+    }
+
     //test get recommending blog list
     public void HttpDataGetNews(Observer<BlogDto> observer, Integer pageNum, Integer pageSize) {
         Observable observable = service.getRecommendBlogList(pageNum, pageSize).map(new HttpResultFunc<BlogDto>());

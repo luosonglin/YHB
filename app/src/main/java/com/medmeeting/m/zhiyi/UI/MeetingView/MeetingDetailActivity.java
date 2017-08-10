@@ -22,12 +22,14 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.LiveView.LiveTicketActivity;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
@@ -46,12 +48,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.Map;
+
+import rx.Observer;
 
 public class MeetingDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private BridgeWebView mWebView;
+    private TextView a;
     private static final String TAG = MeetingDetailActivity.class.getSimpleName();
 
     private String URL;
@@ -61,6 +67,13 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private String userId;
     private String openId = null;
 
+    private Map<String, Object> checkRegisterPhoneOptions = new HashMap<>();
+    private Map<String, Object> getEventStatusOptions = new HashMap<>();
+    private Map<String, Object> checkFollowEventOptions = new HashMap<>();
+    private Map<String, Object> followEventOptions = new HashMap<>();
+
+    private boolean isFollowEvent = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,12 +81,109 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mWebView = (BridgeWebView) findViewById(R.id.WebView);
+        a = (TextView) findViewById(R.id.a);
+
+        eventId = getIntent().getExtras().getString("eventId");
+        try {
+            userId = DBUtils.get(MeetingDetailActivity.this, "userId");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
 
         initToolbar();
         initShare(savedInstanceState, getIntent().getExtras().getString("phone"),
                 getIntent().getExtras().getString("description"));
 
         initWebView();
+
+        initMeeting();
+    }
+
+    private void initMeeting() {
+        getEventStatusOptions.put("userId", userId);
+        getEventStatusOptions.put("eventId", eventId);
+        getEventStatusOptions.put("type", "regist");
+        HttpData.getInstance().HttpDataGetEventStatus(new Observer<HttpResult4>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult4 httpResult4) {
+                switch (httpResult4.getStatus()) {
+                    case "2":   // 已注册 未支付info
+                        a.setText("订单详情");
+                        break;
+                    case "3":   // 已完成会议注册报名流程info
+                        a.setText("订单详情");
+                        break;
+                    case "4":   // 尚未注册报名该会议reg
+                        a.setText("个人报名");
+                        break;
+                    case "5":   // 线下支付：未上传凭证info
+                        a.setText("订单详情");
+                        break;
+                    case "6":   // 线下支付：已上传支付凭证待审核info
+                        a.setText("订单详情");
+                        break;
+                    case "7":   // 没有该用户
+                        a.setText("个人报名");
+                        break;
+                    case "8":   // 没有该订单reg
+                        a.setText("个人报名");
+                        break;
+                    case "9":   // 其余参数状态
+                        a.setText("个人报名");
+                        break;
+                    case "10":   // 参数为空
+                        a.setText("个人报名");
+                        break;
+                    case "11":   // 商家未开启报名活动
+                        a.setText("报名暂未开启");
+                        break;
+                    default:
+                        a.setText("报名暂未开启");
+                        break;
+                }
+                a.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                                /*if ("个人报名".equals(a.getText().toString())) {
+                                    Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+                                    i.putExtra("title", "个人报名");
+                                    i.putExtra("url", "http://wap.medmeeting.com/#!/reg/");
+                                    i.putExtra("eventId", eventId);
+                                    startActivity(i);
+                                } else if ("订单详情".equals(a.getText().toString())) {
+                                    Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+                                    i.putExtra("title", "订单详情");
+                                    i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
+                                    i.putExtra("eventId", eventId);
+                                    startActivity(i);
+                                } else {
+                                    a.setClickable(false);
+                                    ToastUtils.show(MeetingDetailActivity.this, "报名暂未开启");
+                                }*/
+
+//                        Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+//                        i.putExtra("title", "订单详情");
+//                        i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
+//                        i.putExtra("eventId", eventId);
+//                        i.putExtra("eventTitle", eventTitle);
+//                        startActivity(i);
+                        ToastUtils.show(MeetingDetailActivity.this, "ahahaaaa");
+
+                    }
+                });
+
+            }
+        }, getEventStatusOptions);
     }
 
     private void initToolbar() {
@@ -91,7 +201,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 }
             }
         });
-        toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.live_point));
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -102,16 +211,98 @@ public class MeetingDetailActivity extends AppCompatActivity {
                         mShareAction.open(config);
                         break;
                     case R.id.action_collect:
-                        Intent intent = new Intent(MeetingDetailActivity.this, LiveTicketActivity.class);
-                        intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
-                        startActivity(intent);
+                        followEventOptions.put("userId", userId);
+                        followEventOptions.put("eventId", eventId);
+                        followEventOptions.put("follow", "N");
+                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "onError: " + e.getMessage()
+                                        + "\n" + e.getCause()
+                                        + "\n" + e.getLocalizedMessage()
+                                        + "\n" + e.getStackTrace());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult4 httpResult4) {
+                                if (!httpResult4.getStatus().equals("200")) {
+                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
+                                    return;
+                                }
+                                ToastUtils.show(MeetingDetailActivity.this, "取消关注");
+                                isFollowEvent = false;
+                                invalidateOptionsMenu(); //重新绘制menu
+                            }
+                        }, followEventOptions);
+                        break;
+                    case R.id.action_collect_no:
+                        followEventOptions.put("userId", userId);
+                        followEventOptions.put("eventId", eventId);
+                        followEventOptions.put("follow", "Y");
+                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "onError: " + e.getMessage()
+                                        + "\n" + e.getCause()
+                                        + "\n" + e.getLocalizedMessage()
+                                        + "\n" + e.getStackTrace());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult4 httpResult4) {
+                                if (!httpResult4.getStatus().equals("200")) {
+                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
+                                    return;
+                                }
+                                ToastUtils.show(MeetingDetailActivity.this, "成功关注");
+                                isFollowEvent = true;
+                                invalidateOptionsMenu(); //重新绘制menu
+                            }
+                        }, followEventOptions);
                         break;
 //                    case R.id.action_more:
+//                        ToastUtils.show(MeetingDetailActivity.this, "haha");
 //                        break;
                 }
                 return true;
             }
         });
+
+
+        checkFollowEventOptions.put("userId", userId);
+        checkFollowEventOptions.put("eventId", eventId);
+        HttpData.getInstance().HttpDataCheckFollowEvent(new Observer<HttpResult4>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult4 httpResult4) {
+                if ("未关注！".equals(httpResult4.getReturnMsg())) {
+//                    b.setText("点击关注");
+                    isFollowEvent = false;
+                } else {
+//                    b.setText("您已关注");
+                    isFollowEvent = true;
+                }
+            }
+        }, checkFollowEventOptions);
     }
 
     /**
@@ -119,24 +310,26 @@ public class MeetingDetailActivity extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_meeting_toolbar, menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (isFollowEvent) {
+            menu.findItem(R.id.action_collect).setVisible(true);
+            menu.findItem(R.id.action_collect_no).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_collect).setVisible(false);
+            menu.findItem(R.id.action_collect_no).setVisible(true);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     /**
      * 初始化WebView配置
      */
     private void initWebView() {
-
-        eventId = getIntent().getExtras().getString("eventId");
-
-        try {
-            userId = DBUtils.get(MeetingDetailActivity.this, "userId");
-        } catch (SnappydbException e) {
-            e.printStackTrace();
-        }
-
         WebSettings settings = mWebView.getSettings();
 
         // BindUserInfo settings
@@ -370,7 +563,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
         @Override
         public void onResult(SHARE_MEDIA platform) {
             Log.d("plat", "platform" + platform);
-
             Toast.makeText(MeetingDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
 
         }

@@ -45,6 +45,29 @@ public class OkHttpUtils {
     }
 
     /**
+     * 获取OkHttpClient对象，无header拦截器
+     */
+    public static OkHttpClient getOkHttpClientWithoutInterceptor() {
+
+        if (null == mOkHttpClient) {
+
+            //同样okhttp3后也使用build设计模式
+            mOkHttpClient = new OkHttpClient.Builder()
+                    //添加日志拦截器
+                    .addNetworkInterceptor(mHttpLoggingInterceptor)
+                    //添加网络连接器
+                    //设置请求读写的超时时间
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+        }
+
+        return mOkHttpClient;
+    }
+
+    /**
      * 云端响应头拦截器
      * 用于添加统一请求头  请按照自己的需求添加
      * 主要用于加密传输 和设备数据传输

@@ -12,11 +12,18 @@
   <item android:id="@+id/action_collect"
         android:title="收藏"
         android:orderInCategory="90"
+        android:icon="@mipmap/meeting_collect"
+        app:showAsAction="ifRoom" />
+
+  <item android:id="@+id/action_collect_no"
+        android:title="收藏"
+        android:orderInCategory="90"
         android:icon="@mipmap/meeting_collect_no"
         app:showAsAction="ifRoom" />
 
   <!--<item android:id="@+id/action_more"-->
         <!--android:title="更多"-->
         <!--android:orderInCategory="100"-->
-        <!--app:showAsAction="never"/>-->
+        <!--app:showAsAction="ifRoom"/>-->
+  <!--never-->
 </menu>

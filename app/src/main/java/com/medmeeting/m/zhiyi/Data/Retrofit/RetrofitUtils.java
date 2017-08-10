@@ -58,7 +58,7 @@ public abstract class RetrofitUtils {
         if (null == mRetrofitMeeting) {
 
             if (null == mOkHttpClient) {
-                mOkHttpClient = OkHttpUtils.getOkHttpClient();
+                mOkHttpClient = OkHttpUtils.getOkHttpClientWithoutInterceptor();
             }
 
             //Retrofit2后使用build设计模式
