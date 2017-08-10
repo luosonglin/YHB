@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -12,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -22,12 +22,12 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveTicketActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
@@ -51,8 +51,6 @@ import java.util.Map;
 public class MeetingDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-//    private TextView toolbarTitle;
-    private ImageView shareIv;
     private BridgeWebView mWebView;
     private static final String TAG = MeetingDetailActivity.class.getSimpleName();
 
@@ -60,9 +58,8 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private static String userAgent;
     private String version;
     private String eventId;
-    private String eventTitle;
     private String userId;
-    private String openId= null;
+    private String openId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +67,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meeting_detail);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        shareIv = (ImageView) findViewById(R.id.share);
         mWebView = (BridgeWebView) findViewById(R.id.WebView);
 
         initToolbar();
@@ -82,24 +77,12 @@ public class MeetingDetailActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-//        eventTitle = getIntent().getExtras().getString("eventTitle");
-//        toolbarTitle.setText(eventTitle);
-//        toolbarTitle.setTextColor(Color.BLACK);
-//        toolbarTitle.setFocusable(true);
-
-        toolbar.setTitle("");
-        toolbar.setTitleTextColor(Color.BLACK);
-
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayShowHomeEnabled(false);
-
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                finish();
-//                onBackPressed();
-
                 //退出web还是退出activity
                 if (mWebView.canGoBack()) {
                     mWebView.goBack(); //goBack()表示返回WebView的上一页面
@@ -108,33 +91,38 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.umeng_socialize_menu_default));
-        toolbar.setOnMenuItemClickListener(onMenuItemClick);
+        toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.live_point));
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_share:
+                        ShareBoardConfig config = new ShareBoardConfig();
+                        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                        mShareAction.open(config);
+                        break;
+                    case R.id.action_collect:
+                        Intent intent = new Intent(MeetingDetailActivity.this, LiveTicketActivity.class);
+                        intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
+                        startActivity(intent);
+                        break;
+//                    case R.id.action_more:
+//                        break;
+                }
+                return true;
+            }
+        });
     }
 
-    private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            String msg = "";
-            switch (menuItem.getItemId()) {
-                case R.id.action_edit:
-                    msg += "Click edit";
-                    break;
-                case R.id.action_share:
-                    msg += "Click share";
-                    break;
-                case R.id.action_settings:
-                    msg += "Click setting";
-                    break;
-            }
-
-            if(!msg.equals("")) {
-                Toast.makeText(MeetingDetailActivity.this, msg, Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        }
-    };
+    /**
+     * 菜单栏 修改器下拉刷新模式
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
     /**
      * 初始化WebView配置
@@ -279,7 +267,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.e(TAG, "getUserIdInWeb" + userId+" "+GETUID);
+            Log.e(TAG, "getUserIdInWeb" + userId + " " + GETUID);
             return userId;
         }
 
@@ -293,7 +281,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void initShare(Bundle savedInstanceState, final String phone, final String desc){
+    public void initShare(Bundle savedInstanceState, final String photo, final String desc) {
         //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
         UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
             @Override
@@ -314,14 +302,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
             @Override
             public void onCancel(SHARE_MEDIA platform, int action) {
 
-            }
-        });
-        shareIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
             }
         });
         //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
@@ -348,8 +328,8 @@ public class MeetingDetailActivity extends AppCompatActivity {
                     public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
 
                         UMWeb web = new UMWeb(URL);
-                        web.setTitle(eventTitle);//标题
-                        web.setThumb(new UMImage(MeetingDetailActivity.this, phone));  //缩略图
+                        web.setTitle(getIntent().getExtras().getString("eventTitle"));//标题
+                        web.setThumb(new UMImage(MeetingDetailActivity.this, photo));  //缩略图
                         web.setDescription(desc);//描述
                         new ShareAction(MeetingDetailActivity.this)
                                 .withMedia(web)
@@ -378,6 +358,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
     private UMShareListener mShareListener;
     private ShareAction mShareAction;
     private UMShareListener umShareListener = new UMShareListener() {
@@ -385,9 +366,10 @@ public class MeetingDetailActivity extends AppCompatActivity {
         public void onStart(SHARE_MEDIA platform) {
             //分享开始的回调
         }
+
         @Override
         public void onResult(SHARE_MEDIA platform) {
-            Log.d("plat","platform"+platform);
+            Log.d("plat", "platform" + platform);
 
             Toast.makeText(MeetingDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
 
@@ -395,15 +377,15 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(MeetingDetailActivity.this,platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-            if(t!=null){
-                Log.d("throw","throw:"+t.getMessage());
+            Toast.makeText(MeetingDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            if (t != null) {
+                Log.d("throw", "throw:" + t.getMessage());
             }
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(MeetingDetailActivity.this,platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MeetingDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
         }
     };
 
