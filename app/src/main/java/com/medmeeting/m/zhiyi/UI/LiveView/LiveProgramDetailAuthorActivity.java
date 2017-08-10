@@ -120,6 +120,66 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             }
         });
         toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.live_point));
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.letter:
+                        ShareBoardConfig config = new ShareBoardConfig();
+                        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                        mShareAction.open(config);
+                        break;
+                    case R.id.analyse:
+                        Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity.class);
+                        intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
+                        startActivity(intent);
+                        break;
+                    case R.id.update:
+                        Intent intent2 = new Intent(LiveProgramDetailAuthorActivity.this, LiveUpdateProgramActivity.class);
+                        intent2.putExtra("programId", getIntent().getExtras().getInt("programId"));
+                        startActivity(intent2);
+                        break;
+                    case R.id.delete:
+                        new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
+                                .setMessage("确定删除该节目？")
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(final DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(final DialogInterface dialogInterface, int i) {
+                                        HttpData.getInstance().HttpDataDeleteProgram(new Observer<HttpResult3>() {
+                                            @Override
+                                            public void onCompleted() {
+
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+
+                                            }
+
+                                            @Override
+                                            public void onNext(HttpResult3 httpResult3) {
+                                                if (httpResult3.getStatus().equals("success")) {
+                                                    dialogInterface.dismiss();
+                                                    finish();
+                                                } else {
+                                                    ToastUtils.show(LiveProgramDetailAuthorActivity.this, httpResult3.getMsg());//"该直播节目已有人付费报名，不可删除");
+                                                }
+                                            }
+                                        }, programId);
+                                    }
+                                })
+                                .show();
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private void initView() {
@@ -265,59 +325,62 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.letter:
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
-                return true;
-            case R.id.analyse:
-                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity.class);
-                intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
-                startActivity(intent);
-                return true;
-            case R.id.delete:
-                new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
-                        .setMessage("确定删除该节目？")
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialogInterface, int i) {
-                                HttpData.getInstance().HttpDataDeleteProgram(new Observer<HttpResult3>() {
-                                    @Override
-                                    public void onCompleted() {
-
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(HttpResult3 httpResult3) {
-                                        if (httpResult3.getStatus().equals("success")) {
-                                            dialogInterface.dismiss();
-                                            finish();
-                                        }
-                                    }
-                                }, programId);
-                            }
-                        })
-                        .show();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        switch (id) {
+//            case R.id.letter:
+//                ShareBoardConfig config = new ShareBoardConfig();
+//                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+//                mShareAction.open(config);
+//                return true;
+//            case R.id.analyse:
+//                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity.class);
+//                intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
+//                startActivity(intent);
+//                return true;
+//            case R.id.update:
+//                ToastUtils.show(LiveProgramDetailAuthorActivity.this, "haha");
+//                break;
+//            case R.id.delete:
+//                new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
+//                        .setMessage("确定删除该节目？")
+//                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(final DialogInterface dialogInterface, int i) {
+//                                dialogInterface.dismiss();
+//                            }
+//                        })
+//                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(final DialogInterface dialogInterface, int i) {
+//                                HttpData.getInstance().HttpDataDeleteProgram(new Observer<HttpResult3>() {
+//                                    @Override
+//                                    public void onCompleted() {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(HttpResult3 httpResult3) {
+//                                        if (httpResult3.getStatus().equals("success")) {
+//                                            dialogInterface.dismiss();
+//                                            finish();
+//                                        }
+//                                    }
+//                                }, programId);
+//                            }
+//                        })
+//                        .show();
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     /**
      * 分享

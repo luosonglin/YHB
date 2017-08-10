@@ -76,7 +76,6 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog();
-                showProgress(true);
             }
         });
 
@@ -133,6 +132,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                showProgress(true);
                 new clearCacheRunnable().run();
             }
         });

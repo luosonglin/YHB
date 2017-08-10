@@ -28,13 +28,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_gravity="center"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:src="@mipmap/live_background" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -42,7 +42,8 @@
                         android:layout_width="108dp"
                         android:layout_height="108dp"
                         android:padding="18dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/ic_launcher"
+                        android:visibility="gone"/>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -63,7 +64,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-                            android:text="主理人：韩三宝"
+                            android:text="主讲人：韩三宝"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
                     </LinearLayout>

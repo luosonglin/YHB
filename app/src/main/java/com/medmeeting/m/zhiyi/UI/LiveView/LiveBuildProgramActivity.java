@@ -266,7 +266,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                     ToastUtils.show(LiveBuildProgramActivity.this, "请填写直播节目介绍");
                     return;
                 }
-                LiveDto liveDto = new LiveDto(vidoTitle, videoPhoto, expectBeginTime, expectEndTime, authorName, authorTitle, privacyType, chargeType, price, vidoDesc);
+                LiveDto liveDto = new LiveDto(vidoTitle, videoPhoto, expectBeginTime, expectEndTime, authorName, authorTitle, privacyType, chargeType, Float.parseFloat(price), vidoDesc);
                 buildllyt.setClickable(false);
                 HttpData.getInstance().HttpDataAddLiveProgram(new Observer<HttpResult3>() {
                     @Override

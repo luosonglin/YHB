@@ -11,8 +11,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -108,9 +109,15 @@ public class LiveProgramDetailInfoFragment  extends Fragment {
         nameTv.setText(name);
         hospitalTv.setText(hospital);
 
-        Picasso.with(getActivity()).load(userPic + "?imageMogr/v2/thumbnail/140x70")
-                .error(R.mipmap.avator_default)
+//        Picasso.with(getActivity()).load(userPic + "?imageMogr/v2/thumbnail/140x70")
+//                .error(R.mipmap.avator_default)
+//                .into(liveUserPic);
+        Glide.with(getActivity())
+                .load(userPic + "?imageMogr/v2/thumbnail/1400x700")
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade()
                 .into(liveUserPic);
+
         detailTv.setText(detail);
         Log.e(TAG+"111", userPic + "?imageMogr/v2/thumbnail/360x140");
     }

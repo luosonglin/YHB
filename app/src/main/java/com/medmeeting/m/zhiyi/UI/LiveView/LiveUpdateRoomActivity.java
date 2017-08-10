@@ -85,10 +85,11 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
     private String videoTitle = "";  //直播间标题
     private String videoLabel = "";  //直播间标题
     private String videoLabelIds = "";
-    private long createTime;
-    private long updateTime;
     private String videoDesc = "";  //直播间描述
     private String videoPhoto = "";  //直播间封面图片
+
+    private long createTime;
+    private long updateTime;
 
     @Bind(R.id.progress)
     View mProgressView;

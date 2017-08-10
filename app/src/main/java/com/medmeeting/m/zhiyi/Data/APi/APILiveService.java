@@ -71,6 +71,10 @@ public interface APILiveService {
     @GET("v1/anchor/{roomId}/liveProgram/{programId}")
     Observable<HttpResult3<Object, LiveDto>> getLiveProgramDetail(@Path("programId") Integer programId);
 
+    //PUT /v1/anchor/{roomId}/liveProgram 更新直播节目信息
+    @PUT("/v1/anchor/{roomId}/liveProgram")
+    Observable<HttpResult3> updateLiveProgram(@Body LiveDto liveDto);
+
     //GET /v1/anchor/{roomId}/liveProgram/open/{programId} 开启直播，返回推流信息
     @GET("/v1/anchor/{roomId}/liveProgram/open/{programId}")
     Observable<HttpResult3<Object, LiveStream>> getLiveStream(@Path("programId") Integer programId);

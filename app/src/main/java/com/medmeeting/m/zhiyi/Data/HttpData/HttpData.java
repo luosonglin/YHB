@@ -244,6 +244,12 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    //update live program
+    public void HttpDataUpdataLiveProgram(Observer<HttpResult3> observer, LiveDto liveDto) {
+        Observable observable = service_live.updateLiveProgram(liveDto);
+        setSubscribe(observable, observer);
+    }
+
     //get user token
     public void HttpDataGetToken(Observer<HttpResult3<Object, UserTokenDto>> observer, Integer userId) {
         Observable observable = service_live.getUserToken(userId);

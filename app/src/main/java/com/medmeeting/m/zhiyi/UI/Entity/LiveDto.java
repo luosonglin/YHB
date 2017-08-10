@@ -41,14 +41,14 @@ public class LiveDto {
     private String authorTitle;
     private String privacyType;
     private String chargeType;
-    private Object price;
+    private float price;
     private long firstOpenTime;
     private long realEndTime;
     private int onlineCount;
     private String liveStatus;
     private String status;
-    private Object createTime;
-    private Object updateTime;
+    private long createTime;
+    private long updateTime;
     private String roomTitle;
     private int userId;
     private String userPic;
@@ -57,7 +57,10 @@ public class LiveDto {
     private int payCount;
     private String des;
 
-    public LiveDto(String title, String coverPhoto, long startTime, long endTime, String authorName, String authorTitle, String privacyType, String chargeType, Object price, String des) {
+    public LiveDto() {
+    }
+
+    public LiveDto(String title, String coverPhoto, long startTime, long endTime, String authorName, String authorTitle, String privacyType, String chargeType, float price, String des) {
         this.title = title;
         this.coverPhoto = coverPhoto;
         this.startTime = startTime;
@@ -158,11 +161,11 @@ public class LiveDto {
         this.chargeType = chargeType;
     }
 
-    public Object getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(Object price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
@@ -206,19 +209,19 @@ public class LiveDto {
         this.status = status;
     }
 
-    public Object getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Object createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
 
-    public Object getUpdateTime() {
+    public long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Object updateTime) {
+    public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
     }
 

@@ -1,8 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.Manifest;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -29,7 +27,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -51,7 +48,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
-import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -94,8 +90,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     private ScrollView scrollView;
     //背景图
     private ImageView imageView;
-    //直播间头像
-    private ImageView coverPhotoTv;
     private TextView titleTv, userNameTv;
     //观看
     private TextView watchTv;
@@ -287,22 +281,24 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         mShareAction.close();
     }
 
-    private void initView(String coverPhone, String title, final String userName) {
+    private void initView(String coverPhoto, String title, final String userName) {
         //直播间封面
-        coverPhotoTv = (ImageView) findViewById(R.id.coverPhoto);
         titleTv = (TextView) findViewById(R.id.title);
         userNameTv = (TextView) findViewById(R.id.userName);
-        Glide.with(LiveProgramDetailActivity.this)
-                .load(coverPhone)
-                .crossFade()
-                .transform(new GlideCircleTransform(LiveProgramDetailActivity.this))
-                .placeholder(R.mipmap.ic_launcher)
-                .into(coverPhotoTv);
         titleTv.setText(title);
         userNameTv.setText("主讲人：" + userName);
 
         //点击"观看"
         watchTv = (TextView) findViewById(R.id.watch);
+
+
+        // 获取屏幕宽高
+        metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+        // 获取控件
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        imageView = (ImageView) findViewById(R.id.img);
 
         HttpData.getInstance().HttpDataGetLiveProgramAudienceDetail(new Observer<HttpResult3<Object, LiveAudienceDetailDto>>() {
             @Override
@@ -331,7 +327,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 initTagsView(getIntent().getExtras().getInt("roomId"),
                         liveDtoHttpResult3.getEntity().getAuthorName(),
                         liveDtoHttpResult3.getEntity().getAuthorTitle(),
-                        liveDtoHttpResult3.getEntity().getCoverPhoto(),
+                        getIntent().getExtras().getString("userPic"),
                         liveDtoHttpResult3.getEntity().getDes());
 
                 switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
@@ -400,84 +396,14 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     }
                 }
 
+
+                Glide.with(LiveProgramDetailActivity.this)
+                        .load(liveDtoHttpResult3.getEntity().getCoverPhoto())
+                        .crossFade()
+//                        .placeholder(R.mipmap.live_background)
+                        .into(imageView);
             }
         }, getIntent().getExtras().getInt("programId"));
-
-        // 获取屏幕宽高
-        metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-
-        // 获取控件
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
-        imageView = (ImageView) findViewById(R.id.img);
-
-        // 设置图片初始大小 这里我设为满屏的16:9
-        ViewGroup.LayoutParams lp = imageView.getLayoutParams();
-        lp.width = metric.widthPixels;
-        lp.height = metric.widthPixels * 9 / 16;
-        imageView.setLayoutParams(lp);
-
-        // 监听滚动事件
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
-                        .getLayoutParams();
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        // 手指离开后恢复图片
-                        mScaling = false;
-                        replyImage();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (!mScaling) {
-                            if (scrollView.getScrollY() == 0) {
-                                mFirstPosition = event.getY();// 滚动到顶部时记录位置，否则正常返回
-                            } else {
-                                break;
-                            }
-                        }
-                        int distance = (int) ((event.getY() - mFirstPosition) * 0.6); // 滚动距离乘以一个系数
-                        if (distance < 0) { // 当前位置比记录位置要小，正常返回
-                            break;
-                        }
-
-                        // 处理放大
-                        mScaling = true;
-                        lp.width = metric.widthPixels + distance;
-                        lp.height = (metric.widthPixels + distance) * 9 / 16;
-                        imageView.setLayoutParams(lp);
-                        return true; // 返回true表示已经完成触摸事件，不再处理
-                }
-                return false;
-            }
-        });
-
-    }
-
-    // 回弹动画 (使用了属性动画)
-    public void replyImage() {
-        final ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
-                .getLayoutParams();
-        final float w = imageView.getLayoutParams().width;// 图片当前宽度
-        final float h = imageView.getLayoutParams().height;// 图片当前高度
-        final float newW = metric.widthPixels;// 图片原宽度
-        final float newH = metric.widthPixels * 9 / 16;// 图片原高度
-
-        // 设置动画
-        ValueAnimator anim = ObjectAnimator.ofFloat(0.0F, 1.0F)
-                .setDuration(200);
-
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float cVal = (Float) animation.getAnimatedValue();
-                lp.width = (int) (w - (w - newW) * cVal);
-                lp.height = (int) (h - (h - newH) * cVal);
-                imageView.setLayoutParams(lp);
-            }
-        });
-        anim.start();
     }
 
     private void initTagsView(final Integer roomId, String name, String hospital, String userPic, String detail) {
