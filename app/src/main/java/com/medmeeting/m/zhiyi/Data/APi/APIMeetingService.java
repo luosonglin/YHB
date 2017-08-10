@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.Data.APi;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
+import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
 
 import java.util.Map;
 
@@ -42,4 +43,12 @@ public interface APIMeetingService {
     //关注会议 关注? "N": "Y"
     @GET("/phoneEvent/followEvent")
     Observable<HttpResult4> followEvent(@QueryMap Map<String, Object> map);//?userId=21&eventId=172&follow=Y
+
+    //获取该会议的支付方式 弹窗
+    @GET("/cRegiests/paymentStatus")
+    Observable<PaymentStatus> getPaymentStatus(@QueryMap Map<String, Object> map);
+
+    //获取该会议的支付信息，如支付方式、支付金额等
+    @GET("/phoneEvent/confirmPayType")
+    Observable<HttpResult4> getPayInfo(@QueryMap Map<String, Object> map);
 }

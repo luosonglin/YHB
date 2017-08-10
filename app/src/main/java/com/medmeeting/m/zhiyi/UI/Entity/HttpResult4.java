@@ -4,17 +4,17 @@ package com.medmeeting.m.zhiyi.UI.Entity;
  * 会议API
  */
 public class HttpResult4<T> {
-    private double amtOrder;
+    private float amtOrder;
     private PageInfoBean<T> pageInfo;
     private String returnCode;
     private String returnMsg;
     private String status;
 
-    public double getAmtOrder() {
+    public float getAmtOrder() {
         return amtOrder;
     }
 
-    public void setAmtOrder(double amtOrder) {
+    public void setAmtOrder(float amtOrder) {
         this.amtOrder = amtOrder;
     }
 

@@ -30,6 +30,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
+import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
@@ -140,12 +141,18 @@ public class HttpData extends RetrofitUtils {
     }
 
     /**
-     * 以下用于会议详情页
+     * 以下用于会议详情支付页
      */
     public void HttpDataGetEventStatus(Observer<HttpResult4> observer, Map<String, Object> map) {
         Observable observable = service_meeting.getEventStatus(map);
         setSubscribe(observable, observer);
     }
+
+    public void HttpDataGetPayInfo(Observer<HttpResult4> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.getPayInfo(map);
+        setSubscribe(observable, observer);
+    }
+
 
     public void HttpDataCheckFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
         Observable observable = service_meeting.checkFollowEvent(map);
@@ -154,6 +161,14 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
         Observable observable = service_meeting.followEvent(map);
+        setSubscribe(observable, observer);
+    }
+
+    /**
+     * 以下用于会议报名页
+     */
+    public void HttpDataGetPaymentStatus(Observer<PaymentStatus> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.getPaymentStatus(map);
         setSubscribe(observable, observer);
     }
 

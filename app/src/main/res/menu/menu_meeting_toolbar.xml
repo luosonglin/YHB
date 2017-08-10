@@ -1,29 +1,49 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
 
-  <item android:id="@+id/action_share"
-        android:title="分享"
-        android:orderInCategory="80"
+    <item
+        android:id="@+id/action_share"
         android:icon="@mipmap/meeting_share"
+        android:orderInCategory="80"
+        android:title="分享"
         app:showAsAction="ifRoom" />
 
-  <item android:id="@+id/action_collect"
-        android:title="收藏"
-        android:orderInCategory="90"
+    <item
+        android:id="@+id/action_collect"
         android:icon="@mipmap/meeting_collect"
-        app:showAsAction="ifRoom" />
-
-  <item android:id="@+id/action_collect_no"
-        android:title="收藏"
         android:orderInCategory="90"
-        android:icon="@mipmap/meeting_collect_no"
+        android:title="收藏"
         app:showAsAction="ifRoom" />
 
-  <!--<item android:id="@+id/action_more"-->
-        <!--android:title="更多"-->
+    <item
+        android:id="@+id/action_collect_no"
+        android:icon="@mipmap/meeting_collect_no"
+        android:orderInCategory="90"
+        android:title="收藏"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_enroll"
+        android:icon="@mipmap/meeting_enroll"
+        android:orderInCategory="90"
+        android:title="报名"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_order"
+        android:icon="@mipmap/meeting_order"
+        android:orderInCategory="90"
+        android:title="订单"
+        app:showAsAction="ifRoom" />
+
+    <!--<item-->
+        <!--android:id="@+id/action_more"-->
+        <!--android:icon="@mipmap/meeting_more"-->
         <!--android:orderInCategory="100"-->
-        <!--app:showAsAction="ifRoom"/>-->
-  <!--never-->
+        <!--android:title="更多"-->
+        <!--app:showAsAction="never" />-->
+
+
 </menu>

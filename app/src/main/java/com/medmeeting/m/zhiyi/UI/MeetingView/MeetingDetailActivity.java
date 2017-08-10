@@ -73,6 +73,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private Map<String, Object> followEventOptions = new HashMap<>();
 
     private boolean isFollowEvent = false;
+    private String status = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +117,8 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
             @Override
             public void onNext(HttpResult4 httpResult4) {
+                status = httpResult4.getStatus();
+                invalidateOptionsMenu(); //重新绘制menu
                 switch (httpResult4.getStatus()) {
                     case "2":   // 已注册 未支付info
                         a.setText("订单详情");
@@ -270,6 +273,22 @@ public class MeetingDetailActivity extends AppCompatActivity {
                             }
                         }, followEventOptions);
                         break;
+                    case R.id.action_enroll:
+                        Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+                        i.putExtra("title", "订单详情");
+                        i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
+                        i.putExtra("eventId", eventId);
+                        i.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
+                        startActivity(i);
+                        break;
+                    case R.id.action_order:
+                        Intent i2 = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+                        i2.putExtra("title", "订单详情");
+                        i2.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
+                        i2.putExtra("eventId", eventId);
+                        i2.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
+                        startActivity(i2);
+                        break;
 //                    case R.id.action_more:
 //                        ToastUtils.show(MeetingDetailActivity.this, "haha");
 //                        break;
@@ -322,6 +341,16 @@ public class MeetingDetailActivity extends AppCompatActivity {
         } else {
             menu.findItem(R.id.action_collect).setVisible(false);
             menu.findItem(R.id.action_collect_no).setVisible(true);
+        }
+        if (status.equals("2") || status.equals("3") || status.equals("5") || status.equals("6")) { //订单详情
+            menu.findItem(R.id.action_enroll).setVisible(false);
+            menu.findItem(R.id.action_order).setVisible(true);
+        } else if (status.equals("4") || status.equals("7") || status.equals("8") || status.equals("9") || status.equals("10")) { //个人报名
+            menu.findItem(R.id.action_enroll).setVisible(true);
+            menu.findItem(R.id.action_order).setVisible(false);
+        } else if (status.equals("11")) { //报名暂未开启
+            menu.findItem(R.id.action_enroll).setVisible(false);
+            menu.findItem(R.id.action_order).setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);
     }
