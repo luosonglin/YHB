@@ -26,8 +26,6 @@ public class LiveProgramDetailInfoFragment  extends Fragment {
     CircleImageView liveUserPic;
     @Bind(R.id.name)
     TextView nameTv;
-    @Bind(R.id.hospital)
-    TextView hospitalTv;
     @Bind(R.id.detail)
     TextView detailTv;
     @Bind(R.id.start_time_llyt)
@@ -107,7 +105,6 @@ public class LiveProgramDetailInfoFragment  extends Fragment {
 
     private void initView() {
         nameTv.setText(name);
-        hospitalTv.setText(hospital);
 
 //        Picasso.with(getActivity()).load(userPic + "?imageMogr/v2/thumbnail/140x70")
 //                .error(R.mipmap.avator_default)
