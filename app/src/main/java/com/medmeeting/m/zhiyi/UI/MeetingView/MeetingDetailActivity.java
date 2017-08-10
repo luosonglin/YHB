@@ -119,6 +119,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
             public void onNext(HttpResult4 httpResult4) {
                 status = httpResult4.getStatus();
                 invalidateOptionsMenu(); //重新绘制menu
+
                 switch (httpResult4.getStatus()) {
                     case "2":   // 已注册 未支付info
                         a.setText("订单详情");
@@ -149,41 +150,43 @@ public class MeetingDetailActivity extends AppCompatActivity {
                         break;
                     case "11":   // 商家未开启报名活动
                         a.setText("报名暂未开启");
+                        a.setVisibility(View.VISIBLE);
                         break;
                     default:
                         a.setText("报名暂未开启");
+                        a.setVisibility(View.VISIBLE);
                         break;
                 }
-                a.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                                /*if ("个人报名".equals(a.getText().toString())) {
-                                    Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-                                    i.putExtra("title", "个人报名");
-                                    i.putExtra("url", "http://wap.medmeeting.com/#!/reg/");
-                                    i.putExtra("eventId", eventId);
-                                    startActivity(i);
-                                } else if ("订单详情".equals(a.getText().toString())) {
-                                    Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-                                    i.putExtra("title", "订单详情");
-                                    i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
-                                    i.putExtra("eventId", eventId);
-                                    startActivity(i);
-                                } else {
-                                    a.setClickable(false);
-                                    ToastUtils.show(MeetingDetailActivity.this, "报名暂未开启");
-                                }*/
-
-//                        Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-//                        i.putExtra("title", "订单详情");
-//                        i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
-//                        i.putExtra("eventId", eventId);
-//                        i.putExtra("eventTitle", eventTitle);
-//                        startActivity(i);
-                        ToastUtils.show(MeetingDetailActivity.this, "ahahaaaa");
-
-                    }
-                });
+//                a.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                                /*if ("个人报名".equals(a.getText().toString())) {
+//                                    Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+//                                    i.putExtra("title", "个人报名");
+//                                    i.putExtra("url", "http://wap.medmeeting.com/#!/reg/");
+//                                    i.putExtra("eventId", eventId);
+//                                    startActivity(i);
+//                                } else if ("订单详情".equals(a.getText().toString())) {
+//                                    Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+//                                    i.putExtra("title", "订单详情");
+//                                    i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
+//                                    i.putExtra("eventId", eventId);
+//                                    startActivity(i);
+//                                } else {
+//                                    a.setClickable(false);
+//                                    ToastUtils.show(MeetingDetailActivity.this, "报名暂未开启");
+//                                }*/
+//
+////                        Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+////                        i.putExtra("title", "订单详情");
+////                        i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
+////                        i.putExtra("eventId", eventId);
+////                        i.putExtra("eventTitle", eventTitle);
+////                        startActivity(i);
+//                        ToastUtils.show(MeetingDetailActivity.this, "ahahaaaa");
+//
+//                    }
+//                });
 
             }
         }, getEventStatusOptions);
