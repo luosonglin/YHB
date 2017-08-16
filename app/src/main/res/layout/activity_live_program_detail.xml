@@ -84,7 +84,7 @@
                     android:layout_marginTop="160dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/textview_all_blue"
-                    android:text="加载中"
+                    android:text=""
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
                     android:gravity="center"

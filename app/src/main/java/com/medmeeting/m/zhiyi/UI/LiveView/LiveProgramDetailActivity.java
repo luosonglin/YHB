@@ -282,6 +282,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
         //点击"观看"
         watchTv = (TextView) findViewById(R.id.watch);
+        watchTv.setVisibility(View.INVISIBLE);
 
 
         // 获取屏幕宽高
@@ -322,17 +323,18 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         getIntent().getExtras().getString("userPic"),
                         liveDtoHttpResult3.getEntity().getDes());
 
-                switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
-                    case "ready":
-                        break;
-                    case "play":
-                        break;
-                    case "wait":
-                        break;
-                    case "end":
-                        break;
-                }
+//                switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
+//                    case "ready":
+//                        break;
+//                    case "play":
+//                        break;
+//                    case "wait":
+//                        break;
+//                    case "end":
+//                        break;
+//                }
 
+                watchTv.setVisibility(View.VISIBLE);
                 if ("yes".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
                     if (payFlag == 0) {//0:未购票
                         watchTv.setText("支付" + amount + "元观看");
@@ -362,6 +364,10 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                             });
                         } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("ready")) {
                             watchTv.setText("准备中");
+                        } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("wait")) {
+                            watchTv.setText("主播已离开");
+                        } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("end")) {
+                            watchTv.setText("已结束");
                         }
                     }
 
@@ -385,6 +391,10 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         });
                     } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("ready")) {
                         watchTv.setText("准备中");
+                    } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("wait")) {
+                        watchTv.setText("主播已离开");
+                    } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("end")) {
+                        watchTv.setText("已结束");
                     }
                 }
 
