@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -44,6 +45,8 @@ import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -203,6 +206,35 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     private String qiniuToken;
     private String images = "";
 
+    /**
+     * 质量压缩法
+     *
+     * @param image
+     * @return
+     */
+    public byte[] compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while (baos.toByteArray().length / 1024 > 250) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            options -= 10;//每次都减少10
+            if (options <= 10) {
+                break;
+            }
+        }
+        byte[] byteArray = baos.toByteArray();
+        try {
+            if (baos != null) {
+                baos.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return byteArray;
+    }
+
     private void getQiniuToken(final String file) {
         HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
             @Override
@@ -250,11 +282,11 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
 //            .zone(Zone.zone1) // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
             .build();
 
+    // 重用uploadManager。一般地，只需要创建一个uploadManager对象
+    UploadManager uploadManager = new UploadManager(config);
     private void upload(final String data, final String key, final String token) {
         new Thread() {
             public void run() {
-                // 重用uploadManager。一般地，只需要创建一个uploadManager对象
-                UploadManager uploadManager = new UploadManager(config);
                 uploadManager.put(data, key, token,
                         new UpCompletionHandler() {
                             @Override
@@ -262,8 +294,6 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                                 //res包含hash、key等信息，具体字段取决于上传策略的设置
                                 if (info.isOK()) {
                                     Log.i("qiniu", "Upload Success");
-
-
                                 } else {
                                     Log.i("qiniu", "Upload Fail");
                                     //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
@@ -276,10 +306,8 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             }
         }.start();
         Glide.with(LiveBuildRoomActivity.this)
-                .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
+                .load("http://ono5ms5i0.bkt.clouddn.com/" + key +"/thumbnail/200x140")
                 .crossFade()
-//                                            .placeholder(R.mipmap.live_title_pic)
-//                                            .into(livePic);
                 .into(new GlideDrawableImageViewTarget(livePic) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
@@ -291,6 +319,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     final List<TagDto> tags = new ArrayList<>();
     final List<TagDto> tags_confirm = new ArrayList<>();

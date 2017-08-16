@@ -192,6 +192,8 @@ public class MineFragment extends Fragment {
                             nameTv.setText(item.getData().getUser().getName());
                             hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
                             titleTv.setText(item.getData().getUser().getTitle() + " ");
+
+                            wodezhibo.setVisibility(View.GONE);
                             break;
                         case "B":
                             identityHtml = "&nbsp;"
@@ -203,6 +205,8 @@ public class MineFragment extends Fragment {
                             nameTv.setText(item.getData().getUser().getName());
                             hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
                             titleTv.setText(item.getData().getUser().getTitle() + " ");
+
+                            wodezhibo.setVisibility(View.GONE);
                             break;
                         case "C":
                             identity.setVisibility(View.GONE);
@@ -211,6 +215,8 @@ public class MineFragment extends Fragment {
                             nameTv.setText(item.getData().getUser().getName());
                             hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
                             titleTv.setText(item.getData().getUser().getTitle() + " ");
+
+                            wodezhibo.setVisibility(View.VISIBLE);
                             break;
                         default:
                             identityHtml = "&nbsp;"
@@ -228,6 +234,9 @@ public class MineFragment extends Fragment {
                             nameTv.setText(item.getData().getUser().getNickName());
                             hospitalTv.setText(" ");
                             titleTv.setText(" ");
+
+
+                            wodezhibo.setVisibility(View.GONE);
                             break;
                     }
                     showProgress(false);
