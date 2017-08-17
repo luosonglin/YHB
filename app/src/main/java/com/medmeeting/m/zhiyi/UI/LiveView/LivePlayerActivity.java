@@ -1,5 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -173,7 +175,7 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
 //        mVideoView.setOnPreparedListener(mOnPreparedListener);
 //        mVideoView.setOnInfoListener(mOnInfoListener);
 //        mVideoView.setOnVideoSizeChangedListener(mOnVideoSizeChangedListener);
-//        mVideoView.setOnErrorListener(mOnErrorListener);
+        mVideoView.setOnErrorListener(mOnErrorListener);
 //        mVideoView.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
 //        mVideoView.setOnSeekCompleteListener(mOnSeekCompleteListener);
 //        mVideoView.setOnCompletionListener(mOnCompletionListener);
@@ -265,10 +267,10 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
 //                final InformationNotificationMessage content = InformationNotificationMessage.obtain("离开了房间");
 //                LiveKit.sendMessage(content);
 
-                // 配合ios
-                TextMessage content = TextMessage.obtain("离开了房间");
-                LiveKit.sendMessage(content);
-                Log.e(TAG, content + " " + content.getUserInfo().getName());
+                // 配合ios，tony说"去掉离开了房间"
+//                TextMessage content = TextMessage.obtain("离开了房间");
+//                LiveKit.sendMessage(content);
+//                Log.e(TAG, content + " " + content.getUserInfo().getName());
 
                 LiveKit.removeEventHandler(handler);
                 LiveKit.logout();
@@ -517,7 +519,12 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
         });
     }
 
+    private Integer mReconnectTimes = 0;
     private void sendReconnectMessage() {
+        if (mReconnectTimes >= 2) {
+            finish();
+            return;
+        }
         showToastTips("正在重连...");
         mLoadingView.setVisibility(View.VISIBLE);
         mHandler.removeCallbacksAndMessages(null);
@@ -536,7 +543,17 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
             }
             if (!Utils.isNetworkAvailable(LivePlayerActivity.this)) {
                 // 重连之前，建议使用如下方法判断一下网络的联通性，并且在每次重连之前，delay 1～2s
-                sendReconnectMessage();
+                new AlertDialog.Builder(LivePlayerActivity.this)
+                        .setTitle("温馨提示")
+                        .setMessage("主播正在赶来的路上，直播将在1s后进行重连")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mReconnectTimes++;
+                                sendReconnectMessage();
+                            }
+                        })
+                        .show();
                 return;
             }
             mVideoView.setVideoPath(mVideoPath);

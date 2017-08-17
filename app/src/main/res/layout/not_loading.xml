@@ -12,5 +12,5 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:text="-- end --"/>
+        android:text="-- 没有更多了哟 --"/>
 </LinearLayout>

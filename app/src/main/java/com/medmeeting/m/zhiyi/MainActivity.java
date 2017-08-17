@@ -326,6 +326,7 @@ public class MainActivity extends AppCompatActivity
             case 0:
                 ToastUtils.show(MainActivity.this, "暂时没内容");
 //                startActivity(new Intent(MainActivity.this, LiveBuildProgramActivity.class));
+//                startActivity(new Intent(MainActivity.this, ListvViewActivity.class));
                 break;
             case 1:
                 ToastUtils.show(MainActivity.this, "暂时没内容");

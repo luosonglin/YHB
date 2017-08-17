@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.MeetingListPresent;
@@ -137,19 +136,19 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
 
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), "点击了"+position+"\n", Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "长按了"+position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+//        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                Toast.makeText(getActivity(), "点击了"+position+"\n", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(View view, int position) {
+//                Toast.makeText(getActivity(), "长按了"+position, Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
     }
     //自动加载
     @Override
@@ -157,6 +156,7 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
         PageIndex++;
 //        present.LoadData("1",PageIndex,true);
         present.LoadData(true, PageIndex, PageSize);
+//        showLoadCompleteAllData();
     }
 
     //下拉刷新
@@ -223,6 +223,7 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
 
     @Override
     public void showNoData() {
+        springView.onFinishFreshAndLoad();
         //设置无数据显示页面
         progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE,Constant.EMPTY_CONTEXT);
     }

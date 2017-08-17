@@ -595,13 +595,13 @@ public class MeetingDetailActivity extends AppCompatActivity {
         @Override
         public void onResult(SHARE_MEDIA platform) {
             Log.d("plat", "platform" + platform);
-            Toast.makeText(MeetingDetailActivity.this, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MeetingDetailActivity.this, " 分享成功", Toast.LENGTH_SHORT).show();
 
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(MeetingDetailActivity.this, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MeetingDetailActivity.this, " 分享失败", Toast.LENGTH_SHORT).show();
             if (t != null) {
                 Log.d("throw", "throw:" + t.getMessage());
             }
@@ -609,7 +609,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(MeetingDetailActivity.this, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MeetingDetailActivity.this, " 分享已取消", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -630,10 +630,10 @@ public class MeetingDetailActivity extends AppCompatActivity {
         public void onResult(SHARE_MEDIA platform) {
 
             if (platform.name().equals("WEIXIN_FAVORITE")) {
-                Toast.makeText(mActivity.get(), platform + " 收藏成功啦", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity.get()," 收藏成功", Toast.LENGTH_SHORT).show();
             } else {
                 if (platform != SHARE_MEDIA.MORE) {
-                    Toast.makeText(mActivity.get(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity.get(), " 分享成功", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -641,7 +641,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
             if (platform != SHARE_MEDIA.MORE) {
-                Toast.makeText(mActivity.get(), platform + "分享失败啦~~ \n" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity.get(), "分享失败啦~~ \n" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 if (t != null) {
                     com.umeng.socialize.utils.Log.e(TAG, "umeng throw:" + t.getMessage());
                 }
@@ -650,7 +650,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(mActivity.get(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity.get(), platform + " 分享已取消", Toast.LENGTH_SHORT).show();
         }
     }
 

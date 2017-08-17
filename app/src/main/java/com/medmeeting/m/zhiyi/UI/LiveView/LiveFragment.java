@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.LiveListPresent;
@@ -154,19 +153,19 @@ public class LiveFragment extends Fragment
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
 
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), "点击了" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "长按了" + position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+//        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                Toast.makeText(getActivity(), "点击了" + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(View view, int position) {
+//                Toast.makeText(getActivity(), "长按了" + position, Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
     }
 
     @Override
@@ -199,9 +198,10 @@ public class LiveFragment extends Fragment
     //自动加载
     @Override
     public void onLoadMoreRequested() {
-        PageIndex++;
+//        PageIndex++;
 //        present.LoadData("1",PageIndex,true);
-        present.LoadData(true, liveSearchDto2);
+//        present.LoadData(true, liveSearchDto2);
+        showLoadCompleteAllData();
     }
 
     //下拉刷新
@@ -215,7 +215,6 @@ public class LiveFragment extends Fragment
     //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
     @Override
     public void onLoadmore() {
-
     }
 
     /*
@@ -269,6 +268,7 @@ public class LiveFragment extends Fragment
 
     @Override
     public void showNoData() {
+        springView.onFinishFreshAndLoad();
         //设置无数据显示页面
         progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
     }

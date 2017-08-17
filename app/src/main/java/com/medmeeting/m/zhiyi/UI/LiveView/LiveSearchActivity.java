@@ -190,6 +190,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
 
     @Override
     public void showNoData() {
+        springView.onFinishFreshAndLoad();
         //设置无数据显示页面
         progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
     }

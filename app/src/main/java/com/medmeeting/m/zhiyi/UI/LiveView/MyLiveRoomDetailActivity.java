@@ -182,20 +182,6 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     private void initListener() {
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
-
-//        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                Toast.makeText(MyLiveRoomDetailActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(View view, int position) {
-//                Toast.makeText(MyLiveRoomDetailActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
-//                return true;
-//            }
-//        });
     }
 
     //自动加载
@@ -203,14 +189,14 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     public void onLoadMoreRequested() {
         PageIndex++;
 //        present.LoadData("1",PageIndex,true);
-        present.LoadData(true, roomId);
+        present.LoadData(false, roomId);
     }
 
     //下拉刷新
     @Override
     public void onRefresh() {
         PageIndex = 1;
-//        present.LoadData("1",PageIndex,false);
+//        present.LoadData(false, roomId);
         present.LoadData(false, roomId);
     }
 
@@ -272,6 +258,8 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     @Override
     public void showNoData() {
         //设置无数据显示页面
+        Log.e(TAG, "no data");
+        springView.onFinishFreshAndLoad();
         progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
     }
 

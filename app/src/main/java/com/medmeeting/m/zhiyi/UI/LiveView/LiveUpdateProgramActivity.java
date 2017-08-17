@@ -137,7 +137,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_update_program);
         ButterKnife.bind(this);
         toolBar();
-        showProgress(true);
+//        showProgress(true);
         initView();
     }
 

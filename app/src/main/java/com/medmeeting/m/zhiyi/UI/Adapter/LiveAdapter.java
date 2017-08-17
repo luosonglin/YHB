@@ -28,7 +28,6 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .load(item.getCoverPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
-//                .placeholder(R.mipmap.live_background)
                 .into((ImageView) helper.getView(R.id.image));
 
         Glide.with(mContext)
@@ -36,26 +35,31 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .transform(new GlideCircleTransform(mContext))
-//                .placeholder(R.mipmap.avator_default)
                 .into((ImageView) helper.getView(R.id.avatar));
 
-        helper.setText(R.id.sum, item.getOnlineCount()+"")
-                .setText(R.id.title,item.getRoomTitle()+"")
-                .setText(R.id.name,item.getTitle())
+        helper.setText(R.id.sum, item.getOnlineCount() + "")
+                .setText(R.id.title, item.getRoomTitle() + "")
+                .setText(R.id.name, item.getTitle())
                 .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06));
 
+        String price;
+        if (item.getChargeType().equals("no")) {
+            price = " 免费";
+        } else {
+            price = " ¥" + item.getPrice();
+        }
         switch (item.getLiveStatus()) {
             case "ready":
-                helper.setText(R.id.status, "准备中");
+                helper.setText(R.id.status, "准备中 " + price);
                 break;
             case "play":
-                helper.setText(R.id.status, "直播中");
+                helper.setText(R.id.status, "直播中" + price);
                 break;
             case "wait":
-                helper.setText(R.id.status, "离开");
+                helper.setText(R.id.status, "离开中" + price);
                 break;
             case "end":
-                helper.setText(R.id.status, "已结束");
+                helper.setText(R.id.status, "已结束" + price);
                 break;
         }
         helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {

@@ -18,8 +18,8 @@
             android:id="@+id/input_bar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/rc_editor_bg_selector">
+            android:layout_weight="1">
+            <!--android:background="@drawable/rc_editor_bg_selector"-->
 
             <EditText
                 android:id="@+id/input_editor"

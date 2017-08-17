@@ -52,8 +52,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp">
+        android:layout_height="wrap_content">
         <com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView
             android:id="@+id/chat_listview"
             android:layout_width="200dp"
