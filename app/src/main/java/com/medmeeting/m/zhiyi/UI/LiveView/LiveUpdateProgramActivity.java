@@ -216,7 +216,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 introduction.setText(data.getEntity().getDes());
                 createTime = data.getEntity().getCreateTime();
                 updateTime = data.getEntity().getUpdateTime();
-
+                privacyType = data.getEntity().getPrivacyType();
                 mLiveDto = data.getEntity();
             }
         }, programId);
@@ -345,6 +345,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 //                LiveDto liveDto = new LiveDto(vidoTitle, videoPhoto, expectBeginTime, expectEndTime, authorName, authorTitle, privacyType, chargeType, Float.parseFloat(price), vidoDesc);
                 mLiveDto.setTitle(vidoTitle);
                 mLiveDto.setCoverPhoto(videoPhoto);
+                mLiveDto.setAuthorName(name.getText().toString().trim());
                 mLiveDto.setStartTime(expectBeginTime);
                 mLiveDto.setEndTime(expectEndTime);
                 mLiveDto.setAuthorTitle(authorTitle);
