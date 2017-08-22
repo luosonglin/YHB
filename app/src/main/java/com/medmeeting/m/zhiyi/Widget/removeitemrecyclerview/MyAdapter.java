@@ -38,6 +38,8 @@ public class MyAdapter extends RecyclerView.Adapter {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .into(viewHolder.background);
+
+        viewHolder.liveNumber.setText("房间No：" + mList.get(position).getNumber());
     }
 
     @Override
