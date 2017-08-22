@@ -44,7 +44,7 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
     private Toolbar toolbar;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex=1;
-    private int PageSize=10;
+    private int PageSize=100;
     private SpringView springView;
     private MeetingListPresent present;
 
@@ -135,42 +135,26 @@ public class MeetingFragment extends Fragment implements BaseQuickAdapter.Reques
     private void initListener() {
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
-
-//        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                Toast.makeText(getActivity(), "点击了"+position+"\n", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(View view, int position) {
-//                Toast.makeText(getActivity(), "长按了"+position, Toast.LENGTH_SHORT).show();
-//                return true;
-//            }
-//        });
     }
     //自动加载
     @Override
     public void onLoadMoreRequested() {
-        PageIndex++;
-//        present.LoadData("1",PageIndex,true);
-        present.LoadData(true, PageIndex, PageSize);
-//        showLoadCompleteAllData();
+//        PageIndex++;
+//        present.LoadData(true, PageIndex, PageSize);
+        showLoadCompleteAllData();
     }
 
     //下拉刷新
     @Override
     public void onRefresh() {
         PageIndex=1;
-//        present.LoadData("1",PageIndex,false);
         present.LoadData(false, PageIndex, PageSize);
     }
 
     //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
     @Override
     public void onLoadmore() {
-
+        springView.onFinishFreshAndLoad();
     }
 
     /*

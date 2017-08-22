@@ -136,7 +136,7 @@ public class ListvViewActivity extends AppCompatActivity implements BaseQuickAda
     /*
     * MVP模式的相关状态
     *
-    * */
+    */
     @Override
     public void showProgress() {
         progress.showLoading();

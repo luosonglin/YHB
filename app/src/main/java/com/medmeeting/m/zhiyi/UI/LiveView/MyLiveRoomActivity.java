@@ -130,7 +130,6 @@ public class MyLiveRoomActivity extends AppCompatActivity {
 
                     @Override
                     public void onUpdateClick(int position) {
-                        ToastUtils.show(MyLiveRoomActivity.this, "haha");
                         Intent intent = new Intent(MyLiveRoomActivity.this, LiveUpdateRoomActivity.class);
                         intent.putExtra("roomId", mList.get(position).getId());
                         intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());
