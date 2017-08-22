@@ -23,11 +23,18 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
 
     @Override
     protected void convert(BaseViewHolder helper, final BlogDto.BlogBean.ListBean item) {
-        Glide.with(mContext)
-                .load(item.getImages())
-                .crossFade()
-                .placeholder(R.mipmap.ic_launcher)
-                .into((ImageView) helper.getView(R.id.image));
+        String[] images =item.getImages().split(";");
+        if (images.length > 1) {
+            Glide.with(mContext)
+                    .load(images[0])
+                    .crossFade()
+                    .into((ImageView) helper.getView(R.id.image));
+        } else {
+            Glide.with(mContext)
+                    .load(item.getImages())
+                    .crossFade()
+                    .into((ImageView) helper.getView(R.id.image));
+        }
 
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.author, item.getName())
