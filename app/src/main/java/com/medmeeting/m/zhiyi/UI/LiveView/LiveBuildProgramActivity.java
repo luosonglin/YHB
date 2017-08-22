@@ -145,6 +145,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        theme.setHorizontallyScrolling(true);
     }
 
     @OnClick({R.id.live_pic_tip, R.id.start_time_llyt, R.id.end_time_llyt, R.id.free, R.id.charge, R.id.open, R.id.close, R.id.buildllyt})

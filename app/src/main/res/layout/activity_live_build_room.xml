@@ -140,7 +140,7 @@
                             android:layout_marginRight="20dp"
                             android:background="@color/white"
                             android:hint="添加一个直播间主题"
-                            android:maxLines="1"
+                            android:singleLine="true"
                             android:textSize="14sp" />
                     </LinearLayout>
 
