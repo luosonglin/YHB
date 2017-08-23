@@ -1,5 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.Entity;
 
+import java.util.List;
+
 public class LiveSearchDto {
 
     /**
@@ -20,7 +22,7 @@ public class LiveSearchDto {
     private String roomNumber;
 //    private int roomUserId;
 //    private int userId;
-//    private List<Integer> labelIds;
+    private List<Integer> labelIds;
 
     public LiveSearchDto() {
     }
@@ -95,12 +97,12 @@ public class LiveSearchDto {
 //    public void setUserId(int userId) {
 //        this.userId = userId;
 //    }
-//
-//    public List<Integer> getLabelIds() {
-//        return labelIds;
-//    }
-//
-//    public void setLabelIds(List<Integer> labelIds) {
-//        this.labelIds = labelIds;
-//    }
+
+    public List<Integer> getLabelIds() {
+        return labelIds;
+    }
+
+    public void setLabelIds(List<Integer> labelIds) {
+        this.labelIds = labelIds;
+    }
 }
