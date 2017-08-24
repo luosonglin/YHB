@@ -89,6 +89,7 @@ public class MineFragment extends Fragment {
 
     private String identityHtml;
     private String userId = null;
+    private String userAvatar;
 
     @Bind(R.id.progress)
     View mProgressView;
@@ -171,10 +172,11 @@ public class MineFragment extends Fragment {
 
                 @Override
                 public void onNext(MyInfoDto item) {
+                    userAvatar = item.getData().getUser().getUserPic();
                     Glide.with(getActivity())
                             .load(item.getData().getUser().getUserPic())
                             .crossFade()
-                            .placeholder(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.avator_default)
                             .into(headIv);
 
 
@@ -288,14 +290,17 @@ public class MineFragment extends Fragment {
 
     @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodetiezi, R.id.wodebingli, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.setting:
-                startActivity(new Intent(getActivity(), SettingActivity.class));
+                intent = new Intent(getActivity(), SettingActivity.class);
+                intent.putExtra("avatar", userAvatar);
+                startActivity(intent);
                 break;
             case R.id.user_flyt:
                 break;
             case R.id.wodecanhui:
-                Intent intent = new Intent(getActivity(), MyMeetingActivity.class);
+                intent = new Intent(getActivity(), MyMeetingActivity.class);
                 intent.putExtra("userId", userId);
                 startActivity(intent);
                 break;

@@ -101,6 +101,12 @@ public class HttpData extends RetrofitUtils {
 //        setSubscribe(observableCache, observer);
     }
 
+    //update user avatar
+    public void HttpDataUpdateAvatar(Observer<MyInfoDto> observer, Map<String, Object> map) {
+        Observable observable = service.updateAvatar(map);
+        setSubscribe(observable, observer);
+    }
+
     //get test get phone code
     public void HttpDataGetPhoneCode(Observer<SignUpCodeDto> observer, String phone) {
         Observable observable = service.getPhoneCode(phone);

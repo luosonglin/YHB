@@ -153,11 +153,17 @@
                 </LinearLayout>
             </FrameLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="4dp" />
             <RelativeLayout
                 android:id="@+id/wodecanhui"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_marginTop="4dp"
                 android:background="@color/white">
 
                 <LinearLayout
@@ -184,6 +190,13 @@
                 </LinearLayout>
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="4dp" />
             <RelativeLayout
                 android:id="@+id/wodefufeizhibo"
                 android:layout_width="match_parent"
@@ -245,6 +258,14 @@
                         android:textColor="@color/black" />
                 </LinearLayout>
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="4dp" />
 
             <RelativeLayout
                 android:id="@+id/wodeqianbao"

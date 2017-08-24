@@ -53,4 +53,8 @@ public interface APIService {
     @PUT("/api/v1/userinfos/")
     Observable<DoctorAuthentication> Authentication(@QueryMap Map<String, Object> options);
 
+    //修改头像
+    @PUT("/api/v1/userinfos/avatar")
+    Observable<MyInfoDto> updateAvatar(@QueryMap Map<String, Object> options);
+
 }
