@@ -215,7 +215,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
 
     @Override
     public void onRefresh() {
-
+        springView.onFinishFreshAndLoad();
     }
 
     @Override

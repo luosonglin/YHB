@@ -289,6 +289,12 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
     public void onClickRotate(View v) {
         mRotation = (mRotation + 90) % 360;
         mVideoView.setDisplayOrientation(mRotation);
+
+//        if (mRotation == 90) {
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
+//        } else {
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+//        }
     }
 
     public void onClickSwitchScreen(View v) {

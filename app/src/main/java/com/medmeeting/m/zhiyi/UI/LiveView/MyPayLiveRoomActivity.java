@@ -7,7 +7,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.LiveMyPayListPresent;
@@ -90,27 +89,13 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     private void initListener() {
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
-
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(MyPayLiveRoomActivity.this, "点击了"+position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(MyPayLiveRoomActivity.this, "长按了"+position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
     }
     //自动加载
     @Override
     public void onLoadMoreRequested() {
-        PageIndex++;
-//        present.LoadData("1",PageIndex,true);
-        present.LoadData(true);
+//        PageIndex++;
+//        present.LoadData(true);
+        showLoadCompleteAllData();
     }
     //下拉刷新
     @Override

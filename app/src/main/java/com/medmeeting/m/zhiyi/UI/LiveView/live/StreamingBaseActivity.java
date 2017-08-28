@@ -1097,17 +1097,31 @@ public class StreamingBaseActivity extends Activity implements
         });
 
         mSumBtn = (Button) findViewById(R.id.people_sum_btn);
-        LiveKit.getChatRoomSum(roomId + "", 500, new RongIMClient.ResultCallback<ChatRoomInfo>() {
-            @Override
-            public void onSuccess(ChatRoomInfo chatRoomInfo) {
-                mSumBtn.setText("" + chatRoomInfo.getTotalMemberCount());
-                Log.e(TAG + "eee", chatRoomInfo.getTotalMemberCount() + "");
-            }
 
+//        am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 5*1000, );
+
+        mHandler2 = new Handler();
+        mHandler2.post(new Runnable() {
             @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                Log.e(TAG + "eee", errorCode.getMessage());
+            public void run() {
+                LiveKit.getChatRoomSum(roomId + "", 500, new RongIMClient.ResultCallback<ChatRoomInfo>() {
+                    @Override
+                    public void onSuccess(ChatRoomInfo chatRoomInfo) {
+                        mSumBtn.setText("" + chatRoomInfo.getTotalMemberCount());
+                        Log.e(TAG + "eee", chatRoomInfo.getTotalMemberCount() + "");
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                        Log.e(TAG + "eee", errorCode.getMessage());
+                    }
+                });
+                mHandler2.postDelayed(this, 2000);
             }
         });
     }
+
+//    AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+    private Handler mHandler2;
+
 }
