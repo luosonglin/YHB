@@ -145,6 +145,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
+                } else if (!isCode) {
+                    attemptLogin();
+                    return true;
                 }
                 return false;
             }
@@ -186,11 +189,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     isCode = false;
                     mTurnPasswordView.setText("密码登录");
                     mGetCodeView.setVisibility(View.GONE);
-                    mCodeView.setInputType(InputType.TYPE_NULL);
+                    mCodeView.setHint("请输入密码");
+//                    mCodeView.setInputType(InputType.TYPE_NULL);
                 } else {
                     isCode = true;
                     mTurnPasswordView.setText("验证码登录");
                     mGetCodeView.setVisibility(View.VISIBLE);
+                    mCodeView.setHint("请输入验证码");
                     mCodeView.setInputType(InputType.TYPE_CLASS_NUMBER);
                 }
             }
