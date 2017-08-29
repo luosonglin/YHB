@@ -97,7 +97,8 @@
                             android:layout_alignEnd="@+id/head_ic"
                             android:layout_alignRight="@+id/head_ic"
                             android:layout_gravity="center_vertical"
-                            android:src="@mipmap/specialis_yellow" />
+                            android:src="@mipmap/specialis_yellow"
+                            tools:ignore="ContentDescription" />
                     </RelativeLayout>
 
                     <LinearLayout

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -19,7 +20,8 @@
             android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:src="@mipmap/live_chat_btn" />
+            android:src="@mipmap/live_chat_btn"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/dan_btn"
@@ -27,7 +29,8 @@
             android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:src="@mipmap/icon_dan" />
+            android:src="@mipmap/icon_dan"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/camera_switch_btn"
@@ -35,7 +38,8 @@
             android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:src="@mipmap/icon_back" />
+            android:src="@mipmap/icon_back"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/torch_btn"
@@ -43,7 +47,8 @@
             android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:src="@mipmap/icon_open_light" />
+            android:src="@mipmap/icon_open_light"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/orientation_btn"
@@ -51,7 +56,8 @@
             android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:src="@mipmap/icon_land_post" />
+            android:src="@mipmap/icon_land_post"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/capture_btn"
@@ -59,7 +65,8 @@
             android:layout_height="36dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            android:src="@mipmap/icon_capture" />
+            android:src="@mipmap/icon_capture"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
     <com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.InputPanel

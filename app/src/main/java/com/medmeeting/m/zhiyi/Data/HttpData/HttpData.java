@@ -119,6 +119,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataLoginByPassword(Observer<SignUpDto> observer, Map<String, Object> map) {
+        Observable observable = service.LoginByPhonePassword(map);
+        setSubscribe(observable, observer);
+    }
+
     //个人中心
     public void HttpDataGetMyInfo(Observer<MyInfoDto> observer, Integer userId) {
         Observable observable = service.getMyInformation(userId);

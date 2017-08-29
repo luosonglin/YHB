@@ -55,7 +55,8 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:background="@color/black"
-            android:src="@mipmap/hahaha" />
+            android:src="@mipmap/hahaha"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/room_id"

@@ -23,5 +23,5 @@
     <string name="recovery_class_name">ClassName: %s</string>
     <string name="recovery_method_name">MethodName: %s</string>
     <string name="recovery_line_number">LineNumber: %d</string>
-    <string name="recovery_crash_tips_msg">程序发生异常\n建议直接重启应用\n恢复界面仅用于应急处理</string>
+    <string name="recovery_crash_tips_msg">程序发生异常\n建议直接重启应用\n恢复界面仅用于应急处理\n点击右上角"debug"查看log</string>
 </resources>

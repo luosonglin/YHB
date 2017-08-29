@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="49dp"
     android:layout_alignParentBottom="true"
@@ -16,7 +17,8 @@
             android:layout_height="24dp"
             android:layout_width="24dp"
             android:layout_marginTop="2dp"
-            android:src="@mipmap/tab1_b" />
+            android:src="@mipmap/tab1_b"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tab_index_title"
@@ -33,7 +35,8 @@
             android:layout_height="24dp"
             android:layout_width="24dp"
             android:layout_marginTop="2dp"
-            android:src="@mipmap/tab2_b" />
+            android:src="@mipmap/tab2_b"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tab_doctor_title"
@@ -57,7 +60,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:src="@mipmap/tab_plus_b"/>
+            android:src="@mipmap/tab_plus_b"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 
@@ -70,7 +74,8 @@
             android:layout_height="24dp"
             android:layout_width="24dp"
             android:layout_marginTop="2dp"
-            android:src="@mipmap/tab3_b" />
+            android:src="@mipmap/tab3_b"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tab_community_title"
@@ -88,7 +93,8 @@
             android:layout_height="24dp"
             android:layout_width="24dp"
             android:layout_marginTop="2dp"
-            android:src="@mipmap/tab4_b" />
+            android:src="@mipmap/tab4_b"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tab_mine_title"

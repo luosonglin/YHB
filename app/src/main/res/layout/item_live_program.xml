@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_news_cv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -86,7 +87,8 @@
             android:layout_height="16dp"
             android:layout_margin="6dp"
             android:layout_toLeftOf="@+id/image_rlyt"
-            android:src="@mipmap/live_lock" />
+            android:src="@mipmap/live_lock"
+            tools:ignore="ContentDescription" />
 
         <RelativeLayout
             android:id="@+id/image_rlyt"
@@ -100,7 +102,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/ic_launcher"
+                tools:ignore="ContentDescription" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -118,7 +121,8 @@
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@mipmap/to_app_open_icon" />
+                        android:src="@mipmap/to_app_open_icon"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -140,7 +144,8 @@
                     <ImageView
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:src="@mipmap/to_pc_open_icon" />
+                        android:src="@mipmap/to_pc_open_icon"
+                        tools:ignore="ContentDescription" />
 
                     <TextView
                         android:layout_width="wrap_content"

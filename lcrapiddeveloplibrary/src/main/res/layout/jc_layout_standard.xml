@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black">
@@ -22,7 +23,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="#222222" />
+        android:background="#222222"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/thumb"
@@ -35,7 +37,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="#000000"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:id="@+id/layout_bottom"
@@ -84,7 +87,8 @@
             android:layout_height="fill_parent"
             android:paddingRight="16dp"
             android:scaleType="center"
-            android:src="@drawable/jc_enlarge" />
+            android:src="@drawable/jc_enlarge"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
     <ProgressBar
@@ -109,7 +113,8 @@
             android:layout_height="48dp"
             android:paddingLeft="10dp"
             android:scaleType="centerInside"
-            android:src="@drawable/jc_back" />
+            android:src="@drawable/jc_back"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/title"
@@ -136,6 +141,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/jc_click_play_selector" />
+        android:src="@drawable/jc_click_play_selector"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

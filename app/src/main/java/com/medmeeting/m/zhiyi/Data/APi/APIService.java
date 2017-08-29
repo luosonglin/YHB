@@ -37,6 +37,10 @@ public interface APIService {
     @POST("/api/v1/userinfos/")
     Observable<SignUpDto> LoginByPhoneCode(@QueryMap Map<String, Object> options);
 
+    //密码登录
+    @POST("/api/v1/userinfos/pwd")
+    Observable<SignUpDto> LoginByPhonePassword(@QueryMap Map<String, Object> options);
+
     // 推荐新闻帖子
     @GET("/api/v1/blogs/recommend/{pageNum}/{pageSize}")
     Observable<HttpResult<BlogDto>> getRecommendBlogList(@Path("pageNum") Integer pageNum, @Path("pageSize") Integer pageSize);

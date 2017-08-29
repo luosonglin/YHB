@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -9,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
-        android:adjustViewBounds="true"/>
+        android:adjustViewBounds="true"
+        tools:ignore="ContentDescription" />
 
     <RelativeLayout
         android:id="@+id/ali_frame"
@@ -33,7 +35,8 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/ali_header_text"
             android:layout_toStartOf="@+id/ali_header_text"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            tools:ignore="ContentDescription" />
 
 
         <TextView

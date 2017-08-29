@@ -77,7 +77,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="8dp"
-                android:src="@mipmap/search_tag_delete" />
+                android:src="@mipmap/search_tag_delete"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
         <TextView

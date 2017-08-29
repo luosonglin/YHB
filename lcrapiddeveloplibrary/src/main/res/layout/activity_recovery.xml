@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:fitsSystemWindows="true"
-    tools:context="com.zxy.recovery.core.RecoveryActivity">
+    tools:context="com.xiaochao.lcrapiddeveloplibrary.Exception.core.RecoveryActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -51,7 +51,8 @@
                 android:layout_width="230dp"
                 android:layout_height="200dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/monkey_cry"/>
+                android:src="@drawable/monkey_cry"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tv_crash_tips"

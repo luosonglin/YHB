@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
@@ -23,6 +24,7 @@
 
             <EditText
                 android:id="@+id/input_editor"
+                android:labelFor="@id/input_editor"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -30,7 +32,7 @@
                 android:background="@android:color/transparent"
                 android:maxLines="4"
                 android:textSize="16sp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
             <ImageView
                 android:id="@+id/input_emoji_btn"
@@ -39,7 +41,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
-                android:src="@drawable/rc_emoji_selector"/>
+                android:src="@drawable/rc_emoji_selector"
+                tools:ignore="ContentDescription" />
         </RelativeLayout>
 
         <TextView

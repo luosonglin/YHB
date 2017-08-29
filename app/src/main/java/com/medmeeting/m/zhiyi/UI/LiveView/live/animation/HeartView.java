@@ -24,12 +24,11 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.medmeeting.m.zhiyi.R;
 
 
-public class HeartView extends ImageView {
+public class HeartView extends android.support.v7.widget.AppCompatImageView {
 
     private static final Paint sPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     private int mHeartResId = R.mipmap.anim_heart;

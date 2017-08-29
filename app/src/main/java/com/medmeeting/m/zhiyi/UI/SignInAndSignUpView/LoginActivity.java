@@ -19,6 +19,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -87,6 +88,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private TextView mForgetPasswordView;
+    private TextView mTurnPasswordView;
+    private boolean isCode = true;
 
     // timer
     private CountDownTimer timer = new CountDownTimer(60000, 1000) {
@@ -172,6 +175,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
 //                startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
+            }
+        });
+
+        mTurnPasswordView = (TextView) findViewById(R.id.turn_password);
+        mTurnPasswordView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isCode) {
+                    isCode = false;
+                    mTurnPasswordView.setText("密码登录");
+                    mGetCodeView.setVisibility(View.GONE);
+                    mCodeView.setInputType(InputType.TYPE_NULL);
+                } else {
+                    isCode = true;
+                    mTurnPasswordView.setText("验证码登录");
+                    mGetCodeView.setVisibility(View.VISIBLE);
+                    mCodeView.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }
             }
         });
     }
@@ -283,7 +304,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         if (TextUtils.isEmpty(password)) {
-            mCodeView.setError("验证码不能为空");
+            if (isCode) {
+                mCodeView.setError("验证码不能为空");
+            } else {
+                mCodeView.setError("密码不能为空");
+            }
             focusView = mCodeView;
             cancel = true;
         }
@@ -439,75 +464,131 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            showProgress(false);
 
             map.put("phone", mPhone);
-            map.put("code", mPassword);
-            HttpData.getInstance().HttpDataLogin(new Observer<SignUpDto>() {
-                @Override
-                public void onCompleted() {
 
-                }
+            if (isCode) {
+                map.put("code", mPassword);
+                HttpData.getInstance().HttpDataLogin(new Observer<SignUpDto>() {
+                    @Override
+                    public void onCompleted() {
 
-                @Override
-                public void onError(Throwable e) {
-                    mCodeView.setError("验证码错误");
-                    mCodeView.requestFocus();
-                    showProgress(false);
-
-                    Log.e(TAG, "onError: "+e.getMessage()
-                            +"\n"+e.getCause()
-                            +"\n"+e.getLocalizedMessage()
-                            +"\n"+e.getStackTrace());
-                }
-
-                @Override
-                public void onNext(SignUpDto signUpDto) {
-
-                    Data.setUserId(signUpDto.getData().getUser().getId());
-
-                    try {
-                        DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
-                        DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
-                        DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
-                        DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
-                    } catch (SnappydbException e) {
-                        e.printStackTrace();
                     }
 
-                    HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
-                        @Override
-                        public void onCompleted() {
+                    @Override
+                    public void onError(Throwable e) {
+                        mCodeView.setError("验证码错误");
+                        mCodeView.requestFocus();
+                        showProgress(false);
 
+                        Log.e(TAG, "onError: " + e.getMessage()
+                                + "\n" + e.getCause()
+                                + "\n" + e.getLocalizedMessage()
+                                + "\n" + e.getStackTrace());
+                    }
+
+                    @Override
+                    public void onNext(SignUpDto signUpDto) {
+
+                        Data.setUserId(signUpDto.getData().getUser().getId());
+
+                        try {
+                            DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
+                            DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
+                            DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
+                            DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
+                        } catch (SnappydbException e) {
+                            e.printStackTrace();
                         }
 
-                        @Override
-                        public void onError(Throwable e) {
+                        HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
+                            @Override
+                            public void onCompleted() {
 
-                        }
-
-                        @Override
-                        public void onNext(HttpResult3<Object, UserTokenDto> token) {
-                            try {
-                                DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" +token.getEntity().getAccessToken());
-                            } catch (SnappydbException e) {
-                                e.printStackTrace();
                             }
-                            Data.setUserToken(token.getEntity().getTokenType() + "_" +token.getEntity().getAccessToken());
 
-                            Log.d(TAG, "Login succeed!");
-                            finish();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserTokenDto> token) {
+                                try {
+                                    DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+                                } catch (SnappydbException e) {
+                                    e.printStackTrace();
+                                }
+                                Data.setUserToken(token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+
+                                Log.d(TAG, "Login succeed!");
+                                finish();
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            }
+                        }, signUpDto.getData().getUser().getId());
+                    }
+                }, map);
+            } else {
+                map.put("password", mPassword);
+                HttpData.getInstance().HttpDataLoginByPassword(new Observer<SignUpDto>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mCodeView.setError("验证码错误");
+                        mCodeView.requestFocus();
+                        showProgress(false);
+
+                        Log.e(TAG, "onError: " + e.getMessage()
+                                + "\n" + e.getCause()
+                                + "\n" + e.getLocalizedMessage()
+                                + "\n" + e.getStackTrace());
+                    }
+
+                    @Override
+                    public void onNext(SignUpDto signUpDto) {
+
+                        Data.setUserId(signUpDto.getData().getUser().getId());
+
+                        try {
+                            DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
+                            DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
+                            DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
+                            DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
+                        } catch (SnappydbException e) {
+                            e.printStackTrace();
                         }
-                    }, signUpDto.getData().getUser().getId());
-                }
-            }, map);
 
-//            if (success) {
-//                Log.d(TAG, "Login succeed!");
-//                finish();
-//                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//            } else {
-//                mCodeView.setError("验证码错误");
-//                mCodeView.requestFocus();
-//            }
+                        HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserTokenDto> token) {
+                                try {
+                                    DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+                                } catch (SnappydbException e) {
+                                    e.printStackTrace();
+                                }
+                                Data.setUserToken(token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+
+                                Log.d(TAG, "Login succeed!");
+                                finish();
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            }
+                        }, signUpDto.getData().getUser().getId());
+                    }
+                }, map);
+            }
+
         }
 
         @Override

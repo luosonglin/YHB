@@ -29,7 +29,8 @@
                     android:layout_height="200dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/live_background" />
+                    android:src="@mipmap/live_background"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -42,7 +43,8 @@
                         android:layout_width="108dp"
                         android:layout_height="108dp"
                         android:padding="18dp"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@mipmap/ic_launcher"
+                        tools:ignore="ContentDescription" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -121,7 +123,8 @@
                 android:layout_height="22dp"
                 android:layout_gravity="right|center_vertical"
                 android:layout_marginRight="10dp"
-                android:src="@mipmap/tab_icon_share_nor" />
+                android:src="@mipmap/tab_icon_share_nor"
+                tools:ignore="ContentDescription" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
