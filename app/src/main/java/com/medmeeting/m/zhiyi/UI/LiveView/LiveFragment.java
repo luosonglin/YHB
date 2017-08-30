@@ -198,10 +198,10 @@ public class LiveFragment extends Fragment
     //自动加载
     @Override
     public void onLoadMoreRequested() {
-//        PageIndex++;
-//        present.LoadData("1",PageIndex,true);
-//        present.LoadData(true, liveSearchDto2);
-        showLoadCompleteAllData();
+        PageIndex++;
+        liveSearchDto2.setPageNum(PageIndex);
+        present.LoadData(true, liveSearchDto2);
+//        showLoadCompleteAllData();
     }
 
     //下拉刷新
@@ -261,7 +261,7 @@ public class LiveFragment extends Fragment
     @Override
     public void showLoadCompleteAllData() {
         //所有数据加载完成后显示
-        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
+//        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
         View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
         mQuickAdapter.addFooterView(view);
     }

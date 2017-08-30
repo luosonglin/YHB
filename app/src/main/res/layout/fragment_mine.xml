@@ -5,8 +5,6 @@
     android:orientation="vertical"
     tools:context="com.medmeeting.m.zhiyi.UI.MineView.MineFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -154,13 +152,6 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="4dp" />
             <RelativeLayout
                 android:id="@+id/wodecanhui"
                 android:layout_width="match_parent"
@@ -191,18 +182,11 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="4dp" />
             <RelativeLayout
                 android:id="@+id/wodefufeizhibo"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/white">
 
                 <LinearLayout
@@ -260,13 +244,6 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="4dp" />
 
             <RelativeLayout
                 android:id="@+id/wodeqianbao"
@@ -468,6 +445,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@color/white"
                 android:indeterminateDrawable="@drawable/progressbar"
                 android:visibility="gone" />
         </LinearLayout>

@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,6 +70,8 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
     private Random random = new Random();
 
     private int programId;
+
+    private boolean mIsEncOrientationPort = true;
 
     /**
      * 配置播放参数
@@ -287,14 +290,24 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
     }
 
     public void onClickRotate(View v) {
-        mRotation = (mRotation + 90) % 360;
-        mVideoView.setDisplayOrientation(mRotation);
-
-//        if (mRotation == 90) {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);//横屏
-//        } else {
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
+//        mRotation = (mRotation + 90) % 360;
+//        switch (mRotation) {
+//            case 90:
+//                mVideoView.setDisplayOrientation(90);
+//                break;
+//            case 180:
+//                mVideoView.setDisplayOrientation(0);
+//                break;
+//            case 270:
+//                mVideoView.setDisplayOrientation(90);
+//                break;
+//            case 0:
+//                mVideoView.setDisplayOrientation(0);
+//                break;
 //        }
+
+        mIsEncOrientationPort = !mIsEncOrientationPort;
+        setRequestedOrientation(mIsEncOrientationPort ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     public void onClickSwitchScreen(View v) {

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,6 +96,14 @@ public class MineFragment extends Fragment {
     View mProgressView;
 
     private OnFragmentInteractionListener mListener;
+
+
+    // 记录首次按下位置
+    private float mFirstPosition = 0;
+    // 是否正在放大
+    private Boolean mScaling = false;
+
+    private DisplayMetrics metric;
 
     public MineFragment() {
         // Required empty public constructor

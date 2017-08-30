@@ -175,7 +175,8 @@
         <activity
             android:name=".UI.LiveView.LivePlayerActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppThemeFullscreen" />
+            android:theme="@style/AppThemeFullscreen"
+            android:screenOrientation="landscape" />
 
         <receiver android:name=".wxapi.AppRegister">
             <intent-filter>
@@ -214,7 +215,7 @@
             android:name=".UI.LiveView.live.SWCodecCameraStreamingActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
 
         <activity
             android:name=".UI.LiveView.LiveLoginWebActivity"
