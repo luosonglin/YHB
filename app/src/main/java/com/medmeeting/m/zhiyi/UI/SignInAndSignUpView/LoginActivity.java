@@ -500,6 +500,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
                             DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
                             DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
+                            DBUtils.put(LoginActivity.this, "confirmNumber", signUpDto.getData().getUser().getConfirmNumber()+"");
+
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
@@ -561,6 +563,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
                             DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
                             DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
+                            DBUtils.put(LoginActivity.this, "confirmNumber", signUpDto.getData().getUser().getConfirmNumber()+"");
+
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }

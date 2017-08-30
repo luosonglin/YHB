@@ -232,7 +232,10 @@
             android:name=".UI.MineView.IdentityActivity"
             android:label="@string/title_activity_identity"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".UI.MeetingView.PlusSignedDetailsActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

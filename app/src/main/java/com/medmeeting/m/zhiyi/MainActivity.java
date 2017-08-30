@@ -19,6 +19,7 @@ import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
+import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -324,9 +325,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent;
         switch (position) {
             case 0:
-                ToastUtils.show(MainActivity.this, "暂时没内容");
-//                startActivity(new Intent(MainActivity.this, LiveBuildProgramActivity.class));
-//                startActivity(new Intent(MainActivity.this, ListvViewActivity.class));
+                startActivity(new Intent(MainActivity.this, PlusSignedDetailsActivity.class));
                 break;
             case 1:
                 ToastUtils.show(MainActivity.this, "暂时没内容");
