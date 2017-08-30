@@ -18,12 +18,13 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
+import com.medmeeting.m.zhiyi.UI.MeetingView.ExchangeBusinessCardActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
 import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
-import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
@@ -328,8 +329,25 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, PlusSignedDetailsActivity.class));
                 break;
             case 1:
-                ToastUtils.show(MainActivity.this, "暂时没内容");
-//                startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));
+                String confirmNumber = "";
+                final String TAG_CARD = "002";
+                try {
+                    if (!DBUtils.isSet(MainActivity.this, "tokenId") && !DBUtils.isSet(MainActivity.this, "openId")) {
+                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        int requestCode = 2;
+                        startActivityForResult(loginIntent, requestCode);
+                        return;
+                    }
+                    confirmNumber = DBUtils.get(MainActivity.this, "confirmNumber");
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
+                Intent intent2 = new Intent(MainActivity.this, ExchangeBusinessCardActivity.class);
+                Bundle bundle2 = new Bundle();
+                bundle2.putString("confirmNumber", confirmNumber);
+                bundle2.putString("card_type", TAG_CARD);
+                intent2.putExtras(bundle2);
+                startActivity(intent2);
                 break;
             case 2:
                 startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));

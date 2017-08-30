@@ -2,8 +2,10 @@ package com.medmeeting.m.zhiyi.Data.APi;
 
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult5;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
+import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 
 import java.util.Map;
 
@@ -51,4 +53,9 @@ public interface APIMeetingService {
     //获取该会议的支付信息，如支付方式、支付金额等
     @GET("/phoneEvent/confirmPayType")
     Observable<HttpResult4> getPayInfo(@QueryMap Map<String, Object> map);
+
+    //二维码名片，根据用户的签名码获取用户信息
+    @GET("/phoneEvent/getUserInfoByConfirmNum")
+    Observable<HttpResult5<UserInfoDto>> getUserInfoByConfirmNum(@QueryMap Map<String, Object> map);
+
 }

@@ -236,6 +236,10 @@
             android:name=".UI.MeetingView.PlusSignedDetailsActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.MeetingView.ExchangeBusinessCardActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

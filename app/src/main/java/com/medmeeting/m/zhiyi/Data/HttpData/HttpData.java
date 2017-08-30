@@ -16,6 +16,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult5;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
@@ -36,6 +37,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
@@ -351,6 +353,12 @@ public class HttpData extends RetrofitUtils {
     //get program detail
     public void HttpDataGetProgramDetail(Observer<HttpResult3<Object, LiveDto>> observer, Integer programId) {
         Observable observable = service_live.getLiveProgramDetail(programId);
+        setSubscribe(observable, observer);
+    }
+
+    //get UserInfoByConfirmNum
+    public void HttpDataGetUserInfoByConfirmNum(Observer<HttpResult5<UserInfoDto>> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.getUserInfoByConfirmNum(map);
         setSubscribe(observable, observer);
     }
 
