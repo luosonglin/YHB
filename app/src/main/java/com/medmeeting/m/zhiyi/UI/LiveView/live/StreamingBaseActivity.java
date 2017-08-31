@@ -284,7 +284,8 @@ public class StreamingBaseActivity extends Activity implements
                 .setAdaptiveBitrateEnable(true)
                 .setFpsControllerEnable(true)
                 .setStreamStatusConfig(new StreamingProfile.StreamStatusConfig(3))
-                .setSendingBufferProfile(new StreamingProfile.SendingBufferProfile(0.2f, 0.8f, 3.0f, 20 * 1000));
+                .setSendingBufferProfile(new StreamingProfile.SendingBufferProfile(0.2f, 0.8f, 3.0f, 20 * 1000))
+                .setPreferredVideoEncodingSize(352,640);
 
         CAMERA_FACING_ID cameraFacingId = chooseCameraFacingId();
         mCurrentCamFacingIndex = cameraFacingId.ordinal();

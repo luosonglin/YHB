@@ -185,19 +185,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mTurnPasswordView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isCode) {
+            /*    if (isCode) {
                     isCode = false;
-                    mTurnPasswordView.setText("密码登录");
+                    mTurnPasswordView.setText("切换密码登录");
                     mGetCodeView.setVisibility(View.GONE);
                     mCodeView.setHint("请输入密码");
 //                    mCodeView.setInputType(InputType.TYPE_NULL);
                 } else {
                     isCode = true;
-                    mTurnPasswordView.setText("验证码登录");
+                    mTurnPasswordView.setText("切换验证码登录");
                     mGetCodeView.setVisibility(View.VISIBLE);
                     mCodeView.setHint("请输入验证码");
                     mCodeView.setInputType(InputType.TYPE_CLASS_NUMBER);
                 }
+*/
+                isCode = !isCode;
+                if (!isCode) {
+                    mTurnPasswordView.setText("切换验证码登录");
+                    mGetCodeView.setVisibility(View.GONE);
+                    mCodeView.setHint("请输入密码");
+                    mCodeView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    return;
+                }
+                mTurnPasswordView.setText("切换密码登录");
+                mGetCodeView.setVisibility(View.VISIBLE);
+                mCodeView.setHint("请输入验证码");
+                mCodeView.setInputType(InputType.TYPE_CLASS_NUMBER);
+                return;
             }
         });
     }

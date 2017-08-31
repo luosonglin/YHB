@@ -205,7 +205,6 @@
             android:name=".UI.LiveView.MyPayLiveRoomActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
         <!--直播 推流 录屏功能-->
         <activity
             android:name="com.qiniu.pili.droid.streaming.screen.ScreenCaptureRequestActivity"
