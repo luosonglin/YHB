@@ -39,6 +39,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
 import java.io.File;
@@ -359,6 +360,12 @@ public class HttpData extends RetrofitUtils {
     //get UserInfoByConfirmNum
     public void HttpDataGetUserInfoByConfirmNum(Observer<HttpResult5<UserInfoDto>> observer, Map<String, Object> map) {
         Observable observable = service_meeting.getUserInfoByConfirmNum(map);
+        setSubscribe(observable, observer);
+    }
+
+    //get latest android version
+    public void HttpDataGetLatestAndroidVersion(Observer<HttpResult<VersionDto>> observer) {
+        Observable observable = service.getLatestAndroidVersion();
         setSubscribe(observable, observer);
     }
 

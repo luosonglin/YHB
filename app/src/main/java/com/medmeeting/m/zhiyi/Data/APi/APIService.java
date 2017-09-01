@@ -9,6 +9,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 
 import java.util.Map;
 
@@ -60,5 +61,9 @@ public interface APIService {
     //修改头像
     @PUT("/api/v1/userinfos/avatar")
     Observable<MyInfoDto> updateAvatar(@QueryMap Map<String, Object> options);
+
+    //GET /api/v1/android_version 获取Android version
+    @GET("/api/v1/android_version")
+    Observable<HttpResult<VersionDto>> getLatestAndroidVersion();
 
 }

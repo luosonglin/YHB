@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
@@ -24,7 +26,9 @@ import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
@@ -38,9 +42,9 @@ import rx.Observer;
 
 public class MainActivity extends AppCompatActivity
         implements IndexFragment.OnFragmentInteractionListener,
-            MeetingFragment.OnFragmentInteractionListener,
-            LiveFragment.OnFragmentInteractionListener,
-            MineFragment.OnFragmentInteractionListener{
+        MeetingFragment.OnFragmentInteractionListener,
+        LiveFragment.OnFragmentInteractionListener,
+        MineFragment.OnFragmentInteractionListener {
 
     private static final String TABORDERSTAG = "TABORDERSTAG";
     private static final String TABMERCHANDISE = "TABMERCHANDISE";
@@ -50,6 +54,12 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private PopMenu mPopMenu;
+
+    private UpdataDialog updataDialog;
+    private String versionName = "";
+    private int versioncode;
+    private String oldVersion, newVersion, versionmsg, url, channelid;
+    private TextView tvmsg, tvcode;
 
     //首页
     @Bind(R.id.tab_index)
@@ -96,15 +106,18 @@ public class MainActivity extends AppCompatActivity
     private LiveFragment mLiveFragment;
     private MineFragment mMineFragment;
 
-    @OnClick(R.id.tab_index) void orderTab() {
+    @OnClick(R.id.tab_index)
+    void orderTab() {
         setTabSelection(tabOrders);
     }
 
-    @OnClick(R.id.tab_doctor) void merchandiseTab() {
+    @OnClick(R.id.tab_doctor)
+    void merchandiseTab() {
         setTabSelection(tabMerchandise);
     }
 
-    @OnClick(R.id.tab_plus) void showWeiboTab() {
+    @OnClick(R.id.tab_plus)
+    void showWeiboTab() {
         setTabSelection(tabPlus);
     }
 
@@ -147,10 +160,10 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage()
+                        + "\n" + e.getCause()
+                        + "\n" + e.getLocalizedMessage()
+                        + "\n" + e.getStackTrace());
             }
 
             @Override
@@ -166,7 +179,7 @@ public class MainActivity extends AppCompatActivity
 
                             @Override
                             public void onSuccess(String s) {
-                                Log.e(TAG, "connect onSuccess "+s+" "+data.getEntity().getToken());
+                                Log.e(TAG, "connect onSuccess " + s + " " + data.getEntity().getToken());
                             }
 
                             @Override
@@ -178,6 +191,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        //检查android最新版本
+        getLatestAndroidVersion();
     }
 
     private void initUserToken() {
@@ -283,9 +298,9 @@ public class MainActivity extends AppCompatActivity
     /**
      * 仿微博弹出菜单
      *
-     * @param isProfessor   是否是大咖
+     * @param isProfessor 是否是大咖
      */
-    private void initPopMenu(boolean isProfessor){
+    private void initPopMenu(boolean isProfessor) {
         if (isProfessor) {
             mPopMenu = new PopMenu.Builder().attachToActivity(MainActivity.this)
                     .addMenuItem(new PopMenuItem("大会签到", getResources().getDrawable(R.mipmap.tabbar_compose_idea)))
@@ -319,7 +334,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     *
      * @param position
      */
     private void PopMenuItemClick(int position) {
@@ -426,5 +440,55 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
-}
 
+    public void getLatestAndroidVersion() {
+        //初始化弹窗 布局 点击事件的id
+        updataDialog = new UpdataDialog(this, R.layout.dialog_updataversion, new int[]{R.id.dialog_sure});
+
+        oldVersion = CustomUtils.getVersion(MainActivity.this) + "";
+
+        HttpData.getInstance().HttpDataGetLatestAndroidVersion(new Observer<HttpResult<VersionDto>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult<VersionDto> versionDtoHttpResult) {
+                newVersion = versionDtoHttpResult.getData().getVersion().getVersion();
+                versionmsg = versionDtoHttpResult.getData().getVersion().getLog();
+                url = versionDtoHttpResult.getData().getVersion().getUrl();
+                Log.e(TAG, newVersion + " " + oldVersion);
+                if (!newVersion.equals(oldVersion)) {
+                    updataDialog.show();
+
+                    tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
+                    tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                    tvcode.setText(newVersion);
+                    tvmsg.setText(versionmsg);
+                    updataDialog.setOnCenterItemClickListener(new UpdataDialog.OnCenterItemClickListener() {
+                        @Override
+                        public void OnCenterItemClick(UpdataDialog dialog, View view) {
+                            switch (view.getId()) {
+                                case R.id.dialog_sure:
+                                    /**调用系统自带的浏览器去下载最新apk*/
+                                    Intent intent = new Intent();
+                                    intent.setAction("android.intent.action.VIEW");
+                                    Uri content_url = Uri.parse(url);
+                                    intent.setData(content_url);
+                                    startActivity(intent);
+                                    break;
+                            }
+                            updataDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
