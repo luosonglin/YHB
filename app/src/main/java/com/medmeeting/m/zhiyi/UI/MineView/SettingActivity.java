@@ -24,13 +24,16 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CleanUtils;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
@@ -57,6 +60,7 @@ public class SettingActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView versionTv;
     private RelativeLayout clean;
+    private RelativeLayout update;
     private TextView cache;
     private TextView logout;
 
@@ -69,6 +73,12 @@ public class SettingActivity extends AppCompatActivity {
 
     @Bind(R.id.progress)
     View mProgressView;
+
+    private UpdataDialog updataDialog;
+    private String versionName = "";
+    private int versioncode;
+    private String oldVersion, newVersion, versionmsg, url, channelid;
+    private TextView tvmsg, tvcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +132,59 @@ public class SettingActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //初始化弹窗 布局 点击事件的id
+        updataDialog = new UpdataDialog(SettingActivity.this, R.layout.dialog_updataversion, new int[]{R.id.dialog_sure});
+        oldVersion = CustomUtils.getVersion(SettingActivity.this) + "";
+        update = (RelativeLayout) findViewById(R.id.update);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HttpData.getInstance().HttpDataGetLatestAndroidVersion(new Observer<HttpResult<VersionDto>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<VersionDto> versionDtoHttpResult) {
+                        newVersion = versionDtoHttpResult.getData().getVersion().getVersion();
+                        versionmsg = versionDtoHttpResult.getData().getVersion().getLog();
+                        url = versionDtoHttpResult.getData().getVersion().getUrl();
+                        Log.e(TAG, newVersion + " " + oldVersion);
+                        if (!newVersion.equals(oldVersion)) {
+                            updataDialog.show();
+
+                            tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
+                            tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                            tvcode.setText(newVersion);
+                            tvmsg.setText(versionmsg);
+                            updataDialog.setOnCenterItemClickListener(new UpdataDialog.OnCenterItemClickListener() {
+                                @Override
+                                public void OnCenterItemClick(UpdataDialog dialog, View view) {
+                                    switch (view.getId()) {
+                                        case R.id.dialog_sure:
+                                            /**调用系统自带的浏览器去下载最新apk*/
+                                            Intent intent = new Intent();
+                                            intent.setAction("android.intent.action.VIEW");
+                                            Uri content_url = Uri.parse(url);
+                                            intent.setData(content_url);
+                                            startActivity(intent);
+                                            break;
+                                    }
+                                    updataDialog.dismiss();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
 
         clean = (RelativeLayout) findViewById(R.id.clean);
         clean.setOnClickListener(new View.OnClickListener() {

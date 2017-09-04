@@ -369,6 +369,12 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    //update live order status
+    public void HttpDataUpdateLiveOrderStatus(Observer<HttpResult3<Object, Object>> observer, String tradeId) {
+        Observable observable = service_live.updateOrderStatus(tradeId);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *

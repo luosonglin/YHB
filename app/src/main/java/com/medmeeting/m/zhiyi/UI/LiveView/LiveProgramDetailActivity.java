@@ -540,6 +540,9 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     //支付金额
     private float amount;
 
+    //流水号
+    private String tradeId = "";
+
     //获取支付订单信息
     private void getPayInfo(final View v, String paymentChannel, String platformType, int programId) {
         if ("ALIPAY".equals(paymentChannel)) {
@@ -559,7 +562,8 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
                 @Override
                 public void onNext(HttpResult3<Object, LivePayDto> payinfo) {
-                    pay(v, payinfo.getEntity().getAmount() + "", payinfo.getEntity().getTradeTitle(), "某商品", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
+                    tradeId = payinfo.getEntity().getPrepayId();
+                    pay(v, payinfo.getEntity().getAmount() + "", payinfo.getEntity().getTradeTitle(), "直播", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
                 }
             }, new LiveOrderDto("", paymentChannel, platformType, programId));
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -618,6 +622,28 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
+                        //通知后端，防止后端接受不到支付成功
+                        HttpData.getInstance().HttpDataUpdateLiveOrderStatus(new Observer<HttpResult3<Object, Object>>() {
+                            @Override
+                            public void onCompleted() {
+                                Log.e(TAG, "HttpDataUpdateLiveOrderStatus onCompleted");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "HttpDataUpdateLiveOrderStatus onError: " + e.getMessage()
+                                        + "\n" + e.getCause()
+                                        + "\n" + e.getLocalizedMessage()
+                                        + "\n" + e.getStackTrace());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, Object> objectObjectHttpResult3) {
+                                Log.e(TAG, "onNext");
+                            }
+                        }, tradeId);
+
+
                         Toast.makeText(LiveProgramDetailActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LiveProgramDetailActivity.this, MyPayLiveRoomActivity.class));
                         finish();

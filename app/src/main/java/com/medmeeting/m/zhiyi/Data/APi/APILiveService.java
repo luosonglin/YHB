@@ -134,4 +134,9 @@ public interface APILiveService {
     //GET /v1/anchor/{roomId}/liveProgram/{programId} 获取直播节目详情
     @GET("/v1/anchor/{roomId}/liveProgram/{programId}")
     Observable<HttpResult3<Object, LiveDto>> getProgramDetail(@Path("programId") Integer programId);
+
+    //此API无可奈何，因后端无法收到支付宝回调
+    //PUT /v1/payment/record/tradeStatus/{tradeId} 更新订单流水的交易状态
+    @PUT("/v1/payment/record/tradeStatus/{tradeId}")
+    Observable<HttpResult3<Object, Object>> updateOrderStatus(@Path("tradeId") String tradeId);
 }
