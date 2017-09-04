@@ -79,6 +79,7 @@ public class SettingActivity extends AppCompatActivity {
     private int versioncode;
     private String oldVersion, newVersion, versionmsg, url, channelid;
     private TextView tvmsg, tvcode;
+    private ImageView updateDeletIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,8 +163,15 @@ public class SettingActivity extends AppCompatActivity {
 
                             tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
                             tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                            updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
                             tvcode.setText(newVersion);
                             tvmsg.setText(versionmsg);
+                            updateDeletIv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    updataDialog.dismiss();
+                                }
+                            });
                             updataDialog.setOnCenterItemClickListener(new UpdataDialog.OnCenterItemClickListener() {
                                 @Override
                                 public void OnCenterItemClick(UpdataDialog dialog, View view) {

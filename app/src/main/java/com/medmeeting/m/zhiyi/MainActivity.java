@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     private int versioncode;
     private String oldVersion, newVersion, versionmsg, url, channelid;
     private TextView tvmsg, tvcode;
+    private ImageView updateDeletIv;
 
     //首页
     @Bind(R.id.tab_index)
@@ -471,6 +472,13 @@ public class MainActivity extends AppCompatActivity
                     tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
                     tvcode.setText(newVersion);
                     tvmsg.setText(versionmsg);
+                    updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
+                    updateDeletIv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            updataDialog.dismiss();
+                        }
+                    });
                     updataDialog.setOnCenterItemClickListener(new UpdataDialog.OnCenterItemClickListener() {
                         @Override
                         public void OnCenterItemClick(UpdataDialog dialog, View view) {
