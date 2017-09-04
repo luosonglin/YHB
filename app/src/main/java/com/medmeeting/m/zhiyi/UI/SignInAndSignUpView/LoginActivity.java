@@ -558,7 +558,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     @Override
                     public void onError(Throwable e) {
-                        mCodeView.setError("验证码错误");
+                        mCodeView.setError("密码错误");
                         mCodeView.requestFocus();
                         showProgress(false);
 

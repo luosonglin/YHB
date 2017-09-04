@@ -120,7 +120,7 @@ public class LiveTicketActivity extends AppCompatActivity implements BaseQuickAd
                                                 public void onNext(HttpResult3 httpResult3) {
                                                     if (httpResult3.getStatus().equals("success")) {
                                                         ToastUtils.show(LiveTicketActivity.this, "提现成功");
-                                                        statusTv.setText("已驳回");
+                                                        statusTv.setText("提现中");
                                                         statusTv.setBackgroundResource(R.color.grey1);
                                                     } else if (httpResult3.getStatus().equals("error")) {
                                                         ToastUtils.show(LiveTicketActivity.this, httpResult3.getMsg());
