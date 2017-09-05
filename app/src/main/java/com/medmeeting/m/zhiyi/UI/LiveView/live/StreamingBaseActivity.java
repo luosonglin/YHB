@@ -1117,6 +1117,8 @@ public class StreamingBaseActivity extends Activity implements
                         Log.e(TAG + "eee", errorCode.getMessage());
                     }
                 });
+//                sum++;
+//                mSumBtn.setText("" + sum);
                 mHandler2.postDelayed(this, 2000);
             }
         });
@@ -1125,4 +1127,5 @@ public class StreamingBaseActivity extends Activity implements
 //    AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
     private Handler mHandler2;
 
+    int sum = 0;
 }

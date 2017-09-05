@@ -162,7 +162,7 @@ public class MineFragment extends Fragment {
 
         showProgress(true);
 
-        if(userId == null) {
+        if (userId == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         } else {
             HttpData.getInstance().HttpDataGetMyInfo(new Observer<MyInfoDto>() {
@@ -366,7 +366,8 @@ public class MineFragment extends Fragment {
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    if (mProgressView != null)
+                        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
