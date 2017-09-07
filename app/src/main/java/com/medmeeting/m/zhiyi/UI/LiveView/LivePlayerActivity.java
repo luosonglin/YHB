@@ -64,6 +64,7 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
     private ChatListView chatListView;
     private ChatListAdapter chatListAdapter;
     private BottomPanelFragment bottomPanel;
+    private ImageView btnDan;
     private ImageView btnGift;
     private ImageView btnHeart;
     private HeartLayout heartLayout;
@@ -204,9 +205,22 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
         chatListAdapter = new ChatListAdapter();
         chatListView.setAdapter(chatListAdapter);
         bottomPanel = (BottomPanelFragment) getSupportFragmentManager().findFragmentById(R.id.bottom_bar);
+        btnDan = (ImageView) bottomPanel.getView().findViewById(R.id.btn_dan);
         btnGift = (ImageView) bottomPanel.getView().findViewById(R.id.btn_gift);
         btnHeart = (ImageView) bottomPanel.getView().findViewById(R.id.btn_heart);
         heartLayout = (HeartLayout) findViewById(R.id.heart_layout);
+        btnDan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (chatListView.getVisibility() == View.VISIBLE) {
+                    chatListView.setVisibility(View.GONE);
+                    btnDan.setImageResource(R.mipmap.icon_dan_close);
+                } else if (chatListView.getVisibility() == View.GONE) {
+                    chatListView.setVisibility(View.VISIBLE);
+                    btnDan.setImageResource(R.mipmap.icon_dan);
+                }
+            }
+        });
         btnGift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
