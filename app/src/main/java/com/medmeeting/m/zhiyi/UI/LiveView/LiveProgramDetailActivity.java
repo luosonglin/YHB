@@ -109,6 +109,9 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     //payFalg (integer, optional): 是否购票 0:未购票，大于0:已购票 ,
     private Integer payFlag = 0;
 
+    private String audienceUserName;
+    private String audienceUserNickName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -335,6 +338,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 //                }
 
                 watchTv.setVisibility(View.VISIBLE);
+
                 if ("yes".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
                     if (payFlag == 0) {//0:未购票
                         watchTv.setText("支付" + amount + "元观看");
@@ -351,7 +355,15 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     try {
-                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), DBUtils.get(LiveProgramDetailActivity.this, "userName"), url);
+                                        audienceUserName = DBUtils.get(LiveProgramDetailActivity.this, "userName");
+                                        audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
+                                        Log.e(TAG, "haha" + audienceUserName +" "+audienceUserNickName);
+
+                                        if (audienceUserName == null || audienceUserNickName.equals("")) {
+                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
+                                        } else {
+                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
+                                        }
                                     } catch (SnappydbException e) {
                                         e.printStackTrace();
                                     } finally {
@@ -378,7 +390,15 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 try {
-                                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), DBUtils.get(LiveProgramDetailActivity.this, "userName"), url);
+                                    audienceUserName = DBUtils.get(LiveProgramDetailActivity.this, "userName");
+                                    audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
+                                    Log.e(TAG, "haha" + audienceUserName +" "+audienceUserNickName);
+
+                                    if (audienceUserName == null || audienceUserNickName.equals("")) {
+                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
+                                    } else {
+                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
+                                    }
                                 } catch (SnappydbException e) {
                                     e.printStackTrace();
                                 } finally {

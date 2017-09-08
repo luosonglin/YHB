@@ -627,10 +627,10 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
 //                LiveKit.sendMessage(content);
 
                 // 配合ios
-//                TextMessage content = TextMessage.obtain("进入了房间");
-//                LiveKit.sendMessage(content);
-//
-//                Log.e(TAG+" joinChatRoom: ", content + "" + content.getUserInfo().getName());
+                TextMessage content = TextMessage.obtain("进入了房间");
+                LiveKit.sendMessage(content);
+
+                Log.e(TAG+" joinChatRoom: ", content + "" + content.getUserInfo().getName());
             }
 
             @Override
