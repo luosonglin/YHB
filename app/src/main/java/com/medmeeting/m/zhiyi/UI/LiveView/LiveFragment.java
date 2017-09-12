@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -11,8 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.LiveListPresent;
@@ -21,14 +20,13 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 
 import java.util.List;
-
-import info.hoang8f.android.segmented.SegmentedGroup;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,21 +37,21 @@ import info.hoang8f.android.segmented.SegmentedGroup;
  * create an instance of this fragment.
  */
 public class LiveFragment extends Fragment
-        implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, LiveListView, SegmentedGroup.OnCheckedChangeListener {
+        implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, LiveListView{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private TabLayout tabLayout;
+
     RecyclerView mRecyclerView;
     ProgressActivity progress;
     private Toolbar toolbar;
-    private RadioButton liveButton21, liveButton22, liveButton23;
     private View searchLiveBtn;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
     private SpringView springView;
-    //    private BookListPresent present;
     private LiveListPresent present;
 
     // TODO: Rename and change types of parameters
@@ -106,13 +104,48 @@ public class LiveFragment extends Fragment
     }
 
     private void initView(View view) {
-        SegmentedGroup segmented4 = (SegmentedGroup) view.findViewById(R.id.segmented2);
-        segmented4.setTintColor(0xFF1b7ce8);
-        segmented4.setOnCheckedChangeListener(this);
 
-        liveButton21 = (RadioButton) view.findViewById(R.id.button21);
-        liveButton22 = (RadioButton) view.findViewById(R.id.button22);
-        liveButton23 = (RadioButton) view.findViewById(R.id.button23);
+        tabLayout = (TabLayout) view.findViewById(R.id.tablayout);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        present.LoadData(false, liveSearchDto2);
+                        break;
+                    case 1:
+//                        present.LoadData(false, liveSearchDto2);
+                        ToastUtils.show(getActivity(), "该功能尚在内测，稍后开通");
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         searchLiveBtn = view.findViewById(R.id.search_live_btn);
         searchLiveBtn.setOnClickListener(new View.OnClickListener() {
@@ -166,33 +199,6 @@ public class LiveFragment extends Fragment
 //                return true;
 //            }
 //        });
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.button21:
-//                mPager.setAdapter(mAdapter);
-//                mPager.setCurrentItem(MAX_COUNT/2);
-//                mPager.setOffscreenPageLimit(5);
-                present.LoadData(false, liveSearchDto2);
-                return;
-
-            case R.id.button22:
-//                mPager.setAdapter(mAdapter1);
-//                mPager.setCurrentItem(MAX_COUNT/2);
-//                mPager.setOffscreenPageLimit(5);
-//                ToastUtils.show(getActivity(), "2");
-                present.LoadData(false, liveSearchDto2);
-                return;
-            case R.id.button23:
-//                mPager.setAdapter(mAdapter1);
-//                mPager.setCurrentItem(MAX_COUNT/2);
-//                mPager.setOffscreenPageLimit(5);
-//                ToastUtils.show(getActivity(), "2");
-                present.LoadData(false, liveSearchDto2);
-                return;
-        }
     }
 
     //自动加载

@@ -63,7 +63,7 @@
             android:label="LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"/>
         <activity
             android:name=".UI.ListvView.ListvViewActivity"
             android:label="ListvView模式" />
