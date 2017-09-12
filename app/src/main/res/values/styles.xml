@@ -62,10 +62,12 @@
         <item name="android:textColorSecondary">#FFF</item>
         <item name="actionMenuTextColor">#FFF</item>
     </style>
+
     <style name="TextStyle_title_golden">
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">@color/gold</item>
     </style>
+
     <style name="TextStyle_gray">
         <item name="android:textSize">13dp</item>
         <item name="android:textColor">@color/grey</item>
@@ -127,5 +129,13 @@
     <style name="AnimBottom" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="OverflowMenuStyle" parent="AppTheme.NoActionBar.PopupOverlay">
+        <item name="overlapAnchor">false</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
     </style>
 </resources>

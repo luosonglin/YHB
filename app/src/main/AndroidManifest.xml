@@ -23,14 +23,13 @@
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!--录屏需要的权限-->
+    <!-- 录屏需要的权限 -->
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -68,8 +67,7 @@
         <activity
             android:name=".UI.ListvView.ListvViewActivity"
             android:label="ListvView模式" />
-        <activity android:name=".UI.MeetingView.MeetingDetailActivity"></activity>
-
+        <activity android:name=".UI.MeetingView.MeetingDetailActivity" />
         <activity
             android:name=".UI.MeetingView.MeetingEnrolActivity"
             android:label=""
@@ -91,7 +89,9 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="wx7e6722fad8a0975c" />
             </intent-filter>
         </activity>
@@ -125,10 +125,10 @@
             android:name=".UI.MeetingView.MyMeetingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--umeng-->
+        <!-- umeng -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="58a50dc2a325111e0a000753"></meta-data>
+            android:value="58a50dc2a325111e0a000753" />
 
         <activity
             android:name=".WBShareActivity"
@@ -136,6 +136,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -171,12 +172,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!--播放器-->
+        <!-- 播放器 -->
         <activity
             android:name=".UI.LiveView.LivePlayerActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppThemeFullscreen"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:theme="@style/AppThemeFullscreen" />
 
         <receiver android:name=".wxapi.AppRegister">
             <intent-filter>
@@ -184,7 +185,7 @@
             </intent-filter>
         </receiver>
 
-        <!--微信支付回调-->
+        <!-- 微信支付回调 -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -197,7 +198,6 @@
         <activity
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
         <activity
             android:name=".UI.MineView.SettingActivity"
             android:label="" />
@@ -205,24 +205,21 @@
             android:name=".UI.LiveView.MyPayLiveRoomActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--直播 推流 录屏功能-->
+        <!-- 直播 推流 录屏功能 -->
         <activity
             android:name="com.qiniu.pili.droid.streaming.screen.ScreenCaptureRequestActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name=".UI.LiveView.live.SWCodecCameraStreamingActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
-
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".UI.LiveView.LiveLoginWebActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.LiveView.LiveTicketActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".UI.MineView.ChooseDepartmentActivity"
             android:label=""
@@ -239,6 +236,17 @@
             android:name=".UI.MeetingView.ExchangeBusinessCardActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.WalletView.MyWalletActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.WalletView.SettingWithdrawActivity" />
+        <activity android:name=".UI.WalletView.AddAccountNumberActivity" />
+        <activity android:name=".UI.WalletView.AddAlipayAccountActivity" />
+        <activity android:name=".UI.WalletView.ModifyAccountNumberActivity" />
+        <activity android:name=".UI.WalletView.ModifyAlipayAccountActivity" />
+        <activity android:name=".UI.WalletView.SettingPayPasswordActivity" />
+        <activity android:name=".UI.WalletView.WithdrawActivity"></activity>
     </application>
 
 </manifest>

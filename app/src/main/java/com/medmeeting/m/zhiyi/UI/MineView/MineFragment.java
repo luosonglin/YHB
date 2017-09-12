@@ -28,6 +28,7 @@ import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.snappydb.SnappydbException;
 
@@ -314,6 +315,8 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.wodeqianbao:
+                intent = new Intent(getActivity(), MyWalletActivity.class);
+                startActivity(intent);
                 break;
             case R.id.wodetiezi:
                 break;

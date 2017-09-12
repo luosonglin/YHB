@@ -56,15 +56,15 @@
                     android:id="@+id/identity"
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
+                    android:layout_marginTop="50dp"
                     android:background="#a0e1c99d"
                     android:gravity="center_vertical"
                     android:paddingLeft="40dp"
                     android:paddingRight="0dp"
-                    android:layout_marginTop="50dp"
                     android:text="你还没有实名认证，点击前往认证 >>"
                     android:textColor="@color/black"
                     android:textSize="10sp"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -250,8 +250,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="1dp"
-                android:background="@color/white"
-                android:visibility="gone">
+                android:background="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
