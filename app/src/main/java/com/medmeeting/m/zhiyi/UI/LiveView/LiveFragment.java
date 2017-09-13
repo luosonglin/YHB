@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.LiveListPresent;
@@ -48,7 +49,7 @@ public class LiveFragment extends Fragment
     RecyclerView mRecyclerView;
     ProgressActivity progress;
     private Toolbar toolbar;
-    private View searchLiveBtn;
+    private ImageView searchLiveBtn;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
     private SpringView springView;
@@ -147,7 +148,7 @@ public class LiveFragment extends Fragment
             }
         });
 
-        searchLiveBtn = view.findViewById(R.id.search_live_btn);
+        searchLiveBtn = (ImageView) view.findViewById(R.id.search_live_btn);
         searchLiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

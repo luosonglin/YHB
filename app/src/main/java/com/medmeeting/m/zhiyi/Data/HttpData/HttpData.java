@@ -375,6 +375,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    //add update log
+    public void HttpDataAddUpdataLog(Observer<HttpResult> observer, Map<String, Object> map) {
+        Observable observable = service.addLatestUpdateLog(map);
+        setSubscribe(observable, observer);
+    }
     /**
      * 插入观察者
      *

@@ -66,4 +66,7 @@ public interface APIService {
     @GET("/api/v1/android_version")
     Observable<HttpResult<VersionDto>> getLatestAndroidVersion();
 
+    //POST /api/v1/android_version/log 添加新的一条记录
+    @POST("/api/v1/android_version/log")
+    Observable<HttpResult> addLatestUpdateLog(@QueryMap Map<String, Object> options);
 }

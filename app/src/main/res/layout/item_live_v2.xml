@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_live_cv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginTop="2dp"
+    android:background="@drawable/live_item_shape"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="@null"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <FrameLayout
+            android:id="@+id/flyt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:scaleType="fitXY"
+                android:src="@mipmap/live_background"
+                tools:ignore="ContentDescription" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/textview_all_grey"
+                    android:padding="2dp"
+                    android:text="直播中"
+                    android:textColor="@color/grey1"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/r2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/flyt"
+            android:layout_marginTop="-17dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/live_item_avatar_background"
+                android:src="@mipmap/avator_default" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:src="@mipmap/live_video_icon"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/sum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:text=""
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="marquee"
+                    android:gravity="right"
+                    android:lines="1"
+                    android:text="haha"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/r2"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="-4dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:ellipsize="marquee"
+                android:lines="1"
+                android:paddingLeft="2dp"
+                android:text="简介"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:ellipsize="marquee"
+                android:lines="1"
+                android:paddingLeft="2dp"
+                android:text="2017-04-08"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

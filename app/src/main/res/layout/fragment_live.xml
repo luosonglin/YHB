@@ -6,32 +6,38 @@
     android:orientation="vertical"
     tools:context="com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:tabBackground="@color/white"
-        app:tabIndicatorColor="@color/blue"
-        app:tabSelectedTextColor="@color/blue"
-        app:tabTextColor="@color/black">
-
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="直播" />
-
-        <android.support.design.widget.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="视频" />
-    </android.support.design.widget.TabLayout>
-
-    <View
-        android:id="@+id/search_live_btn"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@mipmap/live_search" />
+        android:layout_height="?attr/actionBarSize">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:tabBackground="@color/white"
+            app:tabIndicatorColor="@color/blue"
+            app:tabSelectedTextColor="@color/blue"
+            app:tabTextColor="@color/black">
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="直播" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="视频" />
+        </android.support.design.widget.TabLayout>
+        <ImageView
+            android:id="@+id/search_live_btn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/search_icon"
+            android:padding="16dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
     <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->
     <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity

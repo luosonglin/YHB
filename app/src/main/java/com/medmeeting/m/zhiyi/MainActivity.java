@@ -34,6 +34,9 @@ import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
 import com.snappydb.SnappydbException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -482,14 +485,37 @@ public class MainActivity extends AppCompatActivity
                     updataDialog.setOnCenterItemClickListener(new UpdataDialog.OnCenterItemClickListener() {
                         @Override
                         public void OnCenterItemClick(UpdataDialog dialog, View view) {
+
                             switch (view.getId()) {
                                 case R.id.dialog_sure:
-                                    /**调用系统自带的浏览器去下载最新apk*/
-                                    Intent intent = new Intent();
-                                    intent.setAction("android.intent.action.VIEW");
-                                    Uri content_url = Uri.parse(url);
-                                    intent.setData(content_url);
-                                    startActivity(intent);
+                                    //添加更新记录
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put("userId", Data.getUserId());
+                                    map.put("oldVersionId", oldVersion);
+                                    map.put("newVersionId", newVersion);
+                                    HttpData.getInstance().HttpDataAddUpdataLog(new Observer<HttpResult>() {
+                                        @Override
+                                        public void onCompleted() {
+
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(HttpResult httpResult) {
+                                            if (httpResult.getCode() == 200) {
+                                                /**调用系统自带的浏览器去下载最新apk*/
+                                                Intent intent = new Intent();
+                                                intent.setAction("android.intent.action.VIEW");
+                                                Uri content_url = Uri.parse(url);
+                                                intent.setData(content_url);
+                                                startActivity(intent);
+                                            }
+                                        }
+                                    },map);
                                     break;
                             }
                             updataDialog.dismiss();
