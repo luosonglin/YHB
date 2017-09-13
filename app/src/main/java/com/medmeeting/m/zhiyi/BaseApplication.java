@@ -9,6 +9,7 @@ import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
 import com.qiniu.pili.droid.streaming.StreamingEnv;
+import com.squareup.leakcanary.LeakCanary;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
@@ -31,6 +32,9 @@ public class BaseApplication extends MultiDexApplication {//Application {
         super.onCreate();
         context = this;
         instance = this;
+
+        //初始化Leak内存泄露检测工具
+        LeakCanary.install(this);
 
         //初始化异常管理工具
         Recovery.getInstance()

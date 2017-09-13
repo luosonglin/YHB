@@ -359,7 +359,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                         audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
                                         Log.e(TAG, "haha" + audienceUserName +" "+audienceUserNickName);
 
-                                        if (audienceUserName == null || audienceUserNickName.equals("")) {
+                                        if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
                                             loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
                                         } else {
                                             loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
@@ -394,7 +394,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                     audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
                                     Log.e(TAG, "haha" + audienceUserName +" "+audienceUserNickName);
 
-                                    if (audienceUserName == null || audienceUserNickName.equals("")) {
+                                    if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
                                         loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
                                     } else {
                                         loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);

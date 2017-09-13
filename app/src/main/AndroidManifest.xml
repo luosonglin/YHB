@@ -213,7 +213,8 @@
             android:name=".UI.LiveView.live.SWCodecCameraStreamingActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:screenOrientation="portrait"  />
         <activity
             android:name=".UI.LiveView.LiveLoginWebActivity"
             android:theme="@style/AppTheme.NoActionBar" />

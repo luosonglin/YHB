@@ -620,7 +620,7 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
     }
 
     private void joinChatRoom(final String roomId) {
-        LiveKit.joinChatRoom(roomId, 5, new RongIMClient.OperationCallback() {
+        LiveKit.joinChatRoom(roomId, 15, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
 //                final InformationNotificationMessage content = InformationNotificationMessage.obtain("进入了房间");
