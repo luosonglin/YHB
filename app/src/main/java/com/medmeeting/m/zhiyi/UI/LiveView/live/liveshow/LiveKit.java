@@ -75,8 +75,13 @@ public class LiveKit {
                     +"\n " + message.getUId()
                     +"\n " + message.getMessageDirection()
                     +"\n " + message.getTargetId()
-                    +"\n " + message.getSenderUserId()+" " +message.getSentTime()+" "+message.getSentStatus());
-            handleEvent(MESSAGE_ARRIVED, message.getContent());
+                    +"\n " + message.getSenderUserId()+" " +message.getSentTime()+" "+message.getSentStatus()
+                    +"\n " + message.getConversationType().getName()
+                    +"\n " + message.getConversationType().getValue());
+
+            if (currentRoomId.equals(message.getTargetId()))
+                handleEvent(MESSAGE_ARRIVED, message.getContent());
+
             return false;
         }
     };
@@ -89,7 +94,6 @@ public class LiveKit {
      RECEIVE
      237
      11 1496213116219 SENT
-
 
 ios
      05-31 14:45:57.545 974-1410/com.medmeeting.m.zhiyi E/LiveKit 接收监听者: io.rong.message.TextMessage@39832082

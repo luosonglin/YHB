@@ -406,20 +406,20 @@ public class StreamingBaseActivity extends Activity implements
 //            @Override
 //            public void onSuccess() {
 //                // 配合ios
-//                TextMessage content = TextMessage.obtain("离开了房间");
-//                LiveKit.sendMessage(content);
-//                Log.e(TAG, content + " " + content.getUserInfo().getName());
+////                TextMessage content = TextMessage.obtain("离开了房间");
+////                LiveKit.sendMessage(content);
+////                Log.e(TAG, content + " " + content.getUserInfo().getName());
 //
 //                LiveKit.removeEventHandler(handler);
 //                LiveKit.logout();
-//                Toast.makeText(StreamingBaseActivity.this, "退出聊天室成功", Toast.LENGTH_SHORT).show();
+////                Toast.makeText(StreamingBaseActivity.this, "退出聊天室成功", Toast.LENGTH_SHORT).show();
 //            }
 //
 //            @Override
 //            public void onError(RongIMClient.ErrorCode errorCode) {
 //                LiveKit.removeEventHandler(handler);
 //                LiveKit.logout();
-//                Toast.makeText(StreamingBaseActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+////                Toast.makeText(StreamingBaseActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
 //            }
 //        });
     }
@@ -1084,8 +1084,8 @@ public class StreamingBaseActivity extends Activity implements
 //                LiveKit.sendMessage(content);
 
                 // 配合ios
-//                TextMessage content = TextMessage.obtain("进入了房间");
-//                LiveKit.sendMessage(content);
+                TextMessage content = TextMessage.obtain("进入了房间，房间号："+roomId);
+                LiveKit.sendMessage(content);
 
 //                Log.e(TAG + "joinChatRoom: ", content + "" + content.getUserInfo().getName());
             }

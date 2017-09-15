@@ -139,4 +139,8 @@ public interface APILiveService {
     //PUT /v1/payment/record/tradeStatus/{tradeId} 更新订单流水的交易状态
     @PUT("/v1/payment/record/tradeStatus/{tradeId}")
     Observable<HttpResult3<Object, Object>> updateOrderStatus(@Path("tradeId") String tradeId);
+
+    //GET /v1/user/wallet/info 获取钱包信息
+//    @GET("/v1/user/wallet/info")
+//    Observable<HttpResult3>
 }

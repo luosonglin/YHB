@@ -63,7 +63,7 @@
             android:label="LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".UI.ListvView.ListvViewActivity"
             android:label="ListvView模式" />
@@ -212,9 +212,9 @@
         <activity
             android:name=".UI.LiveView.live.SWCodecCameraStreamingActivity"
             android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
-            android:screenOrientation="portrait"  />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".UI.LiveView.LiveLoginWebActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -247,7 +247,8 @@
         <activity android:name=".UI.WalletView.ModifyAccountNumberActivity" />
         <activity android:name=".UI.WalletView.ModifyAlipayAccountActivity" />
         <activity android:name=".UI.WalletView.SettingPayPasswordActivity" />
-        <activity android:name=".UI.WalletView.WithdrawActivity"></activity>
+        <activity android:name=".UI.WalletView.WithdrawActivity" />
+        <activity android:name=".UI.LiveView.VideoDetailActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

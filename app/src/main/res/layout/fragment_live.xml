@@ -8,17 +8,20 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tablayout"
-            android:layout_width="160dp"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             app:tabBackground="@color/white"
-            app:tabIndicatorColor="@color/blue"
-            app:tabSelectedTextColor="@color/blue"
-            app:tabTextColor="@color/black">
+            app:tabIndicatorColor="@color/deepskyblue"
+            app:tabIndicatorHeight="2dp"
+            app:tabSelectedTextColor="@color/deepskyblue"
+            app:tabTextColor="@color/grey">
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
@@ -30,13 +33,14 @@
                 android:layout_height="wrap_content"
                 android:text="视频" />
         </android.support.design.widget.TabLayout>
+
         <ImageView
             android:id="@+id/search_live_btn"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:src="@mipmap/search_icon"
+            android:layout_alignParentRight="true"
             android:padding="16dp"
-            android:layout_alignParentRight="true"/>
+            android:src="@mipmap/search_icon" />
     </RelativeLayout>
 
     <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->

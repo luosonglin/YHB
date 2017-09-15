@@ -66,6 +66,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, LiveProgramDetailActivity.class);
+//                Intent intent = new Intent(mContext, VideoDetailActivity.class);
                 intent.putExtra("authorName", item.getAuthorName());
                 intent.putExtra("userPic", item.getUserPic());
                 intent.putExtra("programId", item.getId());

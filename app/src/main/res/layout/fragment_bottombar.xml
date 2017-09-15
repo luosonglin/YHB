@@ -40,7 +40,8 @@
             android:layout_marginRight="10dp"
             android:onClick="onClickRotate"
             android:src="@mipmap/icon_land_post"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:visibility="gone"/>
 
         <ImageView
             android:layout_width="30dp"
