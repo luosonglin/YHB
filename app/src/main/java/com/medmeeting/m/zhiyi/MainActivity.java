@@ -33,6 +33,7 @@ import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
 import com.snappydb.SnappydbException;
+import com.vondear.rxtools.RxDeviceUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -197,6 +198,8 @@ public class MainActivity extends AppCompatActivity
 
         //检查android最新版本
         getLatestAndroidVersion();
+
+        fakerAction();
     }
 
     private void initUserToken() {
@@ -524,5 +527,15 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    private void fakerAction() {
+//        new Handler().sendMessage();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+Log.e(TAG, RxDeviceUtils.getUniqueSerialNumber()+"");
+            }
+        }).start();
     }
 }

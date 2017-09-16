@@ -75,11 +75,12 @@ public class LiveKit {
                     +"\n " + message.getUId()
                     +"\n " + message.getMessageDirection()
                     +"\n " + message.getTargetId()
+                    +"\n 当前聊天室房间id " + currentRoomId
                     +"\n " + message.getSenderUserId()+" " +message.getSentTime()+" "+message.getSentStatus()
                     +"\n " + message.getConversationType().getName()
                     +"\n " + message.getConversationType().getValue());
 
-            if (currentRoomId.equals(message.getTargetId()))
+            if (currentRoomId.equals(message.getTargetId()))    //添加消息会话targetId是否与roomId一致，不一致则会话列表不接受该条消息（web端别的房间消息发送到android端主播界面）
                 handleEvent(MESSAGE_ARRIVED, message.getContent());
 
             return false;
