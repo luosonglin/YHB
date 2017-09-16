@@ -380,6 +380,13 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service.addLatestUpdateLog(map);
         setSubscribe(observable, observer);
     }
+
+    //add phone info
+    public void HttpDataAddNewPhoneInfo(Observer<HttpResult> observer, Map<String, Object> map) {
+        Observable observable = service.addNewPhoneInfo(map);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *
