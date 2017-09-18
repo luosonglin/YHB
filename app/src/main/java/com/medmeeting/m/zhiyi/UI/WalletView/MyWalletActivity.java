@@ -11,8 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveUpdateProgramActivity;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
@@ -20,6 +24,7 @@ import java.text.DecimalFormat;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observer;
 
 public class MyWalletActivity extends AppCompatActivity {
     private static final String TAG = MyWalletActivity.class.getSimpleName();
@@ -58,7 +63,28 @@ public class MyWalletActivity extends AppCompatActivity {
         };
         mHandler2.post(mRunnable);
 
-//        mHandler2.removeCallbacks(mRunnable);
+
+        HttpData.getInstance().HttpDataGetWalletInfo(new Observer<HttpResult3<Object, WalletDto>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, WalletDto> walletInfo) {
+                if (walletInfo.getStatus().equals("success")) {
+                    mHandler2.removeCallbacks(mRunnable);
+                    balanceTv.setText("¥ " + walletInfo.getEntity().getBalance());
+                } else {
+                    ToastUtils.show(MyWalletActivity.this, walletInfo.getMsg() + "");
+                }
+            }
+        });
     }
 
     private void toolBar() {

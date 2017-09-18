@@ -16,6 +16,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletDto;
 
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -141,6 +142,6 @@ public interface APILiveService {
     Observable<HttpResult3<Object, Object>> updateOrderStatus(@Path("tradeId") String tradeId);
 
     //GET /v1/user/wallet/info 获取钱包信息
-//    @GET("/v1/user/wallet/info")
-//    Observable<HttpResult3>
+    @GET("/v1/user/wallet/info")
+    Observable<HttpResult3<Object, WalletDto>> getWalletInfo();
 }

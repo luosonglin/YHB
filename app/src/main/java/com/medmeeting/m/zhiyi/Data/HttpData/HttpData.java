@@ -40,6 +40,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
 import java.io.File;
@@ -384,6 +385,11 @@ public class HttpData extends RetrofitUtils {
     //add phone info
     public void HttpDataAddNewPhoneInfo(Observer<HttpResult> observer, Map<String, Object> map) {
         Observable observable = service.addNewPhoneInfo(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetWalletInfo(Observer<HttpResult3<Object, WalletDto>> observer) {
+        Observable observable = service_live.getWalletInfo();
         setSubscribe(observable, observer);
     }
 
