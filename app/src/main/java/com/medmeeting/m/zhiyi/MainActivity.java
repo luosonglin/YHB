@@ -18,7 +18,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
-import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveIndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.MeetingView.ExchangeBusinessCardActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
@@ -48,7 +48,7 @@ import rx.Observer;
 public class MainActivity extends AppCompatActivity
         implements IndexFragment.OnFragmentInteractionListener,
         MeetingFragment.OnFragmentInteractionListener,
-        LiveFragment.OnFragmentInteractionListener,
+        LiveIndexFragment.OnFragmentInteractionListener,
         MineFragment.OnFragmentInteractionListener {
 
     private static final String TABORDERSTAG = "TABORDERSTAG";
@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private IndexFragment mIndexFragment;
     private MeetingFragment mMeetingFragment;
-    //    private CommunityFragment mLiveFragment;
-    private LiveFragment mLiveFragment;
+    //    private CommunityFragment mLiveIndexFragment;
+    private LiveIndexFragment mLiveIndexFragment;
     private MineFragment mMineFragment;
 
     @OnClick(R.id.tab_index)
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
         if (savedInstanceState != null) {
             mIndexFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABORDERSTAG);
             mMeetingFragment = (MeetingFragment) fragmentManager.findFragmentByTag(TABMERCHANDISE);
-            mLiveFragment = (LiveFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
+            mLiveIndexFragment = (LiveIndexFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
             mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
         }
         setTabSelection(tabOrders);
@@ -280,11 +280,11 @@ public class MainActivity extends AppCompatActivity
                 hideFragments(fragmentTransaction);
                 tabPurchaseImg.setImageResource(R.mipmap.tab3_b);
                 tabPurchaseTitle.setTextColor(activeColorRecourse);
-                if (mLiveFragment == null) {
-                    mLiveFragment = new LiveFragment();
-                    fragmentTransaction.add(R.id.container, mLiveFragment, TABPURCHASE);
+                if (mLiveIndexFragment == null) {
+                    mLiveIndexFragment = new LiveIndexFragment();
+                    fragmentTransaction.add(R.id.container, mLiveIndexFragment, TABPURCHASE);
                 } else {
-                    fragmentTransaction.show(mLiveFragment);
+                    fragmentTransaction.show(mLiveIndexFragment);
                 }
                 break;
 
@@ -419,8 +419,8 @@ public class MainActivity extends AppCompatActivity
         if (mMeetingFragment != null) {
             transaction.hide(mMeetingFragment);
         }
-        if (mLiveFragment != null) {
-            transaction.hide(mLiveFragment);
+        if (mLiveIndexFragment != null) {
+            transaction.hide(mLiveIndexFragment);
         }
         if (mMineFragment != null) {
             transaction.hide(mMineFragment);

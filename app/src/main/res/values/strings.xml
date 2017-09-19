@@ -32,4 +32,7 @@
     <string name="rc_send">发送</string>
     <string name="title_activity_identity"></string>
     <string name="title_activity_my_wallet">MyWalletActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

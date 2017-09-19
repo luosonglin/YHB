@@ -42,6 +42,9 @@ public class LiveListPresent implements OnLoadDataListListener<List<LiveDto>> {
             if (data.size() == 0) {
                 mView.showNoData();
             } else {
+//                if (data.size()>1) {
+//                    data.remove(0);
+//                }
                 mView.newDatas(data);
             }
         }
