@@ -10,7 +10,6 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveDetailActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
@@ -40,26 +39,26 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
         helper.setText(R.id.sum, item.getOnlineCount() + "")
                 .setText(R.id.title, item.getRoomTitle() + "")
                 .setText(R.id.name, item.getTitle())
-                .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06));
+//                .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06));
+                .setText(R.id.time, item.getAuthorName() + " | "+item.getAuthorTitle());
 
-        String price;
         if (item.getChargeType().equals("no")) {
-            price = " 免费";
+            helper.getView(R.id.price).setVisibility(View.GONE);
         } else {
-            price = " ¥" + item.getPrice();
+            helper.setText(R.id.price, "¥ " + item.getPrice());
         }
         switch (item.getLiveStatus()) {
             case "ready":
-                helper.setText(R.id.status, "准备中 " + price);
+                helper.setText(R.id.status, "预告");//准备
                 break;
             case "play":
-                helper.setText(R.id.status, "直播中" + price);
+                helper.setText(R.id.status, "直播");
                 break;
             case "wait":
-                helper.setText(R.id.status, "离开中" + price);
+                helper.setText(R.id.status, "离开");
                 break;
             case "end":
-                helper.setText(R.id.status, "已结束" + price);
+                helper.setText(R.id.status, "结束");
                 break;
         }
         helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {

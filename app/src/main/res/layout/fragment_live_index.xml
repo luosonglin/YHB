@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.medmeeting.m.zhiyi.UI.LiveView.LiveIndexFragment">
 
     <RelativeLayout
@@ -21,7 +21,8 @@
             app:tabIndicatorColor="@color/deepskyblue"
             app:tabIndicatorHeight="2dp"
             app:tabSelectedTextColor="@color/deepskyblue"
-            app:tabTextColor="@color/grey">
+            app:tabTextColor="@color/grey"
+            app:tabTextAppearance="@style/TabIndexText">
 
             <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
@@ -36,15 +37,15 @@
 
         <ImageView
             android:id="@+id/search_live_btn"
-            android:layout_width="50dp"
+            android:layout_width="?attr/actionBarSize"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="16dp"
+            android:padding="19dp"
             android:src="@mipmap/search_icon" />
     </RelativeLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"/>
 </LinearLayout>

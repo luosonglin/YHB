@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -11,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.medmeeting.m.zhiyi.R;
 
@@ -35,6 +37,7 @@ public class LiveIndexFragment extends Fragment {
     private View rootView;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ImageView searchLiveBtn;
 
     private OnFragmentInteractionListener mListener;
 
@@ -77,13 +80,21 @@ public class LiveIndexFragment extends Fragment {
 
             //为ViewPager设置高度
             ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-            params.height = getActivity().getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
+//            params.height = getActivity().getWindowManager().getDefaultDisplay().getHeight();//800
 
             viewPager.setLayoutParams(params);
 
             setUpViewPager(viewPager);
             tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
             tabLayout.setupWithViewPager(viewPager);
+
+            searchLiveBtn = (ImageView) rootView.findViewById(R.id.search_live_btn);
+            searchLiveBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getActivity(), LiveSearchActivity.class));
+                }
+            });
         }
         return rootView;
     }
