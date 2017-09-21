@@ -21,7 +21,7 @@
             app:tabIndicatorColor="@color/deepskyblue"
             app:tabIndicatorHeight="2dp"
             app:tabSelectedTextColor="@color/deepskyblue"
-            app:tabTextColor="@color/grey"
+            app:tabTextColor="@color/black"
             app:tabTextAppearance="@style/TabIndexText">
 
             <android.support.design.widget.TabItem

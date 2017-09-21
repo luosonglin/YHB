@@ -45,8 +45,8 @@ import rx.Observer;
 
 public class LiveSearchActivity extends AppCompatActivity implements SpringView.OnFreshListener, LiveListView {
 
-    @Bind(R.id.toolbar_title)
-    TextView toolbarTitleTv;
+    //    @Bind(R.id.toolbar_title)
+//    TextView toolbarTitleTv;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
@@ -99,24 +99,16 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
         setContentView(R.layout.activity_live_search);
         ButterKnife.bind(this);
 
-        initToolbar("搜索直播");
+        initToolbar();
 
         initTagsView();
         initLivesView();
     }
 
-    private void initToolbar(String title) {
-        toolbarTitleTv.setText(title);
-        toolbarTitleTv.setTextColor(Color.BLACK);
-        toolbarTitleTv.setFocusable(true);
-
-        toolbar.setTitle("");
-        toolbar.setTitleTextColor(Color.BLACK);
-
+    private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

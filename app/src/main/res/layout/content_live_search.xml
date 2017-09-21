@@ -9,104 +9,65 @@
     tools:context="com.medmeeting.m.zhiyi.UI.LiveView.LiveSearchActivity"
     tools:showIn="@layout/activity_live_search">
 
-    <RelativeLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@id/toolbar"
-        android:background="@mipmap/live_search_bar_2"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_height="1dp"
+        android:background="@color/grey1"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:orientation="vertical">
         <TextView
-            android:id="@+id/type"
-            android:layout_width="60dp"
-            android:layout_height="28dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="4dp"
-            android:text="公开 ▼"
-            android:textSize="12sp"
-            android:textColor="@color/skyblue"
-            android:gravity="center"/>
-        <EditText
-            android:id="@+id/search_edit"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="82dp"
-            android:layout_marginRight="60dp"
-            android:background="@drawable/live_search_bar_bg"
-            android:focusable="true"
-            android:hint="请输入直播间、直播、描述信息"
-            android:imeOptions="actionSearch"
-            android:maxLines="1"
-            android:paddingLeft="8dp"
-            android:paddingRight="0dp"
-            android:textColor="#8e8e93"
-            android:textSize="14sp" />
-
-        <LinearLayout
-            android:id="@+id/search_tag_llyt"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="88dp"
-            android:background="@mipmap/search_tag_bg"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:layout_height="wrap_content"
+            android:text="热门搜索"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/grey"/>
 
-            <TextView
-                android:id="@+id/search_tag_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="4dp"
-                android:gravity="center_vertical"
-                android:text=""
-                android:textColor="@color/skyblue"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/search_tag_delete"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="8dp"
-                android:src="@mipmap/search_tag_delete"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/search_tv"
-            android:layout_width="50dp"
-            android:layout_height="28dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="4dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/textview_all_blue2"
-            android:text="搜索"
-            android:gravity="center"
-            android:textColor="@color/white"/>
-    </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey1"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/tags_swipe_refresh_lyt"
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="120dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="18dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tags_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey1"
+            android:layout_marginTop="4dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/grey2"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey1"/>
+    </LinearLayout>
+
     <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->
     <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity xmlns:progressActivity="http://schemas.android.com/apk/res-auto"
         android:id="@+id/progress"

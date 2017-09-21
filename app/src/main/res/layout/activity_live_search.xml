@@ -4,38 +4,120 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context="com.medmeeting.m.zhiyi.UI.LiveView.LiveSearchActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
+        app:elevation="1dp">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="1dp">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
-                app:popupTheme="@style/AppTheme.PopupOverlay" >
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:text="搜索直播"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+                <!--app:navigationIcon="@mipmap/back"-->
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/live_search_bar_bg2"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+                    <!--android:background="@mipmap/live_search_bar_2"-->
+
+                    <TextView
+                        android:id="@+id/type"
+                        android:layout_width="60dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="公开 ▼"
+                        android:textColor="@color/deepskyblue"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/search_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="62dp"
+                        android:layout_marginRight="60dp"
+                        android:background="@drawable/live_search_bar_bg"
+                        android:focusable="true"
+                        android:hint="搜索直播间/主播/描述信息"
+                        android:textColorHint="@color/grey"
+                        android:imeOptions="actionSearch"
+                        android:maxLines="1"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="0dp"
+                        android:textColor="#6f6f73"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:id="@+id/search_tag_llyt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="26dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="88dp"
+                        android:background="@mipmap/search_tag_bg"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/search_tag_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="4dp"
+                            android:gravity="center_vertical"
+                            android:text=""
+                            android:textColor="@color/skyblue"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/search_tag_delete"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@mipmap/search_tag_delete"
+                            tools:ignore="ContentDescription" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/search_tv"
+                        android:layout_width="50dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/textview_all_blue2"
+                        android:gravity="center"
+                        android:text="搜索"
+                        android:textSize="14sp"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
