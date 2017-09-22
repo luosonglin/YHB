@@ -27,6 +27,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -82,8 +84,7 @@ import rx.Observer;
 public class LiveProgramDetailActivity extends AppCompatActivity {
     private static final String TAG = LiveProgramDetailActivity.class.getSimpleName();
     private Toolbar toolbar;
-    private ImageView shareIv;
-    //    private ViewGroup tab;
+//    private ImageView shareIv;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private Context context = this;
@@ -141,6 +142,30 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_share:
+                        ShareBoardConfig config = new ShareBoardConfig();
+                        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                        mShareAction.open(config);
+                        break;
+                }
+                return true;
+            }
+        });
+
+    }
+
+    /**
+     * 菜单栏 修改器下拉刷新模式
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_live_program_toolbar, menu);
+        return true;
     }
 
     public void initShare(Bundle savedInstanceState, final int roomId, final String title, final String phone, final String description) {
@@ -166,15 +191,15 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
             }
         });
-        shareIv = (ImageView) findViewById(R.id.share);
-        shareIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
-            }
-        });
+//        shareIv = (ImageView) findViewById(R.id.share);
+//        shareIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ShareBoardConfig config = new ShareBoardConfig();
+//                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+//                mShareAction.open(config);
+//            }
+//        });
         //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
         if (Build.VERSION.SDK_INT >= 23) {
             String[] mPermissionList = new String[]{
