@@ -2,6 +2,8 @@ package com.medmeeting.m.zhiyi.UI.MineView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -9,15 +11,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +56,10 @@ public class MineFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
+    @Bind(R.id.img)
+    ImageView imageView;
     @Bind(R.id.setting)
     TextView setting;
     @Bind(R.id.identity)
@@ -88,6 +97,10 @@ public class MineFragment extends Fragment {
     RelativeLayout wodezhibo;
     @Bind(R.id.wodewendang)
     RelativeLayout wodewendang;
+    @Bind(R.id.cv_avatar)
+    CardView cvAvatar;
+    @Bind(R.id.wodefufeizhibo)
+    RelativeLayout wodefufeizhibo;
 
     private String identityHtml;
     private String userId = null;
@@ -162,6 +175,7 @@ public class MineFragment extends Fragment {
     private void initView() {
 
         showProgress(true);
+        cvAvatar.bringToFront();
 
         if (userId == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -186,9 +200,8 @@ public class MineFragment extends Fragment {
                     Glide.with(getActivity())
                             .load(item.getData().getUser().getUserPic())
                             .crossFade()
-                            .placeholder(R.mipmap.avator_default)
+//                            .placeholder(R.mipmap.avator_default)
                             .into(headIv);
-
 
                     try {
                         DBUtils.put(getActivity(), "authentication", item.getData().getUser().getAuthenStatus() + "");
@@ -202,7 +215,7 @@ public class MineFragment extends Fragment {
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.specialis_yellow);
                             nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
+                            hospitalTv.setText(item.getData().getUser().getDepartment());
                             titleTv.setText(item.getData().getUser().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.GONE);
@@ -215,7 +228,7 @@ public class MineFragment extends Fragment {
                             identity.setClickable(false);
                             specialistIv.setVisibility(View.GONE);
                             nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
+                            hospitalTv.setText(item.getData().getUser().getDepartment());
                             titleTv.setText(item.getData().getUser().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.GONE);
@@ -225,7 +238,7 @@ public class MineFragment extends Fragment {
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.specialist_red);
                             nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
+                            hospitalTv.setText(item.getData().getUser().getDepartment());
                             titleTv.setText(item.getData().getUser().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.VISIBLE);
@@ -255,6 +268,79 @@ public class MineFragment extends Fragment {
                 }
             }, Integer.parseInt(userId));
         }
+
+
+        // 获取屏幕宽高
+        metric = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+        // 设置图片初始大小 这里我设为满屏的16:9
+        ViewGroup.LayoutParams lp = imageView.getLayoutParams();
+        lp.width = metric.widthPixels;
+        lp.height = metric.widthPixels * 9 / 16;
+        imageView.setLayoutParams(lp);
+
+        // 监听滚动事件
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+                        .getLayoutParams();
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        // 手指离开后恢复图片
+                        mScaling = false;
+                        replyImage();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (!mScaling) {
+                            if (scrollView.getScrollY() == 0) {
+                                mFirstPosition = event.getY();// 滚动到顶部时记录位置，否则正常返回
+                            } else {
+                                break;
+                            }
+                        }
+                        int distance = (int) ((event.getY() - mFirstPosition) * 0.6); // 滚动距离乘以一个系数
+                        if (distance < 0) { // 当前位置比记录位置要小，正常返回
+                            break;
+                        }
+
+                        // 处理放大
+                        mScaling = true;
+                        lp.width = metric.widthPixels + distance;
+                        lp.height = (metric.widthPixels + distance) * 9 / 16;
+                        imageView.setLayoutParams(lp);
+                        return true; // 返回true表示已经完成触摸事件，不再处理
+                }
+                return false;
+            }
+        });
+    }
+
+    // 回弹动画 (使用了属性动画)
+    public void replyImage() {
+        final ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+                .getLayoutParams();
+        final float w = imageView.getLayoutParams().width;// 图片当前宽度
+        final float h = imageView.getLayoutParams().height;// 图片当前高度
+        final float newW = metric.widthPixels;// 图片原宽度
+        final float newH = metric.widthPixels * 9 / 16;// 图片原高度
+
+        // 设置动画
+        ValueAnimator anim = ObjectAnimator.ofFloat(0.0F, 1.0F)
+                .setDuration(200);
+
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float cVal = (Float) animation.getAnimatedValue();
+                lp.width = (int) (w - (w - newW) * cVal);
+                lp.height = (int) (h - (h - newH) * cVal);
+                imageView.setLayoutParams(lp);
+            }
+        });
+        anim.start();
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

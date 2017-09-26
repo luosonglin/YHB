@@ -6,6 +6,7 @@
     tools:context="com.medmeeting.m.zhiyi.UI.MineView.MineFragment">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -14,70 +15,86 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/grey1"
+            android:background="@color/white"
             android:orientation="vertical">
 
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="0dp"
+                android:layout_height="50dp"
                 android:background="@color/skyblue">
-                <!--android:background="@mipmap/mine_fragment_bg"-->
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/skyblue">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_weight="1"
-                        android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                    <!--设置-->
-                    <TextView
-                        android:id="@+id/setting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_weight="1"
-                        android:padding="12dp"
-                        android:text="设置"
-                        android:textColor="@color/grey"
-                        android:textSize="13sp" />
-                </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/identity"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="50dp"
-                    android:background="#a0e1c99d"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:paddingRight="0dp"
-                    android:text="你还没有实名认证，点击前往认证 >>"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    android:visibility="invisible" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
-                <LinearLayout
+                <!--设置-->
+                <TextView
+                    android:id="@+id/setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_weight="1"
+                    android:padding="12dp"
+                    android:text="设置"
+                    android:textColor="@color/grey"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/identity"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="#a0e1c99d"
+                android:gravity="center_vertical"
+                android:paddingLeft="40dp"
+                android:paddingRight="0dp"
+                android:text="你还没有实名认证，点击前往认证 >>"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                android:visibility="invisible" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:layout_gravity="center"
+                    android:contentDescription=""
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/self_bg" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-150dp">
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/cv_avatar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:clickable="false"
+                    android:foreground="@color/transparent"
+                    card_view:cardBackgroundColor="@color/transparent"
+                    card_view:cardCornerRadius="0dp"
+                    card_view:cardElevation="0dp">
 
                     <RelativeLayout
                         android:id="@+id/user_flyt"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="6dp"
-                        android:layout_marginTop="20dp">
+                        android:layout_height="wrap_content">
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/head_ic"
@@ -85,7 +102,7 @@
                             android:layout_height="66dp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/avator_white"
-                            android:src="@mipmap/avator_default" />
+                            android:src="@mipmap/hahaha" />
 
                         <ImageView
                             android:id="@+id/specialist"
@@ -98,64 +115,153 @@
                             android:src="@mipmap/specialis_yellow"
                             tools:ignore="ContentDescription" />
                     </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cv_avatar"
+                    android:layout_marginTop="-33dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:clickable="false"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    card_view:cardBackgroundColor="@android:color/white"
+                    card_view:cardCornerRadius="4dp"
+                    card_view:cardElevation="4dp">
 
                     <LinearLayout
-                        android:id="@+id/doctor_llyt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_margin="18dp"
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:id="@+id/doctor_llyt"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:orientation="horizontal">
+                            android:layout_gravity="center"
+                            android:layout_marginTop="30dp"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
                                 android:text="姓名"
-                                android:textColor="@color/white"
+                                android:textColor="@color/black"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
-                        </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="6dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/hospital"
-                                android:layout_width="wrap_content"
+                            <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="医院  科目类型"
-                                android:textColor="@color/grey"
-                                android:textSize="12sp" />
+                                android:layout_gravity="center_horizontal">
 
-                            <TextView
-                                android:id="@+id/title"
-                                android:layout_width="wrap_content"
+                                <TextView
+                                    android:id="@+id/hospital"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toLeftOf="@+id/line"
+                                    android:text="科目类型科目类型"
+                                    android:textColor="@color/grey"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/line"
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:gravity="center"
+                                    android:text="  |  "
+                                    android:textColor="@color/grey"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toRightOf="@+id/line"
+                                    android:text="职称职称"
+                                    android:textColor="@color/grey"
+                                    android:textSize="12sp" />
+
+                            </RelativeLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="6dp"
-                                android:text="职称"
-                                android:textColor="@color/grey"
-                                android:textSize="12sp" />
+                                android:layout_marginTop="10dp"
+                                android:orientation="horizontal">
 
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerInParent="true"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:text="0"
+                                            android:textColor="@color/grey"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="关注"
+                                            android:textColor="@color/grey"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerInParent="true"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:text="0"
+                                            android:textColor="@color/grey"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="关注"
+                                            android:textColor="@color/grey"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-
-                </LinearLayout>
-            </FrameLayout>
+                </android.support.v7.widget.CardView>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/wodecanhui"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/white">
 
                 <LinearLayout
