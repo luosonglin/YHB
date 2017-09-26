@@ -28,13 +28,11 @@ import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
-import com.medmeeting.m.zhiyi.Util.RootUtils;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
 import com.snappydb.SnappydbException;
-import com.vondear.rxtools.RxDeviceUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +42,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.rong.imlib.RongIMClient;
 import rx.Observer;
+
+//import com.vondear.rxtools.RxDeviceUtils;
 
 public class MainActivity extends AppCompatActivity
         implements IndexFragment.OnFragmentInteractionListener,
@@ -531,47 +531,46 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void fakerAction() {
-//        new Handler().sendMessage();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.e(TAG, RxDeviceUtils.getUniqueSerialNumber() + "");
-
-                Map<String, Object> map = new HashMap<>();
-                map.put("userId", Data.getUserId());
-                map.put("uniqueSerialNumber", RxDeviceUtils.getUniqueSerialNumber() + "");
-                map.put("metrics", RxDeviceUtils.getScreenHeights(MainActivity.this) + " * " + RxDeviceUtils.getScreenWidths(MainActivity.this));
-                map.put("imei", RxDeviceUtils.getIMEI(MainActivity.this));
-                if (RxDeviceUtils.getIMSI(MainActivity.this) != null)
-                    map.put("imsi", RxDeviceUtils.getIMSI(MainActivity.this));
-                map.put("macAddress", RxDeviceUtils.getMacAddress(MainActivity.this));
-                map.put("mccMnc", RxDeviceUtils.getNetworkOperator(MainActivity.this));
-                map.put("simOperatorName", RxDeviceUtils.getSimOperatorName(MainActivity.this));
-                if (RootUtils.isRootSystem()) {
-                    map.put("isRoot", 1);
-                } else {
-                    map.put("isRoot", 0);
-                }
-                HttpData.getInstance().HttpDataAddNewPhoneInfo(new Observer<HttpResult>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "HttpDataAddNewPhoneInfo onError: " + e.getMessage()
-                                + "\n" + e.getCause()
-                                + "\n" + e.getLocalizedMessage()
-                                + "\n" + e.getStackTrace());
-                    }
-
-                    @Override
-                    public void onNext(HttpResult httpResult) {
-
-                    }
-                }, map);
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.e(TAG, RxDeviceUtils.getUniqueSerialNumber() + "");
+//
+//                Map<String, Object> map = new HashMap<>();
+//                map.put("userId", Data.getUserId());
+//                map.put("uniqueSerialNumber", RxDeviceUtils.getUniqueSerialNumber() + "");
+//                map.put("metrics", RxDeviceUtils.getScreenHeights(MainActivity.this) + " * " + RxDeviceUtils.getScreenWidths(MainActivity.this));
+//                map.put("imei", RxDeviceUtils.getIMEI(MainActivity.this));
+//                if (RxDeviceUtils.getIMSI(MainActivity.this) != null)
+//                    map.put("imsi", RxDeviceUtils.getIMSI(MainActivity.this));
+//                map.put("macAddress", RxDeviceUtils.getMacAddress(MainActivity.this));
+//                map.put("mccMnc", RxDeviceUtils.getNetworkOperator(MainActivity.this));
+//                map.put("simOperatorName", RxDeviceUtils.getSimOperatorName(MainActivity.this));
+//                if (RootUtils.isRootSystem()) {
+//                    map.put("isRoot", 1);
+//                } else {
+//                    map.put("isRoot", 0);
+//                }
+//                HttpData.getInstance().HttpDataAddNewPhoneInfo(new Observer<HttpResult>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.e(TAG, "HttpDataAddNewPhoneInfo onError: " + e.getMessage()
+//                                + "\n" + e.getCause()
+//                                + "\n" + e.getLocalizedMessage()
+//                                + "\n" + e.getStackTrace());
+//                    }
+//
+//                    @Override
+//                    public void onNext(HttpResult httpResult) {
+//
+//                    }
+//                }, map);
+//            }
+//        }).start();
     }
 }

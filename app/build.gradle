@@ -76,7 +76,7 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 //这里修改apk文件名
-                def fileName = "yihuibao_${variant.productFlavors[0].name}-${defaultConfig.versionCode}-${defaultConfig.versionName}-${releaseTime()}.apk"
+                def fileName = "yihuibao_test${variant.productFlavors[0].name}-${defaultConfig.versionCode}-${defaultConfig.versionName}-${releaseTime()}.apk"
                 //def fileName = outputFile.name.replace("app", "${rootProject.ext.appName}-${releaseTime()}-${defaultConfig.versionCode}-${defaultConfig.versionName}")
                 output.outputFile = new File(outputFile.parent, fileName)
             }
@@ -119,8 +119,6 @@ dependencies {
     compile files('libs/pldroid-media-streaming-2.1.3.jar')
     //添加分包设置
     compile files('libs/open_sdk_r5788_lite.jar')
-
-    //工具类集合
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
@@ -156,8 +154,10 @@ dependencies {
     compile 'com.qiniu.pili:pili-android-qos:0.8.+'
     compile 'com.qiniu:happy-dns:0.2.7'
     compile 'com.android.support:multidex:1.0.1'
+
+    //工具类集合
+//    compile 'com.github.vondear:RxTools:v1.7.3.9'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.0@aar'
-    compile 'com.github.vondear:RxTools:v1.7.3.9'
     testCompile 'junit:junit:4.12'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
@@ -168,3 +168,6 @@ dependencies {
 
 //Error:Execution failed for task ':app:packageDevelopRelease'.
 //> com.android.ide.common.signing.KeytoolException: Failed to read key yihuibao from store "/Users/luosonglin/AndroidStudioProjects/YHB_v3/APP_Android/app/yihuibao_luo.jks": Cannot recover key
+
+//Error:Execution failed for task ':app:transformClassesWithJarMergingForDevelopRelease'.
+//        > com.android.build.api.transform.TransformException: java.util.zip.ZipException: duplicate entry: com/alipay/android/app/IAlixPay$Stub$a.class

@@ -73,63 +73,51 @@
                     android:src="@mipmap/self_bg" />
             </RelativeLayout>
 
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-150dp">
 
-                <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/cv_avatar"
+
+                <RelativeLayout
+                    android:id="@+id/user_flyt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:clickable="false"
-                    android:foreground="@color/transparent"
-                    card_view:cardBackgroundColor="@color/transparent"
-                    card_view:cardCornerRadius="0dp"
-                    card_view:cardElevation="0dp">
+                    android:layout_height="wrap_content">
 
-                    <RelativeLayout
-                        android:id="@+id/user_flyt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/head_ic"
+                        android:layout_width="66dp"
+                        android:layout_height="66dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/avator_white"
+                        android:src="@mipmap/hahaha" />
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/head_ic"
-                            android:layout_width="66dp"
-                            android:layout_height="66dp"
-                            android:layout_centerInParent="true"
-                            android:background="@drawable/avator_white"
-                            android:src="@mipmap/hahaha" />
-
-                        <ImageView
-                            android:id="@+id/specialist"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_alignBottom="@+id/head_ic"
-                            android:layout_alignEnd="@+id/head_ic"
-                            android:layout_alignRight="@+id/head_ic"
-                            android:layout_gravity="center_vertical"
-                            android:src="@mipmap/specialis_yellow"
-                            tools:ignore="ContentDescription" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
+                    <ImageView
+                        android:id="@+id/specialist"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignBottom="@+id/head_ic"
+                        android:layout_alignEnd="@+id/head_ic"
+                        android:layout_alignRight="@+id/head_ic"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/specialis_yellow"
+                        tools:ignore="ContentDescription" />
+                </RelativeLayout>
 
                 <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/cv_avatar"
+                    android:layout_below="@+id/user_flyt"
                     android:layout_marginTop="-33dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
                     android:clickable="false"
                     android:foreground="?android:attr/selectableItemBackground"
-                    card_view:cardBackgroundColor="@android:color/white"
+                    card_view:cardBackgroundColor="@color/white"
                     card_view:cardCornerRadius="4dp"
                     card_view:cardElevation="4dp">
+                    <!--android:layout_marginTop="-33dp"-->
 
                     <LinearLayout
                         android:layout_width="match_parent"

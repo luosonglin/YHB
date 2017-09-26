@@ -131,11 +131,11 @@ public class LiveIndexTabFragment1 extends Fragment
                             break;
                         case "play":
                             mStatusTv.setText("直播");
-                            mStatusTv.setBackground(getResources().getDrawable(R.color.red1));
+                            mStatusTv.setBackground(getResources().getDrawable(R.color.red));
                             break;
                         case "wait":
                             mStatusTv.setText("离开");
-                            mStatusTv.setBackground(getResources().getDrawable(R.color.yellow1));
+                            mStatusTv.setBackground(getResources().getDrawable(R.color.yellow));
                             break;
                         case "end":
                             mStatusTv.setText("结束");

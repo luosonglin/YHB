@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -97,8 +96,6 @@ public class MineFragment extends Fragment {
     RelativeLayout wodezhibo;
     @Bind(R.id.wodewendang)
     RelativeLayout wodewendang;
-    @Bind(R.id.cv_avatar)
-    CardView cvAvatar;
     @Bind(R.id.wodefufeizhibo)
     RelativeLayout wodefufeizhibo;
 
@@ -175,7 +172,6 @@ public class MineFragment extends Fragment {
     private void initView() {
 
         showProgress(true);
-        cvAvatar.bringToFront();
 
         if (userId == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));

@@ -12,7 +12,7 @@ import com.qiniu.pili.droid.streaming.StreamingEnv;
 import com.squareup.leakcanary.LeakCanary;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
-import com.vondear.rxtools.RxUtils;
+//import com.vondear.rxtools.RxUtils;
 import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class BaseApplication extends MultiDexApplication {//Application {
         LeakCanary.install(this);
 
         //工具类
-        RxUtils.init(this);
+//        RxUtils.init(this);
 
         //初始化异常管理工具
         Recovery.getInstance()
