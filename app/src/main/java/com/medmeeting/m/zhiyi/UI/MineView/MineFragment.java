@@ -265,7 +265,6 @@ public class MineFragment extends Fragment {
             }, Integer.parseInt(userId));
         }
 
-
         // 获取屏幕宽高
         metric = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);

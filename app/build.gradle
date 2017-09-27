@@ -161,6 +161,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
+
+    //statusbar 颜色
+    compile 'com.githang:status-bar-compat:latest.integration'
 }
 //Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 //> com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException:
