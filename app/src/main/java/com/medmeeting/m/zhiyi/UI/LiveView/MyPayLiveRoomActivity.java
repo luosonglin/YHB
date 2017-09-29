@@ -2,8 +2,9 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listv_view);
+        setContentView(R.layout.activity_my_pay_live_room);
         toolBar();
         initView();
         initListener();
@@ -66,14 +67,17 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
 //        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
 
         progress = (ProgressActivity) findViewById(R.id.progress);
+        //分割线
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //设置RecyclerView的显示模式  当前List模式
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-        mQuickAdapter = new LiveAdapter(R.layout.item_live, null);
+        mQuickAdapter = new LiveAdapter(R.layout.item_live_v2, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
