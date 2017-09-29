@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.tab_plus:
-                tabPlusIv.setImageResource(R.mipmap.tab_plus_b);
+                tabPlusIv.setImageResource(R.mipmap.tab_plus_b2);
                 //只有大咖认证用户才可以发起
                 try {
                     if (!DBUtils.isSet(MainActivity.this, "authentication")) {
