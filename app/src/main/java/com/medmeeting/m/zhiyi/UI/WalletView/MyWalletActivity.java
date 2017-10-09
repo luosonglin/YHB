@@ -36,9 +36,13 @@ public class MyWalletActivity extends AppCompatActivity {
     Button applyBtn;
     @Bind(R.id.trade_detail_btn)
     Button tradeDetailBtn;
+    @Bind(R.id.agreement)
+    Button radioBtn;
     private TextView balanceTv;
     private Handler mHandler2;
     private Runnable mRunnable;
+
+    private Boolean isAgreement = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,6 @@ public class MyWalletActivity extends AppCompatActivity {
         };
         mHandler2.post(mRunnable);
 
-
         HttpData.getInstance().HttpDataGetWalletInfo(new Observer<HttpResult3<Object, WalletDto>>() {
             @Override
             public void onCompleted() {
@@ -83,6 +86,18 @@ public class MyWalletActivity extends AppCompatActivity {
                 } else {
                     ToastUtils.show(MyWalletActivity.this, walletInfo.getMsg() + "");
                 }
+            }
+        });
+
+        radioBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isAgreement = !isAgreement;
+                if (isAgreement)
+                    radioBtn.setBackground(getResources().getDrawable(R.mipmap.my_wallet_radio_button2));
+                else
+                    radioBtn.setBackground(getResources().getDrawable(R.mipmap.my_wallet_radio_button));
+                ToastUtils.show(MyWalletActivity.this, isAgreement + "");
             }
         });
     }
@@ -167,4 +182,13 @@ public class MyWalletActivity extends AppCompatActivity {
                 break;
         }
     }
+
+//    private void isAgreementStatus() {
+//        agreementRBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//
+//            }
+//        });
+//    }
 }

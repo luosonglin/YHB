@@ -26,9 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -60,7 +58,6 @@ public class LiveDetailActivity extends AppCompatActivity {
     //背景图
     private ImageView imageView;
     //直播间头像
-    private ImageView coverPhotoTv;
     private TextView titleTv, userNameTv;
 
     // 记录首次按下位置
@@ -237,14 +234,6 @@ public class LiveDetailActivity extends AppCompatActivity {
     }
 
     private void initView(String coverPhone, String title, String userName) {
-        //直播间封面
-        coverPhotoTv = (ImageView) findViewById(R.id.coverPhoto);
-        Glide.with(LiveDetailActivity.this)
-                .load(coverPhone)
-                .crossFade()
-                .transform(new GlideCircleTransform(LiveDetailActivity.this))
-                .placeholder(R.mipmap.ic_launcher)
-                .into(coverPhotoTv);
         titleTv = (TextView) findViewById(R.id.title);
         userNameTv = (TextView) findViewById(R.id.userName);
         titleTv.setText(title);
@@ -355,7 +344,7 @@ public class LiveDetailActivity extends AppCompatActivity {
 
         mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播");
         mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "视频");
-        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "简介");
+        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "详情");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);
