@@ -16,7 +16,9 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
-import com.medmeeting.m.zhiyi.UI.Entity.WalletDto;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
 
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -143,5 +145,19 @@ public interface APILiveService {
 
     //GET /v1/user/wallet/info 获取钱包信息
     @GET("/v1/user/wallet/info")
-    Observable<HttpResult3<Object, WalletDto>> getWalletInfo();
+    Observable<HttpResult3<Object, WalletInfoDto>> getWalletInfo();
+
+    //GET /v1/user/wallet/account 获取提现账户列表
+    @GET("/v1/user/wallet/account")
+    Observable<HttpResult3<WalletAccountDto, Object>> getWalletAccount();
+
+    //POST /v1/user/wallet/info/password 钱包密码-第一次提交
+    @POST("/v1/user/wallet/info/password")
+    Observable<HttpResult3> setWalletPassword(@Body WalletPasswordDto walletPasswordDto);
+
+
+
+
+
+
 }

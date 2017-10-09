@@ -77,7 +77,8 @@ public class OkHttpUtils {
             Request authorised = null;
             authorised = originalRequest.newBuilder()
 //                    .header("FromSource", "1.0")
-                    .header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuadvuaelyIsInVzZXJJZCI6IjciLCJyb2xlIjoiMSIsImNyZWF0ZWQiOjE1MDY2NjE0MjIyMDAsImV4cCI6MTUwNDk1ODQ1NDkwNCwiaXNzIjoiaGVhbGlmZSIsImF1ZCI6IjA5OGY2YmNkNDYyMWQzNzNjYWRlNGU4MzI2MjdiNGY2In0.spYWnRi6_CKnT9aPT-aGIZ17_HTxb8qa_RkQCxhm4wQ")
+                    //钱包测试用户token
+                    .header("Authorization", "bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuWMu-WunTI2OTcwNCIsInVzZXJJZCI6IjEwMDEwMiIsInJvbGUiOiIxIiwiY3JlYXRlZCI6MTUwNzUxNzIwNDczOCwiZXhwIjoxNTA1ODE0MjM3NDQyLCJpc3MiOiJoZWFsaWZlIiwiYXVkIjoiMDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjYifQ.E9NVVakq5S71n-w_q4A707jjCLOjLNbLYhlfkOYk6kU")
 //                    .header("Authorization", Data.getUserToken())
                     .build();
             return chain.proceed(authorised);

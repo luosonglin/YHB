@@ -14,8 +14,7 @@ import android.widget.TextView;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.WalletDto;
-import com.medmeeting.m.zhiyi.UI.LiveView.LiveUpdateProgramActivity;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import java.lang.reflect.Method;
@@ -67,7 +66,7 @@ public class MyWalletActivity extends AppCompatActivity {
         };
         mHandler2.post(mRunnable);
 
-        HttpData.getInstance().HttpDataGetWalletInfo(new Observer<HttpResult3<Object, WalletDto>>() {
+        HttpData.getInstance().HttpDataGetWalletInfo(new Observer<HttpResult3<Object, WalletInfoDto>>() {
             @Override
             public void onCompleted() {
 
@@ -75,11 +74,11 @@ public class MyWalletActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-
+                balanceTv.setText("出错啦，"+e.getMessage()+"请联系开发团队");
             }
 
             @Override
-            public void onNext(HttpResult3<Object, WalletDto> walletInfo) {
+            public void onNext(HttpResult3<Object, WalletInfoDto> walletInfo) {
                 if (walletInfo.getStatus().equals("success")) {
                     mHandler2.removeCallbacks(mRunnable);
                     balanceTv.setText("¥ " + walletInfo.getEntity().getBalance());
@@ -117,17 +116,16 @@ public class MyWalletActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                Intent intent = null;
                 switch (item.getItemId()) {
                     case R.id.action_setting_apply:
-                        Intent intent = new Intent(MyWalletActivity.this, SettingWithdrawActivity.class);
-                        startActivity(intent);
+                        intent = new Intent(MyWalletActivity.this, SettingWithdrawActivity.class);
                         break;
                     case R.id.action_setting_pay:
-                        Intent intent2 = new Intent(MyWalletActivity.this, LiveUpdateProgramActivity.class);
-                        intent2.putExtra("programId", getIntent().getExtras().getInt("programId"));
-                        startActivity(intent2);
+                        intent = new Intent(MyWalletActivity.this, SettingWalletPasswordActivity.class);
                         break;
                 }
+                startActivity(intent);
                 return true;
             }
         });
@@ -183,12 +181,4 @@ public class MyWalletActivity extends AppCompatActivity {
         }
     }
 
-//    private void isAgreementStatus() {
-//        agreementRBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//
-//            }
-//        });
-//    }
 }
