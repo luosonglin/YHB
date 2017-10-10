@@ -231,7 +231,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:gravity="center"
-            android:src="@mipmap/IDNumberBGImage"
+            android:src="@mipmap/wallet_add_identity_number_icon"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>
 

@@ -42,8 +42,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/lightgray">
+            android:background="@color/grey1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,12 +68,13 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:src="@mipmap/account_number_icon"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    android:scaleType="fitCenter"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -120,12 +120,13 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="28dp"
+                    android:layout_marginLeft="20dp"
                     android:src="@mipmap/alipay_icon"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    android:scaleType="fitCenter"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -170,8 +171,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/lightgray">
+            android:background="@color/grey1">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -197,12 +197,13 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
                     android:src="@mipmap/account_number_icon"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription"
+                    android:scaleType="fitCenter"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -248,10 +249,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="28dp"
+                    android:layout_marginLeft="20dp"
                     android:src="@mipmap/alipay_icon"
                     tools:ignore="ContentDescription" />
 

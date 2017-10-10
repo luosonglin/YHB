@@ -54,7 +54,7 @@ public class AddAlipayAccountActivity extends AppCompatActivity {
         } else if (identityNumber.getText().toString().trim().equals("")) {
             ToastUtils.show(AddAlipayAccountActivity.this, "请输入身份证号");
             return;
-        } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.IDNumberBGImage))) {
+        } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon))) {
             ToastUtils.show(AddAlipayAccountActivity.this, "请上传身份证正面照");
             return;
         } else {
