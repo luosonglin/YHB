@@ -31,14 +31,15 @@
     </android.support.design.widget.AppBarLayout>
 
     <View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/grey1"/>
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="38dp"
@@ -47,13 +48,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="28dp"
                 android:text="公司账号"
-                android:textSize="16sp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/account_number_rlyt"
             android:layout_width="match_parent"
@@ -72,9 +74,9 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
                     android:src="@mipmap/account_number_icon"
-                    tools:ignore="ContentDescription"
-                    android:scaleType="fitCenter"/>
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -124,9 +126,9 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
                     android:src="@mipmap/alipay_icon"
-                    tools:ignore="ContentDescription"
-                    android:scaleType="fitCenter"/>
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -162,12 +164,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey1"/>
+        android:background="@color/grey1" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="38dp"
@@ -176,13 +179,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="28dp"
                 android:text="个人账号"
-                android:textSize="16sp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/account_number_private_rlyt"
             android:layout_width="match_parent"
@@ -201,9 +205,9 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
                     android:src="@mipmap/account_number_icon"
-                    tools:ignore="ContentDescription"
-                    android:scaleType="fitCenter"/>
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:layout_width="wrap_content"
