@@ -12,6 +12,8 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
+import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -405,6 +407,17 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataSetBankCard(Observer<HttpResult3> observer, EditBankCardReqEntity editBankCardReqEntity) {
+        Observable observable = service_live.setBankCard(editBankCardReqEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataSetAlipay(Observer<HttpResult3> observer, EditAlipayReqEntity editAlipayReqEntity) {
+        Observable observable = service_live.setAlipay(editAlipayReqEntity);
+        setSubscribe(observable, observer);
+    }
+
+
     /**
      * 插入观察者
      *
@@ -447,5 +460,8 @@ public class HttpData extends RetrofitUtils {
         public T call(Reply<T> httpResult) {
             return httpResult.getData();
         }
+    }
+
+    public class getInstance {
     }
 }

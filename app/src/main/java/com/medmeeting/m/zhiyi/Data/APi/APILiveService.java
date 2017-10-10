@@ -1,5 +1,7 @@
 package com.medmeeting.m.zhiyi.Data.APi;
 
+import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
@@ -156,7 +158,13 @@ public interface APILiveService {
     Observable<HttpResult3> setWalletPassword(@Body WalletPasswordDto walletPasswordDto);
 
 
+    //PUT /v1/user/wallet/info/bankCard 更新-银行卡信息
+    @PUT("/v1/user/wallet/info/bankCard")
+    Observable<HttpResult3> setBankCard(@Body EditBankCardReqEntity editBankCardReqEntity);
 
+    //PUT /v1/user/wallet/info/alipay 更新-支付宝信息
+    @PUT("/v1/user/wallet/info/alipay")
+    Observable<HttpResult3> setAlipay(@Body EditAlipayReqEntity editAlipayReqEntity);
 
 
 
