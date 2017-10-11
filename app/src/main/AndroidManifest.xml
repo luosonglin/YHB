@@ -248,6 +248,7 @@
         <activity android:name=".UI.WalletView.ModifyAlipayAccountActivity" />
         <activity android:name=".UI.WalletView.SettingWalletPasswordActivity" />
         <activity android:name=".UI.WalletView.WithdrawActivity" />
+        <activity android:name=".UI.WalletView.ExtractTypeActivity" />
         <activity
             android:name=".UI.LiveView.VideoDetailActivity"
             android:screenOrientation="portrait" />
