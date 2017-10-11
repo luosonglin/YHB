@@ -242,9 +242,9 @@
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.WalletView.SettingWithdrawActivity" />
-        <activity android:name=".UI.WalletView.AddAccountNumberActivity" />
+        <activity android:name=".UI.WalletView.PublicAccountNumberAddActivity" />
         <activity android:name=".UI.WalletView.AddAlipayAccountActivity" />
-        <activity android:name=".UI.WalletView.ModifyAccountNumberActivity" />
+        <activity android:name=".UI.WalletView.PublicAccountNumberModifyActivity" />
         <activity android:name=".UI.WalletView.ModifyAlipayAccountActivity" />
         <activity android:name=".UI.WalletView.SettingWalletPasswordActivity" />
         <activity android:name=".UI.WalletView.WithdrawActivity" />

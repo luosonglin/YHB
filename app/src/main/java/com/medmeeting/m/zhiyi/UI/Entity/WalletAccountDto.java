@@ -1,6 +1,8 @@
 package com.medmeeting.m.zhiyi.UI.Entity;
 
-public class WalletAccountDto {
+import java.io.Serializable;
+
+public class WalletAccountDto implements Serializable {
 
     /**
      * id : 4

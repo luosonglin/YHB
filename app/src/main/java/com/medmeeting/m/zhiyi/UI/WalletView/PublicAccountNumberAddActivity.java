@@ -18,8 +18,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
-public class AddAccountNumberActivity extends AppCompatActivity {
-    private static final String TAG = AddAccountNumberActivity.class.getSimpleName();
+public class PublicAccountNumberAddActivity extends AppCompatActivity {
+    private static final String TAG = PublicAccountNumberAddActivity.class.getSimpleName();
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.accountName)
@@ -50,25 +50,25 @@ public class AddAccountNumberActivity extends AppCompatActivity {
     private void initView() {
 
         if (accountName.getText().toString().trim().equals("")) {
-            ToastUtils.show(AddAccountNumberActivity.this, "请输入收款人姓名");
+            ToastUtils.show(PublicAccountNumberAddActivity.this, "请输入收款人姓名");
             return;
         } else if (bankName.getText().toString().trim().equals("")) {
-            ToastUtils.show(AddAccountNumberActivity.this, "请输入银行名称");
+            ToastUtils.show(PublicAccountNumberAddActivity.this, "请输入银行名称");
             return;
         } else if (bankAddress.getText().toString().trim().equals("")) {
-            ToastUtils.show(AddAccountNumberActivity.this, "请输入开户支行");
+            ToastUtils.show(PublicAccountNumberAddActivity.this, "请输入开户支行");
             return;
         } else if (accountNumber.getText().toString().trim().equals("")) {
-            ToastUtils.show(AddAccountNumberActivity.this, "请输入卡号");
+            ToastUtils.show(PublicAccountNumberAddActivity.this, "请输入卡号");
             return;
         } else if (mobilePhone.getText().toString().trim().equals("")) {
-            ToastUtils.show(AddAccountNumberActivity.this, "请输入手机号");
+            ToastUtils.show(PublicAccountNumberAddActivity.this, "请输入手机号");
             return;
         } else if (identityNumber.getText().toString().trim().equals("")) {
-            ToastUtils.show(AddAccountNumberActivity.this, "请输入身份证号");
+            ToastUtils.show(PublicAccountNumberAddActivity.this, "请输入身份证号");
             return;
         } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon))) {
-            ToastUtils.show(AddAccountNumberActivity.this, "请上传身份证正面照");
+            ToastUtils.show(PublicAccountNumberAddActivity.this, "请上传身份证正面照");
             return;
         } else {
             EditBankCardReqEntity bankCard = new EditBankCardReqEntity();
@@ -88,13 +88,13 @@ public class AddAccountNumberActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(Throwable e) {
-                    ToastUtils.show(AddAccountNumberActivity.this, ""+e.getMessage());
+                    ToastUtils.show(PublicAccountNumberAddActivity.this, ""+e.getMessage());
                 }
 
                 @Override
                 public void onNext(HttpResult3 httpResult3) {
                     if (httpResult3.getStatus().equals("success")) {
-                        ToastUtils.show(AddAccountNumberActivity.this, "绑定成功");
+                        ToastUtils.show(PublicAccountNumberAddActivity.this, "绑定成功");
                     }
                 }
             }, bankCard);
