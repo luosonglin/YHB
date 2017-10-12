@@ -30,18 +30,18 @@ public class MyWalletActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.balance)
-    TextView balance;
+    TextView balanceTv;
     @Bind(R.id.apply_btn)
     Button applyBtn;
     @Bind(R.id.trade_detail_btn)
     Button tradeDetailBtn;
     @Bind(R.id.agreement)
     Button radioBtn;
-    private TextView balanceTv;
     private Handler mHandler2;
     private Runnable mRunnable;
 
     private Boolean isAgreement = false;
+    private String balance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,6 @@ public class MyWalletActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        balanceTv = (TextView) findViewById(R.id.balance);
-
         mHandler2 = new Handler();
         mRunnable = new Runnable() {
             @Override
@@ -74,7 +72,7 @@ public class MyWalletActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                balanceTv.setText("出错啦，"+e.getMessage()+"请联系开发团队");
+                balanceTv.setText("出错啦，" + e.getMessage() + "请联系开发团队");
             }
 
             @Override
@@ -82,6 +80,7 @@ public class MyWalletActivity extends AppCompatActivity {
                 if (walletInfo.getStatus().equals("success")) {
                     mHandler2.removeCallbacks(mRunnable);
                     balanceTv.setText("¥ " + walletInfo.getEntity().getBalance());
+                    balance = walletInfo.getEntity().getBalance()+"";
                 } else {
                     ToastUtils.show(MyWalletActivity.this, walletInfo.getMsg() + "");
                 }
@@ -174,7 +173,9 @@ public class MyWalletActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.apply_btn:
-                startActivity(new Intent(MyWalletActivity.this, WithdrawActivity.class));
+                Intent intent = new Intent(MyWalletActivity.this, WithdrawActivity.class);
+                intent.putExtra("balance", balance);
+                startActivity(intent);
                 break;
             case R.id.trade_detail_btn:
                 break;

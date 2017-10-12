@@ -39,6 +39,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
@@ -414,6 +415,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataSetAlipay(Observer<HttpResult3> observer, EditAlipayReqEntity editAlipayReqEntity) {
         Observable observable = service_live.setAlipay(editAlipayReqEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetTallage(Observer<HttpResult3<Object, TallageDto>> observer, double num) {
+        Observable observable = service_live.getTallage(num);
         setSubscribe(observable, observer);
     }
 

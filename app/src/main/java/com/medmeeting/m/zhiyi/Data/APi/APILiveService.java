@@ -17,6 +17,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
@@ -166,6 +167,9 @@ public interface APILiveService {
     @PUT("/v1/user/wallet/info/alipay")
     Observable<HttpResult3> setAlipay(@Body EditAlipayReqEntity editAlipayReqEntity);
 
+    //GET /v1/user/wallet/backTallage/{tallageNum} 返回税及实际到账接口
+    @GET("/v1/user/wallet/backTallage/{tallageNum}")
+    Observable<HttpResult3<Object, TallageDto>> getTallage(@Path("tallageNum") double tallageNum);
 
 
 }
