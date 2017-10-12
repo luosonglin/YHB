@@ -75,7 +75,6 @@ public class SettingWithdrawActivity extends AppCompatActivity {
                 privateBank = walletAccount.getData().get(0);
                 privateAlipay = walletAccount.getData().get(1);
 
-
                 if (publicBank != null) {
                     accountNumberAddStatus.setBackground(getResources().getDrawable(R.drawable.textview_all_blue2));
                     accountNumberAddStatus.setText("已添加");
@@ -136,27 +135,45 @@ public class SettingWithdrawActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.account_number_rlyt, R.id.alipay_add_status, R.id.alipay_rlyt, R.id.account_number_private_rlyt, R.id.alipay_private_rlyt})
+    @OnClick({R.id.account_number_rlyt, R.id.alipay_rlyt, R.id.account_number_private_rlyt, R.id.alipay_private_rlyt})
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.account_number_rlyt:
                 if (accountNumberAddStatus.getText().toString().equals("已添加")) {
-                    intent = new Intent(SettingWithdrawActivity.this, PublicAccountNumberModifyActivity.class);
+                    intent = new Intent(SettingWithdrawActivity.this, BankAccountNumberModifyActivity.class);
                     intent.putExtra("walletAccount", publicBank);
                 } else {
-                    intent = new Intent(SettingWithdrawActivity.this, PublicAccountNumberAddActivity.class);
+                    intent = new Intent(SettingWithdrawActivity.this, BankAccountNumberAddActivity.class);
+                    intent.putExtra("publicPrivateType", "PUBLIC");
                 }
                 break;
-            case R.id.alipay_add_status:
-                startActivity(new Intent(SettingWithdrawActivity.this, AddAlipayAccountActivity.class));
-                break;
             case R.id.alipay_rlyt:
-                startActivity(new Intent(SettingWithdrawActivity.this, ModifyAlipayAccountActivity.class));
+                if (alipayAddStatus.getText().toString().equals("已添加")) {
+                    intent = new Intent(SettingWithdrawActivity.this, AlipayAccountModifyActivity.class);
+                    intent.putExtra("walletAccount", publicAlipay);
+                } else {
+                    intent = new Intent(SettingWithdrawActivity.this, AlipayAccountAddActivity.class);
+                    intent.putExtra("publicPrivateType", "PUBLIC");
+                }
                 break;
             case R.id.account_number_private_rlyt:
+                if (accountNumberAddPrivateStatus.getText().toString().equals("已添加")) {
+                    intent = new Intent(SettingWithdrawActivity.this, BankAccountNumberModifyActivity.class);
+                    intent.putExtra("walletAccount", privateBank);
+                } else {
+                    intent = new Intent(SettingWithdrawActivity.this, BankAccountNumberAddActivity.class);
+                    intent.putExtra("publicPrivateType", "PRIVATE");
+                }
                 break;
             case R.id.alipay_private_rlyt:
+                if (alipayAddPrivateStatus.getText().toString().equals("已添加")) {
+                    intent = new Intent(SettingWithdrawActivity.this, AlipayAccountModifyActivity.class);
+                    intent.putExtra("walletAccount", publicAlipay);
+                } else {
+                    intent = new Intent(SettingWithdrawActivity.this, AlipayAccountAddActivity.class);
+                    intent.putExtra("publicPrivateType", "PRIVATE");
+                }
                 break;
         }
         startActivity(intent);

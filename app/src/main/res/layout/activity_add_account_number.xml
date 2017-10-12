@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.medmeeting.m.zhiyi.UI.WalletView.PublicAccountNumberAddActivity">
+    tools:context="com.medmeeting.m.zhiyi.UI.WalletView.BankAccountNumberAddActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -86,16 +86,17 @@
             android:text="银行"
             android:textColor="@color/black" />
 
-        <EditText
+        <TextView
             android:id="@+id/bankName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/edittext_delete_line"
-            android:hint="请输入银行名称"
+            android:gravity="center_vertical"
+            android:text="请输入银行名称"
             android:maxLines="1"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
-            android:textColor="@color/black"
+            android:textColor="@color/grey"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -210,7 +211,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:orientation="horizontal">
 
@@ -221,24 +222,68 @@
             android:gravity="center"
             android:text="身份证正面照"
             android:textColor="@color/black" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="1dp"
-        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/identityImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:gravity="center"
+            android:scaleType="fitXY"
             android:src="@mipmap/wallet_add_identity_number_icon" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="验证码"
+            android:textColor="@color/black" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/code"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:layout_toLeftOf="@+id/get_code_textview"
+                android:background="@null"
+                android:hint="请输入验证码"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="Sign in"
+                android:imeOptions="actionUnspecified"
+                android:inputType="number"
+                android:maxLines="1"
+                android:paddingLeft="18dp"
+                android:paddingRight="28dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/grey"
+                android:textColorHint="@color/grey"
+                android:textColorLink="@color/grey"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/get_code_textview"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/textview_radius_blue"
+                android:gravity="center"
+                android:text="获取验证码"
+                android:textColor="@color/grey" />
+        </RelativeLayout>
+    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"

@@ -242,13 +242,14 @@
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".UI.WalletView.SettingWithdrawActivity" />
-        <activity android:name=".UI.WalletView.PublicAccountNumberAddActivity" />
-        <activity android:name=".UI.WalletView.AddAlipayAccountActivity" />
-        <activity android:name=".UI.WalletView.PublicAccountNumberModifyActivity" />
-        <activity android:name=".UI.WalletView.ModifyAlipayAccountActivity" />
+        <activity android:name=".UI.WalletView.BankAccountNumberAddActivity" />
+        <activity android:name=".UI.WalletView.AlipayAccountAddActivity" />
+        <activity android:name=".UI.WalletView.BankAccountNumberModifyActivity" />
+        <activity android:name=".UI.WalletView.AlipayAccountModifyActivity" />
         <activity android:name=".UI.WalletView.SettingWalletPasswordActivity" />
         <activity android:name=".UI.WalletView.WithdrawActivity" />
         <activity android:name=".UI.WalletView.ExtractTypeActivity" />
+        <activity android:name=".UI.WalletView.BankListActivity" />
         <activity
             android:name=".UI.LiveView.VideoDetailActivity"
             android:screenOrientation="portrait" />
