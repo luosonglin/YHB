@@ -22,6 +22,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
 
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -158,6 +159,9 @@ public interface APILiveService {
     @POST("/v1/user/wallet/info/password")
     Observable<HttpResult3> setWalletPassword(@Body WalletPasswordDto walletPasswordDto);
 
+    //PUT /v1/user/wallet/info/password 钱包密码-更新密码
+    @PUT("/v1/user/wallet/info/password")
+    Observable<HttpResult3> modifyWalletPassword(@Body WalletPasswordModifyDto walletPasswordDto);
 
     //PUT /v1/user/wallet/info/bankCard 更新-银行卡信息
     @PUT("/v1/user/wallet/info/bankCard")

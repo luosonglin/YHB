@@ -46,6 +46,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
+import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
 import java.io.File;
@@ -408,6 +409,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataModifyWalletPassword(Observer<HttpResult3> observer, WalletPasswordModifyDto walletPasswordModifyDto) {
+        Observable observable = service_live.modifyWalletPassword(walletPasswordModifyDto);
+        setSubscribe(observable, observer);
+    }
+
     public void HttpDataSetBankCard(Observer<HttpResult3> observer, EditBankCardReqEntity editBankCardReqEntity) {
         Observable observable = service_live.setBankCard(editBankCardReqEntity);
         setSubscribe(observable, observer);
@@ -422,6 +428,7 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getTallage(num);
         setSubscribe(observable, observer);
     }
+
 
 
     /**

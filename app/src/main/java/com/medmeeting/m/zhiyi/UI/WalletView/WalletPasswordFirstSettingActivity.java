@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
-public class SettingWalletPasswordActivity extends AppCompatActivity {
+public class WalletPasswordFirstSettingActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -69,13 +69,13 @@ public class SettingWalletPasswordActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtils.show(SettingWalletPasswordActivity.this, e.getMessage());
+                        ToastUtils.show(WalletPasswordFirstSettingActivity.this, e.getMessage());
                     }
 
                     @Override
                     public void onNext(HttpResult3 httpResult3) {
                         if (httpResult3.getStatus().equals("success")) {
-                            ToastUtils.show(SettingWalletPasswordActivity.this, "设置成功");
+                            ToastUtils.show(WalletPasswordFirstSettingActivity.this, "设置成功");
                         }
 
                     }

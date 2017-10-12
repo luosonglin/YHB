@@ -42,6 +42,7 @@ public class MyWalletActivity extends AppCompatActivity {
 
     private Boolean isAgreement = false;
     private String balance;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class MyWalletActivity extends AppCompatActivity {
                     mHandler2.removeCallbacks(mRunnable);
                     balanceTv.setText("¥ " + walletInfo.getEntity().getBalance());
                     balance = walletInfo.getEntity().getBalance()+"";
+                    password = walletInfo.getEntity().getPassword();
                 } else {
                     ToastUtils.show(MyWalletActivity.this, walletInfo.getMsg() + "");
                 }
@@ -121,7 +123,11 @@ public class MyWalletActivity extends AppCompatActivity {
                         intent = new Intent(MyWalletActivity.this, SettingWithdrawActivity.class);
                         break;
                     case R.id.action_setting_pay:
-                        intent = new Intent(MyWalletActivity.this, SettingWalletPasswordActivity.class);
+                        if (password == null) {
+                            intent = new Intent(MyWalletActivity.this, WalletPasswordFirstSettingActivity.class);
+                        } else {
+                            intent = new Intent(MyWalletActivity.this, WalletPasswordActivity.class);
+                        }
                         break;
                 }
                 startActivity(intent);
