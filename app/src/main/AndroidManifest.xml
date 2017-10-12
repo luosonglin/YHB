@@ -248,6 +248,7 @@
         <activity android:name=".UI.WalletView.AlipayAccountModifyActivity" />
         <activity android:name=".UI.WalletView.WalletPasswordFirstSettingActivity" />
         <activity android:name=".UI.WalletView.WalletPasswordModifyActivity" />
+        <activity android:name=".UI.WalletView.WalletPasswordForgetActivity" />
         <activity android:name=".UI.WalletView.WithdrawActivity" />
         <activity android:name=".UI.WalletView.ExtractTypeActivity" />
         <activity android:name=".UI.WalletView.BankListActivity" />

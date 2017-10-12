@@ -36,7 +36,7 @@ public class WalletPasswordFirstSettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting_pay_password);
+        setContentView(R.layout.activity_wallet_password_first_setting);
         ButterKnife.bind(this);
         toolBar();
     }
