@@ -16,8 +16,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -47,6 +49,7 @@ public class WithdrawActivity extends AppCompatActivity {
     @Bind(R.id.confirm)
     Button confirm;
 
+    private ExtractEntity extractEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,6 @@ public class WithdrawActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void initView() {
         amount.setHint("可提现 " + getIntent().getStringExtra("balance") + "元");
@@ -145,14 +147,44 @@ public class WithdrawActivity extends AppCompatActivity {
                 amount.setText(getIntent().getStringExtra("balance"));
                 break;
             case R.id.confirm:
+                extractEntity.setUserId(Data.getUserId());
+                extractEntity.setAmount(Double.parseDouble(amount.getText().toString().trim()));
+                extractEntity.setExtractPassword(extractPassword.getText().toString().trim());
+                HttpData.getInstance().HttpDataWithdraw(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 httpResult3) {
+                        if (!httpResult3.getStatus().equals("success")) {
+                            ToastUtils.show(WithdrawActivity.this, httpResult3.getMsg());
+                            return;
+                        }
+                        Intent i = new Intent(WithdrawActivity.this, WithdrawStatusActivity.class);
+                        i.putExtra("amount",  amount.getText().toString().trim());
+                        startActivity(i);
+                    }
+                }, extractEntity);
                 break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String a1 = data.getStringExtra("a1");
-        String a2 = data.getStringExtra("a2");
+        if (requestCode == 0 && resultCode == 1) {
+            extractType.setText(data.getStringExtra("extractType"));
+            extractEntity.setExtractNumber(data.getStringExtra("extractNumber"));
+            extractEntity.setExtractType(data.getStringExtra("extractType"));
+            extractEntity.setWithdrawType(data.getStringExtra("withdrawType"));
+            extractEntity.setWalletId(data.getIntExtra("walletId", 0));
+        }
 
     }
 }

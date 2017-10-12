@@ -87,15 +87,14 @@
 
                 <TextView
                     android:id="@+id/account_number_add_status"
-                    android:layout_width="50dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
-                    android:background="@drawable/textview_all_grey2"
                     android:gravity="center"
                     android:text="未添加"
                     android:textColor="@color/grey"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <ImageView
@@ -139,15 +138,14 @@
 
                 <TextView
                     android:id="@+id/alipay_add_status"
-                    android:layout_width="50dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
-                    android:background="@drawable/textview_all_grey2"
                     android:gravity="center"
                     android:text="未添加"
                     android:textColor="@color/grey"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <ImageView
@@ -218,15 +216,14 @@
 
                 <TextView
                     android:id="@+id/account_number_add_private_status"
-                    android:layout_width="50dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
-                    android:background="@drawable/textview_all_grey2"
                     android:gravity="center"
                     android:text="未添加"
                     android:textColor="@color/grey"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <ImageView
@@ -269,15 +266,14 @@
 
                 <TextView
                     android:id="@+id/alipay_add_private_status"
-                    android:layout_width="50dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
-                    android:background="@drawable/textview_all_grey2"
                     android:gravity="center"
                     android:text="未添加"
                     android:textColor="@color/grey"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <ImageView

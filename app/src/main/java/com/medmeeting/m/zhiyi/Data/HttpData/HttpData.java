@@ -48,6 +48,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordForgetDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
+import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
 import java.io.File;
@@ -440,6 +441,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataWithdraw(Observer<HttpResult3> observer, ExtractEntity extractEntity) {
+        Observable observable = service_live.withdraw(extractEntity);
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 插入观察者

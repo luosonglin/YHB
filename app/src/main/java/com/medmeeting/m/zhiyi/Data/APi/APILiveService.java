@@ -24,6 +24,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordForgetDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
+import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -185,5 +186,8 @@ public interface APILiveService {
     @GET("/v1/user/wallet/backTallage/{tallageNum}")
     Observable<HttpResult3<Object, TallageDto>> getTallage(@Path("tallageNum") double tallageNum);
 
+    //POST /v1/user/wallet/finance 财务_提现
+    @POST("/v1/user/wallet/finance")
+    Observable<HttpResult3> withdraw(@Body ExtractEntity extractEntity);
 
 }
