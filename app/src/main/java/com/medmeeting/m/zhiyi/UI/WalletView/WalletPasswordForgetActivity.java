@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
@@ -23,10 +22,6 @@ public class WalletPasswordForgetActivity extends AppCompatActivity {
     private static final String TAG = WalletPasswordForgetActivity.class.getSimpleName();
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.modify)
-    RelativeLayout modify;
-    @Bind(R.id.forget)
-    RelativeLayout forget;
     @Bind(R.id.pwd)
     EditText newPwd;
     @Bind(R.id.pwd2)
@@ -43,6 +38,8 @@ public class WalletPasswordForgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet_password_forget);
         ButterKnife.bind(this);
+
+
         toolBar();
     }
 
@@ -51,12 +48,7 @@ public class WalletPasswordForgetActivity extends AppCompatActivity {
         toolbar.setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     @OnClick({R.id.get_code_tv, R.id.next_btn})
@@ -113,8 +105,9 @@ public class WalletPasswordForgetActivity extends AppCompatActivity {
                             return;
                         }
                         ToastUtils.show(WalletPasswordForgetActivity.this, "已重新修改支付密码");
+                        finish();
                     }
-                },walletPasswordForgetDto);
+                }, walletPasswordForgetDto);
                 break;
         }
     }

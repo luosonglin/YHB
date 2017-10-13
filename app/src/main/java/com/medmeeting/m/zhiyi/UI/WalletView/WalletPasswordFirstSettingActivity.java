@@ -74,10 +74,11 @@ public class WalletPasswordFirstSettingActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(HttpResult3 httpResult3) {
-                        if (httpResult3.getStatus().equals("success")) {
-                            ToastUtils.show(WalletPasswordFirstSettingActivity.this, "设置成功");
+                        if (!httpResult3.getStatus().equals("success")) {
+                            ToastUtils.show(WalletPasswordFirstSettingActivity.this, httpResult3.getMsg());
                         }
-
+                        ToastUtils.show(WalletPasswordFirstSettingActivity.this, "设置成功");
+                        finish();
                     }
                 }, new WalletPasswordDto(pwd.getText().toString().trim(), code.getText().toString().trim()));
                 break;

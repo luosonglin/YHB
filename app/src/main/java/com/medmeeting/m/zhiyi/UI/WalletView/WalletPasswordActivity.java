@@ -51,7 +51,7 @@ public class WalletPasswordActivity extends AppCompatActivity {
                 intent = new Intent(WalletPasswordActivity.this, WalletPasswordModifyActivity.class);
                 break;
             case R.id.forget:
-                intent = new Intent(WalletPasswordActivity.this, WalletPasswordModifyActivity.class);
+                intent = new Intent(WalletPasswordActivity.this, WalletPasswordForgetActivity.class);
                 break;
         }
         startActivity(intent);

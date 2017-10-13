@@ -43,10 +43,10 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="收款方"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:textColor="@color/black"
-            android:layout_gravity="center_vertical"/>
+            android:text="收款方"
+            android:textColor="@color/black" />
 
         <EditText
             android:id="@+id/name"
@@ -54,11 +54,11 @@
             android:layout_height="match_parent"
             android:background="@drawable/edittext_delete_line"
             android:hint="请输入姓名"
-            android:textColor="@color/black"
-            android:textSize="16sp"
             android:maxLines="1"
             android:paddingLeft="18dp"
-            android:paddingRight="18dp" />
+            android:paddingRight="18dp"
+            android:textColor="@color/grey"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -81,7 +81,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/edittext_delete_line"
             android:hint="请输入支付宝账号"
-            android:textColor="@color/black"
+            android:textColor="@color/grey"
             android:textSize="16sp"
             android:maxLines="1"
             android:paddingLeft="18dp"
@@ -110,7 +110,7 @@
             android:maxLines="1"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
-            android:textColor="@color/black"
+            android:textColor="@color/grey"
             android:textSize="16sp" />
     </LinearLayout>
     <LinearLayout
@@ -146,7 +146,7 @@
                 android:paddingLeft="18dp"
                 android:paddingRight="28dp"
                 android:singleLine="true"
-                android:textColor="@color/black"
+                android:textColor="@color/grey"
                 android:textColorHighlight="@color/grey"
                 android:textColorHint="@color/grey"
                 android:textColorLink="@color/grey"

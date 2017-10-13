@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,7 +13,6 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -42,6 +40,8 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
     EditText code;
     @Bind(R.id.get_code_textview)
     TextView mGetCodeView;
+    @Bind(R.id.tip)
+    TextView tip;
 
     private WalletAccountDto walletAccountDto = null;
     // timer
@@ -67,9 +67,12 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
 
         toolBar();
 
-        initView();
+        if (getIntent().getStringExtra("publicPrivateType").equals("PUBLIC")) {
+            tip.setText("请先绑定公司的支付宝帐号");
+        } else if (getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
+            tip.setText("请先绑定个人的支付宝帐号");
+        }
     }
-
 
     private void initView() {
 
@@ -92,6 +95,7 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
             alipay.setIdentityNumber(identityNumber.getText().toString().trim());
             alipay.setIdentityImage("");
             alipay.setPublicPrivateType(getIntent().getStringExtra("publicPrivateType"));
+            alipay.setVerCode(code.getText().toString().trim());
 
             HttpData.getInstance().HttpDataSetAlipay(new Observer<HttpResult3>() {
                 @Override
@@ -106,9 +110,12 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
 
                 @Override
                 public void onNext(HttpResult3 httpResult3) {
-                    if (httpResult3.getStatus().equals("success")) {
-                        ToastUtils.show(AlipayAccountAddActivity.this, "绑定成功");
+                    if (!httpResult3.getStatus().equals("success")) {
+                        ToastUtils.show(AlipayAccountAddActivity.this, httpResult3.getMsg());
+                        return;
                     }
+                    ToastUtils.show(AlipayAccountAddActivity.this, "绑定成功");
+                    finish();
                 }
             }, alipay);
         }
@@ -128,7 +135,7 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.identityImage, R.id.get_code_textview})
+    @OnClick({R.id.identityImage, R.id.get_code_textview, R.id.next_btn})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.identityImage:
@@ -136,6 +143,8 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
             case R.id.get_code_textview:
                 getPhoneCode();
                 break;
+            case R.id.next_btn:
+                initView();
         }
     }
 
@@ -146,26 +155,25 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
             return;
         }
         timer.start();
-        HttpData.getInstance().HttpDataGetPhoneCode(new Observer<SignUpCodeDto>() {
+        HttpData.getInstance().HttpDataGetAuthMessage(new Observer<HttpResult3>() {
             @Override
             public void onCompleted() {
-                Log.e(TAG, "onCompleted");
+
             }
 
             @Override
             public void onError(Throwable e) {
-                //设置页面为加载错误
                 ToastUtils.show(AlipayAccountAddActivity.this, e.getMessage());
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
             }
 
             @Override
-            public void onNext(SignUpCodeDto signUpCodeDto) {
-                Log.e(TAG, "onNext sms " + signUpCodeDto.getData().getMsg() + " " + signUpCodeDto.getCode());
+            public void onNext(HttpResult3 httpResult3) {
+                if (!httpResult3.getStatus().equals("success")) {
+                    ToastUtils.show(AlipayAccountAddActivity.this, httpResult3.getMsg());
+                    return;
+                }
+                ToastUtils.show(AlipayAccountAddActivity.this, httpResult3.getMsg());
             }
-        }, mobilePhone.getText().toString().trim());
+        });
     }
 }

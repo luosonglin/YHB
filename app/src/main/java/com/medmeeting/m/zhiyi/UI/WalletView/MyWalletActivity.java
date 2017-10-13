@@ -55,6 +55,31 @@ public class MyWalletActivity extends AppCompatActivity {
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        HttpData.getInstance().HttpDataGetWalletInfo(new Observer<HttpResult3<Object, WalletInfoDto>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                balanceTv.setText("出错啦，" + e.getMessage() + "请联系开发团队");
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, WalletInfoDto> walletInfo) {
+                if (walletInfo.getStatus().equals("success")) {
+                    password = walletInfo.getEntity().getPassword();
+                } else {
+                    ToastUtils.show(MyWalletActivity.this, walletInfo.getMsg() + "");
+                }
+            }
+        });
+    }
+
     private void initView() {
         mHandler2 = new Handler();
         mRunnable = new Runnable() {

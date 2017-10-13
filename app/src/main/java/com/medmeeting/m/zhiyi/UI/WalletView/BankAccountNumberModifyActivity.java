@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -129,7 +127,7 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
                 bankCard.setAccountNumber(accountNumber.getText().toString().trim());
                 bankCard.setMobilePhone(mobilePhone.getText().toString().trim());
                 bankCard.setIdentityNumber(identityNumber.getText().toString().trim());
-                bankCard.setIdentityImage(walletAccountDto.getIdentityImage());
+                bankCard.setIdentityImage(walletAccountDto.getIdentityImage()+"");
                 bankCard.setVerCode(code.getText().toString().trim());
                 bankCard.setPublicPrivateType(walletAccountDto.getPublicPrivateType());
 
@@ -146,9 +144,11 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(HttpResult3 httpResult3) {
-                        if (httpResult3.getStatus().equals("success")) {
-                            ToastUtils.show(BankAccountNumberModifyActivity.this, "绑定成功");
+                        if (!httpResult3.getStatus().equals("success")) {
+                            ToastUtils.show(BankAccountNumberModifyActivity.this, httpResult3.getMsg());
                         }
+                        ToastUtils.show(BankAccountNumberModifyActivity.this, "修改成功");
+                        finish();
                     }
                 }, bankCard);
                 break;
@@ -162,27 +162,26 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
             return;
         }
         timer.start();
-        HttpData.getInstance().HttpDataGetPhoneCode(new Observer<SignUpCodeDto>() {
+        HttpData.getInstance().HttpDataGetAuthMessage(new Observer<HttpResult3>() {
             @Override
             public void onCompleted() {
-                Log.e(TAG, "onCompleted");
+
             }
 
             @Override
             public void onError(Throwable e) {
-                //设置页面为加载错误
                 ToastUtils.show(BankAccountNumberModifyActivity.this, e.getMessage());
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
             }
 
             @Override
-            public void onNext(SignUpCodeDto signUpCodeDto) {
-                Log.e(TAG, "onNext sms " + signUpCodeDto.getData().getMsg() + " " + signUpCodeDto.getCode());
+            public void onNext(HttpResult3 httpResult3) {
+                if (!httpResult3.getStatus().equals("success")) {
+                    ToastUtils.show(BankAccountNumberModifyActivity.this, httpResult3.getMsg());
+                    return;
+                }
+                ToastUtils.show(BankAccountNumberModifyActivity.this, httpResult3.getMsg());
             }
-        }, mobilePhone.getText().toString().trim());
+        });
     }
 
     @Override

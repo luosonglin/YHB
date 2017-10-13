@@ -55,6 +55,12 @@ public class SettingWithdrawActivity extends AppCompatActivity {
         initView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initView();
+    }
+
     private void initView() {
         HttpData.getInstance().HttpDataGetWalletAccount(new Observer<HttpResult3<WalletAccountDto, Object>>() {
             @Override
@@ -69,7 +75,6 @@ public class SettingWithdrawActivity extends AppCompatActivity {
 
             @Override
             public void onNext(HttpResult3<WalletAccountDto, Object> walletAccount) {
-
                 publicBank = walletAccount.getData().get(2);
                 publicAlipay = walletAccount.getData().get(3);
                 privateBank = walletAccount.getData().get(0);
@@ -95,44 +100,17 @@ public class SettingWithdrawActivity extends AppCompatActivity {
                     alipayAddPrivateStatus.setText("已添加");
                     alipayAddPrivateStatus.setTextColor(getResources().getColor(R.color.white));
                 }
-//                for (WalletAccountDto i: walletAccount.getData()) {
-//                    if (i.getPublicPrivateType().equals("PUBLIC")) {
-//                        if (i.getAccountType().equals("BANK")) {
-//                            accountNumberAddStatus.setBackground(getResources().getDrawable(R.drawable.textview_all_blue2));
-//                            accountNumberAddStatus.setText("已添加");
-//                            accountNumberAddStatus.setTextColor(getResources().getColor(R.color.white));
-//                        } else if (i.getAccountType().equals("ALIPAY")) {
-//                            alipayAddStatus.setBackground(getResources().getDrawable(R.drawable.textview_all_blue2));
-//                            alipayAddStatus.setText("已添加");
-//                            alipayAddStatus.setTextColor(getResources().getColor(R.color.white));
-//                        }
-//                    } else if (i.getPublicPrivateType().equals("PRIVATE")) {
-//                        if (i.getAccountType().equals("BANK")) {
-//                            accountNumberAddPrivateStatus.setBackground(getResources().getDrawable(R.drawable.textview_all_blue2));
-//                            accountNumberAddPrivateStatus.setText("已添加");
-//                            accountNumberAddPrivateStatus.setTextColor(getResources().getColor(R.color.white));
-//                        } else if (i.getAccountType().equals("ALIPAY")) {
-//                            alipayAddPrivateStatus.setBackground(getResources().getDrawable(R.drawable.textview_all_blue2));
-//                            alipayAddPrivateStatus.setText("已添加");
-//                            alipayAddPrivateStatus.setTextColor(getResources().getColor(R.color.white));
-//                        }
-//                    }
-//                }
             }
         });
     }
+
 
     private void toolBar() {
         setSupportActionBar(toolbar);
         toolbar.setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
     }
 
     @OnClick({R.id.account_number_rlyt, R.id.alipay_rlyt, R.id.account_number_private_rlyt, R.id.alipay_private_rlyt})

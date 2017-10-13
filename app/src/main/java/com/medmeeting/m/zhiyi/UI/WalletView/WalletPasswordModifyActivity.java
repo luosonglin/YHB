@@ -77,6 +77,7 @@ public class WalletPasswordModifyActivity extends AppCompatActivity {
                     return;
                 }
                 ToastUtils.show(WalletPasswordModifyActivity.this, "修改支付密码成功");
+                finish();
             }
         }, walletPasswordModifyDto);
     }

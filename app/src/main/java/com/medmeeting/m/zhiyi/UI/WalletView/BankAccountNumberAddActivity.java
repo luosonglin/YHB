@@ -1,10 +1,10 @@
 package com.medmeeting.m.zhiyi.UI.WalletView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,7 +14,6 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
@@ -45,6 +44,8 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
     EditText code;
     @Bind(R.id.get_code_textview)
     TextView mGetCodeView;
+    @Bind(R.id.tip)
+    TextView tip;
 
     // timer
     private CountDownTimer timer = new CountDownTimer(60000, 1000) {
@@ -68,7 +69,11 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         toolBar();
 
-        initView();
+        if (getIntent().getStringExtra("publicPrivateType").equals("PUBLIC")) {
+            tip.setText("请先绑定公司的银行卡");
+        } else if (getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
+            tip.setText("请先绑定个人的银行卡");
+        }
     }
 
     private void initView() {
@@ -119,9 +124,12 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
 
                 @Override
                 public void onNext(HttpResult3 httpResult3) {
-                    if (httpResult3.getStatus().equals("success")) {
-                        ToastUtils.show(BankAccountNumberAddActivity.this, "绑定成功");
+                    if (!httpResult3.getStatus().equals("success")) {
+                        ToastUtils.show(BankAccountNumberAddActivity.this, httpResult3.getMsg());
+                        return;
                     }
+                    ToastUtils.show(BankAccountNumberAddActivity.this, "绑定成功");
+                    finish();
                 }
             }, bankCard);
         }
@@ -140,13 +148,19 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick({R.id.identityImage, R.id.get_code_textview})
+    @OnClick({R.id.bankName, R.id.identityImage, R.id.get_code_textview, R.id.confirm})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.bankName:
+                startActivityForResult(new Intent(BankAccountNumberAddActivity.this, BankListActivity.class), 0);
+                break;
             case R.id.identityImage:
                 break;
             case R.id.get_code_textview:
                 getPhoneCode();
+                break;
+            case R.id.confirm:
+                initView();
                 break;
         }
     }
@@ -158,26 +172,35 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
             return;
         }
         timer.start();
-        HttpData.getInstance().HttpDataGetPhoneCode(new Observer<SignUpCodeDto>() {
+
+        HttpData.getInstance().HttpDataGetAuthMessage(new Observer<HttpResult3>() {
             @Override
             public void onCompleted() {
-                Log.e(TAG, "onCompleted");
+
             }
 
             @Override
             public void onError(Throwable e) {
-                //设置页面为加载错误
                 ToastUtils.show(BankAccountNumberAddActivity.this, e.getMessage());
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
             }
 
             @Override
-            public void onNext(SignUpCodeDto signUpCodeDto) {
-                Log.e(TAG, "onNext sms " + signUpCodeDto.getData().getMsg() + " " + signUpCodeDto.getCode());
+            public void onNext(HttpResult3 httpResult3) {
+                if (!httpResult3.getStatus().equals("success")) {
+                    ToastUtils.show(BankAccountNumberAddActivity.this, httpResult3.getMsg());
+                    return;
+                }
+                ToastUtils.show(BankAccountNumberAddActivity.this, httpResult3.getMsg());
             }
-        }, mobilePhone.getText().toString().trim());
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == 1) {
+            String bank = data.getStringExtra("bank");
+            bankName.setText(bank);
+        }
     }
 }
