@@ -30,8 +30,8 @@ public class ExtractTypeActivity extends AppCompatActivity {
     TextView alipayAddStatus;
     @Bind(R.id.alipay_rlyt)
     RelativeLayout alipayRlyt;
-    @Bind(R.id.account_number_add_private_status)
-    TextView accountNumberAddPrivateStatus;
+    @Bind(R.id.private_bank)
+    TextView privateBankTv;
     @Bind(R.id.account_number_private_rlyt)
     RelativeLayout accountNumberPrivateRlyt;
     @Bind(R.id.alipay_add_private_status)
@@ -72,17 +72,24 @@ public class ExtractTypeActivity extends AppCompatActivity {
                 privateBank = walletAccount.getData().get(0);
                 privateAlipay = walletAccount.getData().get(1);
 
-                if (publicBank != null) {
-                    accountNumberAddStatus.setText(publicBank.getBankName() + "(" + publicBank.getAccountNumber().substring((publicBank.getAccountNumber().length()-4), publicBank.getAccountNumber().length()) + ")");
-                }
+
                 if (publicAlipay != null) {
                     alipayAddStatus.setText(publicAlipay.getAccountName());
                 }
-                if (privateBank != null) {
-                    accountNumberAddPrivateStatus.setText(privateBank.getBankName() + "(" + privateBank.getAccountNumber().substring((privateBank.getAccountNumber().length()-4), privateBank.getAccountNumber().length()) + ")");
-                }
+
                 if (privateAlipay != null) {
                     alipayAddPrivateStatus.setText(privateAlipay.getAccountName());
+                }
+
+
+                if (publicBank != null) {
+                    accountNumberAddStatus.setText(publicBank.getBankName() + "("
+                            + publicBank.getAccountNumber().substring((publicBank.getAccountNumber().length() - 4), publicBank.getAccountNumber().length())
+                            + ")");
+                }
+
+                if (privateBank != null) {
+                    new Thread(() -> privateBankTv.setText(privateBank.getBankName() + "(" + privateBank.getAccountNumber().substring((privateBank.getAccountNumber().length() - 4), privateBank.getAccountNumber().length()) + ")")).start();
                 }
             }
         });
@@ -93,48 +100,71 @@ public class ExtractTypeActivity extends AppCompatActivity {
         toolbar.setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     @OnClick({R.id.account_number_rlyt, R.id.alipay_rlyt, R.id.account_number_private_rlyt, R.id.alipay_private_rlyt})
     public void onClick(View view) {
-        Intent intent = new Intent();
+
         switch (view.getId()) {
             case R.id.account_number_rlyt:
-                intent.putExtra("extractType", accountNumberAddStatus.getText().toString().trim());
+                if (publicBank == null) {
+                    startActivity(new Intent(ExtractTypeActivity.this, SettingWithdrawActivity.class));
+                    return;
+                }
+                Intent intent = new Intent();
+                intent.putExtra("withdraw_bank", accountNumberAddStatus.getText().toString().trim());
                 intent.putExtra("extractNumber", publicBank.getAccountNumber());
                 intent.putExtra("extractType", "CARD");
                 intent.putExtra("withdrawType", "public");
                 intent.putExtra("walletId", publicBank.getId());
+                setResult(1, intent);
+                finish();
                 break;
             case R.id.alipay_rlyt:
-                intent.putExtra("extractType", alipayAddStatus.getText().toString().trim());
-                intent.putExtra("extractNumber", publicAlipay.getAccountNumber());
-                intent.putExtra("extractType", "ALIPAY");
-                intent.putExtra("withdrawType", "public");
-                intent.putExtra("walletId", publicAlipay.getId());
+                if (publicAlipay == null) {
+                    startActivity(new Intent(ExtractTypeActivity.this, SettingWithdrawActivity.class));
+                    return;
+                }
+                Intent intent2 = new Intent();
+                intent2.putExtra("withdraw_bank", alipayAddStatus.getText().toString().trim());
+                intent2.putExtra("extractNumber", publicAlipay.getAccountNumber());
+                intent2.putExtra("extractType", "ALIPAY");
+                intent2.putExtra("withdrawType", "public");
+                intent2.putExtra("walletId", publicAlipay.getId());
+                setResult(1, intent2);
+                finish();
                 break;
             case R.id.account_number_private_rlyt:
-                intent.putExtra("extractType", accountNumberAddPrivateStatus.getText().toString().trim());
-                intent.putExtra("extractNumber", privateBank.getAccountNumber());
-                intent.putExtra("extractType", "CARD");
-                intent.putExtra("withdrawType", "private");
-                intent.putExtra("walletId", privateBank.getId());
+
+                if (privateBank == null) {
+                    startActivity(new Intent(ExtractTypeActivity.this, SettingWithdrawActivity.class));
+                    return;
+                }
+                Intent intent3 = new Intent();
+                intent3.putExtra("withdraw_bank", privateBankTv.getText().toString().trim());
+                intent3.putExtra("extractNumber", privateBank.getAccountNumber());
+                intent3.putExtra("extractType", "CARD");
+                intent3.putExtra("withdrawType", "private");
+                intent3.putExtra("walletId", privateBank.getId());
+                setResult(1, intent3);
+                finish();
                 break;
             case R.id.alipay_private_rlyt:
-                intent.putExtra("extractType", alipayAddPrivateStatus.getText().toString().trim());
-                intent.putExtra("extractNumber", privateAlipay.getAccountNumber());
-                intent.putExtra("extractType", "ALIPAY");
-                intent.putExtra("withdrawType", "private");
-                intent.putExtra("walletId", privateAlipay.getId());
+
+                if (privateAlipay == null) {
+                    startActivity(new Intent(ExtractTypeActivity.this, SettingWithdrawActivity.class));
+                    return;
+                }
+                Intent intent4 = new Intent();
+                intent4.putExtra("withdraw_bank", alipayAddPrivateStatus.getText().toString().trim());
+                intent4.putExtra("extractNumber", privateAlipay.getAccountNumber());
+                intent4.putExtra("extractType", "ALIPAY");
+                intent4.putExtra("withdrawType", "private");
+                intent4.putExtra("walletId", privateAlipay.getId());
+                setResult(1, intent4);
+                finish();
                 break;
         }
-        setResult(1, intent);
-        finish();
     }
 }

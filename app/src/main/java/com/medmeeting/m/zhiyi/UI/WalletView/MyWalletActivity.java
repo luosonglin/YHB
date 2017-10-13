@@ -210,7 +210,7 @@ public class MyWalletActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.trade_detail_btn:
-                BrowserActivity.launch(MyWalletActivity.this, "http://weibo.com/iluosonglin", "交易明细");
+                BrowserActivity.launch(MyWalletActivity.this, "http://webview.medmeeting.com/#/wallet/record-list", "交易明细");
                 break;
         }
     }

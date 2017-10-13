@@ -9,7 +9,6 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +21,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import butterknife.Bind;
@@ -49,7 +49,7 @@ public class WithdrawActivity extends AppCompatActivity {
     @Bind(R.id.confirm)
     Button confirm;
 
-    private ExtractEntity extractEntity;
+    private ExtractEntity extractEntity = new ExtractEntity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,21 +65,14 @@ public class WithdrawActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
+        toolbar.setNavigationOnClickListener(view -> finish());
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_help:
+                    BrowserActivity.launch(WithdrawActivity.this, "http://webview.medmeeting.com/#/wallet/help", "帮助");
+                    break;
             }
-        });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_help:
-                        break;
-                }
-                return true;
-            }
+            return true;
         });
     }
 
@@ -179,7 +172,8 @@ public class WithdrawActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == 1) {
-            extractType.setText(data.getStringExtra("extractType"));
+            extractType.setText(data.getStringExtra("withdraw_bank"));
+
             extractEntity.setExtractNumber(data.getStringExtra("extractNumber"));
             extractEntity.setExtractType(data.getStringExtra("extractType"));
             extractEntity.setWithdrawType(data.getStringExtra("withdrawType"));

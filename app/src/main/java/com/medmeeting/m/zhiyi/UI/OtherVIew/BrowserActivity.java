@@ -11,7 +11,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JsResult;
@@ -58,12 +57,12 @@ public class BrowserActivity extends AppCompatActivity {
         setupWebView();
     }
     public void initToolBar() {
-        mToolbar.setTitle(TextUtils.isEmpty(mTitle) ? "详情" : mTitle);
         setSupportActionBar(mToolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
         }
+        mToolbar.setTitle(mTitle);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         mToolbar.setNavigationOnClickListener(view -> finish());
     }

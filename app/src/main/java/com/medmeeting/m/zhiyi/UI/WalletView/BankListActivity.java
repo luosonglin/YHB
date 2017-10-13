@@ -12,7 +12,6 @@ import android.view.View;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BankAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.BankDto;
-import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import java.util.ArrayList;
@@ -70,29 +69,11 @@ public class BankListActivity extends AppCompatActivity {
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
 
-//        mQuickAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
-//            @Override
-//            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-//                BankDto bankDto = (BankDto) adapter.getItem(position);
-//                switch (view.getId()) {
-//                    case R.id.bank:
-//                        ToastUtils.show(BankListActivity.this, bankDto.getName());
-//                        break;
-//                    case R.id.name:
-//                        ToastUtils.show(BankListActivity.this, bankDto.getName());
-//                        break;
-//                }
-//            }
-//        });
-
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent();
-                intent.putExtra("bank", banks.get(position).getName());
-                setResult(1, intent);
-                finish();
-            }
+        mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+            Intent intent = new Intent();
+            intent.putExtra("bank", banks.get(position).getName());
+            setResult(1, intent);
+            finish();
         });
     }
 
