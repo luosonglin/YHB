@@ -15,6 +15,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import java.lang.reflect.Method;
@@ -184,8 +185,8 @@ public class MyWalletActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.trade_detail_btn:
+                BrowserActivity.launch(MyWalletActivity.this, "http://weibo.com/iluosonglin", "交易明细");
                 break;
         }
     }
-
 }

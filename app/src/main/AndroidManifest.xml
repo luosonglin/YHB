@@ -237,6 +237,11 @@
             android:name=".UI.MeetingView.ExchangeBusinessCardActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".UI.OtherVIew.BrowserActivity"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".UI.WalletView.MyWalletActivity"
             android:label=""

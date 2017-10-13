@@ -28,4 +28,9 @@ public class Constant {
 
     //微信appID
     public static final String WeChat_AppID = "wx7e6722fad8a0975c";
+
+    //web browser界面传递数据
+    public static final String EXTRA_DATA = "extra_data";
+    public static final String EXTRA_URL = "url";
+    public static final String EXTRA_TITLE = "title";
 }
