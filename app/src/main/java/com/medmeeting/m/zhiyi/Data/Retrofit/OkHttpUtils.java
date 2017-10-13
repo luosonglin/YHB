@@ -1,5 +1,7 @@
 package com.medmeeting.m.zhiyi.Data.Retrofit;
 
+import com.medmeeting.m.zhiyi.Constant.Data;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +61,6 @@ public class OkHttpUtils {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
                     .build();
-
         }
 
         return mOkHttpClient;
@@ -78,8 +79,8 @@ public class OkHttpUtils {
             authorised = originalRequest.newBuilder()
 //                    .header("FromSource", "1.0")
                     //钱包测试用户token
-                    .header("Authorization", "bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuWMu-WunTI2OTcwNCIsInVzZXJJZCI6IjEwMDEwMiIsInJvbGUiOiIxIiwiY3JlYXRlZCI6MTUwNzUxNzIwNDczOCwiZXhwIjoxNTA1ODE0MjM3NDQyLCJpc3MiOiJoZWFsaWZlIiwiYXVkIjoiMDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjYifQ.E9NVVakq5S71n-w_q4A707jjCLOjLNbLYhlfkOYk6kU")
-//                    .header("Authorization", Data.getUserToken())
+//                    .header("Authorization", "bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuWMu-WunTI2OTcwNCIsInVzZXJJZCI6IjEwMDEwMiIsInJvbGUiOiIxIiwiY3JlYXRlZCI6MTUwNzUxNzIwNDczOCwiZXhwIjoxNTA1ODE0MjM3NDQyLCJpc3MiOiJoZWFsaWZlIiwiYXVkIjoiMDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjYifQ.E9NVVakq5S71n-w_q4A707jjCLOjLNbLYhlfkOYk6kU")
+                    .header("Authorization", Data.getUserToken())
                     .build();
             return chain.proceed(authorised);
         }
