@@ -100,6 +100,13 @@ public class BrowserActivity extends AppCompatActivity {
         webSettings.setGeolocationEnabled(true);
         webSettings.setUseWideViewPort(true);
         webSettings.setLoadWithOverviewMode(true);
+
+        // Technical settings
+        webSettings.setAppCacheEnabled(false);  //是否使用缓存
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setDomStorageEnabled(true);    //DOM Storage
+
         mWebView.getSettings().setBlockNetworkImage(true);
         mWebView.setWebViewClient(webViewClient);
         mWebView.requestFocus(View.FOCUS_DOWN);

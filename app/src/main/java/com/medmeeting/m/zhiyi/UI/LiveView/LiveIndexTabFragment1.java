@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,7 +36,7 @@ public class LiveIndexTabFragment1 extends Fragment
         implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener, LiveListView {
 
     private RecyclerView mRecyclerView;
-//    private ProgressActivity progress;
+    //    private ProgressActivity progress;
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
     private SpringView springView;
@@ -116,7 +117,7 @@ public class LiveIndexTabFragment1 extends Fragment
 
                 List<LiveDto> datas = data.getData();
 
-                if (data.getData().size()>1) {
+                if (data.getData().size() > 1) {
                     LiveDto firstData = data.getData().get(0);
 
                     Glide.with(getActivity())
@@ -155,9 +156,19 @@ public class LiveIndexTabFragment1 extends Fragment
                             .transform(new GlideCircleTransform(getActivity()))
                             .into(mAvatarIv);
                     mTitleTv.setText(firstData.getTitle());
-                    mUserTv.setText(firstData.getAuthorName() +" | "+firstData.getAuthorTitle());
+                    mUserTv.setText(firstData.getAuthorName() + " | " + firstData.getAuthorTitle());
                     mTimeTv.setText(DateUtil.formatDate(firstData.getStartTime(), DateUtil.TYPE_06));
 
+                    mHeaderView.setOnClickListener(view -> {
+                        Intent intent = new Intent(getActivity(), LiveProgramDetailActivity.class);
+                        intent.putExtra("authorName", firstData.getAuthorName());
+                        intent.putExtra("userPic", firstData.getUserPic());
+                        intent.putExtra("programId", firstData.getId());
+                        intent.putExtra("roomId", firstData.getRoomId());
+                        intent.putExtra("coverPhoto", firstData.getCoverPhoto());
+                        intent.putExtra("title", firstData.getTitle());
+                        getActivity().startActivity(intent);
+                    });
                     mQuickAdapter.addHeaderView(mHeaderView);
                     datas.remove(0);
                 }

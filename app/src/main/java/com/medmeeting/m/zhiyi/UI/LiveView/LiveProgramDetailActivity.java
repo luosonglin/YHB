@@ -28,7 +28,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -136,25 +135,17 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 //        toolbar.setLogo(R.mipmap.ic_launcher);//设置logo
         getSupportActionBar().setTitle("");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_share:
-                        ShareBoardConfig config = new ShareBoardConfig();
-                        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                        mShareAction.open(config);
-                        break;
-                }
-                return true;
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_share:
+                    ShareBoardConfig config = new ShareBoardConfig();
+                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                    mShareAction.open(config);
+                    break;
             }
+            return true;
         });
 
     }
@@ -191,15 +182,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
             }
         });
-//        shareIv = (ImageView) findViewById(R.id.share);
-//        shareIv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ShareBoardConfig config = new ShareBoardConfig();
-//                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-//                mShareAction.open(config);
-//            }
-//        });
+
         //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
         if (Build.VERSION.SDK_INT >= 23) {
             String[] mPermissionList = new String[]{
@@ -367,36 +350,28 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 if ("yes".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
                     if (payFlag == 0) {//0:未购票
                         watchTv.setText("支付" + amount + "元观看");
-                        watchTv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                initPopupwindow();
-                            }
-                        });
+                        watchTv.setOnClickListener(view -> initPopupwindow());
                     } else if (payFlag > 0) { //大于0:已购票
                         if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("play")) {
                             watchTv.setText("观看");
-                            watchTv.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    try {
-                                        audienceUserName = DBUtils.get(LiveProgramDetailActivity.this, "userName");
-                                        audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
-                                        Log.e(TAG, "haha" + audienceUserName +" "+audienceUserNickName);
+                            watchTv.setOnClickListener(view -> {
+                                try {
+                                    audienceUserName = DBUtils.get(LiveProgramDetailActivity.this, "userName");
+                                    audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
+                                    Log.e(TAG, "haha" + audienceUserName +" "+audienceUserNickName);
 
-                                        if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
-                                        } else {
-                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
-                                        }
-                                    } catch (SnappydbException e) {
-                                        e.printStackTrace();
-                                    } finally {
-                                        Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                                        intent.putExtra("rtmpPlayUrl", url);
-                                        intent.putExtra("programId", programId);
-                                        startActivity(intent);
+                                    if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
+                                    } else {
+                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
                                     }
+                                } catch (SnappydbException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+                                    intent.putExtra("rtmpPlayUrl", url);
+                                    intent.putExtra("programId", programId);
+                                    startActivity(intent);
                                 }
                             });
                         } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("ready")) {
