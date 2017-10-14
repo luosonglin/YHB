@@ -90,27 +90,29 @@ public class WithdrawActivity extends AppCompatActivity {
                 // 输入的内容变化的监听
                 Log.e("输入过程中执行该方法", "文字变化");
 
-                HttpData.getInstance().HttpDataGetTallage(new Observer<HttpResult3<Object, TallageDto>>() {
-                    @Override
-                    public void onCompleted() {
+                if (!charSequence.toString().equals("")) {
+                    HttpData.getInstance().HttpDataGetTallage(new Observer<HttpResult3<Object, TallageDto>>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(HttpResult3<Object, TallageDto> result) {
-                        if (!result.getStatus().equals("success")) {
-                            ToastUtils.show(WithdrawActivity.this, result.getMsg());
-                            return;
                         }
-                        actualArrival.setText("实际到账：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getAmount() + "</font>" + "元"));
-                        tax.setText("扣税：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getTallages() + "</font>" + "元"));
-                    }
-                }, Double.parseDouble(charSequence.toString()));
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3<Object, TallageDto> result) {
+                            if (!result.getStatus().equals("success")) {
+                                ToastUtils.show(WithdrawActivity.this, result.getMsg());
+                                return;
+                            }
+                            actualArrival.setText("实际到账：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getAmount() + "</font>" + "元"));
+                            tax.setText("扣税：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getTallages() + "</font>" + "元"));
+                        }
+                    }, Double.parseDouble(charSequence.toString()));
+                }
             }
 
             @Override

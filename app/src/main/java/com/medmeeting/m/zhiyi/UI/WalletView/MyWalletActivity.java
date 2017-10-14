@@ -205,9 +205,14 @@ public class MyWalletActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.apply_btn:
-                Intent intent = new Intent(MyWalletActivity.this, WithdrawActivity.class);
-                intent.putExtra("balance", balance);
-                startActivity(intent);
+                if (password == null) {
+                    Intent intent = new Intent(MyWalletActivity.this, WalletPasswordFirstSettingActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MyWalletActivity.this, WithdrawActivity.class);
+                    intent.putExtra("balance", balance);
+                    startActivity(intent);
+                }
                 break;
             case R.id.trade_detail_btn:
                 BrowserActivity.launch(MyWalletActivity.this, "http://webview.medmeeting.com/#/wallet/record-list", "交易明细");

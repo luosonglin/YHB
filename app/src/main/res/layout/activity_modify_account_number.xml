@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="银行卡"
+                android:text="修改银行卡"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </android.support.v7.widget.Toolbar>
@@ -173,11 +173,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/identity_rlyt"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginTop="1dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="80dp"
@@ -201,11 +201,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/identity_image_lyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="100dp"

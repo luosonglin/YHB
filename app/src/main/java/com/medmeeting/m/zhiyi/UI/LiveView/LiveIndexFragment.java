@@ -89,12 +89,7 @@ public class LiveIndexFragment extends Fragment {
             tabLayout.setupWithViewPager(viewPager);
 
             searchLiveBtn = (ImageView) rootView.findViewById(R.id.search_live_btn);
-            searchLiveBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(getActivity(), LiveSearchActivity.class));
-                }
-            });
+            searchLiveBtn.setOnClickListener(view -> startActivity(new Intent(getActivity(), LiveSearchActivity.class)));
         }
         return rootView;
     }

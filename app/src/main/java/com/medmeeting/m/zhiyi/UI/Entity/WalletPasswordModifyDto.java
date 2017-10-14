@@ -13,9 +13,9 @@ public class WalletPasswordModifyDto {
     private String oldPwd;
 
 
-    public WalletPasswordModifyDto(String newPwd, String oldPwd) {
-        this.newPwd = newPwd;
+    public WalletPasswordModifyDto(String oldPwd, String newPwd) {
         this.oldPwd = oldPwd;
+        this.newPwd = newPwd;
     }
 
     public String getNewPwd() {

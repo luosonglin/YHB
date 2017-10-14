@@ -5,21 +5,34 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.qiniu.android.storage.Configuration;
+import com.qiniu.android.storage.UploadManager;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.iwf.photopicker.PhotoPicker;
 import rx.Observer;
 
 public class BankAccountNumberAddActivity extends AppCompatActivity {
@@ -46,6 +59,10 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
     TextView mGetCodeView;
     @Bind(R.id.tip)
     TextView tip;
+    @Bind(R.id.identity_rlyt)
+    LinearLayout identityRlyt;
+    @Bind(R.id.identity_image_lyt)
+    LinearLayout identityImageLyt;
 
     // timer
     private CountDownTimer timer = new CountDownTimer(60000, 1000) {
@@ -62,6 +79,8 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
         }
     };
 
+    private String imageUrl="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +90,8 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
 
         if (getIntent().getStringExtra("publicPrivateType").equals("PUBLIC")) {
             tip.setText("请先绑定公司的银行卡");
+            identityRlyt.setVisibility(View.GONE);
+            identityImageLyt.setVisibility(View.GONE);
         } else if (getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
             tip.setText("请先绑定个人的银行卡");
         }
@@ -107,7 +128,7 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
             bankCard.setAccountNumber(accountNumber.getText().toString().trim());
             bankCard.setMobilePhone(mobilePhone.getText().toString().trim());
             bankCard.setIdentityNumber(identityNumber.getText().toString().trim());
-            bankCard.setIdentityImage("");
+            bankCard.setIdentityImage(imageUrl+"");
             bankCard.setVerCode(code.getText().toString().trim());
             bankCard.setPublicPrivateType(getIntent().getStringExtra("publicPrivateType"));
 
@@ -155,6 +176,12 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(BankAccountNumberAddActivity.this, BankListActivity.class), 0);
                 break;
             case R.id.identityImage:
+                PhotoPicker.builder()
+                        .setShowCamera(true)
+                        .setPreviewEnabled(false)
+                        .setPhotoCount(1)
+                        .setGridColumnCount(4)
+                        .start(BankAccountNumberAddActivity.this);
                 break;
             case R.id.get_code_textview:
                 getPhoneCode();
@@ -201,6 +228,93 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
         if (requestCode == 0 && resultCode == 1) {
             String bank = data.getStringExtra("bank");
             bankName.setText(bank);
+        } else {
+            List<String> photos = null;
+            if (data != null) {
+                photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+                for (String i : photos) {
+                    Log.e(TAG, i);
+                }
+                ToastUtils.show(BankAccountNumberAddActivity.this, "正在上传...");
+                getQiniuToken(photos.get(0));
+            }
         }
     }
+
+    private List<String> qiniuData = new ArrayList<>();
+    private String qiniuKey;
+    private String qiniuToken;
+    private String images = "";
+    private void getQiniuToken(final String file) {
+        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: " + e.getMessage()
+                        + "\n" + e.getCause()
+                        + "\n" + e.getLocalizedMessage()
+                        + "\n" + e.getStackTrace());
+            }
+
+            @Override
+            public void onNext(QiniuTokenDto q) {
+                if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
+                    return;
+                }
+                qiniuToken = q.getData().getUploadToken();
+
+                // 设置图片名字
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                qiniuKey = "android_live_" + sdf.format(new Date());
+
+                int i = new Random().nextInt(1000) + 1;
+
+                Log.e(TAG, "File对象、或 文件路径、或 字节数组: " + file);
+                Log.e(TAG, "指定七牛服务上的文件名，或 null: " + qiniuKey + i);
+                Log.e(TAG, "从服务端SDK获取: " + qiniuToken);
+                Log.e(TAG, "http://ono5ms5i0.bkt.clouddn.com/" + qiniuKey + i);
+
+                upload(file, qiniuKey + i, qiniuToken);
+            }
+        }, "android");
+    }
+
+    private Configuration config = new Configuration.Builder()
+            .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
+            .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
+            .connectTimeout(10) // 链接超时。默认10秒
+            .responseTimeout(60) // 服务器响应超时。默认60秒
+//            .zone(Zone.zone1) // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
+            .build();
+    // 重用uploadManager。一般地，只需要创建一个uploadManager对象
+    UploadManager uploadManager = new UploadManager(config);
+
+    private void upload(final String data, final String key, final String token) {
+        new Thread() {
+            public void run() {
+                uploadManager.put(data, key, token,
+                        (key1, info, res) -> {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                Log.i("qiniu", "Upload Success");
+                                Glide.with(BankAccountNumberAddActivity.this)
+                                        .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
+                                        .crossFade()
+                                        .into(identityImage);
+                                imageUrl = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
+                            } else {
+                                Log.i("qiniu", "Upload Fail");
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                            }
+                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
+
+                        }, null);
+            }
+        }.start();
+    }
+
 }
