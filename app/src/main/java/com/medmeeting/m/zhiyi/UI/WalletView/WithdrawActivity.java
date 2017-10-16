@@ -162,9 +162,11 @@ public class WithdrawActivity extends AppCompatActivity {
                             ToastUtils.show(WithdrawActivity.this, httpResult3.getMsg());
                             return;
                         }
+                        ToastUtils.show(WithdrawActivity.this, httpResult3.getMsg());
                         Intent i = new Intent(WithdrawActivity.this, WithdrawStatusActivity.class);
                         i.putExtra("amount",  amount.getText().toString().trim());
                         startActivity(i);
+                        finish();
                     }
                 }, extractEntity);
                 break;

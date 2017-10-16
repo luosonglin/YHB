@@ -11,7 +11,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -126,7 +125,6 @@ public class BrowserActivity extends AppCompatActivity {
                 return true;
             }
         });
-        Log.e("dddd", url);
         mWebView.loadUrl(url);
     }
 

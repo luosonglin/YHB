@@ -60,6 +60,8 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
     LinearLayout identityRlyt;
     @Bind(R.id.identity_image_lyt)
     LinearLayout identityImageLyt;
+    @Bind(R.id.accountName0)
+    TextView accountName0;
 
     private WalletAccountDto walletAccountDto = null;
     // timer
@@ -91,8 +93,10 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
             tip.setText("请先绑定公司的支付宝帐号");
             identityRlyt.setVisibility(View.GONE);
             identityImageLyt.setVisibility(View.GONE);
+            accountName0.setText("收款方");
         } else if (getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
             tip.setText("请先绑定个人的支付宝帐号");
+            accountName0.setText("姓名");
         }
     }
 
@@ -104,10 +108,10 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
         } else if (accountNumber.getText().toString().trim().equals("")) {
             ToastUtils.show(AlipayAccountAddActivity.this, "请输入支付宝账号／手机号码");
             return;
-        } else if (identityNumber.getText().toString().trim().equals("")) {
+        } else if (identityNumber.getText().toString().trim().equals("") && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
             ToastUtils.show(AlipayAccountAddActivity.this, "请输入身份证号");
             return;
-        } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon))) {
+        } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon)) && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
             ToastUtils.show(AlipayAccountAddActivity.this, "请上传身份证正面照");
             return;
         } else {
@@ -223,6 +227,7 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
     private String qiniuKey;
     private String qiniuToken;
     private String images = "";
+
     private void getQiniuToken(final String file) {
         HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
             @Override

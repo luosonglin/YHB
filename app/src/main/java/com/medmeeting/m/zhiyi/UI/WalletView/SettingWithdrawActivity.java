@@ -147,7 +147,7 @@ public class SettingWithdrawActivity extends AppCompatActivity {
             case R.id.alipay_private_rlyt:
                 if (alipayAddPrivateStatus.getText().toString().equals("已添加")) {
                     intent = new Intent(SettingWithdrawActivity.this, AlipayAccountModifyActivity.class);
-                    intent.putExtra("walletAccount", publicAlipay);
+                    intent.putExtra("walletAccount", privateAlipay);
                 } else {
                     intent = new Intent(SettingWithdrawActivity.this, AlipayAccountAddActivity.class);
                     intent.putExtra("publicPrivateType", "PRIVATE");

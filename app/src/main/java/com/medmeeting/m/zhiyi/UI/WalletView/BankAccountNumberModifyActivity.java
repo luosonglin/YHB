@@ -64,6 +64,8 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
     LinearLayout identityRlyt;
     @Bind(R.id.identity_image_lyt)
     LinearLayout identityImageLyt;
+    @Bind(R.id.accountName0)
+    TextView accountName0;
 
     private WalletAccountDto walletAccountDto = null;
     // timer
@@ -123,7 +125,9 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
         if (walletAccountDto.getPublicPrivateType().equals("PUBLIC")) {
             identityRlyt.setVisibility(View.GONE);
             identityImageLyt.setVisibility(View.GONE);
+            accountName0.setText("账户名称");
         } else {
+            accountName0.setText("姓名");
             identityNumber.setText(walletAccountDto.getIdentityNumber());
             imageUrl = walletAccountDto.getIdentityImage();
             Glide.with(BankAccountNumberModifyActivity.this)

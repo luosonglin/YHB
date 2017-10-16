@@ -63,6 +63,10 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
     LinearLayout identityRlyt;
     @Bind(R.id.identity_image_lyt)
     LinearLayout identityImageLyt;
+    @Bind(R.id.accountName0)
+    TextView accountName0;
+    @Bind(R.id.confirm)
+    TextView confirm;
 
     // timer
     private CountDownTimer timer = new CountDownTimer(60000, 1000) {
@@ -79,7 +83,7 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
         }
     };
 
-    private String imageUrl="";
+    private String imageUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +96,10 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
             tip.setText("请先绑定公司的银行卡");
             identityRlyt.setVisibility(View.GONE);
             identityImageLyt.setVisibility(View.GONE);
+            accountName0.setText("账户名称");
         } else if (getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
             tip.setText("请先绑定个人的银行卡");
+            accountName0.setText("姓名");
         }
     }
 
@@ -114,10 +120,10 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
         } else if (mobilePhone.getText().toString().trim().equals("")) {
             ToastUtils.show(BankAccountNumberAddActivity.this, "请输入手机号");
             return;
-        } else if (identityNumber.getText().toString().trim().equals("")) {
+        } else if (identityNumber.getText().toString().trim().equals("") && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
             ToastUtils.show(BankAccountNumberAddActivity.this, "请输入身份证号");
             return;
-        } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon))) {
+        } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon)) && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
             ToastUtils.show(BankAccountNumberAddActivity.this, "请上传身份证正面照");
             return;
         } else {
@@ -128,7 +134,7 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
             bankCard.setAccountNumber(accountNumber.getText().toString().trim());
             bankCard.setMobilePhone(mobilePhone.getText().toString().trim());
             bankCard.setIdentityNumber(identityNumber.getText().toString().trim());
-            bankCard.setIdentityImage(imageUrl+"");
+            bankCard.setIdentityImage(imageUrl + "");
             bankCard.setVerCode(code.getText().toString().trim());
             bankCard.setPublicPrivateType(getIntent().getStringExtra("publicPrivateType"));
 
@@ -245,6 +251,7 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
     private String qiniuKey;
     private String qiniuToken;
     private String images = "";
+
     private void getQiniuToken(final String file) {
         HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
             @Override

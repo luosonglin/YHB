@@ -241,6 +241,9 @@
         <activity
             android:name=".UI.OtherVIew.BrowserActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".UI.WalletView.RecordActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".UI.WalletView.MyWalletActivity"
@@ -256,6 +259,7 @@
         <activity android:name=".UI.WalletView.WalletPasswordForgetActivity" />
         <activity android:name=".UI.WalletView.WithdrawActivity" />
         <activity android:name=".UI.WalletView.ExtractTypeActivity" />
+        <activity android:name=".UI.WalletView.WithdrawStatusActivity" />
         <activity android:name=".UI.WalletView.BankListActivity" />
         <activity
             android:name=".UI.LiveView.VideoDetailActivity"

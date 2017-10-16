@@ -60,6 +60,8 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
     ImageView identityImage;
     @Bind(R.id.identity_image_lyt)
     LinearLayout identityImageLyt;
+    @Bind(R.id.accountName0)
+    TextView accountName0;
 
     private WalletAccountDto walletAccountDto = null;
     // timer
@@ -96,7 +98,9 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
         if (walletAccountDto.getPublicPrivateType().equals("PUBLIC")) {
             identityRlyt.setVisibility(View.GONE);
             identityImageLyt.setVisibility(View.GONE);
+            accountName0.setText("收款方");
         } else {
+            accountName0.setText("姓名");
             identityNumber.setText(walletAccountDto.getIdentityNumber());
             imageUrl = walletAccountDto.getIdentityImage();
             Glide.with(AlipayAccountModifyActivity.this)

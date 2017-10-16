@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.Data.APi;
 
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
@@ -13,6 +14,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
@@ -24,7 +26,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordForgetDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
-import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -190,4 +191,11 @@ public interface APILiveService {
     @POST("/v1/user/wallet/finance")
     Observable<HttpResult3> withdraw(@Body ExtractEntity extractEntity);
 
+    //GET /v1/anchor/livePay/{programId}/settlement 获取直播节目的结算信息
+    @GET("/v1/anchor/livePay/{programId}/settlement")
+    Observable<HttpResult3<Object, LiveSettlementEntity>> getLiveSettlement(@Path("programId") Integer programId);
+
+    //POST /v1/anchor/livePay/{programId}/settlement 新增直播节目结算
+    @POST("/v1/anchor/livePay/{programId}/settlement")
+    Observable<HttpResult3> postLiveSettlement(@Path("programId") Integer programId);
 }
