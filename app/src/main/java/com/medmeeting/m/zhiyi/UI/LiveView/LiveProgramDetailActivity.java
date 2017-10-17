@@ -16,9 +16,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -41,7 +38,9 @@ import com.alipay.sdk.app.PayTask;
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
@@ -61,14 +60,9 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 
-import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -83,21 +77,14 @@ import rx.Observer;
 public class LiveProgramDetailActivity extends AppCompatActivity {
     private static final String TAG = LiveProgramDetailActivity.class.getSimpleName();
     private Toolbar toolbar;
-//    private ImageView shareIv;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private Context context = this;
-    private ScrollView scrollView;
     //背景图
     private ImageView imageView;
+    private ScrollView scrollView;
     private TextView titleTv, userNameTv;
     //观看
     private TextView watchTv;
-
-    // 记录首次按下位置
-    private float mFirstPosition = 0;
-    // 是否正在放大
-    private Boolean mScaling = false;
 
     private DisplayMetrics metric;
 
@@ -190,24 +177,21 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, mPermissionList, 123);
         }
 
-        mShareListener = new LiveProgramDetailActivity.CustomShareListener(this);
+        mShareListener = new CustomShareListener(this);
         /*增加自定义按钮的分享面板*/
         mShareAction = new ShareAction(LiveProgramDetailActivity.this)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                        UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + roomId);
-                        web.setTitle(title);//标题
+                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + roomId);
+                    web.setTitle(title);//标题
 //                        web.setThumb(new UMImage(LiveProgramDetailActivity.this, phone));  //缩略图
-                        web.setDescription(description);//描述
-                        new ShareAction(LiveProgramDetailActivity.this)
-                                .withMedia(web)
-                                .setPlatform(share_media)
-                                .setCallback(mShareListener)
-                                .share();
-                    }
+                    web.setDescription(description);//描述
+                    new ShareAction(LiveProgramDetailActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
                 });
     }
 
@@ -219,47 +203,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
     private UMShareListener mShareListener;
     private ShareAction mShareAction;
-
-    private static class CustomShareListener implements UMShareListener {
-
-        private WeakReference<LiveProgramDetailActivity> mActivity;
-
-        private CustomShareListener(LiveProgramDetailActivity activity) {
-            mActivity = new WeakReference(activity);
-        }
-
-        @Override
-        public void onStart(SHARE_MEDIA share_media) {
-
-        }
-
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-
-            if (platform.name().equals("WEIXIN_FAVORITE")) {
-                Toast.makeText(mActivity.get(),"收藏成功", Toast.LENGTH_SHORT).show();
-            } else {
-                if (platform != SHARE_MEDIA.MORE) {
-                    Toast.makeText(mActivity.get(), "分享成功", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            if (platform != SHARE_MEDIA.MORE) {
-                Toast.makeText(mActivity.get(),"分享失败啦~~ \n" + t.getMessage(), Toast.LENGTH_SHORT).show();
-                if (t != null) {
-                    com.umeng.socialize.utils.Log.e(TAG, "umeng throw:" + t.getMessage());
-                }
-            }
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(mActivity.get(), "分享取消", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -333,18 +276,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         liveDtoHttpResult3.getEntity().getAuthorTitle(),
                         getIntent().getExtras().getString("userPic"),
                         liveDtoHttpResult3.getEntity().getDes());
-
-//                switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
-//                    case "ready":
-//                        break;
-//                    case "play":
-//                        break;
-//                    case "wait":
-//                        break;
-//                    case "end":
-//                        break;
-//                }
-
                 watchTv.setVisibility(View.VISIBLE);
 
                 if ("yes".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
@@ -352,47 +283,51 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                         watchTv.setText("支付" + amount + "元观看");
                         watchTv.setOnClickListener(view -> initPopupwindow());
                     } else if (payFlag > 0) { //大于0:已购票
-                        if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("play")) {
+                        switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
+                            case "play":
+                                watchTv.setText("观看");
+                                watchTv.setOnClickListener(view -> {
+                                    try {
+                                        audienceUserName = DBUtils.get(LiveProgramDetailActivity.this, "userName");
+                                        audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
+                                        Log.e(TAG, "haha" + audienceUserName + " " + audienceUserNickName);
+
+                                        if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
+                                        } else {
+                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
+                                        }
+                                    } catch (SnappydbException e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+                                        intent.putExtra("rtmpPlayUrl", url);
+                                        intent.putExtra("programId", programId);
+                                        startActivity(intent);
+                                    }
+                                });
+                                break;
+                            case "ready":
+                                watchTv.setText("准备中");
+                                break;
+                            case "wait":
+                                watchTv.setText("主播已离开");
+                                break;
+                            case "end":
+                                watchTv.setText("已结束");
+                                break;
+                        }
+                    }
+
+                } else if ("no".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
+                    switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
+                        case "play":
                             watchTv.setText("观看");
                             watchTv.setOnClickListener(view -> {
                                 try {
                                     audienceUserName = DBUtils.get(LiveProgramDetailActivity.this, "userName");
                                     audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
-                                    Log.e(TAG, "haha" + audienceUserName +" "+audienceUserNickName);
-
-                                    if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
-                                    } else {
-                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
-                                    }
-                                } catch (SnappydbException e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                                    intent.putExtra("rtmpPlayUrl", url);
-                                    intent.putExtra("programId", programId);
-                                    startActivity(intent);
-                                }
-                            });
-                        } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("ready")) {
-                            watchTv.setText("准备中");
-                        } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("wait")) {
-                            watchTv.setText("主播已离开");
-                        } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("end")) {
-                            watchTv.setText("已结束");
-                        }
-                    }
-
-                } else if ("no".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
-                    if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("play")) {
-                        watchTv.setText("观看");
-                        watchTv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                try {
-                                    audienceUserName = DBUtils.get(LiveProgramDetailActivity.this, "userName");
-                                    audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
-                                    Log.e(TAG, "haha" + audienceUserName +" "+audienceUserNickName);
+                                    Log.e(TAG, "haha" + audienceUserName + " " + audienceUserNickName);
 
                                     if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
                                         loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
@@ -407,14 +342,17 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                     intent.putExtra("programId", programId);
                                     startActivity(intent);
                                 }
-                            }
-                        });
-                    } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("ready")) {
-                        watchTv.setText("准备中");
-                    } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("wait")) {
-                        watchTv.setText("主播已离开");
-                    } else if (liveDtoHttpResult3.getEntity().getLiveStatus().equals("end")) {
-                        watchTv.setText("已结束");
+                            });
+                            break;
+                        case "ready":
+                            watchTv.setText("准备中");
+                            break;
+                        case "wait":
+                            watchTv.setText("主播已离开");
+                            break;
+                        case "end":
+                            watchTv.setText("已结束");
+                            break;
                     }
                 }
 
@@ -422,7 +360,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 Glide.with(LiveProgramDetailActivity.this)
                         .load(liveDtoHttpResult3.getEntity().getCoverPhoto())
                         .crossFade()
-//                        .placeholder(R.mipmap.live_background)
                         .into(imageView);
             }
         }, getIntent().getExtras().getInt("programId"));
@@ -446,53 +383,14 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(ViewPager viewPager, Integer roomId, String name, String hospital, String userPic, String detail) {
-        LiveProgramDetailActivity.IndexChildAdapter mIndexChildAdapter = new LiveProgramDetailActivity.IndexChildAdapter(LiveProgramDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
+        IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(LiveProgramDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
-        mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(name, hospital, userPic, detail), "直播详情");
+        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance("haa"), "评论");
+        mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(name, hospital, userPic, detail), "详情");
         mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "相关视频");
-        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance("haa"), "TA的直播");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);
-    }
-
-    public class IndexChildAdapter extends FragmentPagerAdapter {
-
-        private final List<Fragment> mFragments = new ArrayList<>();
-        private final List<String> mFragmentTitles = new ArrayList<>();
-
-        public IndexChildAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragments.add(fragment);
-            mFragmentTitles.add(title);
-//            if("待确认".equals(title)) {
-//                TrackerUtils.sendUvLog(getActivity(), "3");
-//            } else if ("已确认".equals(title)) {
-//                TrackerUtils.sendUvLog(getActivity(), "4");
-//            } else if ("配送中".equals(title)) {
-//                TrackerUtils.sendUvLog(getActivity(), "5");
-//            } else if ("所有".equals(title)) {
-//                TrackerUtils.sendUvLog(getActivity(), "6");
-//            }
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitles.get(position);
-        }
     }
 
     /**
