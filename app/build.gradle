@@ -180,6 +180,9 @@ dependencies {
 
     //statusbar 颜色
     compile 'com.githang:status-bar-compat:latest.integration'
+
+    //多功能的视频播放器
+    compile 'com.shuyu:GSYVideoPlayer:2.1.0'
 }
 //Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 //> com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException:

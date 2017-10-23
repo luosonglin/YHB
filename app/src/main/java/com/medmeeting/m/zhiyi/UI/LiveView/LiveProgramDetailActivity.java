@@ -39,6 +39,7 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
+import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -49,6 +50,13 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.medmeeting.m.zhiyi.Widget.video.LandLayoutVideo;
+import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
+import com.shuyu.gsyvideoplayer.listener.LockClickListener;
+import com.shuyu.gsyvideoplayer.utils.Debuger;
+import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.snappydb.SnappydbException;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -91,13 +99,19 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     private Integer programId = 0;
 
     //拉流地址
-    private String url;
+    private String url = "http://onmtzwa3g.bkt.clouddn.com/recordings/z1.yihuibao-test.yihuibao-test_20170926175549970_100169/1506500861_1506501520.m3u8";
 
     //payFalg (integer, optional): 是否购票 0:未购票，大于0:已购票 ,
     private Integer payFlag = 0;
 
     private String audienceUserName;
     private String audienceUserNickName;
+
+
+    LandLayoutVideo detailPlayer;
+    private boolean isPlay;
+    private boolean isPause;
+    private OrientationUtils orientationUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,8 +154,133 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
     private void initPlayer()
     {
+        detailPlayer = (LandLayoutVideo) findViewById(R.id.detail_player);
+
+        //增加封面
+        ImageView imageView1 = new ImageView(this);
+        imageView1.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView1.setImageResource(R.mipmap.haha);
+//        imageView1.setImageURI(Uri.parse(imageUrl));
+
+        resolveNormalVideoUI();
+
+        //外部辅助的旋转，帮助全屏
+        orientationUtils = new OrientationUtils(this, detailPlayer);
+        //初始化不打开外部的旋转
+        orientationUtils.setEnable(false);
+
+        GSYVideoOptionBuilder gsyVideoOption = new GSYVideoOptionBuilder();
+        gsyVideoOption.setThumbImageView(imageView1)
+                .setIsTouchWiget(true)
+                .setRotateViewAuto(false)
+                .setLockLand(false)
+                .setShowFullAnimation(false)
+                .setNeedLockFull(true)
+                .setSeekRatio(1)
+                .setUrl(url)
+                .setCacheWithPlay(false)
+                .setVideoTitle(getIntent().getExtras().getString("title"))
+                .setStandardVideoAllCallBack(new SampleListener() {
+                    @Override
+                    public void onPrepared(String url, Object... objects) {
+                        Debuger.printfError("***** onPrepared **** " + objects[0]);
+                        Debuger.printfError("***** onPrepared **** " + objects[1]);
+                        super.onPrepared(url, objects);
+                        //开始播放了才能旋转和全屏
+                        orientationUtils.setEnable(true);
+                        isPlay = true;
+                    }
+
+                    @Override
+                    public void onEnterFullscreen(String url, Object... objects) {
+                        super.onEnterFullscreen(url, objects);
+                        Debuger.printfError("***** onEnterFullscreen **** " + objects[0]);//title
+                        Debuger.printfError("***** onEnterFullscreen **** " + objects[1]);//当前全屏player
+                    }
+
+                    @Override
+                    public void onAutoComplete(String url, Object... objects) {
+                        super.onAutoComplete(url, objects);
+                    }
+
+                    @Override
+                    public void onClickStartError(String url, Object... objects) {
+                        super.onClickStartError(url, objects);
+                    }
+
+                    @Override
+                    public void onQuitFullscreen(String url, Object... objects) {
+                        super.onQuitFullscreen(url, objects);
+                        Debuger.printfError("***** onQuitFullscreen **** " + objects[0]);//title
+                        Debuger.printfError("***** onQuitFullscreen **** " + objects[1]);//当前非全屏player
+                        if (orientationUtils != null) {
+                            orientationUtils.backToProtVideo();
+                        }
+                    }
+                })
+                .setLockClickListener(new LockClickListener() {
+                    @Override
+                    public void onClick(View view, boolean lock) {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
+                        }
+                    }
+                }).build(detailPlayer);
+
+        detailPlayer.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //直接横屏
+                orientationUtils.resolveByClick();
+
+                //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
+                detailPlayer.startWindowFullscreen(LiveProgramDetailActivity.this, true, true);
+            }
+        });
 
     }
+
+    /**
+     * 屏幕横竖屏切换时避免出现window leak的问题
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mShareAction.close();
+        //如果旋转了就全屏
+        if (isPlay && !isPause) {
+            detailPlayer.onConfigurationChanged(this, newConfig, orientationUtils);
+        }
+    }
+
+
+    private void resolveNormalVideoUI() {
+        //增加title
+        detailPlayer.getTitleTextView().setVisibility(View.GONE);
+        detailPlayer.getBackButton().setVisibility(View.GONE);
+    }
+
+    private GSYVideoPlayer getCurPlay() {
+        if (detailPlayer.getFullWindowPlayer() != null) {
+            return  detailPlayer.getFullWindowPlayer();
+        }
+        return detailPlayer;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (orientationUtils != null) {
+            orientationUtils.backToProtVideo();
+        }
+
+        if (StandardGSYVideoPlayer.backFromWindowFull(this)) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
     /**
      * 菜单栏 修改器下拉刷新模式
      */
@@ -217,20 +356,33 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        getCurPlay().onVideoPause();
+        super.onPause();
+        isPause = true;
+    }
+
+    @Override
+    protected void onResume() {
+        getCurPlay().onVideoResume();
+        super.onResume();
+        isPause = false;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         //内存泄漏，在使用分享或者授权的Activity中，重写onDestory()方法：
         UMShareAPI.get(this).release();
+
+        if (isPlay) {
+            getCurPlay().release();
+        }
+        //GSYPreViewManager.instance().releaseMediaPlayer();
+        if (orientationUtils != null)
+            orientationUtils.releaseListener();
     }
 
-    /**
-     * 屏幕横竖屏切换时避免出现window leak的问题
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mShareAction.close();
-    }
 
     private void initView(String coverPhoto, String title, final String userName) {
         //直播间封面
@@ -356,11 +508,11 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                     }
                 }
 
-
                 Glide.with(LiveProgramDetailActivity.this)
                         .load(liveDtoHttpResult3.getEntity().getCoverPhoto())
                         .crossFade()
                         .into(imageView);
+
             }
         }, getIntent().getExtras().getInt("programId"));
     }
