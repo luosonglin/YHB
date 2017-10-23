@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveIndexTabFragment2;
 
 import java.util.ArrayList;
 import java.util.List;

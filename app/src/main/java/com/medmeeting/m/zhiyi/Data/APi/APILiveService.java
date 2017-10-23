@@ -27,12 +27,15 @@ import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordForgetDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
 
+import java.util.Map;
+
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 import rx.Observable;
 
 /**
@@ -145,6 +148,9 @@ public interface APILiveService {
     @GET("/v1/anchor/{roomId}/liveProgram/{programId}")
     Observable<HttpResult3<Object, LiveDto>> getProgramDetail(@Path("programId") Integer programId);
 
+    /**
+     * 财务
+     */
     //此API无可奈何，因后端无法收到支付宝回调
     //PUT /v1/payment/record/tradeStatus/{tradeId} 更新订单流水的交易状态
     @PUT("/v1/payment/record/tradeStatus/{tradeId}")
@@ -198,4 +204,11 @@ public interface APILiveService {
     //POST /v1/anchor/livePay/{programId}/settlement 新增直播节目结算
     @POST("/v1/anchor/livePay/{programId}/settlement")
     Observable<HttpResult3> postLiveSettlement(@Path("programId") Integer programId);
+
+    /**
+     * 回播
+     */
+    //直播-公开-直播标签房间节目 GET /v1/open/liveLabel 获取直播标签列表 获取直播分类标签
+    @GET("v1/open/liveLabel")
+    Observable<HttpResult3<TagDto, Object>> getVideoTags(@QueryMap Map<String, Integer> map);
 }

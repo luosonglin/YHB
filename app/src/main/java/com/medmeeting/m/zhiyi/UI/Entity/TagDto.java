@@ -15,6 +15,20 @@ public class TagDto {
     private int useCount;
     private int searchCount;
     private int sort;
+    private String iconUrl;
+
+    public TagDto(String labelName, String iconUrl) {
+        this.labelName = labelName;
+        this.iconUrl = iconUrl;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
 
     public int getId() {
         return id;
