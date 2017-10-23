@@ -3,7 +3,6 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -48,7 +47,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -165,21 +163,15 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setIcon(getResources().getDrawable(R.mipmap.logo))
                         .setMessage("选择您想要直播的时间")
-                        .setNegativeButton("马上直播", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                expectType = "liveNow";
-                                startTime.setText("现在直播");
-                                endTime.setText("");
-                                expectBeginTime = System.currentTimeMillis();
-                            }
+                        .setNegativeButton("马上直播", (dialogInterface, i) -> {
+                            expectType = "liveNow";
+                            startTime.setText("现在直播");
+                            endTime.setText("");
+                            expectBeginTime = System.currentTimeMillis();
                         })
-                        .setPositiveButton("预约时间", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                expectType = "expect";
-                                showDateTimePopupwindow("START");
-                            }
+                        .setPositiveButton("预约时间", (dialogInterface, i) -> {
+                            expectType = "expect";
+                            showDateTimePopupwindow("START");
                         })
                         .show();
                 break;
@@ -203,31 +195,27 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 charge.setTextColor(getResources().getColor(R.color.white));
                 chargeAmount.setVisibility(View.VISIBLE);
                 final EditText et = new EditText(this);
-//                et.setInputType(EditorInfo.TYPE_CLASS_PHONE);
                 et.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);//弹出数字键盘，只能输入数字
                 new AlertDialog.Builder(this)
                         .setTitle("")
                         .setIcon(R.mipmap.logo)
                         .setMessage("填写金额")
                         .setView(et)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String amount = et.getText().toString();
-                                if (amount.equals("")) {
-                                    Toast.makeText(getApplicationContext(), "金额不能为空，请重新设定" + amount, Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-
-                                Log.e(TAG, "eee1 " + amount + amount.matches(regEx));
-                                if (Float.parseFloat(amount) == 0) {
-                                    ToastUtils.show(LiveBuildProgramActivity.this, "金额不能为0，请重新设定");
-                                    return;
-                                }
-                                chargeAmount.setText("费用： " + amount + "元");
-                                chargeType = "yes";
-                                price = amount;
+                        .setPositiveButton("确定", (dialogInterface, i) -> {
+                            String amount = et.getText().toString();
+                            if (amount.equals("")) {
+                                Toast.makeText(getApplicationContext(), "金额不能为空，请重新设定" + amount, Toast.LENGTH_LONG).show();
+                                return;
                             }
+
+                            Log.e(TAG, "eee1 " + amount + amount.matches(regEx));
+                            if (Float.parseFloat(amount) == 0) {
+                                ToastUtils.show(LiveBuildProgramActivity.this, "金额不能为0，请重新设定");
+                                return;
+                            }
+                            chargeAmount.setText("费用： " + amount + "元");
+                            chargeType = "yes";
+                            price = amount;
                         })
                         .setNegativeButton("取消", null)
                         .show();
@@ -247,61 +235,62 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 privacyType = "private";
                 break;
             case R.id.buildllyt:
-                vidoTitle = theme.getText().toString().trim();
-                authorName = name.getText().toString().trim();
-                authorTitle = title.getText().toString().trim();
-                vidoDesc = introduction.getText().toString().trim();
-                if (vidoTitle.equals("")) {
-                    ToastUtils.show(LiveBuildProgramActivity.this, "请填写节目主题");
-                    return;
-                }
-                if (authorName.equals("")) {
-                    ToastUtils.show(LiveBuildProgramActivity.this, "请填写主讲人姓名");
-                    return;
-                }
-                if (authorTitle.equals("")) {
-                    ToastUtils.show(LiveBuildProgramActivity.this, "请填写主讲人职称");
-                    return;
-                }
-                if (vidoDesc.equals("")) {
-                    ToastUtils.show(LiveBuildProgramActivity.this, "请填写直播节目介绍");
-                    return;
-                }
-                LiveDto liveDto = new LiveDto(vidoTitle, videoPhoto, expectBeginTime, expectEndTime, authorName, authorTitle, privacyType, chargeType, Float.parseFloat(price), vidoDesc);
-                buildllyt.setClickable(false);
-                HttpData.getInstance().HttpDataAddLiveProgram(new Observer<HttpResult3>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.e(TAG, "onCompleted");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e.getMessage()
-                                + "\n" + e.getCause()
-                                + "\n" + e.getLocalizedMessage()
-                                + "\n" + e.getStackTrace());
-                    }
-
-                    @Override
-                    public void onNext(HttpResult3 httpResult3) {
-                        if ("success".equals(httpResult3.getStatus())) {
-//                            startActivity(new Intent(LiveBuildProgramActivity.this, MyLiveRoomActivity.class));
-                            finish();
-                            buildllyt.setClickable(false);
-                        } else {
-                            ToastUtils.show(LiveBuildProgramActivity.this, httpResult3.getMsg());
-                            buildllyt.setClickable(true);
-                            if (httpResult3.getMsg().equals("invalid_token")) {
-                                ToastUtils.show(LiveBuildProgramActivity.this, "账号有问题，请测试人员重新登录");
-                                startActivity(new Intent(LiveBuildProgramActivity.this, LoginActivity.class));
-                                finish();
-                            }
-                        }
-                    }
-                }, getIntent().getExtras().getInt("roomId"), liveDto);
+                BuildNewLiveProgramService();
                 break;
         }
+    }
+
+    private void BuildNewLiveProgramService() {
+        vidoTitle = theme.getText().toString().trim();
+        authorName = name.getText().toString().trim();
+        authorTitle = title.getText().toString().trim();
+        vidoDesc = introduction.getText().toString().trim();
+        if (vidoTitle.equals("")) {
+            ToastUtils.show(LiveBuildProgramActivity.this, "请填写节目主题");
+            return;
+        }
+        if (authorName.equals("")) {
+            ToastUtils.show(LiveBuildProgramActivity.this, "请填写主讲人姓名");
+            return;
+        }
+        if (authorTitle.equals("")) {
+            ToastUtils.show(LiveBuildProgramActivity.this, "请填写主讲人职称");
+            return;
+        }
+        if (vidoDesc.equals("")) {
+            ToastUtils.show(LiveBuildProgramActivity.this, "请填写直播节目介绍");
+            return;
+        }
+        LiveDto liveDto = new LiveDto(vidoTitle, videoPhoto, expectBeginTime, expectEndTime, authorName, authorTitle, privacyType, chargeType, Float.parseFloat(price), vidoDesc);
+        buildllyt.setClickable(false);
+        HttpData.getInstance().HttpDataAddLiveProgram(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3 httpResult3) {
+                if ("success".equals(httpResult3.getStatus())) {
+                    finish();
+                    buildllyt.setClickable(false);
+                } else {
+                    ToastUtils.show(LiveBuildProgramActivity.this, httpResult3.getMsg());
+                    buildllyt.setClickable(true);
+                    if (httpResult3.getMsg().equals("invalid_token")) {
+                        ToastUtils.show(LiveBuildProgramActivity.this, "账号有问题，请测试人员重新登录");
+                        startActivity(new Intent(LiveBuildProgramActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                }
+            }
+        }, getIntent().getExtras().getInt("roomId"), liveDto);
+        return;
     }
 
     @Override
@@ -319,10 +308,8 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         }
     }
 
-    private List<String> qiniuData = new ArrayList<>();
     private String qiniuKey;
     private String qiniuToken;
-    private String images = "";
 
     private void getQiniuToken(final String file) {
         HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
@@ -333,10 +320,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage());
             }
 
             @Override
@@ -446,13 +430,10 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         month = c.get(Calendar.MONTH)+1;  //Calendar.getInstance().get(Calendar.MONTH) 月份少1，因为Calendar api月份是从0开始计数的
         day = c.get(Calendar.DAY_OF_MONTH);
         Log.e(TAG, "begin " + year + "-" + month + "-" + day);
-        datePicker.init(year, month-1, day, new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                year = i;
-                month = i1 + 1;
-                day = i2;
-            }
+        datePicker.init(year, month-1, day, (datePicker1, i, i1, i2) -> {
+            year = i;
+            month = i1 + 1;
+            day = i2;
         });
 
         //以下为版本兼容
@@ -467,91 +448,75 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         }
         Log.e(TAG, "hour " + hour + " minute "+ minute);
 
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-                hour = i;
-                minute = i1;
-            }
+        timePicker.setOnTimeChangedListener((timePicker1, i, i1) -> {
+            hour = i;
+            minute = i1;
         });
 
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        confirm.setOnClickListener(v -> {
 
-                if ("START".equals(sign)) {
+            if ("START".equals(sign)) {
 
-                    startDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+                startDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
 
-                    //判断开始时间是否早于当前时间
-                    try {
-                        mStartDate = mSimpleDateFormat.parse(startDateTime + ":" + 59);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    currentDate = Calendar.getInstance().getTime();
-                    Log.e(TAG, "START " + startDateTime);
-                    Log.e(TAG, " " + mStartDate);
-                    Log.e(TAG, "  >>> " + currentDate);
+                //判断开始时间是否早于当前时间
+                try {
+                    mStartDate = mSimpleDateFormat.parse(startDateTime + ":" + 59);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                currentDate = Calendar.getInstance().getTime();
+                Log.e(TAG, "START " + startDateTime);
+                Log.e(TAG, " " + mStartDate);
+                Log.e(TAG, "  >>> " + currentDate);
 
-                    if (mStartDate.before(currentDate)) {
-                        ToastUtils.show(LiveBuildProgramActivity.this, "开始时间不能在当前时间之前，请重新设置");
+                if (mStartDate.before(currentDate)) {
+                    ToastUtils.show(LiveBuildProgramActivity.this, "开始时间不能在当前时间之前，请重新设置");
+                    return;
+                }
+                mLiveSettingPopupWindow.dismiss();
+                startTime.setText(startDateTime);
+                expectBeginTime = DateUtil.dateToLong(mStartDate);
+
+            } else if ("END".equals(sign)) {
+
+                if (!expectType.equals("liveNow")) {
+                    if (mStartDate == null) {
+                        ToastUtils.show(LiveBuildProgramActivity.this, "请先设置开始时间，再设置结束时间");
+                        mLiveSettingPopupWindow.dismiss();
                         return;
                     }
-                    mLiveSettingPopupWindow.dismiss();
-                    startTime.setText(startDateTime);
-//                    expectBeginTime = DateUtils.stringToLong(startDateTime, DateUtils.TYPE_01);
-                    expectBeginTime = DateUtil.dateToLong(mStartDate);
-
-                } else if ("END".equals(sign)) {
-
-                    if (!expectType.equals("liveNow")) {
-                        if (mStartDate == null) {
-                            ToastUtils.show(LiveBuildProgramActivity.this, "请先设置开始时间，再设置结束时间");
-                            mLiveSettingPopupWindow.dismiss();
-                            return;
-                        }
-                    }
-                    endDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
-
-                    //判断结束时间是否早于开始时间
-                    try {
-                        mEndDate = mSimpleDateFormat.parse(endDateTime + ":" + 59);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    Log.e(TAG, "END " + endDateTime);
-                    Log.e(TAG, "END " + mStartDate);
-                    Log.e(TAG, "END " + "  >>> " + mEndDate);
-
-                    if (!expectType.equals("liveNow")) {
-                        if (mStartDate.after(mEndDate)) {
-                            ToastUtils.show(LiveBuildProgramActivity.this, "结束时间应该晚于开始时间，请重新设置");
-                            return;
-                        }
-                    }
-                    mLiveSettingPopupWindow.dismiss();
-                    endTime.setText(endDateTime);
-//                    expectEndTime = DateUtils.stringToLong(endDateTime, DateUtils.TYPE_01);
-                    expectEndTime = DateUtil.dateToLong(mEndDate);
                 }
-            }
-        });
+                endDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                //判断结束时间是否早于开始时间
+                try {
+                    mEndDate = mSimpleDateFormat.parse(endDateTime + ":" + 59);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e(TAG, "END " + endDateTime);
+                Log.e(TAG, "END " + mStartDate);
+                Log.e(TAG, "END " + "  >>> " + mEndDate);
+
+                if (!expectType.equals("liveNow")) {
+                    if (mStartDate.after(mEndDate)) {
+                        ToastUtils.show(LiveBuildProgramActivity.this, "结束时间应该晚于开始时间，请重新设置");
+                        return;
+                    }
+                }
                 mLiveSettingPopupWindow.dismiss();
+                endTime.setText(endDateTime);
+                expectEndTime = DateUtil.dateToLong(mEndDate);
             }
         });
 
-        popupDateTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mLiveSettingPopupWindow != null && mLiveSettingPopupWindow.isShowing()) {
-                    mLiveSettingPopupWindow.dismiss();
-                }
+        back.setOnClickListener(view -> mLiveSettingPopupWindow.dismiss());
+
+        popupDateTime.setOnClickListener(v -> {
+            if (mLiveSettingPopupWindow != null && mLiveSettingPopupWindow.isShowing()) {
+                mLiveSettingPopupWindow.dismiss();
             }
         });
 
@@ -569,9 +534,6 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -584,8 +546,6 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }

@@ -20,4 +20,6 @@
     <dimen name="heart_size_height">27.3dp</dimen>
     <dimen name="heart_size_width">32.5dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="toolbar_padding_top">0dp</dimen>
 </resources>

@@ -111,6 +111,8 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 getIntent().getExtras().getString("title"),
                 getIntent().getExtras().getString("coverPhote"),
                 "欢迎观看" + getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
+
+        initPlayer();
     }
 
     private void toolBar() {
@@ -134,9 +136,12 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
             }
             return true;
         });
-
     }
 
+    private void initPlayer()
+    {
+
+    }
     /**
      * 菜单栏 修改器下拉刷新模式
      */
@@ -255,10 +260,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage());
             }
 
             @Override
@@ -266,7 +268,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 Log.e(TAG, "onNext");
 
                 programId = liveDtoHttpResult3.getEntity().getId();
-                Log.e(TAG + "haha", programId + "");
                 url = liveDtoHttpResult3.getEntity().getRtmpPlayUrl();
                 amount = liveDtoHttpResult3.getEntity().getPrice();
                 payFlag = liveDtoHttpResult3.getEntity().getPayFalg();
@@ -290,7 +291,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                     try {
                                         audienceUserName = DBUtils.get(LiveProgramDetailActivity.this, "userName");
                                         audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
-                                        Log.e(TAG, "haha" + audienceUserName + " " + audienceUserNickName);
 
                                         if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
                                             loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);

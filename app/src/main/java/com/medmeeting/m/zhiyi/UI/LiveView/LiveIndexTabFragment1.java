@@ -95,7 +95,13 @@ public class LiveIndexTabFragment1 extends Fragment
         mTitleTv = (TextView) mHeaderView.findViewById(R.id.title);
         mUserTv = (TextView) mHeaderView.findViewById(R.id.user);
         mTimeTv = (TextView) mHeaderView.findViewById(R.id.time);
+        getLivesService();
 
+
+        return view;
+    }
+
+    private void getLivesService() {
         //请求网络数据
         HttpData.getInstance().HttpDataGetAllLives(new Observer<HttpResult3<LiveDto, Object>>() {
             @Override
@@ -143,10 +149,13 @@ public class LiveIndexTabFragment1 extends Fragment
                             mStatusTv.setBackground(getResources().getDrawable(R.color.grey1));
                             break;
                     }
-                    if (firstData.getChargeType().equals("no")) {
-                        mPriceTv.setVisibility(View.GONE);
-                    } else if (firstData.getChargeType().equals("yes")) {
-                        mPriceTv.setText("¥ " + firstData.getPrice());
+                    switch (firstData.getChargeType()) {
+                        case "no":
+                            mPriceTv.setVisibility(View.GONE);
+                            break;
+                        case "yes":
+                            mPriceTv.setText("¥ " + firstData.getPrice());
+                            break;
                     }
                     Glide.with(getActivity())
                             .load(firstData.getUserPic())
@@ -177,8 +186,6 @@ public class LiveIndexTabFragment1 extends Fragment
                 Log.e(TAG, "onNext");
             }
         }, liveSearchDto2);
-
-        return view;
     }
 
     @Override
@@ -208,12 +215,15 @@ public class LiveIndexTabFragment1 extends Fragment
 
     @Override
     public void showLoadCompleteAllData() {
-
+        //所有数据加载完成后显示
+        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
+        mQuickAdapter.addFooterView(view);
     }
 
     @Override
     public void showNoData() {
-
+        springView.onFinishFreshAndLoad();
     }
 
     @Override
@@ -223,7 +233,7 @@ public class LiveIndexTabFragment1 extends Fragment
 
     @Override
     public void onRefresh() {
-
+        getLivesService();
     }
 
     @Override

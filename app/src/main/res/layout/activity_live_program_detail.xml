@@ -98,12 +98,6 @@
                     android:textColor="@color/white"/>
             </RelativeLayout>
 
-            <com.pili.pldroid.player.widget.PLVideoTextureView
-                android:id="@+id/VideoView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="center" />
-
             <!--显示头部滑块-->
             <RelativeLayout
                 android:layout_width="match_parent"

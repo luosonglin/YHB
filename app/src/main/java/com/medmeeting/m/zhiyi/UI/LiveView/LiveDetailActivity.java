@@ -95,11 +95,17 @@ public class LiveDetailActivity extends AppCompatActivity {
 //        toolbar.setLogo(R.mipmap.ic_launcher);//设置logo
         getSupportActionBar().setTitle("");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.tab_icon_share_nor));
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.share:
+                    ShareBoardConfig config = new ShareBoardConfig();
+                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                    mShareAction.open(config);
+                    break;
             }
+            return false;
         });
     }
 
@@ -126,15 +132,15 @@ public class LiveDetailActivity extends AppCompatActivity {
 
             }
         });
-        shareIv = (ImageView) findViewById(R.id.share);
-        shareIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
-            }
-        });
+//        shareIv = (ImageView) findViewById(R.id.share);
+//        shareIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ShareBoardConfig config = new ShareBoardConfig();
+//                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+//                mShareAction.open(config);
+//            }
+//        });
         //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
         if (Build.VERSION.SDK_INT >= 23) {
             String[] mPermissionList = new String[]{

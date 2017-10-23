@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -37,16 +36,9 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
-import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,7 +76,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     private int userId;  //用户ID
     private String videoTitle = "";  //直播间标题
     private String videoLabel = "";  //直播间标题
-    private String videoLabelIds="";
+    private String videoLabelIds = "";
 
     private String videoDesc = "";  //直播间描述
     private String videoPhoto = "";  //直播间封面图片
@@ -106,12 +98,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -131,8 +118,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             case R.id.classify:
                 initTagsPopupWindow();
                 // 隐藏键盘
-//                ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(LiveBuildRoomActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                InputMethodManager imm = (InputMethodManager)getSystemService(
+                InputMethodManager imm = (InputMethodManager) getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(theme.getWindowToken(), 0);
                 imm.hideSoftInputFromWindow(introduction.getWindowToken(), 0);
@@ -201,39 +187,8 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         }
     }
 
-    private List<String> qiniuData = new ArrayList<>();
     private String qiniuKey;
     private String qiniuToken;
-    private String images = "";
-
-    /**
-     * 质量压缩法
-     *
-     * @param image
-     * @return
-     */
-    public byte[] compressImage(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-        int options = 100;
-        while (baos.toByteArray().length / 1024 > 250) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset();//重置baos即清空baos
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
-            options -= 10;//每次都减少10
-            if (options <= 10) {
-                break;
-            }
-        }
-        byte[] byteArray = baos.toByteArray();
-        try {
-            if (baos != null) {
-                baos.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return byteArray;
-    }
 
     private void getQiniuToken(final String file) {
         HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
@@ -244,10 +199,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage());
             }
 
             @Override
@@ -284,29 +236,27 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
 
     // 重用uploadManager。一般地，只需要创建一个uploadManager对象
     UploadManager uploadManager = new UploadManager(config);
+
     private void upload(final String data, final String key, final String token) {
         new Thread() {
             public void run() {
                 uploadManager.put(data, key, token,
-                        new UpCompletionHandler() {
-                            @Override
-                            public void complete(String key, ResponseInfo info, JSONObject res) {
-                                //res包含hash、key等信息，具体字段取决于上传策略的设置
-                                if (info.isOK()) {
-                                    Log.i("qiniu", "Upload Success");
-                                } else {
-                                    Log.i("qiniu", "Upload Fail");
-                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                                }
-                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-
-                                videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key;
+                        (key1, info, res) -> {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                Log.i("qiniu", "Upload Success");
+                            } else {
+                                Log.i("qiniu", "Upload Fail");
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
                             }
+                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
+
+                            videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
                         }, null);
             }
         }.start();
         Glide.with(LiveBuildRoomActivity.this)
-                .load("http://ono5ms5i0.bkt.clouddn.com/" + key +"/thumbnail/200x140")
+                .load("http://ono5ms5i0.bkt.clouddn.com/" + key + "/thumbnail/200x140")
                 .crossFade()
                 .into(new GlideDrawableImageViewTarget(livePic) {
                     @Override
@@ -345,10 +295,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
+                Log.e(TAG, "onError: " + e.getMessage());
             }
 
             @Override
@@ -360,7 +307,6 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         });
 
         // 创建PopupWindow对象，指定宽度和高度
-//                PopupWindow window = new PopupWindow(popupView, 400, 600);
         final PopupWindow window = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, 1600);
         // 设置动画
         window.setAnimationStyle(R.style.popup_window_anim);
@@ -378,52 +324,41 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         window.showAsDropDown(buildllyt, 0, 20);
 
         ImageView cancelIv = (ImageView) popupView.findViewById(R.id.cancel);
-        cancelIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                window.dismiss();
-            }
-        });
+        cancelIv.setOnClickListener(view -> window.dismiss());
 
         tags_confirm.clear();
-        videoLabelIds="";
-        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                TagDto tagDto = (TagDto) adapter.getItem(position);
-                switch (view.getId()) {
-                    case R.id.name:
-                        if (!tags_confirm.contains(tagDto)) {
-                            tags_confirm.add(tagDto);
-                            view.setBackgroundResource(R.drawable.textview_all_blue);
-                        } else {
-                            tags_confirm.remove(tagDto);
-                            view.setBackgroundResource(R.drawable.textview_radius_grey);
-                        }
-                        break;
-                }
+        videoLabelIds = "";
+        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener((adapter, view, position) -> {
+            TagDto tagDto = (TagDto) adapter.getItem(position);
+            switch (view.getId()) {
+                case R.id.name:
+                    if (!tags_confirm.contains(tagDto)) {
+                        tags_confirm.add(tagDto);
+                        view.setBackgroundResource(R.drawable.textview_all_blue);
+                    } else {
+                        tags_confirm.remove(tagDto);
+                        view.setBackgroundResource(R.drawable.textview_radius_grey);
+                    }
+                    break;
             }
         });
 
         TextView confirmTv = (TextView) popupView.findViewById(R.id.confirm_tag);
-        confirmTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tags_confirm.size() <= 3) {
-                    String classify = "";
-                    for (TagDto i : tags_confirm) {
-                        videoLabelIds += i.getId() +",";
-                        classify += " " + i.getLabelName();
-                        Log.e(TAG, i.getLabelName());
-                    }
-                    classifyTv.setText(classify);
-                    videoLabelIds = videoLabelIds.substring(0, videoLabelIds.length()-1);
-                    window.dismiss();
-                } else if (tags_confirm.size() == 0) {
-                    ToastUtils.show(LiveBuildRoomActivity.this, "请选择直播分类标签");
-                } else {
-                    ToastUtils.show(LiveBuildRoomActivity.this, "只能选3个标签，请重新筛选");
+        confirmTv.setOnClickListener(view -> {
+            if (tags_confirm.size() <= 3) {
+                String classify1 = "";
+                for (TagDto i : tags_confirm) {
+                    videoLabelIds += i.getId() + ",";
+                    classify1 += " " + i.getLabelName();
+                    Log.e(TAG, i.getLabelName());
                 }
+                classifyTv.setText(classify1);
+                videoLabelIds = videoLabelIds.substring(0, videoLabelIds.length() - 1);
+                window.dismiss();
+            } else if (tags_confirm.size() == 0) {
+                ToastUtils.show(LiveBuildRoomActivity.this, "请选择直播分类标签");
+            } else {
+                ToastUtils.show(LiveBuildRoomActivity.this, "只能选3个标签，请重新筛选");
             }
         });
     }
@@ -433,9 +368,6 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -448,8 +380,6 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
