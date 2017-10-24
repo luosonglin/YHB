@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.medmeeting.m.zhiyi.UI.LiveView.LiveDetailSummaryFragment">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp"
+        android:text="在直播是国内最大的手机视频直播平台，聚集着大量爱分享的年轻人，时刻直播正在发生的精彩生活。让手机摄像头一秒钟变成价值上百万的专业视频直播设备，轻松与全世界分享你的生活和情感。在这里，你就是明星。"
+        android:textSize="16sp"
+        android:textColor="@color/dimgrey"/>
+
+</LinearLayout>

@@ -61,19 +61,16 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 helper.setText(R.id.status, "结束");
                 break;
         }
-        helper.getView(R.id.image).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, LiveProgramDetailActivity.class);
+        helper.getView(R.id.image).setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, LiveProgramDetailActivity.class);
 //                Intent intent = new Intent(mContext, VideoDetailActivity.class);
-                intent.putExtra("authorName", item.getAuthorName());
-                intent.putExtra("userPic", item.getUserPic());
-                intent.putExtra("programId", item.getId());
-                intent.putExtra("roomId", item.getRoomId());
-                intent.putExtra("coverPhoto", item.getCoverPhoto());
-                intent.putExtra("title", item.getTitle());
-                mContext.startActivity(intent);
-            }
+            intent.putExtra("authorName", item.getAuthorName());
+            intent.putExtra("userPic", item.getUserPic());
+            intent.putExtra("programId", item.getId());
+            intent.putExtra("roomId", item.getRoomId());
+            intent.putExtra("coverPhoto", item.getCoverPhoto());
+            intent.putExtra("title", item.getTitle());
+            mContext.startActivity(intent);
         });
 
 

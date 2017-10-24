@@ -21,6 +21,9 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
@@ -211,4 +214,12 @@ public interface APILiveService {
     //直播-公开-直播标签房间节目 GET /v1/open/liveLabel 获取直播标签列表 获取直播分类标签
     @GET("v1/open/liveLabel")
     Observable<HttpResult3<TagDto, Object>> getVideoTags(@QueryMap Map<String, Integer> map);
+
+    //POST /v1/open/video/page 获取视频列表-分页
+    @POST("/v1/open/video/page")
+    Observable<HttpResult3<VideoListEntity, Object>> getVideos(@Body VideoListSearchEntity videoListSearchEntity);
+
+    //GET /v1/open/video/details/{videoId} 获取视频详情
+    @GET("/v1/open/video/details/{videoId}")
+    Observable<HttpResult3<Object, VideoDetailsEntity>> getVideoDetail(@Path("videoId") Integer videoId);
 }

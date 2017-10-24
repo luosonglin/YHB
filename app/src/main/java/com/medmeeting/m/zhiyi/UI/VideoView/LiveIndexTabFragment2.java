@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,12 +14,14 @@ import android.view.ViewGroup;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.VideoAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.VideoTagAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
@@ -72,7 +75,7 @@ public class LiveIndexTabFragment2 extends Fragment
         //设置页面为加载中..
 //        progress.showLoading();
         //设置适配器
-        mQuickAdapter = new LiveAdapter(R.layout.item_live, null);
+        mQuickAdapter = new VideoAdapter(R.layout.item_live, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
@@ -91,7 +94,7 @@ public class LiveIndexTabFragment2 extends Fragment
         mTagsRecyclerView.setAdapter(mTagsAdapter);
         getVideoTag();
 
-        getLivesService();
+        getVideos();
 
         return view;
     }
@@ -116,21 +119,22 @@ public class LiveIndexTabFragment2 extends Fragment
                     ToastUtils.show(getActivity(), tags.getMsg());
                     return;
                 }
-                List<TagDto> taglist = new ArrayList<TagDto>();
+                List<TagDto> taglist = new ArrayList<>();
                 taglist.addAll(tags.getData());
                 taglist.add(new TagDto("其他", "http://ovjdaa6w0.bkt.clouddn.com/icon_video_tag.png"));
                 mTagsAdapter.addData(taglist);
-                mTagsAdapter.setOnRecyclerViewItemClickListener((view, position) -> ToastUtils.show(getActivity(), position+""));
+                mTagsAdapter.setOnRecyclerViewItemClickListener((view, position) -> ToastUtils.show(getActivity(), position + ""));
             }
         }, options);
     }
 
-    private void getLivesService() {
-        //请求网络数据
-        HttpData.getInstance().HttpDataGetAllLives(new Observer<HttpResult3<LiveDto, Object>>() {
+
+    private void getVideos() {
+        VideoListSearchEntity searchEntity = new VideoListSearchEntity();
+        HttpData.getInstance().HttpDataGetVideos(new Observer<HttpResult3<VideoListEntity, Object>>() {
             @Override
             public void onCompleted() {
-                Log.e(TAG, "onCompleted");
+
             }
 
             @Override
@@ -143,13 +147,22 @@ public class LiveIndexTabFragment2 extends Fragment
             }
 
             @Override
-            public void onNext(HttpResult3<LiveDto, Object> data) {
-
+            public void onNext(HttpResult3<VideoListEntity, Object> videoListEntityObjectHttpResult3) {
+                if (!videoListEntityObjectHttpResult3.getStatus().equals("success")) {
+                    ToastUtils.show(getActivity(), videoListEntityObjectHttpResult3.getMsg());
+                    return;
+                }
                 mQuickAdapter.addHeaderView(mHeaderView);
-                mQuickAdapter.addData(data.getData());
-                Log.e(TAG, "onNext");
+                mQuickAdapter.addData(videoListEntityObjectHttpResult3.getData());
+                mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Intent i = new Intent(getActivity(), VideoDetailActivity.class);
+                    i.putExtra("videoId", videoListEntityObjectHttpResult3.getData().get(position).getVideoId());
+                    i.putExtra("title", videoListEntityObjectHttpResult3.getData().get(position).getTitle());
+                    i.putExtra("photo", videoListEntityObjectHttpResult3.getData().get(position).getCoverPhoto());
+                    startActivity(i);
+                });
             }
-        }, liveSearchDto2);
+        }, searchEntity);
     }
 
     @Override
@@ -197,7 +210,7 @@ public class LiveIndexTabFragment2 extends Fragment
 
     @Override
     public void onRefresh() {
-        getLivesService();
+        getVideos();
     }
 
     @Override

@@ -44,6 +44,9 @@ import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
@@ -459,6 +462,16 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetVideoTags(Observer<HttpResult3<TagDto, Object>> observer, Map<String, Integer> map) {
         Observable observable = service_live.getVideoTags(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetVideos(Observer<HttpResult3<VideoListEntity, Object>> observer, VideoListSearchEntity videoListSearchEntity) {
+        Observable observable = service_live.getVideos(videoListSearchEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetVideoDetail(Observer<HttpResult3<Object, VideoDetailsEntity>> observer, Integer videoId) {
+        Observable observable = service_live.getVideoDetail(videoId);
         setSubscribe(observable, observer);
     }
 
