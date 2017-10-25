@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,7 +42,7 @@ public class VideoDetailInfomationFragment extends Fragment {
     @Bind(R.id.author_name)
     TextView authorName;
     @Bind(R.id.like)
-    ImageView like;
+    RxShineButton like;
     @Bind(R.id.time)
     TextView time;
     @Bind(R.id.type)
@@ -106,12 +109,24 @@ public class VideoDetailInfomationFragment extends Fragment {
                 authorName.setText(data.getEntity().getAuthorName());
                 time.setText("时间：   "+ DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_06));
                 if (data.getEntity().getChargeType().equals("no")) {
-                    type.setText("观看：公开免费");
+                    type.setText("观看：   公开免费");
                 } else {
-                    type.setText("观看： ¥ " + data.getEntity().getPrice());
+                    type.setText("观看：    ¥ " + data.getEntity().getPrice());
                 }
-                sum.setText("观看 " +data.getEntity().getPlayCount() + "     收藏 " + data.getEntity().getCollectCount());
+                sum.setText("观看 " +data.getEntity().getPlayCount() + "      收藏 " + data.getEntity().getCollectCount());
                 des.setText(data.getEntity().getDes());
+
+                like.init(getActivity());
+                if (!data.getEntity().isCollectFlag()) {    //未收藏
+                    like.setBtnColor(Color.GRAY);
+                    like.setOnClickListener(view -> {
+                        ToastUtils.show(getActivity(), ""+data.getEntity().isCollectFlag());
+                        like.setChecked(true);//不能再点
+                        like.setBtnColor(Color.YELLOW);
+                    });
+                } else {
+                    like.setChecked(true);
+                }
             }
         }, videoId);
     }
