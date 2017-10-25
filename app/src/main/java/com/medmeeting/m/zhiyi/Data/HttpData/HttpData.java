@@ -10,10 +10,12 @@ import com.medmeeting.m.zhiyi.Data.APi.CacheProviders;
 import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
+import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -44,6 +46,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
@@ -52,7 +56,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordForgetDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
-import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.Util.FileUtil;
 
 import java.io.File;
@@ -475,6 +478,15 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataGetVideoComments(Observer<HttpResult3<VideoCommentUserEntity, Object>> observer, Integer videoId, BasePageSearchEntity basePageSearchEntity) {
+        Observable observable = service_live.getVideoComments(videoId, basePageSearchEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataAddComment(Observer<HttpResult3<Object, VideoComment>> observer, Integer videoId, String content) {
+        Observable observable = service_live.addComment(videoId, content);
+        setSubscribe(observable, observer);
+    }
     /**
      * 插入观察者
      *

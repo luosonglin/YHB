@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.Data.APi;
 
+import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
@@ -21,6 +22,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
@@ -222,4 +225,12 @@ public interface APILiveService {
     //GET /v1/open/video/details/{videoId} 获取视频详情
     @GET("/v1/open/video/details/{videoId}")
     Observable<HttpResult3<Object, VideoDetailsEntity>> getVideoDetail(@Path("videoId") Integer videoId);
+
+    //POST /v1/open/video/comment/page/{videoId} 获取视频评论一览
+    @POST("/v1/open/video/comment/page/{videoId}")
+    Observable<HttpResult3<VideoCommentUserEntity, Object>> getVideoComments(@Path("videoId") Integer videoId, @Body BasePageSearchEntity basePageSearchEntity);
+
+    //POST /v1/video/comment/add/{videoId} 视频评论-新增
+    @POST("/v1/video/comment/add/{videoId}")
+    Observable<HttpResult3<Object, VideoComment>> addComment(@Path("videoId") Integer videoId, @Body String content);
 }

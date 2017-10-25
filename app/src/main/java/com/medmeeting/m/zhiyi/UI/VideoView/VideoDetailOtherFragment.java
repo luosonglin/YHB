@@ -21,8 +21,8 @@ public class VideoDetailOtherFragment  extends Fragment {
     private TextView mSummaryTv;
     private static Integer videoId;
 
-    public static VideoDetailInfomationFragment newInstance(Integer classifys1) {
-        VideoDetailInfomationFragment fragment = new VideoDetailInfomationFragment();
+    public static VideoDetailOtherFragment newInstance(Integer classifys1) {
+        VideoDetailOtherFragment fragment = new VideoDetailOtherFragment();
         Bundle args = new Bundle();
         args.putInt("videoId", classifys1);
         fragment.setArguments(args);

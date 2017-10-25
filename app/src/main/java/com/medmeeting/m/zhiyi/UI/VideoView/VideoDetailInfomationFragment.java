@@ -15,6 +15,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -99,6 +100,7 @@ public class VideoDetailInfomationFragment extends Fragment {
                         .load(data.getEntity().getUserPic())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .crossFade()
+                        .transform(new GlideCircleTransform(getActivity()))
                         .into(avatar);
                 title.setText(data.getEntity().getTitle());
                 authorName.setText(data.getEntity().getAuthorName());
