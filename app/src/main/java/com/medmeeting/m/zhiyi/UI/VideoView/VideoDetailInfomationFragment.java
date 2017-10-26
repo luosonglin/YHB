@@ -14,6 +14,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
@@ -107,28 +108,61 @@ public class VideoDetailInfomationFragment extends Fragment {
                         .into(avatar);
                 title.setText(data.getEntity().getTitle());
                 authorName.setText(data.getEntity().getAuthorName());
-                time.setText("时间：   "+ DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_06));
+                time.setText("时间：   " + DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_06));
                 if (data.getEntity().getChargeType().equals("no")) {
                     type.setText("观看：   公开免费");
                 } else {
                     type.setText("观看：    ¥ " + data.getEntity().getPrice());
                 }
-                sum.setText("观看 " +data.getEntity().getPlayCount() + "      收藏 " + data.getEntity().getCollectCount());
+                sum.setText("观看 " + data.getEntity().getPlayCount() + "      收藏 " + data.getEntity().getCollectCount());
                 des.setText(data.getEntity().getDes());
 
                 like.init(getActivity());
                 if (!data.getEntity().isCollectFlag()) {    //未收藏
-                    like.setBtnColor(Color.GRAY);
-                    like.setOnClickListener(view -> {
-                        ToastUtils.show(getActivity(), ""+data.getEntity().isCollectFlag());
-                        like.setChecked(true);//不能再点
-                        like.setBtnColor(Color.YELLOW);
-                    });
+                    like.setBtnColor(Color.GRAY);//初始颜色
+                    like.setBtnFillColor(Color.YELLOW);//点击后颜色
                 } else {
-                    like.setChecked(true);
+                    like.setBtnColor(Color.YELLOW);//初始颜色
+                    like.setBtnFillColor(Color.GRAY);//点击后颜色
                 }
+                like.setOnClickListener(view -> {
+                    like.setChecked(false);//不能再点
+                    collectService(data.getEntity().isCollectFlag());
+                });
             }
         }, videoId);
+    }
+
+    private void collectService(boolean oldCollected) {
+        UserCollect userCollect = new UserCollect();
+        userCollect.setServiceId(videoId);
+        userCollect.setServiceType("VIDEO");
+        HttpData.getInstance().HttpDataCollect(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult3 httpResult3) {
+                if (!httpResult3.getStatus().equals("success")) {
+                    ToastUtils.show(getActivity(), httpResult3.getMsg());
+                    return;
+                }
+                if (oldCollected) {     //老状态是 已收藏
+                    ToastUtils.show(getActivity(), "取消收藏");
+                } else {
+                    ToastUtils.show(getActivity(), "成功收藏");
+                }
+                like.setChecked(true);
+                initView();
+            }
+        }, userCollect);
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
@@ -233,4 +234,8 @@ public interface APILiveService {
     //POST /v1/video/comment/add/{videoId} 视频评论-新增
     @POST("/v1/video/comment/add/{videoId}")
     Observable<HttpResult3<Object, VideoComment>> addComment(@Path("videoId") Integer videoId, @Body String content);
+
+    //POST /v1/users/collect/add 新增我的收藏记录
+    @POST("/v1/users/collect/add")
+    Observable<HttpResult3> collect(@Body UserCollect userCollect);
 }
