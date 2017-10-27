@@ -13,6 +13,7 @@ public class DateUtil {
     public static final String TYPE_05 = "yyyy年MM月dd日 HH:mm:ss";
     public static final String TYPE_06 = "yyyy-MM-dd HH:mm";
     public static final String TYPE_07 = "MM-dd";
+    public static final String TYPE_08 = "MM-dd HH:mm";
 
     public DateUtil() {
     }

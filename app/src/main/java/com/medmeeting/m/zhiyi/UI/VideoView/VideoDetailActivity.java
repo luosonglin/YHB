@@ -43,6 +43,8 @@ public class VideoDetailActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    private Integer roomId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +70,11 @@ public class VideoDetailActivity extends AppCompatActivity {
                 url = data.getEntity().getUrl();
 
                 initPlayer(url);
+
+                initTagsView(getIntent().getIntExtra("videoId", 0), data.getEntity().getRoomId());
             }
         }, getIntent().getIntExtra("videoId", 0));
 
-        initTagsView(getIntent().getIntExtra("videoId", 0));
     }
 
     private void initPlayer(String url) {
@@ -252,7 +255,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         return detailPlayer;
     }
 
-    private void initTagsView(Integer videoId) {
+    private void initTagsView(Integer videoId, Integer roomId) {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -262,17 +265,17 @@ public class VideoDetailActivity extends AppCompatActivity {
 
         viewPager.setLayoutParams(params);
 
-        setUpViewPager(viewPager, videoId);
+        setUpViewPager(viewPager, videoId, roomId);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(1).select();
     }
 
-    private void setUpViewPager(ViewPager viewPager, Integer roomId) {
+    private void setUpViewPager(ViewPager viewPager, Integer videoId, Integer roomId) {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(VideoDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
-        mIndexChildAdapter.addFragment(VideoDetailCommandFragment.newInstance(roomId), "评论");
-        mIndexChildAdapter.addFragment(VideoDetailInfomationFragment.newInstance(roomId), "详情");
+        mIndexChildAdapter.addFragment(VideoDetailCommandFragment.newInstance(videoId), "评论");
+        mIndexChildAdapter.addFragment(VideoDetailInfomationFragment.newInstance(videoId), "详情");
         mIndexChildAdapter.addFragment(VideoDetailOtherFragment.newInstance(roomId), "相关视频");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数

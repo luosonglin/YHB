@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.VideoCommandAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
@@ -124,10 +125,10 @@ public class VideoDetailCommandFragment extends Fragment {
     @OnClick(R.id.input_send)
     public void onClick() {
         if (inputEditor.getText().toString().trim().equals("")) {
-            ToastUtils.show(getActivity(), "不能发评论");
+            ToastUtils.show(getActivity(), "不能发空评论");
             return;
         }
-
+        AddVideoCommentEntity content = new AddVideoCommentEntity(inputEditor.getText().toString().trim());
         HttpData.getInstance().HttpDataAddComment(new Observer<HttpResult3<Object, VideoComment>>() {
             @Override
             public void onCompleted() {
@@ -149,7 +150,7 @@ public class VideoDetailCommandFragment extends Fragment {
                 getVideoComments();
                 inputEditor.setText("");
             }
-        }, videoId, inputEditor.getText().toString().trim());
+        }, videoId, content);
 
     }
 }

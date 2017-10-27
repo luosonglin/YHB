@@ -40,7 +40,6 @@
                     app:tabIndicatorColor="@color/lightskyblue"
                     app:tabIndicatorHeight="2dp"
                     app:tabSelectedTextColor="@color/lightskyblue"
-                    app:tabTextAppearance="@style/TabIndexText"
                     app:tabTextColor="@color/black" />
             </RelativeLayout>
 

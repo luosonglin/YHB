@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
+import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -33,7 +34,8 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListEntity> {
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.time, item.getAuthorName() + " | "+item.getAuthorTitle());
+                .setText(R.id.sum, "观看 " + item.getPlayCount() + "    收藏 " + item.getCollectCount())
+                .setText(R.id.time, DateUtil.formatDate(item.getCreateTime(), DateUtil.TYPE_08));
 
         if (item.getChargeType().equals("no")) {
             helper.getView(R.id.price).setVisibility(View.GONE);

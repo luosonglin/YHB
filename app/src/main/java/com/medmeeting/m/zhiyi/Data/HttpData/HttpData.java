@@ -9,6 +9,7 @@ import com.medmeeting.m.zhiyi.Data.APi.APIService;
 import com.medmeeting.m.zhiyi.Data.APi.CacheProviders;
 import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
+import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
@@ -52,6 +53,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity2;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
@@ -473,6 +475,10 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getVideos(videoListSearchEntity);
         setSubscribe(observable, observer);
     }
+    public void HttpDataGetVideos2(Observer<HttpResult3<VideoListEntity, Object>> observer, VideoListSearchEntity2 videoListSearchEntity) {
+        Observable observable = service_live.getVideos2(videoListSearchEntity);
+        setSubscribe(observable, observer);
+    }
 
     public void HttpDataGetVideoDetail(Observer<HttpResult3<Object, VideoDetailsEntity>> observer, Integer videoId) {
         Observable observable = service_live.getVideoDetail(videoId);
@@ -484,7 +490,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataAddComment(Observer<HttpResult3<Object, VideoComment>> observer, Integer videoId, String content) {
+    public void HttpDataAddComment(Observer<HttpResult3<Object, VideoComment>> observer, Integer videoId, AddVideoCommentEntity content) {
         Observable observable = service_live.addComment(videoId, content);
         setSubscribe(observable, observer);
     }

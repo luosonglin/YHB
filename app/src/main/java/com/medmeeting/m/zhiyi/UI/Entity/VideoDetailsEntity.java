@@ -31,6 +31,8 @@ public class VideoDetailsEntity {
      * payFlag : false
      * collectCount : 0
      * collectFlag : false
+     * roomId:12124
+     * healifeFlag:false
      */
 
     private int videoId;
@@ -54,6 +56,24 @@ public class VideoDetailsEntity {
     private boolean payFlag;
     private int collectCount;
     private boolean collectFlag;
+    private Integer roomId;
+    private boolean healifeFlag;
+
+    public Integer getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
+    }
+
+    public boolean isHealifeFlag() {
+        return healifeFlag;
+    }
+
+    public void setHealifeFlag(boolean healifeFlag) {
+        this.healifeFlag = healifeFlag;
+    }
 
     public int getVideoId() {
         return videoId;

@@ -45,6 +45,7 @@
                         android:layout_toLeftOf="@+id/input_emoji_btn"
                         android:background="@drawable/edittext_delete_line"
                         android:hint="我来说几句"
+                        android:text=""
                         android:labelFor="@id/input_editor"
                         android:maxLines="4"
                         android:paddingLeft="12dp"

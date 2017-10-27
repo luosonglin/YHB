@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.Data.APi;
 
+import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
@@ -28,6 +29,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity2;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
@@ -219,9 +221,13 @@ public interface APILiveService {
     @GET("v1/open/liveLabel")
     Observable<HttpResult3<TagDto, Object>> getVideoTags(@QueryMap Map<String, Integer> map);
 
-    //POST /v1/open/video/page 获取视频列表-分页
+    //POST /v1/open/video/page 获取视频列表-分页 主页
     @POST("/v1/open/video/page")
     Observable<HttpResult3<VideoListEntity, Object>> getVideos(@Body VideoListSearchEntity videoListSearchEntity);
+
+    //POST /v1/open/video/page 获取视频列表-分页 相关视频页
+    @POST("/v1/open/video/page")
+    Observable<HttpResult3<VideoListEntity, Object>> getVideos2(@Body VideoListSearchEntity2 videoListSearchEntity);
 
     //GET /v1/open/video/details/{videoId} 获取视频详情
     @GET("/v1/open/video/details/{videoId}")
@@ -233,7 +239,7 @@ public interface APILiveService {
 
     //POST /v1/video/comment/add/{videoId} 视频评论-新增
     @POST("/v1/video/comment/add/{videoId}")
-    Observable<HttpResult3<Object, VideoComment>> addComment(@Path("videoId") Integer videoId, @Body String content);
+    Observable<HttpResult3<Object, VideoComment>> addComment(@Path("videoId") Integer videoId, @Body AddVideoCommentEntity content);
 
     //POST /v1/users/collect/add 新增我的收藏记录
     @POST("/v1/users/collect/add")
