@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -109,11 +110,10 @@ public class VideoDetailInfomationFragment extends Fragment {
                         .crossFade()
                         .transform(new GlideCircleTransform(getActivity()))
                         .into(avatar);
-                avatar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-//                        startActivity(new Intent(getActivity(), ));
-                    }
+                avatar.setOnClickListener(view -> {
+                    Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+                    intent.putExtra("userId", data.getEntity().getUserId());
+                    startActivity(intent);
                 });
                 title.setText(data.getEntity().getTitle());
                 authorName.setText(data.getEntity().getAuthorName());

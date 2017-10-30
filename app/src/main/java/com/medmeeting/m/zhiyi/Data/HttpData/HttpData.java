@@ -46,6 +46,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
@@ -502,6 +503,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetCollect(Observer<HttpResult3<VideoListEntity, Object>> observer, BasePageSearchEntity basePageSearchEntity) {
         Observable observable = service_live.getCollect(basePageSearchEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetUserRedRoom(Observer<HttpResult3<Object, UserRedEntity>> observer, Integer userId) {
+        Observable observable = service_live.getUserRedRoom(userId);
         setSubscribe(observable, observer);
     }
 

@@ -23,6 +23,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
@@ -248,4 +249,8 @@ public interface APILiveService {
     //POST /v1/video/user/collect 我的收藏-视频
     @POST("/v1/video/user/collect")
     Observable<HttpResult3<VideoListEntity, Object>> getCollect(@Body BasePageSearchEntity basePageSearchEntity);
+
+    //GET /v1/open/userRed/details/{userId} 获取红V主页信息
+    @GET("/v1/open/userRed/details/{userId}")
+    Observable<HttpResult3<Object, UserRedEntity>> getUserRedRoom(@Path("userId") Integer userId);
 }
