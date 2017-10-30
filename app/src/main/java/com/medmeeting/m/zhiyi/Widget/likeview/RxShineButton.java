@@ -68,7 +68,7 @@ public class RxShineButton extends RxPorterShapeImageView {
         }
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RxShineButton);
         btnColor = a.getColor(R.styleable.RxShineButton_btn_color, Color.GRAY);
-        btnFillColor = a.getColor(R.styleable.RxShineButton_btn_fill_color, Color.BLACK);
+        btnFillColor = a.getColor(R.styleable.RxShineButton_btn_fill_color, Color.YELLOW);
         shineParams.allowRandomColor = a.getBoolean(R.styleable.RxShineButton_allow_random_color, false);
         shineParams.animDuration = a.getInteger(R.styleable.RxShineButton_shine_animation_duration, (int) shineParams.animDuration);
         shineParams.bigShineColor = a.getColor(R.styleable.RxShineButton_big_shine_color, shineParams.bigShineColor);

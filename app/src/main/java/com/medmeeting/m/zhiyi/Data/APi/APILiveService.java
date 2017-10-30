@@ -244,4 +244,8 @@ public interface APILiveService {
     //POST /v1/users/collect/add 新增我的收藏记录
     @POST("/v1/users/collect/add")
     Observable<HttpResult3> collect(@Body UserCollect userCollect);
+
+    //POST /v1/video/user/collect 我的收藏-视频
+    @POST("/v1/video/user/collect")
+    Observable<HttpResult3<VideoListEntity, Object>> getCollect(@Body BasePageSearchEntity basePageSearchEntity);
 }

@@ -99,6 +99,7 @@ public class VideoDetailOtherFragment  extends Fragment {
                     i.putExtra("title", videoListEntityObjectHttpResult3.getData().get(position).getTitle());
                     i.putExtra("photo", videoListEntityObjectHttpResult3.getData().get(position).getCoverPhoto());
                     startActivity(i);
+                    getActivity().finish();
                 });
             }
         }, searchEntity);

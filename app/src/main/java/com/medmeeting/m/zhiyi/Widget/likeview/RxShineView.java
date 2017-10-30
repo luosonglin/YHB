@@ -244,9 +244,9 @@ public class RxShineView extends View {
         ShineParams() {
             colorRandom[0] = Color.parseColor("#FFFF99");
             colorRandom[1] = Color.parseColor("#FFCCCC");
-            colorRandom[2] = Color.parseColor("#996699");
+            colorRandom[2] = Color.parseColor("#996699");//
             colorRandom[3] = Color.parseColor("#FF6666");
-            colorRandom[4] = Color.parseColor("#FFFF66");
+            colorRandom[4] = Color.parseColor("#FFFF66");//
             colorRandom[5] = Color.parseColor("#F44336");
             colorRandom[6] = Color.parseColor("#666666");
             colorRandom[7] = Color.parseColor("#CCCC00");

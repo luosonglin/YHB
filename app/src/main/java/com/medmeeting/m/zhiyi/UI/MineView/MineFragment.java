@@ -32,6 +32,7 @@ import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.MyCollectActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.snappydb.SnappydbException;
@@ -84,8 +85,8 @@ public class MineFragment extends Fragment {
     RelativeLayout wodecanhui;
     @Bind(R.id.wodeqianbao)
     RelativeLayout wodeqianbao;
-    @Bind(R.id.wodetiezi)
-    RelativeLayout wodetiezi;
+    @Bind(R.id.wodeshoucang)
+    RelativeLayout wodeshoucang;
     @Bind(R.id.wodebingli)
     RelativeLayout wodebingli;
     @Bind(R.id.wodexuefen)
@@ -379,7 +380,7 @@ public class MineFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodetiezi, R.id.wodebingli, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
+    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeshoucang, R.id.wodebingli, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -399,7 +400,9 @@ public class MineFragment extends Fragment {
                 intent = new Intent(getActivity(), MyWalletActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.wodetiezi:
+            case R.id.wodeshoucang:
+                intent = new Intent(getActivity(), MyCollectActivity.class);
+                startActivity(intent);
                 break;
             case R.id.wodebingli:
                 break;

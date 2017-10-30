@@ -500,6 +500,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataGetCollect(Observer<HttpResult3<VideoListEntity, Object>> observer, BasePageSearchEntity basePageSearchEntity) {
+        Observable observable = service_live.getCollect(basePageSearchEntity);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *

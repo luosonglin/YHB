@@ -77,6 +77,9 @@ public class VideoDetailInfomationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_detail_information, container, false);
         ButterKnife.bind(this, view);
+
+
+        like.init(getActivity());
         return view;
     }
 
@@ -117,13 +120,12 @@ public class VideoDetailInfomationFragment extends Fragment {
                 sum.setText("观看 " + data.getEntity().getPlayCount() + "      收藏 " + data.getEntity().getCollectCount());
                 des.setText(data.getEntity().getDes());
 
-                like.init(getActivity());
-                if (!data.getEntity().isCollectFlag()) {    //未收藏
-                    like.setBtnColor(Color.GRAY);//初始颜色
-                    like.setBtnFillColor(Color.YELLOW);//点击后颜色
-                } else {
+                if (data.getEntity().isCollectFlag()) {    //已收藏
                     like.setBtnColor(Color.YELLOW);//初始颜色
-                    like.setBtnFillColor(Color.GRAY);//点击后颜色
+//                    like.setBtnFillColor(Color.GRAY);//点击后颜色
+                } else {
+                    like.setBtnColor(Color.GRAY);//初始颜色
+//                    like.setBtnFillColor(Color.YELLOW);//点击后颜色
                 }
                 like.setOnClickListener(view -> {
                     like.setChecked(false);//不能再点
@@ -156,8 +158,11 @@ public class VideoDetailInfomationFragment extends Fragment {
                 }
                 if (oldCollected) {     //老状态是 已收藏
                     ToastUtils.show(getActivity(), "取消收藏");
+                    like.setCancel();
                 } else {
                     ToastUtils.show(getActivity(), "成功收藏");
+                    like.setBtnFillColor(Color.YELLOW);
+                    like.showAnim();
                 }
                 like.setChecked(true);
                 initView();

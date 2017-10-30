@@ -337,7 +337,37 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/wodetiezi"
+                    android:id="@+id/wodeqianbao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:src="@mipmap/my_wallet_icon"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="我的钱包"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/wodeshoucang"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_weight="1"
@@ -361,11 +391,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="我的帖子"
+                            android:text="我的收藏"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
-
 
                 <RelativeLayout
                     android:id="@+id/wodebingli"
@@ -393,36 +422,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的病历"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/wodeqianbao"
-                    android:layout_width="wrap_content"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@color/white">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp"
-                            android:src="@mipmap/my_wallet_icon"
-                            tools:ignore="ContentDescription" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="我的钱包"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>

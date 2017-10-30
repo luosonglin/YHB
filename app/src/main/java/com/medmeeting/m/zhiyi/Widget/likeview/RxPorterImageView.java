@@ -52,7 +52,7 @@ public abstract class RxPorterImageView extends ImageView {
         }
 
         maskPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        maskPaint.setColor(Color.BLACK);
+        maskPaint.setColor(Color.YELLOW);
     }
 
     public void setSrcColor(int color){
