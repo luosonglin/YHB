@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,11 +8,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".UI.LiveView.LiveProgramDetailActivity">
-
-    <com.medmeeting.m.zhiyi.Widget.video.LandLayoutVideo
-        android:id="@+id/detail_player"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -152,4 +147,4 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-</LinearLayout>
+</FrameLayout>

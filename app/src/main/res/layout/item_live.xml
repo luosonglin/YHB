@@ -10,7 +10,7 @@
     android:background="@drawable/live_item_shape"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="1dp"
     app:cardElevation="@null"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
@@ -42,26 +42,28 @@
 
                 <TextView
                     android:id="@+id/status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:background="@drawable/textview_all_grey"
+                    android:background="@mipmap/icon_live_adapter_status_red"
                     android:padding="2dp"
-                    android:text="直播中"
+                    android:text="直播"
+                    android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
                 <TextView
                     android:id="@+id/price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="44dp"
+                    android:layout_height="20dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/textview_all_grey"
+                    android:background="@mipmap/icon_live_adapter_gray_transparent"
                     android:padding="2dp"
                     android:text="¥ "
+                    android:gravity="center"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
             </RelativeLayout>
         </FrameLayout>
 

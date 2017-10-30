@@ -109,6 +109,12 @@ public class VideoDetailInfomationFragment extends Fragment {
                         .crossFade()
                         .transform(new GlideCircleTransform(getActivity()))
                         .into(avatar);
+                avatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        startActivity(new Intent(getActivity(), ));
+                    }
+                });
                 title.setText(data.getEntity().getTitle());
                 authorName.setText(data.getEntity().getAuthorName());
                 time.setText("时间：   " + DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_06));

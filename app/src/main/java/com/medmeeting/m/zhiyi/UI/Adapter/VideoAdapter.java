@@ -43,6 +43,13 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListEntity> {
             helper.setText(R.id.price, "¥ " + item.getPrice());
         }
 
-        helper.getView(R.id.status).setVisibility(View.GONE);
+        if (item.getVideoStatus() != null) {
+            if (item.getVideoStatus().equals("ready")) {
+                helper.setText(R.id.status, "预告");
+                helper.setBackgroundRes(R.id.status, R.mipmap.icon_live_adapter_status_blue);
+            }
+        } else {
+            helper.getView(R.id.status).setVisibility(View.GONE);
+        }
     }
 }

@@ -182,7 +182,7 @@ public class LiveIndexTabFragment1 extends Fragment
                     datas.remove(0);
                 }
 
-                mQuickAdapter.addData(datas);
+                mQuickAdapter.setNewData(datas);
                 Log.e(TAG, "onNext");
             }
         }, liveSearchDto2);

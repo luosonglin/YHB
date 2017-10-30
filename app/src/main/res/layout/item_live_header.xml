@@ -31,29 +31,31 @@
 
             <TextView
                 android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/textview_all_grey"
+                android:background="@mipmap/icon_live_adapter_status_red"
                 android:padding="2dp"
                 android:layout_margin="10dp"
                 android:text="直播"
+                android:gravity="center"
                 android:textColor="@color/grey1"
-                android:textSize="12sp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="44dp"
+                android:layout_height="20dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/textview_all_grey"
+                android:background="@mipmap/icon_live_adapter_gray_transparent"
                 android:padding="2dp"
                 android:layout_margin="10dp"
-                android:text="¥ 234"
+                android:text="¥ "
+                android:gravity="center"
                 android:textColor="@color/grey1"
-                android:textSize="12sp" />
+                android:textSize="10sp" />
         </RelativeLayout>
 
         <RelativeLayout

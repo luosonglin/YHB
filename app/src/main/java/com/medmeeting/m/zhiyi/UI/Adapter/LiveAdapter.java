@@ -50,15 +50,19 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
         switch (item.getLiveStatus()) {
             case "ready":
                 helper.setText(R.id.status, "预告");//准备
+                helper.setBackgroundRes(R.id.status, R.mipmap.icon_live_adapter_status_blue);
                 break;
             case "play":
                 helper.setText(R.id.status, "直播");
+                helper.setBackgroundRes(R.id.status, R.mipmap.icon_live_adapter_status_red);
                 break;
             case "wait":
                 helper.setText(R.id.status, "离开");
+                helper.setBackgroundRes(R.id.status, R.mipmap.icon_live_adapter_status_yellow);
                 break;
             case "end":
                 helper.setText(R.id.status, "结束");
+                helper.setBackgroundRes(R.id.status, R.mipmap.icon_live_adapter_status_grey);
                 break;
         }
         helper.getView(R.id.image).setOnClickListener(view -> {
