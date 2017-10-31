@@ -61,7 +61,7 @@ public class MineFragment extends Fragment {
     @Bind(R.id.img)
     ImageView imageView;
     @Bind(R.id.setting)
-    TextView setting;
+    ImageView setting;
     @Bind(R.id.identity)
     TextView identity;
     @Bind(R.id.head_ic)
@@ -87,8 +87,6 @@ public class MineFragment extends Fragment {
     RelativeLayout wodeqianbao;
     @Bind(R.id.wodeshoucang)
     RelativeLayout wodeshoucang;
-    @Bind(R.id.wodebingli)
-    RelativeLayout wodebingli;
     @Bind(R.id.wodexuefen)
     RelativeLayout wodexuefen;
     @Bind(R.id.wodejianli)
@@ -380,7 +378,7 @@ public class MineFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeshoucang, R.id.wodebingli, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
+    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeshoucang, R.id.wodedingdan, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -404,7 +402,9 @@ public class MineFragment extends Fragment {
                 intent = new Intent(getActivity(), MyCollectActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.wodebingli:
+            case R.id.wodedingdan:
+                intent = new Intent(getActivity(), MyOrderActivity.class);
+                startActivity(intent);
                 break;
             case R.id.wodexuefen:
                 break;

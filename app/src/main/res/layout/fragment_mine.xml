@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.medmeeting.m.zhiyi.UI.MineView.MineFragment">
 
     <ScrollView
@@ -35,28 +35,15 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_weight="1"
-                        android:text=""
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
-
-                    <!--设置-->
-                    <TextView
+                    <ImageView
                         android:id="@+id/setting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_weight="1"
-                        android:padding="12dp"
-                        android:text="设置"
-                        android:textColor="@color/white"
-                        android:textSize="13sp" />
+                        android:src="@mipmap/my_setting_icon"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"/>
                 </RelativeLayout>
 
                 <TextView
@@ -109,8 +96,8 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_gravity="center_horizontal">
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp">
 
                             <TextView
                                 android:id="@+id/hospital"
@@ -156,15 +143,16 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
-                                    android:orientation="vertical">
+                                    android:orientation="vertical"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerHorizontal="true">
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:text="0"
-                                        android:textColor="@color/grey"
+                                        android:textColor="@color/black"
                                         android:textSize="12sp" />
 
                                     <TextView
@@ -192,7 +180,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:text="0"
-                                        android:textColor="@color/grey"
+                                        android:textColor="@color/black"
                                         android:textSize="12sp" />
 
                                     <TextView
@@ -271,7 +259,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/wodefufeizhibo"
+                    android:id="@+id/wodezhibo"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_weight="1"
@@ -301,7 +289,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/wodezhibo"
+                    android:id="@+id/wodeluxiang"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_weight="1"
@@ -325,7 +313,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="我的录像"
+                            android:text="我的视频"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -335,6 +323,65 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/wodeshoucang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:src="@mipmap/my_collect_icon"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="我的收藏"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/wodedingdan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="10dp"
+                            android:src="@mipmap/my_order_icon"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="我的订单"
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/wodeqianbao"
@@ -365,9 +412,15 @@
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/wodeshoucang"
+                    android:id="@+id/wodefufeizhibo"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_weight="1"
@@ -384,49 +437,18 @@
                             android:layout_height="30dp"
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
-                            android:src="@mipmap/my_order_icon"
+                            android:src="@mipmap/my_live_icon"
                             tools:ignore="ContentDescription" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="我的收藏"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/wodebingli"
-                    android:layout_width="wrap_content"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@color/white">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp"
-                            android:src="@mipmap/my_wallet_icon"
-                            tools:ignore="ContentDescription" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="我的病历"
+                            android:text="我的付费直播"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
-
 
             <RelativeLayout
                 android:id="@+id/wodejianli"

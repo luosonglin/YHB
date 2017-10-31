@@ -253,4 +253,8 @@ public interface APILiveService {
     //GET /v1/open/userRed/details/{userId} 获取红V主页信息
     @GET("/v1/open/userRed/details/{userId}")
     Observable<HttpResult3<Object, UserRedEntity>> getUserRedRoom(@Path("userId") Integer userId);
+
+    //POST /v1/video/user/order 我的订单-视频
+    @POST("/v1/video/user/order")
+    Observable<HttpResult3<VideoListEntity, Object>> getMyPayVideo(@Body BasePageSearchEntity basePageSearchEntity);
 }

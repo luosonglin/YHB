@@ -79,7 +79,7 @@ public class LiveIndexTabFragment2 extends Fragment
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
-        mQuickAdapter.openLoadMore(6, true);
+//        mQuickAdapter.openLoadMore(6, true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
 

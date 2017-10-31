@@ -46,19 +46,11 @@ public class MyLiveRoomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
         addTv = (TextView) findViewById(R.id.add);
-        addTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class));
-                finish();
-            }
+        addTv.setOnClickListener(view -> {
+            startActivity(new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class));
+            finish();
         });
     }
 

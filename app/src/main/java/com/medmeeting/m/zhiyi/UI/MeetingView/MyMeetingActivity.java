@@ -69,12 +69,7 @@ public class MyMeetingActivity extends AppCompatActivity
 
     private void initView(String userId) {
         backIv = (ImageView)findViewById(R.id.back);
-        backIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        backIv.setOnClickListener(view -> finish());
 
         SegmentedGroup segmented4 = (SegmentedGroup) findViewById(R.id.segmented2);
         segmented4.setTintColor(0xFF1b7ce8);
