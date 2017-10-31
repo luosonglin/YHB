@@ -72,6 +72,7 @@ public class MyOrderActivity extends AppCompatActivity {
         mTypeView = (TextView) mHeaderView.findViewById(R.id.type);
         mTypeView.setText("已购直播");
         mMoreView = (TextView) mHeaderView.findViewById(R.id.more);
+        mMoreView.setOnClickListener(view -> startActivity(new Intent(MyOrderActivity.this, MyOrderLiveActivity.class)));
 
 
         mRecyclerView2 = (RecyclerView) findViewById(R.id.rv_list2);
@@ -88,7 +89,7 @@ public class MyOrderActivity extends AppCompatActivity {
         mTypeView2 = (TextView) mHeaderView2.findViewById(R.id.type);
         mTypeView2.setText("已购录像");
         mMoreView2 = (TextView) mHeaderView2.findViewById(R.id.more);
-        mMoreView2.setOnClickListener(view -> ToastUtils.show(MyOrderActivity.this, "haha"));
+        mMoreView2.setOnClickListener(view -> startActivity(new Intent(MyOrderActivity.this, MyOrderVideoActivity.class)));
     }
 
     private void initToolbar() {

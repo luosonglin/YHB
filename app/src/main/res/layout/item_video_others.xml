@@ -38,8 +38,8 @@
 
                 <TextView
                     android:id="@+id/status"
-                    android:layout_width="50dp"
-                    android:layout_height="16dp"
+                    android:layout_width="30dp"
+                    android:layout_height="14dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:background="@mipmap/icon_live_adapter_status_red"
