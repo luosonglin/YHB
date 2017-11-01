@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginTop="24dp"
-    tools:context=".UI.LiveView.LiveUpdateRoomActivity">
+    tools:context=".UI.VideoView.VideoUpdateActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -24,15 +24,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="编辑直播间"
+                android:text="修改视频详情"
                 android:textColor="@color/black" />
 
             <LinearLayout
                 android:id="@+id/buildllyt"
                 android:layout_width="40dp"
                 android:layout_height="30dp"
-                android:layout_margin="10dp"
                 android:layout_gravity="right|center_vertical"
+                android:layout_margin="10dp"
                 android:background="@color/skyblue"
                 android:orientation="vertical">
 
@@ -69,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/live_title_pic"
+                        android:src="@mipmap/icon_video_update_bg"
                         tools:ignore="ContentDescription" />
 
                     <RelativeLayout
@@ -96,7 +96,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:maxLines="1"
-                                android:text="添加一个直播间封面"
+                                android:text="点击可修改视频封面"
                                 android:textColor="@color/white" />
 
                         </LinearLayout>
@@ -128,8 +128,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:text="直播间主题"
-                            android:textColor="#666666" />
+                            android:text="视频主题"
+                            android:textColor="@color/black" />
 
                         <EditText
                             android:id="@+id/theme"
@@ -139,7 +139,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:background="@color/white"
-                            android:hint="添加一个直播间主题"
+                            android:hint="添加视频主题"
                             android:maxLines="1"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -150,14 +150,7 @@
                         android:layout_marginLeft="20dp"
                         android:background="#EBEBEB" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
-                        android:background="#EBEBEB" />
-
                     <LinearLayout
-                        android:id="@+id/classify"
                         android:layout_width="match_parent"
                         android:layout_height="42dp"
                         android:background="@color/white"
@@ -168,29 +161,45 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:layout_weight="1"
-                            android:text="直播间分类"
-                            android:textColor="#666666" />
+                            android:text="收费模式"
+                            android:textColor="@color/black" />
 
-                        <TextView
-                            android:id="@+id/classify_tv"
-                            android:layout_width="150dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginRight="40dp"
-                            android:layout_weight="3"
-                            android:maxLines="1"
-                            android:text="选择"
-                            android:textColor="@color/grey"
-                            android:textSize="14sp" />
+                            android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            android:layout_weight="1"
-                            android:src="@mipmap/live_turn_left"
-                            tools:ignore="ContentDescription" />
+                            <Button
+                                android:id="@+id/free"
+                                android:layout_width="60dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:background="@drawable/button_live_free"
+                                android:text="免费"
+                                android:textColor="@color/white"
+                                android:textSize="10sp" />
+
+                            <Button
+                                android:id="@+id/charge"
+                                android:layout_width="60dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:background="@drawable/button_live_gray"
+                                android:text="收费"
+                                android:textColor="@color/black"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/charge_amount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:maxLines="1"
+                                android:text=""
+                                android:textSize="10sp"
+                                android:visibility="gone" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <View
@@ -210,17 +219,17 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="20dp"
-                            android:text="直播间介绍"
-                            android:textColor="#666666" />
+                            android:text="视频介绍"
+                            android:textColor="@color/black" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="136dp"
                         android:background="@color/white"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
+                        android:minHeight="136dp"
                         android:orientation="horizontal">
 
                         <EditText
@@ -232,8 +241,7 @@
                             android:layout_marginRight="20dp"
                             android:background="@color/white"
                             android:gravity="top"
-                            android:hint="请输入直播间介绍"
-                            android:padding="4dp"
+                            android:hint="请输入视频介绍"
                             android:paddingTop="2dp"
                             android:textSize="14sp" />
                     </LinearLayout>

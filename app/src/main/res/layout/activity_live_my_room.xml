@@ -6,19 +6,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginTop="24dp"
-    tools:context=".UI.LiveView.MyLiveRoomActivity">
+    tools:context=".UI.MineView.MyLiveRoomActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp">
+        app:elevation="2dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:elevation="2dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
@@ -41,6 +43,21 @@
 
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:elevation="1dp"
+        android:background="@color/white">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="提示：左滑可以编辑或删除直播间"
+            android:textSize="12sp"
+            android:textColor="@color/deepskyblue"/>
+    </RelativeLayout>
 
     <com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.ItemRemoveRecyclerView
         android:id="@+id/id_item_remove_recyclerview"

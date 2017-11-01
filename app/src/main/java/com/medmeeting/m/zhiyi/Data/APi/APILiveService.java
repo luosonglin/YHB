@@ -4,6 +4,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
@@ -28,6 +29,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity2;
@@ -257,4 +259,16 @@ public interface APILiveService {
     //POST /v1/video/user/order 我的订单-视频
     @POST("/v1/video/user/order")
     Observable<HttpResult3<VideoListEntity, Object>> getMyPayVideo(@Body BasePageSearchEntity basePageSearchEntity);
+
+    // /v1/auchor/video/page 获取我的视频一览（分页）
+    @POST("/v1/auchor/video/page")
+    Observable<HttpResult3<VideoInfoUserEntity, Object>> getMyVideo(@Body BasePageSearchEntity basePageSearchEntity);
+
+    //DELETE /v1/auchor/video/del/{videoId} 删除视频信息
+    @DELETE("/v1/auchor/video/del/{videoId}")
+    Observable<HttpResult3> deleteVideo(@Path("videoId") Integer videoId);
+
+    //PUT /v1/auchor/video/edit 更新视频信息
+    @PUT("/v1/auchor/video/edit")
+    Observable<HttpResult3> updateVideo(@Body EditVideoEntity entity);
 }

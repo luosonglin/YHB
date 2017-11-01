@@ -17,6 +17,9 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     public RelativeLayout update;
     public TextView liveNumber;
 
+    public TextView price;
+    public TextView sum;
+
     public MyViewHolder(View itemView) {
         super(itemView);
         content = (TextView) itemView.findViewById(R.id.item_content);
@@ -25,5 +28,9 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         delete = (RelativeLayout) itemView.findViewById(R.id.item_delete);
         update = (RelativeLayout) itemView.findViewById(R.id.item_update);
         liveNumber = (TextView) itemView.findViewById(R.id.item_number);
+
+        price = (TextView) itemView.findViewById(R.id.price);
+        sum = (TextView) itemView.findViewById(R.id.sum);
+
     }
 }

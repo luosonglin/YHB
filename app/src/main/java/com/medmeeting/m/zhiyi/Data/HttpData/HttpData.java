@@ -16,6 +16,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
@@ -52,6 +53,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity2;
@@ -513,6 +515,20 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetMyPayVideo(Observer<HttpResult3<VideoListEntity, Object>> observer, BasePageSearchEntity basePageSearchEntity) {
         Observable observable = service_live.getMyPayVideo(basePageSearchEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetMyVideo(Observer<HttpResult3<VideoInfoUserEntity, Object>> observer,  BasePageSearchEntity basePageSearchEntity) {
+        Observable observable = service_live.getMyVideo(basePageSearchEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataDeleteVideo(Observer<HttpResult3> observer, Integer videoId) {
+        Observable observable = service_live.deleteVideo(videoId);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataUpdateVideo(Observer<HttpResult3> observer, EditVideoEntity entity) {
+        Observable observable = service_live.updateVideo(entity);
         setSubscribe(observable, observer);
     }
 

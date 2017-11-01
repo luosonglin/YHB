@@ -34,7 +34,6 @@ import java.util.Map;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
-
 public class MyMeetingActivity extends AppCompatActivity
         implements BaseQuickAdapter.RequestLoadMoreListener, SpringView.OnFreshListener,
             MeetingListView, FinishedEventListView, SegmentedGroup.OnCheckedChangeListener{

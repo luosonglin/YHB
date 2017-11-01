@@ -79,7 +79,7 @@
             android:name=".UI.LiveView.LiveDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.LiveView.MyLiveRoomActivity"
+            android:name=".UI.MineView.MyLiveRoomActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.LiveView.MyLiveRoomDetailActivity"
@@ -274,6 +274,8 @@
         <activity android:name=".UI.VideoView.LiveAndVideoRoomActivity" />
         <activity android:name=".UI.MineView.MyOrderLiveActivity" />
         <activity android:name=".UI.MineView.MyOrderVideoActivity" />
+        <activity android:name=".UI.MineView.MyVideoActivity" />
+        <activity android:name=".UI.VideoView.VideoUpdateActivity" />
     </application>
 
 </manifest>

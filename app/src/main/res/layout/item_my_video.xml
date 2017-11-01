@@ -2,9 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
+    android:layout_height="110dp"
+    android:layout_marginRight="4dp">
 
     <LinearLayout
         android:id="@+id/item_layout"
@@ -21,66 +20,77 @@
             app:cardElevation="3dp"
             app:cardUseCompatPadding="true">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/background"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="120dp"
+                    android:layout_height="100dp"
                     android:scaleType="fitXY"
                     android:src="@mipmap/live_background"
                     tools:ignore="ContentDescription" />
 
-                <TextView
-                    android:id="@+id/item_number"
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_10"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:shadowColor="#ff000000"
-                    android:shadowDx="5"
-                    android:shadowDy="5"
-                    android:shadowRadius="10"
-                    android:text="房间No： "
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="5dp">
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="10dp">
 
                     <TextView
                         android:id="@+id/item_content"
-                        style="@style/TextStyle_title_golden"
-                        android:layout_width="180dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:layout_gravity="center"
+                        android:layout_alignParentTop="true"
+                        android:lines="2"
                         android:ellipsize="marquee"
-                        android:gravity="center"
-                        android:lines="1"
-                        android:shadowColor="#ff000000"
-                        android:shadowDx="5"
-                        android:shadowDy="5"
-                        android:shadowRadius="10"
-                        android:text="万怡直播"
-                        android:textColor="@color/white"
+                        android:gravity="left"
+                        android:text="万怡直播万怡直播万怡直播万怡直播万怡直播万怡直播万怡直播万怡直播万怡直播万怡直播"
+                        android:textColor="@color/black"
                         android:textSize="18sp" />
 
-                    <View
-                        android:layout_width="60dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/white" />
-                </LinearLayout>
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/item_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_above="@+id/price_rlyt"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:text="123"
+                        android:textColor="@color/grey"
+                        android:textSize="14sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/price_rlyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="2dp">
+
+                        <TextView
+                            android:id="@+id/price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:text="¥123"
+                            android:textColor="@color/deepskyblue"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/sum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="已付费：10人"
+                            android:textColor="@color/grey"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <RelativeLayout

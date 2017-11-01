@@ -1,5 +1,6 @@
-package com.medmeeting.m.zhiyi.UI.LiveView;
+package com.medmeeting.m.zhiyi.UI.MineView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,9 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveUpdateRoomActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.ItemRemoveRecyclerView;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.MyAdapter;
@@ -44,9 +48,9 @@ public class MyLiveRoomActivity extends AppCompatActivity {
     private void toolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(view -> finish());
         addTv = (TextView) findViewById(R.id.add);
         addTv.setOnClickListener(view -> {
             startActivity(new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class));
@@ -94,30 +98,35 @@ public class MyLiveRoomActivity extends AppCompatActivity {
 
                     @Override
                     public void onDeleteClick(final int position) {
-                        HttpData.getInstance().HttpDataDeleteLiveRoom(new Observer<HttpResult3>() {
-                            @Override
-                            public void onCompleted() {
-                                Log.d(TAG, "onCompleted");
-                            }
+                        new AlertDialog.Builder(MyLiveRoomActivity.this)
+                                .setIcon(R.mipmap.logo)
+                                .setTitle("")
+                                .setMessage("确认删除？")
+                                .setNegativeButton("算了", (dialogInterface, i) -> dialogInterface.dismiss())
+                                .setPositiveButton("确认", (dialogInterface, i) -> HttpData.getInstance().HttpDataDeleteLiveRoom(new Observer<HttpResult3>() {
+                                    @Override
+                                    public void onCompleted() {
+                                        Log.d(TAG, "onCompleted");
+                                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e(TAG, "HttpDataDeleteLiveRoom onError: " + e.getMessage()
-                                        + "\n" + e.getCause()
-                                        + "\n" + e.getLocalizedMessage()
-                                        + "\n" + e.getStackTrace());
-                            }
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Log.e(TAG, "HttpDataDeleteLiveRoom onError: " + e.getMessage()
+                                                + "\n" + e.getCause()
+                                                + "\n" + e.getLocalizedMessage()
+                                                + "\n" + e.getStackTrace());
+                                    }
 
-                            @Override
-                            public void onNext(HttpResult3 httpResult3) {
-                                if (httpResult3.getStatus().equals("success")) {
-                                    adapter.removeItem(position);
-                                } else  {
-                                    ToastUtils.show(MyLiveRoomActivity.this, httpResult3.getMsg());
-                                }
-                                Log.d(TAG, "onNext");
-                            }
-                        }, mList.get(position).getId());
+                                    @Override
+                                    public void onNext(HttpResult3 httpResult3) {
+                                        if (!httpResult3.getStatus().equals("success")) {
+                                            ToastUtils.show(MyLiveRoomActivity.this, httpResult3.getMsg());
+                                        }
+                                        adapter.removeItem(position);
+                                        dialogInterface.dismiss();
+                                    }
+                                }, mList.get(position).getId()))
+                                .show();
                     }
 
                     @Override

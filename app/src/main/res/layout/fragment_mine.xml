@@ -35,15 +35,16 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
+
                     <ImageView
                         android:id="@+id/setting"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="@mipmap/my_setting_icon"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"/>
+                        android:layout_marginRight="20dp"
+                        android:src="@mipmap/my_setting_icon" />
                 </RelativeLayout>
 
                 <TextView
@@ -143,9 +144,9 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical"
                                     android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true">
+                                    android:layout_centerHorizontal="true"
+                                    android:orientation="vertical">
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -323,6 +324,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <RelativeLayout
                     android:id="@+id/wodeshoucang"
                     android:layout_width="wrap_content"
@@ -417,7 +419,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:id="@+id/wodefufeizhibo"

@@ -28,7 +28,6 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
-import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
@@ -378,7 +377,7 @@ public class MineFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeshoucang, R.id.wodedingdan, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
+    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeluxiang, R.id.wodeshoucang, R.id.wodedingdan, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -396,6 +395,10 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.wodeqianbao:
                 intent = new Intent(getActivity(), MyWalletActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.wodeluxiang:
+                intent = new Intent(getActivity(), MyVideoActivity.class);
                 startActivity(intent);
                 break;
             case R.id.wodeshoucang:
