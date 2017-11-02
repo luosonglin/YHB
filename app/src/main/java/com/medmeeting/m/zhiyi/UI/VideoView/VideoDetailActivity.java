@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -17,6 +18,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.video.LandLayoutVideo;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
@@ -37,8 +39,6 @@ public class VideoDetailActivity extends AppCompatActivity {
     private boolean isPause;
 
     private OrientationUtils orientationUtils;
-
-    private String url;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -62,29 +62,32 @@ public class VideoDetailActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtils.show(VideoDetailActivity.this, e.getMessage());
             }
 
             @Override
             public void onNext(HttpResult3<Object, VideoDetailsEntity> data) {
-                url = data.getEntity().getUrl();
-
-                initPlayer(url);
-
-                initTagsView(getIntent().getIntExtra("videoId", 0), data.getEntity().getRoomId());
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(VideoDetailActivity.this, data.getMsg());
+                    return;
+                }
+                initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto());
+                initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId());
             }
         }, getIntent().getIntExtra("videoId", 0));
 
     }
 
-    private void initPlayer(String url) {
+    private void initPlayer(String url, String photo) {
         //断网自动重新链接，url前接上ijkhttphook:
-//        String url = "ijkhttphook:http://baobab.wdjcdn.com/14564977406580.mp4";
-//        String url = "http://baobab.wdjcdn.com/14564977406580.mp4";
+        String url1= "http://baobab.wdjcdn.com/1451897812703c.mp4";
+//        String url1 = "ijkhttphook:http://baobab.wdjcdn.com/14564977406580.mp4";
+//        String url1 = "http://baobab.wdjcdn.com/14564977406580.mp4";
 //        String url = "http://hcjs2ra2rytd8v8np1q.exp.bcevod.com/mda-hegtjx8n5e8jt9zv/mda-hegtjx8n5e8jt9zv.m3u8";
         //String url = "http://7xse1z.com1.z0.glb.clouddn.com/1491813192";
         //String url = "http://ocgk7i2aj.bkt.clouddn.com/17651ac2-693c-47e9-b2d2-b731571bad37";
-        //String url = "http://111.198.24.133:83/yyy_login_server/pic/YB059284/97778276040859/1.mp4";
+//        String url1 = "http://111.198.24.133:83/yyy_login_server/pic/YB059284/97778276040859/1.mp4";
+        url = url1;
         //String url = "http://vr.tudou.com/v2proxy/v?sid=95001&id=496378919&st=3&pw=";
         //String url = "http://pl-ali.youku.com/playlist/m3u8?type=mp4&ts=1490185963&keyframe=0&vid=XMjYxOTQ1Mzg2MA==&ep=ciadGkiFU8cF4SvajD8bYyuwJiYHXJZ3rHbN%2FrYDAcZuH%2BrC6DPcqJ21TPs%3D&sid=04901859548541247bba8&token=0524&ctype=12&ev=1&oip=976319194";
 //        String url = "http://hls.ciguang.tv/hdtv/video.m3u8";
@@ -108,8 +111,8 @@ public class VideoDetailActivity extends AppCompatActivity {
         //增加封面
         ImageView imageView = new ImageView(this);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setImageResource(R.mipmap.video_bg);
-//        imageView.setImageURI(Uri.parse(getIntent().getStringExtra("photo")));
+//        imageView.setImageResource(R.mipmap.video_bg);
+        imageView.setImageURI(Uri.parse(photo));
         //detailPlayer.setThumbImageView(imageView);
 
         resolveNormalVideoUI();

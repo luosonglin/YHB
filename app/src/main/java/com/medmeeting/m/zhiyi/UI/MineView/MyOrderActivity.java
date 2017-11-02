@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Adapter.MyOrderAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.MyPayLiveAdapter;
-import com.medmeeting.m.zhiyi.UI.Adapter.VideoAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
@@ -79,7 +79,7 @@ public class MyOrderActivity extends AppCompatActivity {
         mRecyclerView2.addItemDecoration(new DividerItemDecoration(MyOrderActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView2.setLayoutManager(new LinearLayoutManager(MyOrderActivity.this));
         mRecyclerView2.setHasFixedSize(true);
-        mAdapter2 = new VideoAdapter(R.layout.item_video_others, null);
+        mAdapter2 = new MyOrderAdapter(R.layout.item_video_others, null);
         mAdapter2.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter2.openLoadMore(8, true);
         mRecyclerView2.setAdapter(mAdapter2);

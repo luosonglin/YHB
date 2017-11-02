@@ -15,13 +15,13 @@ import java.util.List;
 
 /**
  * @author NapoleonRohaha_Songlin
- * @date on 24/10/2017 10:37 AM
+ * @date on 01/11/2017 5:32 PM
  * @describe TODO
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class VideoAdapter extends BaseQuickAdapter<VideoListEntity> {
-    public VideoAdapter(int layoutResId, List<VideoListEntity> data) {
+public class MyOrderAdapter extends BaseQuickAdapter<VideoListEntity> {
+    public MyOrderAdapter(int layoutResId, List<VideoListEntity> data) {
         super(layoutResId, data);
     }
 
@@ -34,7 +34,6 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListEntity> {
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.author, item.getAuthorName())
                 .setText(R.id.sum, "观看 " + item.getPlayCount() + "    收藏 " + item.getCollectCount())
                 .setText(R.id.time, DateUtil.formatDate(item.getCreateTime(), DateUtil.TYPE_08));
 

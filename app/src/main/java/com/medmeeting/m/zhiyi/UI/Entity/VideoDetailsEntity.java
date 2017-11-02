@@ -45,7 +45,7 @@ public class VideoDetailsEntity {
     private String authorTitle;
     private String labelIds;
     private String chargeType;
-    private int price;
+    private float price;
     private String url;
     private String des;
     private int playCount;
@@ -155,11 +155,11 @@ public class VideoDetailsEntity {
         this.chargeType = chargeType;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

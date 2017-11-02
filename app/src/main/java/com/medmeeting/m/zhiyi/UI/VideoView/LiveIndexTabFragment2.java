@@ -131,6 +131,14 @@ public class LiveIndexTabFragment2 extends Fragment
 
     private void getVideos() {
         VideoListSearchEntity searchEntity = new VideoListSearchEntity();
+        searchEntity.setPageNum(1);
+        searchEntity.setPageSize(100);
+        searchEntity.setKeyword(null);
+        searchEntity.setLabelId(null);
+        searchEntity.setRoomId(null);
+        searchEntity.setProgramId(null);
+        searchEntity.setRoomNumber(null);
+        searchEntity.setVideoUserId(null);
         HttpData.getInstance().HttpDataGetVideos(new Observer<HttpResult3<VideoListEntity, Object>>() {
             @Override
             public void onCompleted() {

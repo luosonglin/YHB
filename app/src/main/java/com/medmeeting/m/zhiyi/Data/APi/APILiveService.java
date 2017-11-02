@@ -32,7 +32,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
-import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity2;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
@@ -224,13 +223,9 @@ public interface APILiveService {
     @GET("v1/open/liveLabel")
     Observable<HttpResult3<TagDto, Object>> getVideoTags(@QueryMap Map<String, Integer> map);
 
-    //POST /v1/open/video/page 获取视频列表-分页 主页
+    //POST /v1/open/video/page 获取视频列表-分页 主页 相关视频页
     @POST("/v1/open/video/page")
     Observable<HttpResult3<VideoListEntity, Object>> getVideos(@Body VideoListSearchEntity videoListSearchEntity);
-
-    //POST /v1/open/video/page 获取视频列表-分页 相关视频页
-    @POST("/v1/open/video/page")
-    Observable<HttpResult3<VideoListEntity, Object>> getVideos2(@Body VideoListSearchEntity2 videoListSearchEntity);
 
     //GET /v1/open/video/details/{videoId} 获取视频详情
     @GET("/v1/open/video/details/{videoId}")

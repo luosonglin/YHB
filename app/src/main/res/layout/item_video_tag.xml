@@ -4,7 +4,7 @@
     android:id="@+id/item_live_cv"
     android:layout_width="wrap_content"
     android:minWidth="100dp"
-    android:layout_height="76dp"
+    android:layout_height="56dp"
     android:layout_marginLeft="4dp"
     android:layout_marginRight="4dp"
     android:background="@drawable/live_item_shape"
@@ -16,14 +16,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center">
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_centerInParent="true"
+            android:layout_marginTop="6dp"
             android:src="@mipmap/haha"
             android:layout_centerHorizontal="true"/>
 
@@ -31,9 +31,8 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="2dp"
             android:layout_below="@+id/image"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:text="ha"
             android:textColor="@color/black"

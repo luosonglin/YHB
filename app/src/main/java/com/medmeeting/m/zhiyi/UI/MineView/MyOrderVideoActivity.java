@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.VideoAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.MyOrderAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
@@ -44,7 +44,7 @@ public class MyOrderVideoActivity extends AppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(MyOrderVideoActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(MyOrderVideoActivity.this));
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new VideoAdapter(R.layout.item_video_others, null);
+        mAdapter = new MyOrderAdapter(R.layout.item_video_others, null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_CUSTOM);
         mAdapter.openLoadMore(8, true);
         mRecyclerView.setAdapter(mAdapter);

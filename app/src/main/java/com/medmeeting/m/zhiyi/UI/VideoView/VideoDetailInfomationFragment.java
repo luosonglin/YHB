@@ -99,7 +99,7 @@ public class VideoDetailInfomationFragment extends Fragment {
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtils.show(getActivity(), e.getMessage());
             }
 
             @Override

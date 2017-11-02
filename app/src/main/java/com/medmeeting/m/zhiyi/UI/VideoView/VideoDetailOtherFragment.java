@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.VideoAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.MyOrderAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
-import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity2;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
@@ -67,7 +67,7 @@ public class VideoDetailOtherFragment  extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new VideoAdapter(R.layout.item_video_others, null);
+        mAdapter = new MyOrderAdapter(R.layout.item_video_others, null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.openLoadMore(8, true);
         mRecyclerView.setAdapter(mAdapter);
@@ -75,15 +75,23 @@ public class VideoDetailOtherFragment  extends Fragment {
     }
 
     private void getOtherVideos(Integer roomId) {
-        VideoListSearchEntity2 searchEntity = new VideoListSearchEntity2();
+        VideoListSearchEntity searchEntity = new VideoListSearchEntity();
         searchEntity.setRoomId(roomId);
-        HttpData.getInstance().HttpDataGetVideos2(new Observer<HttpResult3<VideoListEntity, Object>>() {
+        searchEntity.setPageNum(1);
+        searchEntity.setPageSize(100);
+        searchEntity.setKeyword(null);
+        searchEntity.setLabelId(null);
+        searchEntity.setProgramId(null);
+        searchEntity.setRoomNumber(null);
+        searchEntity.setVideoUserId(null);
+        HttpData.getInstance().HttpDataGetVideos(new Observer<HttpResult3<VideoListEntity, Object>>() {
             @Override
             public void onCompleted() {
             }
 
             @Override
             public void onError(Throwable e) {
+                ToastUtils.show(getActivity(), e.getMessage());
             }
 
             @Override
