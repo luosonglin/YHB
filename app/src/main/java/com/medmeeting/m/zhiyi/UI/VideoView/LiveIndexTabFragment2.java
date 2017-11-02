@@ -126,19 +126,24 @@ public class LiveIndexTabFragment2 extends Fragment
                 List<TagDto> taglist = new ArrayList<>();
                 for (int i = 0; i < 7; i++) {
                     taglist.add(tags.getData().get(i));
-                    Log.e("e", i+" "+tags.getData().get(i).getId()+" "+tags.getData().get(i).getLabelName());
+                    Log.e("e", i + " " + tags.getData().get(i).getId() + " " + tags.getData().get(i).getLabelName());
                 }
                 taglist.add(new TagDto("其他", "http://ovjdaa6w0.bkt.clouddn.com/icon_video_tag.png"));
                 mTagsAdapter.addData(taglist);
                 mTagsAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    if (position == 7) {    //"其他"标签
+
+                    if (position == 7 && mTagsAdapter.getData().size() == 8) {    //"其他"标签
                         mTagsAdapter.setNewData(tags.getData());
                         mTagsTurnUpTv.setVisibility(View.VISIBLE);
                         mTagsTurnUpTv.setOnClickListener(view1 -> {
                             mTagsAdapter.setNewData(taglist);
                             mTagsTurnUpTv.setVisibility(View.GONE);
                         });
+                        return;
                     }
+                    startActivity(new Intent(getActivity(), VideoInTagActivity.class)
+                            .putExtra("title", tags.getData().get(position).getLabelName())
+                            .putExtra("labelId", tags.getData().get(position).getId()));
                 });
             }
         }, options);
