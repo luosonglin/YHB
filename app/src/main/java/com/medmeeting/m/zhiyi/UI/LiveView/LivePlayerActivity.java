@@ -179,7 +179,7 @@ public class LivePlayerActivity extends VideoPlayerBaseActivity implements Handl
 //        mVideoView.setOnPreparedListener(mOnPreparedListener);
 //        mVideoView.setOnInfoListener(mOnInfoListener);
 //        mVideoView.setOnVideoSizeChangedListener(mOnVideoSizeChangedListener);
-        mVideoView.setOnErrorListener(mOnErrorListener);
+//        mVideoView.setOnErrorListener(mOnErrorListener);
 //        mVideoView.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
 //        mVideoView.setOnSeekCompleteListener(mOnSeekCompleteListener);
 //        mVideoView.setOnCompletionListener(mOnCompletionListener);

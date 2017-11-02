@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -43,8 +44,6 @@ public class VideoDetailActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    private Integer roomId;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,19 +74,18 @@ public class VideoDetailActivity extends AppCompatActivity {
                 initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId());
             }
         }, getIntent().getIntExtra("videoId", 0));
-
     }
 
     private void initPlayer(String url, String photo) {
         //断网自动重新链接，url前接上ijkhttphook:
-        String url1= "http://baobab.wdjcdn.com/1451897812703c.mp4";
+//        String url1= "http://baobab.wdjcdn.com/1451897812703c.mp4";
 //        String url1 = "ijkhttphook:http://baobab.wdjcdn.com/14564977406580.mp4";
 //        String url1 = "http://baobab.wdjcdn.com/14564977406580.mp4";
 //        String url = "http://hcjs2ra2rytd8v8np1q.exp.bcevod.com/mda-hegtjx8n5e8jt9zv/mda-hegtjx8n5e8jt9zv.m3u8";
         //String url = "http://7xse1z.com1.z0.glb.clouddn.com/1491813192";
         //String url = "http://ocgk7i2aj.bkt.clouddn.com/17651ac2-693c-47e9-b2d2-b731571bad37";
 //        String url1 = "http://111.198.24.133:83/yyy_login_server/pic/YB059284/97778276040859/1.mp4";
-        url = url1;
+//        url = url1;
         //String url = "http://vr.tudou.com/v2proxy/v?sid=95001&id=496378919&st=3&pw=";
         //String url = "http://pl-ali.youku.com/playlist/m3u8?type=mp4&ts=1490185963&keyframe=0&vid=XMjYxOTQ1Mzg2MA==&ep=ciadGkiFU8cF4SvajD8bYyuwJiYHXJZ3rHbN%2FrYDAcZuH%2BrC6DPcqJ21TPs%3D&sid=04901859548541247bba8&token=0524&ctype=12&ev=1&oip=976319194";
 //        String url = "http://hls.ciguang.tv/hdtv/video.m3u8";
@@ -113,6 +111,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 //        imageView.setImageResource(R.mipmap.video_bg);
         imageView.setImageURI(Uri.parse(photo));
+        Log.e("eee", Uri.parse(photo)+"");
         //detailPlayer.setThumbImageView(imageView);
 
         resolveNormalVideoUI();
@@ -125,15 +124,16 @@ public class VideoDetailActivity extends AppCompatActivity {
         GSYVideoOptionBuilder gsyVideoOption = new GSYVideoOptionBuilder();
         if (url != null)
             gsyVideoOption.setThumbImageView(imageView)
-                    .setIsTouchWiget(true)
-                    .setRotateViewAuto(false)
-                    .setLockLand(false)
-                    .setShowFullAnimation(false)
-                    .setNeedLockFull(true)
-                    .setSeekRatio(1)
+                    .setThumbPlay(false)    //是否点击封面可以播放
+                    .setIsTouchWiget(true)  //是否可以滑动界面改变进度，声音等
+                    .setRotateViewAuto(false)   //是否开启自动旋转
+                    .setLockLand(false) //一全屏就锁屏横屏，默认false竖屏，可配合setRotateViewAuto使用
+                    .setShowFullAnimation(false)    //是否使用全屏动画效果
+                    .setNeedLockFull(true)  //是否需要全屏锁定屏幕功能
+                    .setSeekRatio(1)    //调整触摸滑动快进的比例
                     .setUrl(url)
                     .setCacheWithPlay(false)
-                    .setVideoTitle(getIntent().getStringExtra("title") + " " + getIntent().getIntExtra("videoId", 0))
+                    .setVideoTitle(getIntent().getStringExtra("title"))
                     .setStandardVideoAllCallBack(new SampleListener() {
                         @Override
                         public void onPrepared(String url, Object... objects) {
@@ -171,6 +171,12 @@ public class VideoDetailActivity extends AppCompatActivity {
                                 orientationUtils.backToProtVideo();
                             }
                         }
+
+
+                        @Override
+                        public void onClickStartIcon(String url, Object... objects) {
+                            super.onClickStartIcon(url, objects);
+                        }
                     })
                     .setLockClickListener(new LockClickListener() {
                         @Override
@@ -183,13 +189,16 @@ public class VideoDetailActivity extends AppCompatActivity {
                     })
                     .build(detailPlayer);
 
-        detailPlayer.getFullscreenButton().setOnClickListener(v -> {
-            //直接横屏
-            orientationUtils.resolveByClick();
+        if (detailPlayer.getFullscreenButton() != null) {
+            detailPlayer.getFullscreenButton().setOnClickListener(v -> {
+                //直接横屏
+                orientationUtils.resolveByClick();
 
-            //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
-            detailPlayer.startWindowFullscreen(VideoDetailActivity.this, true, true);
-        });
+                //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
+                detailPlayer.startWindowFullscreen(VideoDetailActivity.this, true, true);
+            });
+        }
+        detailPlayer.getBackButton().setVisibility(View.VISIBLE);
         detailPlayer.getBackButton().setOnClickListener(view ->
                 finish()
         );

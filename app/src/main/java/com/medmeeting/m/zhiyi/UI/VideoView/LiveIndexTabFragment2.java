@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
@@ -49,6 +50,7 @@ public class LiveIndexTabFragment2 extends Fragment
     private View mHeaderView;
     private RecyclerView mTagsRecyclerView;
     private BaseQuickAdapter mTagsAdapter;
+    private TextView mTagsTurnUpTv;
 
     public static LiveIndexTabFragment2 newInstance() {
         LiveIndexTabFragment2 fragment = new LiveIndexTabFragment2();
@@ -86,6 +88,8 @@ public class LiveIndexTabFragment2 extends Fragment
         //头view
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_video_header, null);
         mTagsRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
+        mTagsTurnUpTv = (TextView) mHeaderView.findViewById(R.id.turn_up);
+        mTagsTurnUpTv.setVisibility(View.GONE);
         mTagsRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         mTagsRecyclerView.setHasFixedSize(true);
         mTagsAdapter = new VideoTagAdapter(R.layout.item_video_tag, null);
@@ -101,7 +105,7 @@ public class LiveIndexTabFragment2 extends Fragment
 
     private void getVideoTag() {
         Map<String, Integer> options = new HashMap<>();
-        options.put("limit", 7);
+        options.put("limit", 100);
         HttpData.getInstance().HttpDataGetVideoTags(new Observer<HttpResult3<TagDto, Object>>() {
             @Override
             public void onCompleted() {
@@ -120,10 +124,22 @@ public class LiveIndexTabFragment2 extends Fragment
                     return;
                 }
                 List<TagDto> taglist = new ArrayList<>();
-                taglist.addAll(tags.getData());
+                for (int i = 0; i < 7; i++) {
+                    taglist.add(tags.getData().get(i));
+                    Log.e("e", i+" "+tags.getData().get(i).getId()+" "+tags.getData().get(i).getLabelName());
+                }
                 taglist.add(new TagDto("其他", "http://ovjdaa6w0.bkt.clouddn.com/icon_video_tag.png"));
                 mTagsAdapter.addData(taglist);
-                mTagsAdapter.setOnRecyclerViewItemClickListener((view, position) -> ToastUtils.show(getActivity(), position + ""));
+                mTagsAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    if (position == 7) {    //"其他"标签
+                        mTagsAdapter.setNewData(tags.getData());
+                        mTagsTurnUpTv.setVisibility(View.VISIBLE);
+                        mTagsTurnUpTv.setOnClickListener(view1 -> {
+                            mTagsAdapter.setNewData(taglist);
+                            mTagsTurnUpTv.setVisibility(View.GONE);
+                        });
+                    }
+                });
             }
         }, options);
     }
