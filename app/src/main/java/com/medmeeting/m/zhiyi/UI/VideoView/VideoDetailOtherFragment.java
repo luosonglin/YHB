@@ -28,7 +28,7 @@ import rx.Observer;
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class VideoDetailOtherFragment  extends Fragment {
+public class VideoDetailOtherFragment extends Fragment {
 
     private static Integer roomId;
     private RecyclerView mRecyclerView;

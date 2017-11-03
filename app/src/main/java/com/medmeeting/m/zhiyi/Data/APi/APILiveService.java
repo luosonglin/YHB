@@ -20,6 +20,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
+import com.medmeeting.m.zhiyi.UI.Entity.PaySettlement;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
@@ -32,6 +33,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
@@ -266,4 +268,16 @@ public interface APILiveService {
     //PUT /v1/auchor/video/edit 更新视频信息
     @PUT("/v1/auchor/video/edit")
     Observable<HttpResult3> updateVideo(@Body EditVideoEntity entity);
+
+    //GET /v1/auchor/video/settlement/details/{videoId} 获取视频门票结算信息
+    @GET("/v1/auchor/video/settlement/details/{videoId}")
+    Observable<HttpResult3<Object, VideoSettlementEntity>> getSettlementDetail(@Path("videoId") Integer videoId);
+
+    //GET /v1/auchor/video/settlement/list/{videoId} 获取视频门票结算列表
+    @GET("/v1/auchor/video/settlement/list/{videoId}")
+    Observable<HttpResult3<PaySettlement, Object>> getSettlementList(@Path("videoId") Integer videoId);
+
+    //POST /v1/auchor/video/settlement/add/{videoId} 提交视频门票结算申请
+    @POST("/v1/auchor/video/settlement/add/{videoId}")
+    Observable<HttpResult3> addSettlement(@Path("videoId") Integer videoId);
 }

@@ -38,6 +38,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
+import com.medmeeting.m.zhiyi.UI.Entity.PaySettlement;
 import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
@@ -56,6 +57,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
@@ -524,6 +526,19 @@ public class HttpData extends RetrofitUtils {
     }
     public void HttpDataUpdateVideo(Observer<HttpResult3> observer, EditVideoEntity entity) {
         Observable observable = service_live.updateVideo(entity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetSettlementDetail(Observer<HttpResult3<Object, VideoSettlementEntity>> observer, Integer videoId) {
+        Observable observable = service_live.getSettlementDetail(videoId);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataGetSettlementList(Observer<HttpResult3<PaySettlement, Object>> observer, Integer videoId) {
+        Observable observable = service_live.getSettlementList(videoId);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataAddSettlement(Observer<HttpResult3> observer, Integer videoId) {
+        Observable observable = service_live.addSettlement(videoId);
         setSubscribe(observable, observer);
     }
 

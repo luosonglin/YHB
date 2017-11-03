@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
@@ -70,8 +71,9 @@ public class VideoDetailActivity extends AppCompatActivity {
                     ToastUtils.show(VideoDetailActivity.this, data.getMsg());
                     return;
                 }
-                initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto());
-                initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId());
+//                initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto());
+                initPlayer("rtmp://pili-live-rtmp.medmeeting.com/yihuibao-test/yihuibao-test_20171101144932542_100194", data.getEntity().getCoverPhoto());
+                initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId(), data.getEntity().getUserId());
             }
         }, getIntent().getIntExtra("videoId", 0));
     }
@@ -267,7 +269,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         return detailPlayer;
     }
 
-    private void initTagsView(Integer videoId, Integer roomId) {
+    private void initTagsView(Integer videoId, Integer roomId, Integer userId) {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -277,18 +279,23 @@ public class VideoDetailActivity extends AppCompatActivity {
 
         viewPager.setLayoutParams(params);
 
-        setUpViewPager(viewPager, videoId, roomId);
+        setUpViewPager(viewPager, videoId, roomId, userId);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(1).select();
     }
 
-    private void setUpViewPager(ViewPager viewPager, Integer videoId, Integer roomId) {
+    private void setUpViewPager(ViewPager viewPager, Integer videoId, Integer roomId, Integer userId) {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(VideoDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
         mIndexChildAdapter.addFragment(VideoDetailCommandFragment.newInstance(videoId), "评论");
         mIndexChildAdapter.addFragment(VideoDetailInfomationFragment.newInstance(videoId), "详情");
-        mIndexChildAdapter.addFragment(VideoDetailOtherFragment.newInstance(roomId), "相关视频");
+
+        if (userId.equals(Data.getUserId())) {
+            mIndexChildAdapter.addFragment(VideoDetailFareFragment.newInstance(roomId), "收费统计");
+        } else {
+            mIndexChildAdapter.addFragment(VideoDetailOtherFragment.newInstance(roomId), "相关视频");
+        }
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);
