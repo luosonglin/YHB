@@ -86,7 +86,7 @@ public class Data {
 
 
     /**
-     * 0:alipay;    1:wechat pay
+     * 0:live pay;    1:video pay
      */
     public static Integer payType = 0;
 
@@ -102,6 +102,9 @@ public class Data {
         Data.payType = 0;
     }
 
+    /**
+     * videoId
+     */
     public static Integer videoId = 0;
 
     public static Integer getVideoId() {
@@ -110,5 +113,18 @@ public class Data {
 
     public static void setVideoId(Integer videoId) {
         Data.videoId = videoId;
+    }
+
+    /**
+     * tradeId
+     */
+    public static String tradeId = "";
+
+    public static String getTradeId() {
+        return tradeId;
+    }
+
+    public static void setTradeId(String tradeId) {
+        Data.tradeId = tradeId;
     }
 }

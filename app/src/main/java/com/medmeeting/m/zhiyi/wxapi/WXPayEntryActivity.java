@@ -8,7 +8,9 @@ import android.util.Log;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -17,6 +19,8 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import rx.Observer;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
@@ -62,7 +66,24 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         } else if (resp.errCode == 0) {
             ToastUtils.show(this, "宝宝已成功购票Ｏ(≧∇≦)Ｏ");
 
-            if (Data.getPayType() == 1) {   //video pay
+            if (Data.getPayType() == 1 && !Data.getTradeId().equals("")) {   //video pay
+                //通知后端，防止后端接受不到支付成功
+                HttpData.getInstance().HttpDataUpdateLiveOrderStatus(new Observer<HttpResult3<Object, Object>>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "HttpDataUpdateLiveOrderStatus onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(WXPayEntryActivity.this, e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<Object, Object> objectObjectHttpResult3) {
+                        Log.e(TAG, "onNext");
+                    }
+                }, Data.getTradeId());
                 startActivity(new Intent(this, VideoDetailActivity.class).putExtra("videoId", Data.getVideoId()));
             } else {
                 startActivity(new Intent(this, MyPayLiveRoomActivity.class));

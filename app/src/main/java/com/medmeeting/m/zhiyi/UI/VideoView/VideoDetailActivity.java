@@ -473,7 +473,9 @@ public class VideoDetailActivity extends AppCompatActivity {
                         ToastUtils.show(VideoDetailActivity.this, data.getMsg());
                         return;
                     }
+                    tradeId = data.getEntity().getPrepayId();
                     Data.setPayType(1);
+                    Data.setTradeId(tradeId);
                     finish();//
                     payByWechat(data.getEntity().getRequestPay().getPartnerid(),
                             data.getEntity().getRequestPay().getPrepayid(),
