@@ -180,20 +180,6 @@ public class LiveFragment extends Fragment
     private void initListener() {
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
-
-//        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                Toast.makeText(getActivity(), "点击了" + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(View view, int position) {
-//                Toast.makeText(getActivity(), "长按了" + position, Toast.LENGTH_SHORT).show();
-//                return true;
-//            }
-//        });
     }
 
     //自动加载
@@ -202,7 +188,6 @@ public class LiveFragment extends Fragment
         PageIndex++;
         liveSearchDto2.setPageNum(PageIndex);
         present.LoadData(true, liveSearchDto2);
-//        showLoadCompleteAllData();
     }
 
     //下拉刷新

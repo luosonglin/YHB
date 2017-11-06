@@ -130,23 +130,24 @@ public class LiveIndexTabFragment1 extends Fragment
                             .load(firstData.getCoverPhoto())
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .crossFade()
+                            .placeholder(R.mipmap.live_background)
                             .into(mBackgroundTv);
                     switch (firstData.getLiveStatus()) {
                         case "ready":
                             mStatusTv.setText("预告");
-                            mStatusTv.setBackground(getResources().getDrawable(R.color.skyblue));
+                            mStatusTv.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
                             break;
                         case "play":
                             mStatusTv.setText("直播");
-                            mStatusTv.setBackground(getResources().getDrawable(R.color.red));
+                            mStatusTv.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
                             break;
                         case "wait":
                             mStatusTv.setText("离开");
-                            mStatusTv.setBackground(getResources().getDrawable(R.color.yellow));
+                            mStatusTv.setBackgroundResource(R.mipmap.icon_live_adapter_status_yellow);
                             break;
                         case "end":
                             mStatusTv.setText("结束");
-                            mStatusTv.setBackground(getResources().getDrawable(R.color.grey1));
+                            mStatusTv.setBackgroundResource(R.mipmap.icon_live_adapter_status_grey);
                             break;
                     }
                     switch (firstData.getChargeType()) {

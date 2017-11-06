@@ -164,6 +164,7 @@ public class VideoDetailInfomationFragment extends Fragment {
                 }
                 if (oldCollected) {     //老状态是 已收藏
                     ToastUtils.show(getActivity(), "取消收藏");
+                    like.setBtnFillColor(Color.GRAY);
                     like.setCancel();
                 } else {
                     ToastUtils.show(getActivity(), "成功收藏");
@@ -182,12 +183,10 @@ public class VideoDetailInfomationFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.avatar, R.id.like})
+    @OnClick({R.id.avatar})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.avatar:
-                break;
-            case R.id.like:
                 break;
         }
     }

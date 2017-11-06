@@ -72,7 +72,6 @@ public class MyOrderActivity extends AppCompatActivity {
         mTypeView = (TextView) mHeaderView.findViewById(R.id.type);
         mTypeView.setText("已购直播");
         mMoreView = (TextView) mHeaderView.findViewById(R.id.more);
-        mMoreView.setOnClickListener(view -> startActivity(new Intent(MyOrderActivity.this, MyOrderLiveActivity.class)));
 
 
         mRecyclerView2 = (RecyclerView) findViewById(R.id.rv_list2);
@@ -89,7 +88,6 @@ public class MyOrderActivity extends AppCompatActivity {
         mTypeView2 = (TextView) mHeaderView2.findViewById(R.id.type);
         mTypeView2.setText("已购录像");
         mMoreView2 = (TextView) mHeaderView2.findViewById(R.id.more);
-        mMoreView2.setOnClickListener(view -> startActivity(new Intent(MyOrderActivity.this, MyOrderVideoActivity.class)));
     }
 
     private void initToolbar() {
@@ -124,8 +122,11 @@ public class MyOrderActivity extends AppCompatActivity {
                     mLives.add(0, data.getData().get(0));
                     mLives.add(1, data.getData().get(1));
                     mLives.add(2, data.getData().get(2));
+                    mMoreView.setVisibility(View.VISIBLE);
+                    mMoreView.setOnClickListener(view -> startActivity(new Intent(MyOrderActivity.this, MyOrderLiveActivity.class)));
                 } else {
                     mLives.addAll(data.getData());
+                    mMoreView.setVisibility(View.GONE);
                 }
                 mAdapter.addData(mLives);
                 mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
@@ -170,8 +171,11 @@ public class MyOrderActivity extends AppCompatActivity {
                     mVideos.add(0, data.getData().get(0));
                     mVideos.add(1, data.getData().get(1));
                     mVideos.add(2, data.getData().get(2));
+                    mMoreView2.setVisibility(View.VISIBLE);
+                    mMoreView2.setOnClickListener(view -> startActivity(new Intent(MyOrderActivity.this, MyOrderVideoActivity.class)));
                 } else {
                     mVideos.addAll(data.getData());
+                    mMoreView2.setVisibility(View.GONE);
                 }
                 mAdapter2.addData(mVideos);
                 mAdapter2.setOnRecyclerViewItemClickListener((view, position) -> {

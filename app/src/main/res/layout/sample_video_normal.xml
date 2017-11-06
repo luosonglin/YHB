@@ -124,7 +124,7 @@
         android:background="@drawable/textview_side_white"
         android:gravity="center"
         android:lines="1"
-        android:text="购票 元"
+        android:text=" "
         android:shadowColor="#ff000000"
         android:shadowDx="5"
         android:shadowDy="5"

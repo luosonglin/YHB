@@ -108,7 +108,7 @@ public class VideoDetailActivity extends AppCompatActivity {
 
                 initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
                         data.getEntity().getUserId(), data.getEntity().isPayFlag());
-//                initPlayer("rtmp://pili-live-rtmp.medmeeting.com/yihuibao-test/yihuibao-test_20171101144932542_100194", data.getEntity().getCoverPhoto());
+
                 initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId(), data.getEntity().getUserId());
             }
         }, videoId);
