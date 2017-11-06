@@ -29,10 +29,11 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/settlementAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="¥ 100000.00元"
+                    android:text="¥ 元"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -71,17 +72,19 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/totalAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="总收入:  ¥100000.00元"
+                    android:text="总收入:  ¥ 元"
                     android:textColor="@color/grey"
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/actualAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="已结算金额：    ¥100000.00元"
+                    android:text="实际到账金额：    ¥元"
                     android:textColor="@color/grey"
                     android:textSize="12sp" />
             </LinearLayout>

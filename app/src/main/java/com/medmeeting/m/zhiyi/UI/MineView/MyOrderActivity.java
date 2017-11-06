@@ -177,8 +177,6 @@ public class MyOrderActivity extends AppCompatActivity {
                 mAdapter2.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(MyOrderActivity.this, VideoDetailActivity.class);
                     i.putExtra("videoId", data.getData().get(position).getVideoId());
-                    i.putExtra("title", data.getData().get(position).getTitle());
-                    i.putExtra("photo", data.getData().get(position).getCoverPhoto());
                     startActivity(i);
                 });
             }

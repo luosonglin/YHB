@@ -44,7 +44,7 @@ import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
-import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailCommandFragment;
@@ -472,7 +472,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     //获取支付订单信息
     private void getPayInfo(final View v, String paymentChannel, String platformType, int programId) {
         if ("ALIPAY".equals(paymentChannel)) {
-            HttpData.getInstance().HttpDataGetLiveOrder(new Observer<HttpResult3<Object, LivePayDto>>() {
+            HttpData.getInstance().HttpDataGetLiveOrder(new Observer<HttpResult3<Object, LiveAndVideoPayDto>>() {
                 @Override
                 public void onCompleted() {
 
@@ -487,13 +487,13 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onNext(HttpResult3<Object, LivePayDto> payinfo) {
+                public void onNext(HttpResult3<Object, LiveAndVideoPayDto> payinfo) {
                     tradeId = payinfo.getEntity().getPrepayId();
                     pay(v, payinfo.getEntity().getAmount() + "", payinfo.getEntity().getTradeTitle(), "直播", payinfo.getEntity().getPrepayId(), payinfo.getEntity().getAlipayOrderString());
                 }
             }, new LiveOrderDto("", paymentChannel, platformType, programId));
         } else if ("WXPAY".equals(paymentChannel)) {
-            HttpData.getInstance().HttpDataGetLiveOrder(new Observer<HttpResult3<Object, LivePayDto>>() {
+            HttpData.getInstance().HttpDataGetLiveOrder(new Observer<HttpResult3<Object, LiveAndVideoPayDto>>() {
                 @Override
                 public void onCompleted() {
 
@@ -505,7 +505,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onNext(HttpResult3<Object, LivePayDto> livePayDtoHttpResult3) {
+                public void onNext(HttpResult3<Object, LiveAndVideoPayDto> livePayDtoHttpResult3) {
                     payByWechat(livePayDtoHttpResult3.getEntity().getRequestPay().getPartnerid(),
                             livePayDtoHttpResult3.getEntity().getRequestPay().getPrepayid(),
                             livePayDtoHttpResult3.getEntity().getRequestPay().getNoncestr(),

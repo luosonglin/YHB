@@ -1,6 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.Entity;
 
-public class LivePayDto {
+public class LiveAndVideoPayDto {
 
     /**
      * tradeId : null //prepayId

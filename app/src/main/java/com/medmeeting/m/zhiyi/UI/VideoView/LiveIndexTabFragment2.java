@@ -186,8 +186,6 @@ public class LiveIndexTabFragment2 extends Fragment
                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), VideoDetailActivity.class);
                     i.putExtra("videoId", videoListEntityObjectHttpResult3.getData().get(position).getVideoId());
-                    i.putExtra("title", videoListEntityObjectHttpResult3.getData().get(position).getTitle());
-                    i.putExtra("photo", videoListEntityObjectHttpResult3.getData().get(position).getCoverPhoto());
                     startActivity(i);
                 });
             }

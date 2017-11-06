@@ -7,13 +7,13 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
-import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
@@ -33,6 +33,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
@@ -111,7 +112,7 @@ public interface APILiveService {
 
     //直播门票下单
     @POST("/v1/liveProgram/livePay")
-    Observable<HttpResult3<Object, LivePayDto>> getLiveOrder(@Body LiveOrderDto liveOrderDto);
+    Observable<HttpResult3<Object, LiveAndVideoPayDto>> getLiveOrder(@Body LiveOrderDto liveOrderDto);
 
     //POST /v1/anchor/liveRoom 新增直播房间信息
     @POST("/v1/anchor/liveRoom")
@@ -280,4 +281,8 @@ public interface APILiveService {
     //POST /v1/auchor/video/settlement/add/{videoId} 提交视频门票结算申请
     @POST("/v1/auchor/video/settlement/add/{videoId}")
     Observable<HttpResult3> addSettlement(@Path("videoId") Integer videoId);
+
+    //POST /v1/video/pay 视频门票下单
+    @POST("/v1/video/pay")
+    Observable<HttpResult3<Object, LiveAndVideoPayDto>> payVideo(@Body VideoOrderDto videoOrderDto);
 }

@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -59,7 +61,12 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             finish();
         } else if (resp.errCode == 0) {
             ToastUtils.show(this, "宝宝已成功购票Ｏ(≧∇≦)Ｏ");
-            startActivity(new Intent(this, MyPayLiveRoomActivity.class));
+
+            if (Data.getPayType() == 1) {   //video pay
+                startActivity(new Intent(this, VideoDetailActivity.class).putExtra("videoId", Data.getVideoId()));
+            } else {
+                startActivity(new Intent(this, MyPayLiveRoomActivity.class));
+            }
             finish();
         }
     }

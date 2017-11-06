@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
@@ -17,6 +18,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoSettlementEntity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -29,6 +32,12 @@ import rx.Observer;
 public class VideoDetailFareFragment extends Fragment {
 
     private static Integer videoId;
+    @Bind(R.id.settlementAmount)
+    TextView settlementAmount;
+    @Bind(R.id.totalAmount)
+    TextView totalAmount;
+    @Bind(R.id.actualAmount)
+    TextView actualAmount;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
 
@@ -55,7 +64,9 @@ public class VideoDetailFareFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_video_detail_fare, container, false);
+        View view = inflater.inflate(R.layout.fragment_video_detail_fare, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -89,16 +100,17 @@ public class VideoDetailFareFragment extends Fragment {
                     ToastUtils.show(getActivity(), data.getMsg());
                     return;
                 }
+                settlementAmount.setText("¥ " + data.getEntity().getSettlementAmount() + "元");
+                totalAmount.setText("总收入:  ¥ " + data.getEntity().getTotalAmount() + "元");
+                actualAmount.setText("实际到账金额：    ¥ " + data.getEntity().getActualAmount() + "元");
                 mAdapter.addData(data.getEntity().getPayList());
-//                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-//                    Intent i = new Intent(getActivity(), VideoDetailActivity.class);
-//                    i.putExtra("videoId", data.getData().get(position).getVideoId());
-//                    i.putExtra("title", data.getData().get(position).getTitle());
-//                    i.putExtra("photo", data.getData().get(position).getCoverPhoto());
-//                    startActivity(i);
-//                    getActivity().finish();
-//                });
             }
         }, videoId);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

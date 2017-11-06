@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.Widget.video;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -41,7 +42,7 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
     @Override
     protected void updateStartImage() {
         if (mIfCurrentIsFullscreen) {
-            if(mStartButton instanceof ImageView) {
+            if (mStartButton instanceof ImageView) {
                 ImageView imageView = (ImageView) mStartButton;
                 if (mCurrentState == CURRENT_STATE_PLAYING) {
                     imageView.setImageResource(R.drawable.video_click_pause_selector);
@@ -56,5 +57,45 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
         }
     }
 
+    /************************************* 业务需求 ****************************************/
+
+
+    private ImageView mShareButton;
+
+    /**
+     * 获取分享按键
+     */
+    public ImageView getShareButton() {
+        mShareButton = (ImageView) findViewById(R.id.share);
+        return mShareButton;
+    }
+
+
+    private TextView mBuyButton;
+
+    /**
+     * 获取购买按键
+     */
+    public TextView getBuyButton() {
+        mBuyButton = (TextView) findViewById(R.id.buy);
+        return mBuyButton;
+    }
+
+    private ImageView mCoverPhoto;
+
+    /**
+     * 获取封面图片
+     */
+    public ImageView getCoverPhoto() {
+        mCoverPhoto = (ImageView) findViewById(R.id.cover_photo);
+        return mCoverPhoto;
+    }
+
+    /**
+     * 获取当前的播放状态
+     */
+    public int getCurrentState() {
+        return mCurrentState;
+    }
 
 }

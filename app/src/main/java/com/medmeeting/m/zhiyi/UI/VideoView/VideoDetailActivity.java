@@ -1,25 +1,44 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alipay.sdk.app.PayTask;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoOrderDto;
+import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.video.LandLayoutVideo;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
@@ -28,8 +47,15 @@ import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import rx.Observer;
+
+import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_NORMAL;
+import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING;
+import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PREPAREING;
 
 public class VideoDetailActivity extends AppCompatActivity {
 
@@ -45,6 +71,9 @@ public class VideoDetailActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    static final String TAG = VideoDetailActivity.class.getSimpleName();
+    private Integer videoId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +83,11 @@ public class VideoDetailActivity extends AppCompatActivity {
         detailPlayer = (LandLayoutVideo) findViewById(R.id.detail_player);
         activityDetailPlayer = (RelativeLayout) findViewById(R.id.activity_detail_player);
 
+        videoId = getIntent().getIntExtra("videoId", 0);
+        initView(videoId);
+    }
+
+    private void initView(Integer videoId) {
         HttpData.getInstance().HttpDataGetVideoDetail(new Observer<HttpResult3<Object, VideoDetailsEntity>>() {
             @Override
             public void onCompleted() {
@@ -71,14 +105,16 @@ public class VideoDetailActivity extends AppCompatActivity {
                     ToastUtils.show(VideoDetailActivity.this, data.getMsg());
                     return;
                 }
-//                initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto());
-                initPlayer("rtmp://pili-live-rtmp.medmeeting.com/yihuibao-test/yihuibao-test_20171101144932542_100194", data.getEntity().getCoverPhoto());
+
+                initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
+                        data.getEntity().getUserId(), data.getEntity().isPayFlag());
+//                initPlayer("rtmp://pili-live-rtmp.medmeeting.com/yihuibao-test/yihuibao-test_20171101144932542_100194", data.getEntity().getCoverPhoto());
                 initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId(), data.getEntity().getUserId());
             }
-        }, getIntent().getIntExtra("videoId", 0));
+        }, videoId);
     }
 
-    private void initPlayer(String url, String photo) {
+    private void initPlayer(String url, String photo, String title, String chargeType, float price, Integer userId, boolean payFlag) {
         //断网自动重新链接，url前接上ijkhttphook:
 //        String url1= "http://baobab.wdjcdn.com/1451897812703c.mp4";
 //        String url1 = "ijkhttphook:http://baobab.wdjcdn.com/14564977406580.mp4";
@@ -108,15 +144,6 @@ public class VideoDetailActivity extends AppCompatActivity {
 
         //GSYVideoManager.instance().setTimeOut(4000, true);
 
-        //增加封面
-        ImageView imageView = new ImageView(this);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//        imageView.setImageResource(R.mipmap.video_bg);
-        imageView.setImageURI(Uri.parse(photo));
-        Log.e("eee", Uri.parse(photo)+"");
-        //detailPlayer.setThumbImageView(imageView);
-
-        resolveNormalVideoUI();
 
         //外部辅助的旋转，帮助全屏
         orientationUtils = new OrientationUtils(this, detailPlayer);
@@ -125,7 +152,7 @@ public class VideoDetailActivity extends AppCompatActivity {
 
         GSYVideoOptionBuilder gsyVideoOption = new GSYVideoOptionBuilder();
         if (url != null)
-            gsyVideoOption.setThumbImageView(imageView)
+            gsyVideoOption//.setThumbImageView(imageView)
                     .setThumbPlay(false)    //是否点击封面可以播放
                     .setIsTouchWiget(true)  //是否可以滑动界面改变进度，声音等
                     .setRotateViewAuto(false)   //是否开启自动旋转
@@ -135,7 +162,7 @@ public class VideoDetailActivity extends AppCompatActivity {
                     .setSeekRatio(1)    //调整触摸滑动快进的比例
                     .setUrl(url)
                     .setCacheWithPlay(false)
-                    .setVideoTitle(getIntent().getStringExtra("title"))
+                    .setVideoTitle(title)
                     .setStandardVideoAllCallBack(new SampleListener() {
                         @Override
                         public void onPrepared(String url, Object... objects) {
@@ -191,6 +218,24 @@ public class VideoDetailActivity extends AppCompatActivity {
                     })
                     .build(detailPlayer);
 
+
+        //增加封面
+//        ImageView imageView = new ImageView(this);
+//        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+////        imageView.setImageResource(R.mipmap.video_bg);
+//        new DownloadImageTaskUtil(imageView).execute(photo);
+////        imageView.setImageURI(Uri.parse(photo));
+//        detailPlayer.setThumbImageView(imageView);
+        new DownloadImageTaskUtil(detailPlayer.getCoverPhoto()).execute(photo);
+        if (detailPlayer.getCurrentState() == CURRENT_STATE_NORMAL
+                || detailPlayer.getCurrentState() == CURRENT_STATE_PREPAREING
+                || detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING) {
+            detailPlayer.getCoverPhoto().setVisibility(View.GONE);
+        } else {
+            detailPlayer.getCoverPhoto().setVisibility(View.VISIBLE);
+        }
+
+
         if (detailPlayer.getFullscreenButton() != null) {
             detailPlayer.getFullscreenButton().setOnClickListener(v -> {
                 //直接横屏
@@ -200,11 +245,36 @@ public class VideoDetailActivity extends AppCompatActivity {
                 detailPlayer.startWindowFullscreen(VideoDetailActivity.this, true, true);
             });
         }
+
+        /**
+         * 对比userId chargeType url
+         */
+        if (Data.getUserId() == userId) {
+            detailPlayer.getStartButton().setVisibility(View.VISIBLE);
+            detailPlayer.getBuyButton().setVisibility(View.GONE);
+        } else {
+            if (chargeType.equals("yes") && !payFlag) {
+                Log.e("hhhh", url + " " + payFlag);
+                detailPlayer.getStartButton().setVisibility(View.GONE);
+                detailPlayer.getBuyButton().setVisibility(View.VISIBLE);
+                detailPlayer.getBuyButton().setText("购买 " + price + " 元");
+                detailPlayer.getBuyButton().setTextSize(12);
+                detailPlayer.getBuyButton().setOnClickListener(view -> initPopupwindow(videoId));
+            } else {
+                detailPlayer.getStartButton().setVisibility(View.VISIBLE);
+                detailPlayer.getBuyButton().setVisibility(View.GONE);
+            }
+        }
+
+        detailPlayer.getTitleTextView().setVisibility(View.VISIBLE);
         detailPlayer.getBackButton().setVisibility(View.VISIBLE);
-        detailPlayer.getBackButton().setOnClickListener(view ->
-                finish()
-        );
-        detailPlayer.showContextMenu();
+        detailPlayer.getBackButton().setOnClickListener(view -> finish());
+        detailPlayer.getShareButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtils.show(VideoDetailActivity.this, "share");
+            }
+        });
     }
 
     @Override
@@ -255,13 +325,6 @@ public class VideoDetailActivity extends AppCompatActivity {
         }
     }
 
-
-    private void resolveNormalVideoUI() {
-        //增加title
-        detailPlayer.getTitleTextView().setVisibility(View.GONE);
-        detailPlayer.getBackButton().setVisibility(View.GONE);
-    }
-
     private GSYVideoPlayer getCurPlay() {
         if (detailPlayer.getFullWindowPlayer() != null) {
             return detailPlayer.getFullWindowPlayer();
@@ -292,7 +355,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         mIndexChildAdapter.addFragment(VideoDetailInfomationFragment.newInstance(videoId), "详情");
 
         if (userId.equals(Data.getUserId())) {
-            mIndexChildAdapter.addFragment(VideoDetailFareFragment.newInstance(roomId), "收费统计");
+            mIndexChildAdapter.addFragment(VideoDetailFareFragment.newInstance(videoId), "收费统计");
         } else {
             mIndexChildAdapter.addFragment(VideoDetailOtherFragment.newInstance(roomId), "相关视频");
         }
@@ -300,4 +363,282 @@ public class VideoDetailActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);
     }
+
+    /**
+     * 以下为支付弹窗
+     */
+    private PopupWindow academicPopupWindow;
+
+    private void initPopupwindow(Integer videoId) {
+        final View academicPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_pay_type, null);
+        academicPopupWindow = new PopupWindow(academicPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
+        final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.wechat);
+
+        /**
+         * 支付宝
+         */
+        a.setOnClickListener(v -> {
+            if (checkAliPayInstalled(VideoDetailActivity.this)) {
+                getPayInfo(v, "ALIPAY", "APP", videoId);
+                academicPopupWindow.dismiss();
+            } else {
+                ToastUtils.show(VideoDetailActivity.this, "支付宝APP尚未安装，\n请重新选择其他支付方式");
+            }
+        });
+
+        /**
+         * 微信
+         */
+        b.setOnClickListener(v -> {
+            /** 检测是否有微信软件 */
+            if (isWXAppInstalledAndSupported(VideoDetailActivity.this, api)) {
+                getPayInfo(v, "WXPAY", "APP", videoId);
+                academicPopupWindow.dismiss();
+            } else {
+                ToastUtils.show(VideoDetailActivity.this, "微信APP尚未安装，\n请重新选择其他支付方式");
+            }
+        });
+
+        LinearLayout academicPopupParentLayout = (LinearLayout) academicPopupwindowView.findViewById(R.id.popup_parent);
+        academicPopupParentLayout.setOnClickListener(v -> {
+            if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
+                academicPopupWindow.dismiss();
+            }
+        });
+
+        academicPopupWindow.setOutsideTouchable(false);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        academicPopupWindow.setBackgroundDrawable(dw);
+        academicPopupWindow.showAtLocation(academicPopupwindowView, Gravity.BOTTOM, 0, 0);
+    }
+
+    /**
+     * 支付宝
+     */
+    //支付金额
+    private float amount;
+
+    //流水号
+    private String tradeId = "";
+
+    //获取支付订单信息
+    private void getPayInfo(final View v, String paymentChannel, String platformType, int videoId) {
+        Data.setVideoId(videoId);
+
+        VideoOrderDto videoOrderDto = new VideoOrderDto();
+        videoOrderDto.setOpenId("");
+        videoOrderDto.setPaymentChannel(paymentChannel);
+        videoOrderDto.setPlatformType(platformType);
+        videoOrderDto.setVideoId(videoId);
+
+        if ("ALIPAY".equals(paymentChannel)) {
+            HttpData.getInstance().HttpDataPayVideo(new Observer<HttpResult3<Object, LiveAndVideoPayDto>>() {
+                @Override
+                public void onCompleted() {
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    ToastUtils.show(VideoDetailActivity.this, e.getMessage());
+                }
+
+                @Override
+                public void onNext(HttpResult3<Object, LiveAndVideoPayDto> data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(VideoDetailActivity.this, data.getMsg());
+                        return;
+                    }
+                    tradeId = data.getEntity().getPrepayId();
+                    Data.setPayType(0);
+                    pay(v, data.getEntity().getAmount() + "", data.getEntity().getTradeTitle(), "视频", data.getEntity().getPrepayId(), data.getEntity().getAlipayOrderString());
+                }
+            }, videoOrderDto);
+        } else if ("WXPAY".equals(paymentChannel)) {
+            HttpData.getInstance().HttpDataPayVideo(new Observer<HttpResult3<Object, LiveAndVideoPayDto>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    ToastUtils.show(VideoDetailActivity.this, e.getMessage());
+                }
+
+                @Override
+                public void onNext(HttpResult3<Object, LiveAndVideoPayDto> data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(VideoDetailActivity.this, data.getMsg());
+                        return;
+                    }
+                    Data.setPayType(1);
+                    finish();//
+                    payByWechat(data.getEntity().getRequestPay().getPartnerid(),
+                            data.getEntity().getRequestPay().getPrepayid(),
+                            data.getEntity().getRequestPay().getNoncestr(),
+                            data.getEntity().getRequestPay().getTimeStamp(),
+                            data.getEntity().getRequestPay().getPackageX(),
+                            data.getEntity().getRequestPay().getSign());
+                    //payByWechat(final String partnerId, final String prepayId, final String nonceStr, final String timeStamp, final String packageValue, final String sign) {
+                }
+            }, videoOrderDto);
+        }
+    }
+
+    /**
+     * 支付宝支付配置
+     * ======================================================================================================================================================
+     */
+    // 商户PID
+    public static final String PARTNER = "2088311846356487";
+    // 商户收款账号
+    public static final String SELLER = "zhifubao@healife.com";
+    // 商户私钥，pkcs8格式
+    public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAIoUMNT6sAOC05BU72JoQWbhmJhe9n917DtUrT8kU0nFGzeV+tmSSy+3bsbSbKUg9ngVpyXsfn4ouH33Ktx42H8TAHs3n39qaSAePKgB3o6pOV0vYnpVqnYB1UlecW/vbxv8XcvmcEOS1gE3OwcFh6NTzdgbr+rb+mLbAGlINfWNAgMBAAECgYBDY4FFoKegvwvkCB/g5kLtJDMmQkqJgJLvje8TvvXLLiCPa2pHH2gEfMDa1j3iBYlkqCSwlJBToCoSiDvp6Cy4cRtMKbTSNx00bhLWzpuropvSAH9EIsOJe+rCpOZox+DcIUOFS3TkXkXOKaAW9F2Onqr1nfK+1C9nXMPePOyLnQJBAPnuKnBgAYSxD8OeO2AIjF5iO93Ap1f9q8/L4bxcsw1WfKJlolFKxWC3nnuOrL9qe1DcKOPnKaJHA9XdFH7VNG8CQQCNbqL8HOh/9LhPe8TgwfUl4Bjz0WjQGq3qIQscy0o6JfkAHz+Po2zl+kTugtUguWnlhpFli/fT2d9yaVDj9cvDAkB5DuN/iwExRJJeLkaUPY/AJ9TXlHl6JWUTQa4VjtErpLi58ICu34i7UDVzo6gJD4qrn/gua8m+0KcK8Ar9ZEgBAkBFgan33P0mZU5vQZRwIOIpywh4SuIH5BS0i6i6be38xcypkrHaFabfHy/hR8sWWgkBFDFAhpk1NE3sHHX0kkehAkAud+wmYHchvQ2ME9yxNl5+LHsVRbEOscJIdbPTO95MrBufBfyFyIJ79SQvj/lb+ueEfyr+QUkJU5UxEH8rhhFM";
+    // 支付宝公钥
+    public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCKFDDU+rADgtOQVO9iaEFm4ZiYXvZ/dew7VK0/JFNJxRs3lfrZkksvt27G0mylIPZ4Facl7H5+KLh99yrceNh/EwB7N59/amkgHjyoAd6OqTldL2J6Vap2AdVJXnFv728b/F3L5nBDktYBNzsHBYejU83YG6/q2/pi2wBpSDX1jQIDAQAB";
+    private static final int SDK_PAY_FLAG = 1;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @SuppressWarnings("unused")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SDK_PAY_FLAG: {
+                    com.medmeeting.m.zhiyi.paydemo.PayResult payResult = new com.medmeeting.m.zhiyi.paydemo.PayResult((String) msg.obj);
+                    /*
+                      同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
+                      detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
+                      docType=1) 建议商户依赖异步通知
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        //通知后端，防止后端接受不到支付成功
+                        HttpData.getInstance().HttpDataUpdateLiveOrderStatus(new Observer<HttpResult3<Object, Object>>() {
+                            @Override
+                            public void onCompleted() {
+                                Log.e(TAG, "HttpDataUpdateLiveOrderStatus onCompleted");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                ToastUtils.show(VideoDetailActivity.this, e.getMessage());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, Object> objectObjectHttpResult3) {
+                                Log.e(TAG, "onNext");
+                            }
+                        }, tradeId);
+
+                        Toast.makeText(VideoDetailActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                        initView(videoId);
+                    } else {
+                        // 判断resultStatus 为非"9000"则代表可能支付失败
+                        // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+                        if (TextUtils.equals(resultStatus, "8000")) {
+                            Toast.makeText(VideoDetailActivity.this, "支付结果确认中", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                            Toast.makeText(VideoDetailActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+
+        ;
+    };
+
+    /**
+     * call alipay sdk pay. 调用SDK支付
+     */
+    public void pay(View v, String amount, String title, String description, String paymentId, final String payInfo) {
+        if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
+            new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
+                    .setPositiveButton("确定", (dialoginterface, i) -> {
+                        finish();
+                    }).show();
+            return;
+        }
+
+        Runnable payRunnable = () -> {
+            // 构造PayTask 对象
+            PayTask alipay = new PayTask(VideoDetailActivity.this);
+            // 调用支付接口，获取支付结果
+            String result = alipay.pay(payInfo, true);
+
+            Message msg = new Message();
+            msg.what = SDK_PAY_FLAG;
+            msg.obj = result;
+            mHandler.sendMessage(msg);
+        };
+
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+
+    /**
+     * 判断支付宝是否安装
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkAliPayInstalled(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
+    }
+
+    /**
+     * 微信支付配置
+     * ======================================================================================================================================================
+     */
+    private IWXAPI api = WXAPIFactory.createWXAPI(this, null);
+
+    private void payByWechat(final String partnerId, final String prepayId, final String nonceStr, final String timeStamp, final String packageValue, final String sign) {
+        Log.e(TAG, "payByWechat");
+
+        api.registerApp(Constant.WeChat_AppID);
+        this.runOnUiThread(() -> {
+            try {
+                PayReq req = new PayReq();
+                req.appId = "wx7e6722fad8a0975c";
+                req.partnerId = partnerId;
+                req.prepayId = prepayId;
+                req.nonceStr = nonceStr;
+                req.timeStamp = timeStamp;
+                req.packageValue = packageValue;
+                req.sign = sign;
+                req.extData = "";//"app data"; // optional
+                api.sendReq(req);
+            } catch (Exception e) {
+                Log.e("PAY_GET", e.getMessage());
+                Toast.makeText(VideoDetailActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private static boolean isWXAppInstalledAndSupported(Context context, IWXAPI api) {
+        // LogOutput.d(TAG, "isWXAppInstalledAndSupported");
+        boolean sIsWXAppInstalledAndSupported = api.isWXAppInstalled() && api.isWXAppSupportAPI();
+        if (!sIsWXAppInstalledAndSupported) {
+            Log.w(TAG, "~~~~~~~~~~~~~~微信客户端未安装，请确认");
+            ToastUtils.show(context, "微信客户端未安装，请确认");
+        }
+
+        return sIsWXAppInstalledAndSupported;
+    }
+
 }

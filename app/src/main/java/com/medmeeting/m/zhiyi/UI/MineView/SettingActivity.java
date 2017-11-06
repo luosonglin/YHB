@@ -3,7 +3,6 @@ package com.medmeeting.m.zhiyi.UI.MineView;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -112,17 +111,12 @@ public class SettingActivity extends AppCompatActivity {
                 .crossFade()
                 .placeholder(R.mipmap.ic_launcher)
                 .into(avatarIv);
-        avatarIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PhotoPicker.builder()
-                        .setShowCamera(true)
-                        .setPreviewEnabled(false)
-                        .setPhotoCount(1)
-                        .setGridColumnCount(3)
-                        .start(SettingActivity.this);
-            }
-        });
+        avatarIv.setOnClickListener(view -> PhotoPicker.builder()
+                .setShowCamera(true)
+                .setPreviewEnabled(false)
+                .setPhotoCount(1)
+                .setGridColumnCount(3)
+                .start(SettingActivity.this));
 
         versionTv = (TextView) findViewById(R.id.versionTv);
         versionTv.setText(CustomUtils.getVersion(this) + "");
@@ -138,78 +132,58 @@ public class SettingActivity extends AppCompatActivity {
         updataDialog = new UpdataDialog(SettingActivity.this, R.layout.dialog_updataversion, new int[]{R.id.dialog_sure});
         oldVersion = CustomUtils.getVersion(SettingActivity.this) + "";
         update = (RelativeLayout) findViewById(R.id.update);
-        update.setOnClickListener(new View.OnClickListener() {
+        update.setOnClickListener(view -> HttpData.getInstance().HttpDataGetLatestAndroidVersion(new Observer<HttpResult<VersionDto>>() {
             @Override
-            public void onClick(View view) {
-                HttpData.getInstance().HttpDataGetLatestAndroidVersion(new Observer<HttpResult<VersionDto>>() {
-                    @Override
-                    public void onCompleted() {
+            public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(HttpResult<VersionDto> versionDtoHttpResult) {
-                        newVersion = versionDtoHttpResult.getData().getVersion().getVersion();
-                        versionmsg = versionDtoHttpResult.getData().getVersion().getLog();
-                        url = versionDtoHttpResult.getData().getVersion().getUrl();
-                        Log.e(TAG, newVersion + " " + oldVersion);
-                        if (!newVersion.equals(oldVersion)) {
-                            updataDialog.show();
-
-                            tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
-                            tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
-                            updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
-                            tvcode.setText(newVersion);
-                            tvmsg.setText(versionmsg);
-                            updateDeletIv.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    updataDialog.dismiss();
-                                }
-                            });
-                            updataDialog.setOnCenterItemClickListener(new UpdataDialog.OnCenterItemClickListener() {
-                                @Override
-                                public void OnCenterItemClick(UpdataDialog dialog, View view) {
-                                    switch (view.getId()) {
-                                        case R.id.dialog_sure:
-                                            /**调用系统自带的浏览器去下载最新apk*/
-                                            Intent intent = new Intent();
-                                            intent.setAction("android.intent.action.VIEW");
-                                            Uri content_url = Uri.parse(url);
-                                            intent.setData(content_url);
-                                            startActivity(intent);
-                                            break;
-                                    }
-                                    updataDialog.dismiss();
-                                }
-                            });
-                        }
-                    }
-                });
             }
-        });
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult<VersionDto> versionDtoHttpResult) {
+                newVersion = versionDtoHttpResult.getData().getVersion().getVersion();
+                versionmsg = versionDtoHttpResult.getData().getVersion().getLog();
+                url = versionDtoHttpResult.getData().getVersion().getUrl();
+                Log.e(TAG, newVersion + " " + oldVersion);
+                if (!newVersion.equals(oldVersion)) {
+                    updataDialog.show();
+
+                    tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
+                    tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                    updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
+                    tvcode.setText(newVersion);
+                    tvmsg.setText(versionmsg);
+                    updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
+                    updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
+                        switch (view12.getId()) {
+                            case R.id.dialog_sure:
+                                /**调用系统自带的浏览器去下载最新apk*/
+                                Intent intent = new Intent();
+                                intent.setAction("android.intent.action.VIEW");
+                                Uri content_url = Uri.parse(url);
+                                intent.setData(content_url);
+                                startActivity(intent);
+                                break;
+                        }
+                        updataDialog.dismiss();
+                    });
+                }
+            }
+        }));
 
         clean = (RelativeLayout) findViewById(R.id.clean);
-        clean.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog();
-            }
-        });
+        clean.setOnClickListener(view -> dialog());
 
         logout = (TextView) findViewById(R.id.logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Data.clearUserToken();
-                Data.clearUserId();
-                startActivity(new Intent(SettingActivity.this, LoginActivity.class));
-            }
+        logout.setOnClickListener(view -> {
+            Data.clearUserToken();
+            Data.clearUserId();
+            Data.clearPayType();
+            startActivity(new Intent(SettingActivity.this, LoginActivity.class));
         });
     }
 
@@ -251,20 +225,12 @@ public class SettingActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
         builder.setMessage("确认清理缓存吗？");
         builder.setTitle("提示");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                showProgress(true);
-                new clearCacheRunnable().run();
-            }
+        builder.setPositiveButton("确认", (dialog, which) -> {
+            dialog.dismiss();
+            showProgress(true);
+            new clearCacheRunnable().run();
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }
 

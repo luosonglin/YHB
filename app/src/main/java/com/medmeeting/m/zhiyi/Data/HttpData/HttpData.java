@@ -29,7 +29,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
-import com.medmeeting.m.zhiyi.UI.Entity.LivePayDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
@@ -57,6 +57,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
@@ -273,7 +274,7 @@ public class HttpData extends RetrofitUtils {
     }
 
     //get live order
-    public void HttpDataGetLiveOrder(Observer<HttpResult3<Object, LivePayDto>> observer, LiveOrderDto liveOrderDto) {
+    public void HttpDataGetLiveOrder(Observer<HttpResult3<Object, LiveAndVideoPayDto>> observer, LiveOrderDto liveOrderDto) {
         Observable observable = service_live.getLiveOrder(liveOrderDto);
         setSubscribe(observable, observer);
     }
@@ -542,6 +543,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataPayVideo(Observer<HttpResult3<Object, LiveAndVideoPayDto>> observer, VideoOrderDto videoOrderDto) {
+        Observable observable = service_live.payVideo(videoOrderDto);
+        setSubscribe(observable, observer);
+    }
     /**
      * 插入观察者
      *

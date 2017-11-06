@@ -79,7 +79,36 @@ public class Data {
     public static void setUserId(Integer userId) {
         Data.userId = userId;
     }
+
     public static void clearUserId() {
         Data.userId = 0;
+    }
+
+
+    /**
+     * 0:alipay;    1:wechat pay
+     */
+    public static Integer payType = 0;
+
+    public static Integer getPayType() {
+        return payType;
+    }
+
+    public static void setPayType(Integer payType) {
+        Data.payType = payType;
+    }
+
+    public static void clearPayType() {
+        Data.payType = 0;
+    }
+
+    public static Integer videoId = 0;
+
+    public static Integer getVideoId() {
+        return videoId;
+    }
+
+    public static void setVideoId(Integer videoId) {
+        Data.videoId = videoId;
     }
 }
