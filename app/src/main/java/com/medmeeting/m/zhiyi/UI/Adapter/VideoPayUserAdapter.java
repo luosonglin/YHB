@@ -29,7 +29,7 @@ public class VideoPayUserAdapter extends BaseQuickAdapter<VideoPayUserEntity> {
                 .load(item.getUserPic())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
-                .into((ImageView) helper.getView(R.id.image));
+                .into((ImageView) helper.getView(R.id.avatar));
 
         helper.setText(R.id.name, item.getUserName() + " " + item.getUserTitle())
                 .setText(R.id.hospital, item.getHospital() + " " + item.getCompany())
@@ -52,7 +52,6 @@ public class VideoPayUserAdapter extends BaseQuickAdapter<VideoPayUserEntity> {
                 helper.setText(R.id.status, "订单超时");
                 break;
         }
-
     }
 }
 

@@ -114,16 +114,13 @@ public class MyWalletActivity extends AppCompatActivity {
             }
         });
 
-        radioBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isAgreement = !isAgreement;
-                if (isAgreement)
-                    radioBtn.setBackground(getResources().getDrawable(R.mipmap.my_wallet_radio_button2));
-                else
-                    radioBtn.setBackground(getResources().getDrawable(R.mipmap.my_wallet_radio_button));
-                ToastUtils.show(MyWalletActivity.this, isAgreement + "");
-            }
+        radioBtn.setOnClickListener(view -> {
+            isAgreement = !isAgreement;
+            if (isAgreement)
+                radioBtn.setBackground(getResources().getDrawable(R.mipmap.my_wallet_radio_button2));
+            else
+                radioBtn.setBackground(getResources().getDrawable(R.mipmap.my_wallet_radio_button));
+            ToastUtils.show(MyWalletActivity.this, isAgreement + "");
         });
     }
 

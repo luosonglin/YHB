@@ -1,5 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,10 +17,10 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.VideoPayUserAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoSettlementEntity;
+import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observer;
 
@@ -32,12 +34,11 @@ import rx.Observer;
 public class VideoDetailFareFragment extends Fragment {
 
     private static Integer videoId;
-    @Bind(R.id.settlementAmount)
     TextView settlementAmount;
-    @Bind(R.id.totalAmount)
     TextView totalAmount;
-    @Bind(R.id.actualAmount)
     TextView actualAmount;
+    TextView settlementBtn;
+    TextView detailTv;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
 
@@ -65,13 +66,18 @@ public class VideoDetailFareFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video_detail_fare, container, false);
-        ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        settlementAmount = (TextView) view.findViewById(R.id.settlementAmount);
+        totalAmount = (TextView) view.findViewById(R.id.totalAmount);
+        actualAmount = (TextView) view.findViewById(R.id.actualAmount);
+        settlementBtn = (TextView) view.findViewById(R.id.settlementBtn);
+        detailTv = (TextView) view.findViewById(R.id.detail);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -102,7 +108,41 @@ public class VideoDetailFareFragment extends Fragment {
                 }
                 settlementAmount.setText("¥ " + data.getEntity().getSettlementAmount() + "元");
                 totalAmount.setText("总收入:  ¥ " + data.getEntity().getTotalAmount() + "元");
-                actualAmount.setText("实际到账金额：    ¥ " + data.getEntity().getActualAmount() + "元");
+                actualAmount.setText("已结算金额：    ¥ " + (data.getEntity().getTotalAmount() - data.getEntity().getSettlementAmount()) + "元");
+                settlementBtn.setOnClickListener(view -> {
+                    if (data.getEntity().getSettlementAmount() == 0) {
+                        ToastUtils.show(getActivity(), "可结算金额为0");
+                    } else if (data.getEntity().getSettlementAmount() <= data.getEntity().getFeeAmount()){
+                        ToastUtils.show(getActivity(), "手续费都不够，提现干哈～");
+                    } else {
+                        HttpData.getInstance().HttpDataAddSettlement(new Observer<HttpResult3>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                ToastUtils.show(getActivity(), e.getMessage());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3 httpResult3) {
+                                if (!httpResult3.getStatus().equals("success")) {
+                                    ToastUtils.show(getActivity(), httpResult3.getMsg());
+                                    return;
+                                }
+                                startActivity(new Intent(getActivity(), MyWalletActivity.class));
+                            }
+                        }, videoId);
+                    }
+                });
+                detailTv.setOnClickListener(view -> new AlertDialog.Builder(getActivity())
+                        .setMessage("本场回播剩余可提现" + data.getEntity().getSettlementAmount() + "元,收取" + data.getEntity().getFeeAmount() + "元为平台服务费")
+                        .setTitle("温馨提示")
+                        .setPositiveButton("知道啦", (dialog, which) -> dialog.dismiss())
+                        .create()
+                        .show());
                 mAdapter.addData(data.getEntity().getPayList());
             }
         }, videoId);

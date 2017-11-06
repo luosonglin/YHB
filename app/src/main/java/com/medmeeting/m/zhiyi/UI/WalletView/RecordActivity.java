@@ -50,7 +50,7 @@ public class RecordActivity extends AppCompatActivity {
             url = intent.getStringExtra(Constant.EXTRA_URL);
             mTitle = intent.getStringExtra(Constant.EXTRA_TITLE);
         }
-        setupWebView();
+        setupWebView(url);
     }
     public void initToolBar() {
         setSupportActionBar(mToolbar);
@@ -62,18 +62,19 @@ public class RecordActivity extends AppCompatActivity {
         mToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_record_all:
-                    mWebView.loadUrl("http://webview.medmeeting.com/#/wallet/record-list");
+                    url = "http://webview.medmeeting.com/#/wallet/record-list";
                     break;
                 case R.id.action_record_withdraw:
-                    mWebView.loadUrl("http://webview.medmeeting.com/#/wallet/record-list?serviceType=EXTRACT");
+                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=EXTRACT";
                     break;
                 case R.id.action_record_income:
-                    mWebView.loadUrl("http://webview.medmeeting.com/#/wallet/record-list?serviceType=SETTLE");
+                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=SETTLE";
                     break;
                 case R.id.action_record_refund:
-                    mWebView.loadUrl("http://webview.medmeeting.com/#/wallet/record-list?serviceType=REFOUND");
+                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=REFOUND";
                     break;
             }
+            setupWebView(url);
             return true;
         });
     }
@@ -111,7 +112,7 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void setupWebView() {
+    private void setupWebView(String url) {
         progressBar.spin();
         final WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);

@@ -151,22 +151,21 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e.getMessage()
-                                + "\n" + e.getCause()
-                                + "\n" + e.getLocalizedMessage()
-                                + "\n" + e.getStackTrace());
+                        ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
+                        Log.e(TAG, "onError"+e.getMessage()+" "+e.getStackTrace());
                     }
 
                     @Override
                     public void onNext(HttpResult3 httpResult3) {
-                        if ("success".equals(httpResult3.getStatus())) {
-                            startActivity(new Intent(LiveBuildRoomActivity.this, MyLiveRoomActivity.class));
-                            finish();
-                            buildllyt.setClickable(false);
-                        } else {
+                        if (!"success".equals(httpResult3.getStatus())) {
                             ToastUtils.show(LiveBuildRoomActivity.this, httpResult3.getMsg());
                             buildllyt.setClickable(true);
+                            Log.e(TAG, "onNext");
+                            return;
                         }
+                        startActivity(new Intent(LiveBuildRoomActivity.this, MyLiveRoomActivity.class));
+                        finish();
+                        buildllyt.setClickable(false);
                     }
                 }, liveRoomDto);
                 break;
@@ -200,7 +199,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage());
+                ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
             }
 
             @Override
@@ -296,7 +295,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage());
+                ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
             }
 
             @Override

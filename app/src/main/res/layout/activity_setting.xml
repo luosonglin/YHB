@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:layout_marginTop="24dp"
     tools:context=".UI.MineView.SettingActivity">
 
     <android.support.design.widget.AppBarLayout
