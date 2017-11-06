@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -99,15 +101,12 @@ public class PlusSignedDetailsActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
 
         initView();
 
+        //设置屏幕亮度最大
+        setWindowBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL);
     }
 
     @Override
@@ -169,5 +168,23 @@ public class PlusSignedDetailsActivity extends AppCompatActivity {
             case R.id.button:
                 break;
         }
+    }
+
+    /**
+     * 设置当前窗口亮度
+     * @param brightness
+     */
+    private void setWindowBrightness(float brightness) {
+        Window window = getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.screenBrightness = brightness;
+        window.setAttributes(lp);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //取消屏幕最亮
+        setWindowBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE);
     }
 }
