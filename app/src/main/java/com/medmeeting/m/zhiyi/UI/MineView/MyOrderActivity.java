@@ -130,14 +130,8 @@ public class MyOrderActivity extends AppCompatActivity {
                 }
                 mAdapter.addData(mLives);
                 mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    Intent intent = new Intent(MyOrderActivity.this, LiveProgramDetailActivity.class);
-                    intent.putExtra("authorName", data.getData().get(position).getAuthorName());
-                    intent.putExtra("userPic", data.getData().get(position).getUserPic());
-                    intent.putExtra("programId", data.getData().get(position).getId());
-                    intent.putExtra("roomId", data.getData().get(position).getRoomId());
-                    intent.putExtra("coverPhoto", data.getData().get(position).getCoverPhoto());
-                    intent.putExtra("title", data.getData().get(position).getTitle());
-                    startActivity(intent);
+                    startActivity(new Intent(MyOrderActivity.this, LiveProgramDetailActivity.class)
+                            .putExtra("programId", data.getData().get(position).getId()));
                 });
             }
         });

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
@@ -170,21 +171,28 @@ public class LiveIndexTabFragment1 extends Fragment
                     mTimeTv.setText(DateUtil.formatDate(firstData.getStartTime(), DateUtil.TYPE_06));
 
                     mHeaderView.setOnClickListener(view -> {
-                        Intent intent = new Intent(getActivity(), LiveProgramDetailActivity.class);
-                        intent.putExtra("authorName", firstData.getAuthorName());
-                        intent.putExtra("userPic", firstData.getUserPic());
-                        intent.putExtra("programId", firstData.getId());
-                        intent.putExtra("roomId", firstData.getRoomId());
-                        intent.putExtra("coverPhoto", firstData.getCoverPhoto());
-                        intent.putExtra("title", firstData.getTitle());
-                        getActivity().startActivity(intent);
+                        if (firstData.getUserId() == Data.getUserId()) {
+                            startActivity(new Intent(getActivity(), LiveProgramDetailAuthorActivity.class)
+                                    .putExtra("programId", firstData.getId()));
+                        } else {
+                            startActivity(new Intent(getActivity(), LiveProgramDetailActivity.class)
+                                    .putExtra("programId", firstData.getId()));
+                        }
                     });
                     mQuickAdapter.addHeaderView(mHeaderView);
                     datas.remove(0);
                 }
 
                 mQuickAdapter.setNewData(datas);
-                Log.e(TAG, "onNext");
+                mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    if (data.getData().get(position).getUserId() == Data.getUserId()) {
+                        startActivity(new Intent(getActivity(), LiveProgramDetailAuthorActivity.class)
+                                .putExtra("programId", data.getData().get(position).getId()));
+                    } else {
+                        startActivity(new Intent(getActivity(), LiveProgramDetailActivity.class)
+                                .putExtra("programId", data.getData().get(position).getId()));
+                    }
+                });
             }
         }, liveSearchDto2);
     }

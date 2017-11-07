@@ -2,7 +2,6 @@ package com.medmeeting.m.zhiyi.UI.Adapter;
 
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,6 +17,7 @@ import java.util.List;
 
 public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean.ProgramListBean> {
     private String mUserId;
+
     public LiveDetailAdapter(int layoutResId, List<LiveDetailDto.EntityBean.ProgramListBean> data, String userId) {
         super(layoutResId, data, userId);
         mUserId = userId;
@@ -39,31 +39,20 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
 
         if ("no".equals(item.getChargeType())) helper.setText(R.id.money, "免费");
 
-        helper.getView(R.id.item_news_cv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                if (mUserId.equals(item.getUserId()+"")) {
-                    //主播进的直播节目详情页
-                    intent = new Intent(mContext, LiveProgramDetailAuthorActivity.class);
-                    Log.e(TAG, "1: " + mUserId+" "+item.getUserId());
-                    intent.putExtra("userPic", item.getUserPic());
-                    intent.putExtra("authorTitle", item.getAuthorTitle());
-//                    intent.putExtra("pushUrl", item.ge)
-                } else {
-                    //用户进的直播节目详情页
-                    intent = new Intent(mContext, LiveProgramDetailActivity.class);
-                    Log.e(TAG, "2: " + mUserId+" "+item.getUserId());
-                    intent.putExtra("userPic", item.getUserPic());
-                }
-                intent.putExtra("authorName", item.getAuthorName());
-                intent.putExtra("programId", item.getId());
-                intent.putExtra("roomId", item.getRoomId());
-                intent.putExtra("coverPhoto", item.getCoverPhoto());
-                intent.putExtra("title", item.getTitle());
-
-                mContext.startActivity(intent);
+        helper.getView(R.id.item_news_cv).setOnClickListener(view -> {
+            Intent intent;
+            if (mUserId.equals(item.getUserId() + "")) {
+                //主播进的直播节目详情页
+                intent = new Intent(mContext, LiveProgramDetailAuthorActivity.class);
+                Log.e(TAG, "1: " + mUserId + " " + item.getUserId());
+            } else {
+                //用户进的直播节目详情页
+                intent = new Intent(mContext, LiveProgramDetailActivity.class);
+                Log.e(TAG, "2: " + mUserId + " " + item.getUserId());
             }
+            intent.putExtra("programId", item.getId());
+
+            mContext.startActivity(intent);
         });
     }
 }

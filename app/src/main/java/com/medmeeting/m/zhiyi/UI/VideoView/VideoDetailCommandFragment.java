@@ -137,7 +137,7 @@ public class VideoDetailCommandFragment extends Fragment {
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtils.show(getActivity(), e.getMessage());
             }
 
             @Override
@@ -146,7 +146,6 @@ public class VideoDetailCommandFragment extends Fragment {
                     ToastUtils.show(getActivity(), data.getMsg());
                     return;
                 }
-//                mAdapter.add(0, data);
                 getVideoComments();
                 inputEditor.setText("");
             }

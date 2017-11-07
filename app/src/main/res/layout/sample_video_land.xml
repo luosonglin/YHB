@@ -163,6 +163,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:paddingRight="10dp"
+            android:padding="14dp"
             android:scaleType="centerInside"
             android:src="@mipmap/video_share_land" />
     </LinearLayout>

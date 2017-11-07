@@ -42,9 +42,9 @@ import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailCommandFragment;
@@ -59,6 +59,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
@@ -91,9 +92,6 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
     private Integer programId = 0;
 
-    //拉流地址
-    private String url = "http://onmtzwa3g.bkt.clouddn.com/recordings/z1.yihuibao-test.yihuibao-test_20170926175549970_100169/1506500861_1506501520.m3u8";
-
     //payFalg (integer, optional): 是否购票 0:未购票，大于0:已购票 ,
     private Integer payFlag = 0;
 
@@ -104,60 +102,20 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_program_detail);
-        toolBar();
-        initView(getIntent().getExtras().getString("coverPhoto"),
-                getIntent().getExtras().getString("title"),
-                getIntent().getExtras().getString("authorName"));
-        initShare(savedInstanceState, getIntent().getExtras().getInt("programId"),
-                getIntent().getExtras().getString("title"),
-                getIntent().getExtras().getString("coverPhote"),
-                "欢迎观看" + getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
-    }
 
-    private void toolBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        toolbar.setTitle("");//标题
-//        toolbar.setSubtitle(R.string.app_name);//二级标题
-//        toolbar.setLogo(R.mipmap.ic_launcher);//设置logo
-        getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
-        toolbar.setNavigationOnClickListener(v -> finish());
-
-        toolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.action_share:
-                    ShareBoardConfig config = new ShareBoardConfig();
-                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                    mShareAction.open(config);
-                    break;
-            }
-            return true;
-        });
-    }
+        titleTv = (TextView) findViewById(R.id.title);//直播间封面
+        userNameTv = (TextView) findViewById(R.id.userName);
+        watchTv = (TextView) findViewById(R.id.watch); //点击"观看"
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        imageView = (ImageView) findViewById(R.id.img);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
 
 
+        toolBar();
+        initView(getIntent().getIntExtra("programId", 0));
 
-    /**
-     * 屏幕横竖屏切换时避免出现window leak的问题
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mShareAction.close();
-    }
-
-    /**
-     * 菜单栏 修改器下拉刷新模式
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_live_program_toolbar, menu);
-        return true;
-    }
-
-    public void initShare(Bundle savedInstanceState, final int roomId, final String title, final String phone, final String description) {
         //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
         UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
             @Override
@@ -180,6 +138,47 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void toolBar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_share:
+                    ShareBoardConfig config = new ShareBoardConfig();
+                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                    mShareAction.open(config);
+                    break;
+            }
+            return true;
+        });
+    }
+
+
+    /**
+     * 屏幕横竖屏切换时避免出现window leak的问题
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mShareAction.close();
+    }
+
+    /**
+     * 菜单栏 修改器下拉刷新模式
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_live_program_toolbar, menu);
+        return true;
+    }
+
+    public void initShare(final int programId, final String title, final String photo, final String description) {
 
         //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
         if (Build.VERSION.SDK_INT >= 23) {
@@ -194,9 +193,9 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + roomId);
+                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + programId);
                     web.setTitle(title);//标题
-//                        web.setThumb(new UMImage(LiveProgramDetailActivity.this, phone));  //缩略图
+                    web.setThumb(new UMImage(LiveProgramDetailActivity.this, photo));  //缩略图
                     web.setDescription(description);//描述
                     new ShareAction(LiveProgramDetailActivity.this)
                             .withMedia(web)
@@ -240,25 +239,12 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
     }
 
 
-    private void initView(String coverPhoto, String title, final String userName) {
-        //直播间封面
-        titleTv = (TextView) findViewById(R.id.title);
-        userNameTv = (TextView) findViewById(R.id.userName);
-        titleTv.setText(title);
-        userNameTv.setText("主讲人：" + userName);
-
-        //点击"观看"
-        watchTv = (TextView) findViewById(R.id.watch);
+    private void initView(Integer programId) {
         watchTv.setVisibility(View.INVISIBLE);
-
 
         // 获取屏幕宽高
         metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
-
-        // 获取控件
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
-        imageView = (ImageView) findViewById(R.id.img);
 
         HttpData.getInstance().HttpDataGetLiveProgramAudienceDetail(new Observer<HttpResult3<Object, LiveAudienceDetailDto>>() {
             @Override
@@ -268,31 +254,35 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage());
+                ToastUtils.show(LiveProgramDetailActivity.this, e.getMessage());
             }
 
             @Override
-            public void onNext(final HttpResult3<Object, LiveAudienceDetailDto> liveDtoHttpResult3) {
-                Log.e(TAG, "onNext");
+            public void onNext(final HttpResult3<Object, LiveAudienceDetailDto> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(LiveProgramDetailActivity.this, data.getMsg());
+                    return;
+                }
 
-                programId = liveDtoHttpResult3.getEntity().getId();
-                url = liveDtoHttpResult3.getEntity().getRtmpPlayUrl();
-                amount = liveDtoHttpResult3.getEntity().getPrice();
-                payFlag = liveDtoHttpResult3.getEntity().getPayFalg();
+                titleTv.setText(data.getEntity().getTitle());
+                userNameTv.setText("主讲人：" + data.getEntity().getAuthorName());
+
+                amount = data.getEntity().getPrice();
+                payFlag = data.getEntity().getPayFalg();
 
                 initTagsView(getIntent().getExtras().getInt("roomId"),
-                        liveDtoHttpResult3.getEntity().getAuthorName(),
-                        liveDtoHttpResult3.getEntity().getAuthorTitle(),
+                        data.getEntity().getAuthorName(),
+                        data.getEntity().getAuthorTitle(),
                         getIntent().getExtras().getString("userPic"),
-                        liveDtoHttpResult3.getEntity().getDes());
+                        data.getEntity().getDes());
                 watchTv.setVisibility(View.VISIBLE);
 
-                if ("yes".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
+                if ("yes".equals(data.getEntity().getChargeType())) {
                     if (payFlag == 0) {//0:未购票
                         watchTv.setText("支付" + amount + "元观看");
                         watchTv.setOnClickListener(view -> initPopupwindow());
                     } else if (payFlag > 0) { //大于0:已购票
-                        switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
+                        switch (data.getEntity().getLiveStatus()) {
                             case "play":
                                 watchTv.setText("观看");
                                 watchTv.setOnClickListener(view -> {
@@ -301,15 +291,15 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                         audienceUserNickName = DBUtils.get(LiveProgramDetailActivity.this, "userNickName");
 
                                         if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
+                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, data.getEntity().getRtmpPlayUrl());
                                         } else {
-                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
+                                            loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, data.getEntity().getRtmpPlayUrl());
                                         }
                                     } catch (SnappydbException e) {
                                         e.printStackTrace();
                                     } finally {
                                         Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                                        intent.putExtra("rtmpPlayUrl", url);
+                                        intent.putExtra("rtmpPlayUrl", data.getEntity().getRtmpPlayUrl());
                                         intent.putExtra("programId", programId);
                                         startActivity(intent);
                                     }
@@ -326,9 +316,8 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                 break;
                         }
                     }
-
-                } else if ("no".equals(liveDtoHttpResult3.getEntity().getChargeType())) {
-                    switch (liveDtoHttpResult3.getEntity().getLiveStatus()) {
+                } else if ("no".equals(data.getEntity().getChargeType())) {
+                    switch (data.getEntity().getLiveStatus()) {
                         case "play":
                             watchTv.setText("观看");
                             watchTv.setOnClickListener(view -> {
@@ -338,15 +327,15 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                     Log.e(TAG, "haha" + audienceUserName + " " + audienceUserNickName);
 
                                     if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, url);
+                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserNickName, data.getEntity().getRtmpPlayUrl());
                                     } else {
-                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, url);
+                                        loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity.this, "userId"), audienceUserName, data.getEntity().getRtmpPlayUrl());
                                     }
                                 } catch (SnappydbException e) {
                                     e.printStackTrace();
                                 } finally {
                                     Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                                    intent.putExtra("rtmpPlayUrl", liveDtoHttpResult3.getEntity().getRtmpPlayUrl());
+                                    intent.putExtra("rtmpPlayUrl", data.getEntity().getRtmpPlayUrl());
                                     intent.putExtra("programId", programId);
                                     startActivity(intent);
                                 }
@@ -365,17 +354,21 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                 }
 
                 Glide.with(LiveProgramDetailActivity.this)
-                        .load(liveDtoHttpResult3.getEntity().getCoverPhoto())
+                        .load(data.getEntity().getCoverPhoto())
                         .crossFade()
                         .into(imageView);
 
+
+                initShare(programId,
+                        data.getEntity().getTitle(),
+                        data.getEntity().getCoverPhoto(),
+                        data.getEntity().getDes());
+
             }
-        }, getIntent().getExtras().getInt("programId"));
+        }, programId);
     }
 
     private void initTagsView(final Integer roomId, String name, String hospital, String userPic, String detail) {
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         //为ViewPager设置高度
         ViewGroup.LayoutParams params = viewPager.getLayoutParams();
