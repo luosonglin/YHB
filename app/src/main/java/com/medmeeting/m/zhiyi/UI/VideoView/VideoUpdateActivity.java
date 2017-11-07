@@ -154,9 +154,9 @@ public class VideoUpdateActivity extends AppCompatActivity {
                     charge.setBackgroundResource(R.drawable.button_live_free);
                     charge.setTextColor(getResources().getColor(R.color.white));
                     chargeAmount.setVisibility(View.VISIBLE);
-                    chargeAmount.setText(data.getEntity().getPrice()+" 元");
+                    chargeAmount.setText(data.getEntity().getPrice() + " 元");
                 }
-                introduction.setText(data.getEntity().getDes()+"");
+                introduction.setText(data.getEntity().getDes() + "");
 
                 videoEntity.setVideoId(videoId);
                 videoEntity.setTitle(data.getEntity().getTitle());
@@ -174,6 +174,8 @@ public class VideoUpdateActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.buildllyt:
                 buildllyt.setClickable(false);
+                videoEntity.setTitle(theme.getText().toString().trim());
+                videoEntity.setDes(introduction.getText().toString().trim());
                 videoEntity.setCoverPhoto(videoPhoto);
                 HttpData.getInstance().HttpDataUpdateVideo(new Observer<HttpResult3>() {
                     @Override
@@ -202,7 +204,7 @@ public class VideoUpdateActivity extends AppCompatActivity {
                         ToastUtils.show(VideoUpdateActivity.this, "修改成功");
                         finish();
                     }
-                },videoEntity);
+                }, videoEntity);
 
                 break;
             case R.id.live_pic_tip:

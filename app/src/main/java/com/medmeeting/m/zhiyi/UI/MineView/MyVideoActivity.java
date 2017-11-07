@@ -122,7 +122,7 @@ public class MyVideoActivity extends AppCompatActivity {
                     @Override
                     public void onUpdateClick(int position) {
                         startActivity(new Intent(MyVideoActivity.this, VideoUpdateActivity.class)
-                                .putExtra("video", data.getData().get(position).getVideoId()));
+                                .putExtra("videoId", data.getData().get(position).getVideoId()));
                     }
                 });
             }

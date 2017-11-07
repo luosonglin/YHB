@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -50,6 +52,8 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import java.util.Objects;
 
 import rx.Observer;
 
@@ -249,12 +253,11 @@ public class VideoDetailActivity extends AppCompatActivity {
         /**
          * 对比userId chargeType url
          */
-        if (Data.getUserId() == userId) {
+        if (Objects.equals(Data.getUserId(), userId)) {
             detailPlayer.getStartButton().setVisibility(View.VISIBLE);
             detailPlayer.getBuyButton().setVisibility(View.GONE);
         } else {
             if (chargeType.equals("yes") && !payFlag) {
-                Log.e("hhhh", url + " " + payFlag);
                 detailPlayer.getStartButton().setVisibility(View.GONE);
                 detailPlayer.getBuyButton().setVisibility(View.VISIBLE);
                 detailPlayer.getBuyButton().setText("购买 " + price + " 元");

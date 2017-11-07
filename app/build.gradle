@@ -183,6 +183,8 @@ dependencies {
 
     //多功能的视频播放器
     compile 'com.shuyu:GSYVideoPlayer:2.1.0'
+
+
 }
 //Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 //> com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException:
@@ -193,3 +195,6 @@ dependencies {
 
 //Error:Execution failed for task ':app:transformClassesWithJarMergingForDevelopRelease'.
 //        > com.android.build.api.transform.TransformException: java.util.zip.ZipException: duplicate entry: com/alipay/android/app/IAlixPay$Stub$a.class
+
+//Error:Execution failed for task ':app:transformClassesWithJarMergingForDevelopRelease'.
+//        > com.android.build.api.transform.TransformException: java.util.zip.ZipException: duplicate entry: tv/danmaku/ijk/media/player/AbstractMediaPlayer.class
