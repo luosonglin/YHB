@@ -175,7 +175,7 @@ public class LiveIndexTabFragment1 extends Fragment
                             startActivity(new Intent(getActivity(), LiveProgramDetailAuthorActivity.class)
                                     .putExtra("programId", firstData.getId()));
                         } else {
-                            startActivity(new Intent(getActivity(), LiveProgramDetailActivity.class)
+                            startActivity(new Intent(getActivity(), LiveProgramDetailActivity2.class)
                                     .putExtra("programId", firstData.getId()));
                         }
                     });
@@ -185,11 +185,12 @@ public class LiveIndexTabFragment1 extends Fragment
 
                 mQuickAdapter.setNewData(datas);
                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Log.e("hhhaaa", data.getData().get(position).getUserId() +" "+ Data.getUserId());
                     if (data.getData().get(position).getUserId() == Data.getUserId()) {
                         startActivity(new Intent(getActivity(), LiveProgramDetailAuthorActivity.class)
                                 .putExtra("programId", data.getData().get(position).getId()));
                     } else {
-                        startActivity(new Intent(getActivity(), LiveProgramDetailActivity.class)
+                        startActivity(new Intent(getActivity(), LiveProgramDetailActivity2.class)
                                 .putExtra("programId", data.getData().get(position).getId()));
                     }
                 });

@@ -86,6 +86,22 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 }, Data.getTradeId());
                 startActivity(new Intent(this, VideoDetailActivity.class).putExtra("videoId", Data.getVideoId()));
             } else {
+                HttpData.getInstance().HttpDataUpdateLiveOrderStatus(new Observer<HttpResult3<Object, Object>>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "HttpDataUpdateLiveOrderStatus onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(WXPayEntryActivity.this, e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<Object, Object> objectObjectHttpResult3) {
+                        Log.e(TAG, "onNext");
+                    }
+                }, Data.getTradeId());
                 startActivity(new Intent(this, MyPayLiveRoomActivity.class));
             }
             finish();

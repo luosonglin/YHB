@@ -1,31 +1,45 @@
 package com.medmeeting.m.zhiyi.UI.Entity;
 
-public class LiveAudienceDetailDto {
+/**
+ * @author NapoleonRohaha_Songlin
+ * @date on 08/11/2017 10:48 AM
+ * @describe TODO
+ * @email iluosonglin@gmail.com
+ * @org Healife
+ */
+public class LiveProgramDateilsEntity {
 
     /**
-     * id : 100003
-     * roomId : 100007
-     * title : 王医师的直播首秀
+     * id : 100172
+     * roomId : 100128
+     * title : 10.10铺好
      * coverPhoto : http://oikv7kt4d.bkt.clouddn.com/placeholder@1.5x.png
-     * streamPhoto : null
-     * startTime : 1495099328000
-     * endTime : 1495099330000
-     * authorName : 王二狗
-     * authorTitle : 王1师
+     * streamPhoto : 666666
+     * startTime : 1510310700000
+     * endTime : 1512902700000
+     * authorName : 孔明灯
+     * authorTitle : 教练
      * privacyType : public
-     * chargeType : no
-     * price : null
+     * chargeType : yes
+     * price : 0.02
      * firstOpenTime : null
      * realEndTime : null
      * onlineCount : 0
+     * countRatio : 1
+     * countIncrement : 0
      * liveStatus : ready
-     * des : null
+     * des : 仉好
      * status : null
      * createTime : null
      * updateTime : null
-     * rtmpPlayUrl : null
-     * hlsPlayUrl : null
+     * roomUserId : 2920
+     * userPic : defaultPic
+     * roomNumber : 666666
+     * rtmpPlayUrl : 666666
+     * hlsPlayUrl : 666666
      * payFalg : 0
+     * collectFlag : false
+     * collectCount : 3
      */
 
     private int id;
@@ -43,23 +57,21 @@ public class LiveAudienceDetailDto {
     private Object firstOpenTime;
     private Object realEndTime;
     private int onlineCount;
+    private int countRatio;
+    private int countIncrement;
     private String liveStatus;
     private String des;
     private Object status;
-    private Object createTime;
-    private Object updateTime;
+    private long createTime;
+    private long updateTime;
+    private int roomUserId;
+    private String userPic;
+    private String roomNumber;
     private String rtmpPlayUrl;
     private String hlsPlayUrl;
-    private int payFalg;
-    private Integer userId;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+    private int payFalg;//是否购票 0:未购票，大于0:已购票 ,
+    private boolean collectFlag;
+    private int collectCount;
 
     public int getId() {
         return id;
@@ -181,6 +193,22 @@ public class LiveAudienceDetailDto {
         this.onlineCount = onlineCount;
     }
 
+    public int getCountRatio() {
+        return countRatio;
+    }
+
+    public void setCountRatio(int countRatio) {
+        this.countRatio = countRatio;
+    }
+
+    public int getCountIncrement() {
+        return countIncrement;
+    }
+
+    public void setCountIncrement(int countIncrement) {
+        this.countIncrement = countIncrement;
+    }
+
     public String getLiveStatus() {
         return liveStatus;
     }
@@ -205,20 +233,44 @@ public class LiveAudienceDetailDto {
         this.status = status;
     }
 
-    public Object getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Object createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
 
-    public Object getUpdateTime() {
+    public long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Object updateTime) {
+    public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getRoomUserId() {
+        return roomUserId;
+    }
+
+    public void setRoomUserId(int roomUserId) {
+        this.roomUserId = roomUserId;
+    }
+
+    public String getUserPic() {
+        return userPic;
+    }
+
+    public void setUserPic(String userPic) {
+        this.userPic = userPic;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public String getRtmpPlayUrl() {
@@ -243,5 +295,21 @@ public class LiveAudienceDetailDto {
 
     public void setPayFalg(int payFalg) {
         this.payFalg = payFalg;
+    }
+
+    public boolean isCollectFlag() {
+        return collectFlag;
+    }
+
+    public void setCollectFlag(boolean collectFlag) {
+        this.collectFlag = collectFlag;
+    }
+
+    public int getCollectCount() {
+        return collectCount;
+    }
+
+    public void setCollectCount(int collectCount) {
+        this.collectCount = collectCount;
     }
 }

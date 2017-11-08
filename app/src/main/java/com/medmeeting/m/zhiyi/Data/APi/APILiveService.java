@@ -14,6 +14,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
@@ -161,6 +162,10 @@ public interface APILiveService {
     //GET /v1/anchor/{roomId}/liveProgram/{programId} 获取直播节目详情
     @GET("/v1/anchor/{roomId}/liveProgram/{programId}")
     Observable<HttpResult3<Object, LiveDto>> getProgramDetail(@Path("programId") Integer programId);
+
+    //GET /v1/open/program/{programId} 获取直播节目详情
+    @GET("/v1/open/program/{programId}")
+    Observable<HttpResult3<Object, LiveProgramDateilsEntity>> getOpenProgramDetail(@Path("programId") Integer programId);
 
     /**
      * 财务

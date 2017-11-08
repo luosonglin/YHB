@@ -14,6 +14,9 @@ public class LiveOrderDto {
     private String platformType;
     private int programId;
 
+    public LiveOrderDto() {
+    }
+
     public LiveOrderDto(String openId, String paymentChannel, String platformType, int programId) {
         this.openId = openId;
         this.paymentChannel = paymentChannel;

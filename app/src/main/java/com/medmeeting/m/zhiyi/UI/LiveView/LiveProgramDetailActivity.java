@@ -144,7 +144,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         toolbar.setNavigationOnClickListener(v -> finish());
 
         toolbar.setOnMenuItemClickListener(item -> {
@@ -387,7 +387,7 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(LiveProgramDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
         mIndexChildAdapter.addFragment(VideoDetailCommandFragment.newInstance(roomId), "评论");
-        mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(name, hospital, userPic, detail), "详情");
+//        mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(name, hospital, userPic, detail), "详情");
         mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "相关视频");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数

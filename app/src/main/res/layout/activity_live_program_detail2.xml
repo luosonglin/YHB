@@ -51,7 +51,7 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer
+    <com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutLivePlayer
         android:id="@+id/detail_player"
         android:layout_width="match_parent"
         android:layout_height="230dp"

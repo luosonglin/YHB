@@ -23,13 +23,14 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult5;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
@@ -547,6 +548,12 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.payVideo(videoOrderDto);
         setSubscribe(observable, observer);
     }
+
+    public void HttpDataGetOpenProgramDetail(Observer<HttpResult3<Object, LiveProgramDateilsEntity>> observer, Integer programId) {
+        Observable observable = service_live.getOpenProgramDetail(programId);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *
