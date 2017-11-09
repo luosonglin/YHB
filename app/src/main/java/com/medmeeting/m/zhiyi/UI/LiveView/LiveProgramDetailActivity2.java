@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -42,6 +43,10 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.GiftMessage;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.InputPanel;
+import com.medmeeting.m.zhiyi.UI.MineView.MyOrderActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailCommandFragment;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
@@ -59,9 +64,12 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.Objects;
+import java.util.Random;
 
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
+import io.rong.message.TextMessage;
 import rx.Observer;
 
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_NORMAL;
@@ -75,7 +83,7 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class LiveProgramDetailActivity2 extends AppCompatActivity {
+public class LiveProgramDetailActivity2 extends AppCompatActivity implements Handler.Callback {
 
     NestedScrollView postDetailNestedScroll;
     LandLayoutLivePlayer detailPlayer;
@@ -91,7 +99,13 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
 
     static final String TAG = LiveProgramDetailActivity2.class.getSimpleName();
     private Integer programId;
+    private String url;
 
+
+    //以下为直播室互动参数
+    private Handler handler = new Handler(this);
+    private ChatListAdapter chatListAdapter;
+    private Random random = new Random();
     private String audienceUserName;
     private String audienceUserNickName;
 
@@ -125,10 +139,30 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
                     ToastUtils.show(LiveProgramDetailActivity2.this, data.getMsg());
                     return;
                 }
+                url = data.getEntity().getRtmpPlayUrl();
+
+                try {
+                    audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
+                    audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
+                    Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
+
+                    if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+                        loginRongCloudChatRoom(Data.getUserId()+"", audienceUserNickName, url);
+                    } else {
+                        loginRongCloudChatRoom(Data.getUserId()+"", audienceUserName, url);
+                    }
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
+
                 initPlayer(data.getEntity().getRtmpPlayUrl(), data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
                         data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
 
                 initTagsView(data.getEntity());
+
+//                if (detailPlayer.isIfCurrentIsFullscreen())
+//                    initChat(data.getEntity().getRtmpPlayUrl());
+
             }
         }, programId);
     }
@@ -167,6 +201,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
                         @Override
                         public void onEnterFullscreen(String url, Object... objects) {
                             super.onEnterFullscreen(url, objects);
+                            initChat(url);
                             Debuger.printfError("***** onEnterFullscreen **** " + objects[0]);//title
                             Debuger.printfError("***** onEnterFullscreen **** " + objects[1]);//当前全屏player
                         }
@@ -231,7 +266,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
         /**
          * 对比userId chargeType url
          */
-        Log.e("aaaaa", Data.getUserId() + " " + userId + " " + chargeType+ " " + payFlag);
+        Log.e("aaaaa", Data.getUserId() + " " + userId + " " + chargeType + " " + payFlag);
         if (Objects.equals(Data.getUserId(), userId)) {
             detailPlayer.getStartButton().setVisibility(View.VISIBLE);
             detailPlayer.getBuyButton().setVisibility(View.GONE);
@@ -252,26 +287,28 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
         detailPlayer.getBackButton().setVisibility(View.VISIBLE);
         detailPlayer.getBackButton().setOnClickListener(view -> finish());
         detailPlayer.getShareButton().setOnClickListener(view -> ToastUtils.show(LiveProgramDetailActivity2.this, "share"));
-        detailPlayer.getFullscreenButton().setOnClickListener(view -> {
-            try {
-                audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
-                audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
-                Log.e(TAG, "haha" + audienceUserName + " " + audienceUserNickName);
+//        detailPlayer.getFullscreenButton().setOnClickListener(view -> {
+//            try {
+//                audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
+//                audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
+//                Log.e(TAG, "haha" + audienceUserName + " " + audienceUserNickName);
+//
+//                if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+//                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity2.this, "userId"), audienceUserNickName, url);
+//                } else {
+//                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity2.this, "userId"), audienceUserName, url);
+//                }
+//            } catch (SnappydbException e) {
+//                e.printStackTrace();
+//            } finally {
+////                Intent intent = new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity.class);
+////                intent.putExtra("rtmpPlayUrl", url);
+////                intent.putExtra("programId", programId);
+////                startActivity(intent);
+//            }
+//        });
 
-                if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity2.this, "userId"), audienceUserNickName, url);
-                } else {
-                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity2.this, "userId"), audienceUserName, url);
-                }
-            } catch (SnappydbException e) {
-                e.printStackTrace();
-            } finally {
-                Intent intent = new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity.class);
-                intent.putExtra("rtmpPlayUrl", url);
-                intent.putExtra("programId", programId);
-                startActivity(intent);
-            }
-        });
+        detailPlayer.getFullscreenButton().setVisibility(View.GONE);
     }
 
     @Override
@@ -297,6 +334,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
     @Override
     protected void onResume() {
         getCurPlay().onVideoResume();
+
         super.onResume();
         isPause = false;
     }
@@ -310,6 +348,31 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
         //GSYPreViewManager.instance().releaseMediaPlayer();
         if (orientationUtils != null)
             orientationUtils.releaseListener();
+
+
+        LiveKit.quitChatRoom(new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+//                final InformationNotificationMessage content = InformationNotificationMessage.obtain("离开了房间");
+//                LiveKit.sendMessage(content);
+
+                // 配合ios，tony说"去掉离开了房间"
+//                TextMessage content = TextMessage.obtain("离开了房间");
+//                LiveKit.sendMessage(content);
+//                Log.e(TAG, content + " " + content.getUserInfo().getName());
+
+                LiveKit.removeEventHandler(handler);
+                LiveKit.logout();
+//                Toast.makeText(LivePlayerActivity.this, "退出聊天室成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                LiveKit.removeEventHandler(handler);
+                LiveKit.logout();
+//                Toast.makeText(LivePlayerActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
@@ -519,7 +582,8 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onNext(HttpResult3<Object, Object> objectObjectHttpResult3) {
+                            public void onNext(HttpResult3<Object, Object> data) {
+                                startActivity(new Intent(LiveProgramDetailActivity2.this, MyOrderActivity.class));
                                 Log.e(TAG, "onNext");
                             }
                         }, tradeId);
@@ -626,6 +690,74 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
         return sIsWXAppInstalledAndSupported;
     }
 
+
+    /**
+     * 直播聊天室
+     * ======================================================================================================================================================
+     */
+    private void initChat(String url) {
+
+        Log.e("initchat", "initChat()");
+
+//        try {
+//            audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
+//            audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
+//            Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
+//
+//            if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+//                loginRongCloudChatRoom(Data.getUserId()+"", audienceUserNickName, url);
+//            } else {
+//                loginRongCloudChatRoom(Data.getUserId()+"", audienceUserName, url);
+//            }
+//        } catch (SnappydbException e) {
+//            e.printStackTrace();
+//        } finally {
+            //init 互动view
+            LiveKit.addEventHandler(handler);
+            chatListAdapter = new ChatListAdapter();
+            detailPlayer.getChatListView().setAdapter(chatListAdapter);
+
+            detailPlayer.getBtnDan().setOnClickListener(view -> {
+                if (detailPlayer.getChatListView().getVisibility() == View.VISIBLE) {
+                    detailPlayer.getChatListView().setVisibility(View.GONE);
+                    detailPlayer.getBtnDan().setImageResource(R.mipmap.icon_dan_close);
+                } else if (detailPlayer.getChatListView().getVisibility() == View.GONE) {
+                    detailPlayer.getChatListView().setVisibility(View.VISIBLE);
+                    detailPlayer.getBtnDan().setImageResource(R.mipmap.icon_dan);
+                }
+            });
+            detailPlayer.getBtnGift().setOnClickListener(view -> {
+                GiftMessage msg = new GiftMessage("2", "送您一个礼物");
+                LiveKit.sendMessage(msg);
+            });
+            detailPlayer.getHeartLayout().setOnClickListener(view -> {
+                detailPlayer.getHeartLayout().post(() -> {
+                    int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+                    detailPlayer.getHeartLayout().addHeart(rgb);
+                });
+                GiftMessage msg = new GiftMessage("1", "点赞了");
+                LiveKit.sendMessage(msg);
+            });
+
+            detailPlayer.setInputPanelListener(new InputPanel.InputPanelListener() {
+                @Override
+                public void onSendClick(String text) {
+                    final TextMessage content = TextMessage.obtain(text);
+                    LiveKit.sendMessage(content);
+                }
+            });
+//            bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
+//                @Override
+//                public void onSendClick(String text) {
+//                    final TextMessage content = TextMessage.obtain(text);
+//                    LiveKit.sendMessage(content);
+//                }
+//            });
+
+            joinChatRoom(programId + "");
+//        }
+    }
+
     /**
      * 加入融云直播间
      */
@@ -671,6 +803,54 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity {
                                 // 根据errorCode 检查原因.
                             }
                         });
+            }
+        });
+    }
+
+
+    /**
+     * im
+     */
+    @Override
+    public boolean handleMessage(android.os.Message msg) {
+        switch (msg.what) {
+            case LiveKit.MESSAGE_ARRIVED: {
+                MessageContent content = (MessageContent) msg.obj;
+                chatListAdapter.addMessage(content);
+                break;
+            }
+            case LiveKit.MESSAGE_SENT: {
+                MessageContent content = (MessageContent) msg.obj;
+                chatListAdapter.addMessage(content);
+                break;
+            }
+            case LiveKit.MESSAGE_SEND_ERROR: {
+                break;
+            }
+            default:
+        }
+        chatListAdapter.notifyDataSetChanged();
+        return false;
+    }
+
+    private void joinChatRoom(final String roomId) {
+        LiveKit.joinChatRoom(roomId, 15, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+//                final InformationNotificationMessage content = InformationNotificationMessage.obtain("进入了房间");
+//                LiveKit.sendMessage(content);
+
+                // 配合ios
+                TextMessage content = TextMessage.obtain("进入了房间");
+                LiveKit.sendMessage(content);
+
+                Log.e(TAG + " joinChatRoom: ", content + "" + content.getUserInfo().getName());
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+//                Toast.makeText(LivePlayerActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "聊天室加入失败! errorCode = " + errorCode);
             }
         });
     }

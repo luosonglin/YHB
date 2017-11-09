@@ -2,10 +2,15 @@ package com.medmeeting.m.zhiyi.Widget.videoplayer;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.animation.HeartLayout;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.InputPanel;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 /**
@@ -38,6 +43,7 @@ public class LandLayoutLivePlayer extends StandardGSYVideoPlayer {
     public int getLayoutId() {
         if (mIfCurrentIsFullscreen) {
             return R.layout.sample_live_land;
+//            return R.layout.sample_video_land;
         }
         return R.layout.sample_live_normal;
     }
@@ -60,7 +66,7 @@ public class LandLayoutLivePlayer extends StandardGSYVideoPlayer {
         }
     }
 
-    /************************************* 业务需求 ****************************************/
+    /************************************* 直播业务需求 ****************************************/
 
 
     private ImageView mShareButton;
@@ -100,5 +106,89 @@ public class LandLayoutLivePlayer extends StandardGSYVideoPlayer {
     public int getCurrentState() {
         return mCurrentState;
     }
+
+
+    /************************************* 聊天业务需求 ****************************************/
+
+    //以下为直播室互动参数
+    private ChatListView chatListView;
+    private ImageView btnDan;
+    private ImageView btnGift;
+    private ImageView btnHeart;
+    private HeartLayout heartLayout;
+
+    private ViewGroup buttonPanel;
+    private ImageView btnInput;
+    private InputPanel inputPanel;
+
+
+    @Override
+    public void onClick(View v) {
+        super.onClick(v);
+    }
+
+    /**
+     * 获取对话列表
+     */
+    public ChatListView getChatListView() {
+        chatListView = (ChatListView) findViewById(R.id.chat_listview);
+        return chatListView;
+    }
+
+    /**
+     * 获取对话列表
+     */
+    public ViewGroup getButtonPanel() {
+        buttonPanel = (ViewGroup) findViewById(R.id.button_panel);
+        return buttonPanel;
+    }
+
+    public ImageView getBtnInput() {
+        btnInput = (ImageView) findViewById(R.id.btn_input);
+        return btnInput;
+    }
+
+    public InputPanel getInputPanel() {
+        inputPanel = (InputPanel) findViewById(R.id.input_panel);
+        return inputPanel;
+    }
+
+    public void setInputPanelListener(InputPanel.InputPanelListener l) {
+        inputPanel.setPanelListener(l);
+    }
+
+
+    /**
+     * 获取弹幕按钮
+     */
+    public ImageView getBtnDan() {
+        btnDan = (ImageView) findViewById(R.id.btn_dan);
+        return btnDan;
+    }
+
+    /**
+     * 获取礼物按钮
+     */
+    public ImageView getBtnGift() {
+        btnGift = (ImageView) findViewById(R.id.btn_gift);
+        return btnGift;
+    }
+
+    /**
+     * 获取礼物按钮
+     */
+    public ImageView getBtnHeart() {
+        btnHeart = (ImageView) findViewById(R.id.btn_heart);
+        return btnHeart;
+    }
+
+    /**
+     * 获取爱心区域
+     */
+    public HeartLayout getHeartLayout() {
+        heartLayout = (HeartLayout) findViewById(R.id.heart_layout);
+        return heartLayout;
+    }
+
 
 }
