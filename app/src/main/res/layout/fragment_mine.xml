@@ -187,7 +187,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="关注"
+                                        android:text="粉丝"
                                         android:textColor="@color/grey"
                                         android:textSize="12sp" />
                                 </LinearLayout>

@@ -539,6 +539,10 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getSettlementList(videoId);
         setSubscribe(observable, observer);
     }
+    public void HttpDataEditPlayCount(Observer<HttpResult3> observer, Integer videoId) {
+        Observable observable = service_live.editPlayCount(videoId);
+        setSubscribe(observable, observer);
+    }
     public void HttpDataAddSettlement(Observer<HttpResult3> observer, Integer videoId) {
         Observable observable = service_live.addSettlement(videoId);
         setSubscribe(observable, observer);

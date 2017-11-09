@@ -98,7 +98,6 @@ public class LiveIndexTabFragment1 extends Fragment
         mTimeTv = (TextView) mHeaderView.findViewById(R.id.time);
         getLivesService();
 
-
         return view;
     }
 
@@ -243,6 +242,7 @@ public class LiveIndexTabFragment1 extends Fragment
 
     @Override
     public void onRefresh() {
+        springView.onFinishFreshAndLoad();
         getLivesService();
     }
 

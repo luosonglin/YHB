@@ -290,4 +290,8 @@ public interface APILiveService {
     //POST /v1/video/pay 视频门票下单
     @POST("/v1/video/pay")
     Observable<HttpResult3<Object, LiveAndVideoPayDto>> payVideo(@Body VideoOrderDto videoOrderDto);
+
+    //POST /v1/open/video/editPlayCount/{videoId} 更新视频播放次数+1
+    @POST("/v1/open/video/editPlayCount/{videoId}")
+    Observable<HttpResult3> editPlayCount(@Path("videoId") Integer videoId);
 }

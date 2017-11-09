@@ -201,7 +201,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                         @Override
                         public void onEnterFullscreen(String url, Object... objects) {
                             super.onEnterFullscreen(url, objects);
-                            initChat(url);
+//                            initChat(url);
                             Debuger.printfError("***** onEnterFullscreen **** " + objects[0]);//title
                             Debuger.printfError("***** onEnterFullscreen **** " + objects[1]);//当前全屏player
                         }
@@ -287,6 +287,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         detailPlayer.getBackButton().setVisibility(View.VISIBLE);
         detailPlayer.getBackButton().setOnClickListener(view -> finish());
         detailPlayer.getShareButton().setOnClickListener(view -> ToastUtils.show(LiveProgramDetailActivity2.this, "share"));
+
 //        detailPlayer.getFullscreenButton().setOnClickListener(view -> {
 //            try {
 //                audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
@@ -308,7 +309,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 //            }
 //        });
 
-        detailPlayer.getFullscreenButton().setVisibility(View.GONE);
+//        detailPlayer.getFullscreenButton().setVisibility(View.GONE);
     }
 
     @Override

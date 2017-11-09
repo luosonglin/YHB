@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/imlib" />
             <option value="$PROJECT_DIR$/lcrapiddeveloplibrary" />
-            <option value="$PROJECT_DIR$/videoplayer" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -7,7 +7,6 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/imlib/imlib.iml" filepath="$PROJECT_DIR$/imlib/imlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/lcrapiddeveloplibrary/lcrapiddeveloplibrary.iml" filepath="$PROJECT_DIR$/lcrapiddeveloplibrary/lcrapiddeveloplibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/videoplayer/videoplayer.iml" filepath="$PROJECT_DIR$/videoplayer/videoplayer.iml" />
     </modules>
   </component>
 </project>

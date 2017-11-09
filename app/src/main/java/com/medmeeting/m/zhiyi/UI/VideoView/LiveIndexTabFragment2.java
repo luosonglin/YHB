@@ -182,7 +182,7 @@ public class LiveIndexTabFragment2 extends Fragment
                     return;
                 }
                 mQuickAdapter.addHeaderView(mHeaderView);
-                mQuickAdapter.addData(videoListEntityObjectHttpResult3.getData());
+                mQuickAdapter.setNewData(videoListEntityObjectHttpResult3.getData());
                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), VideoDetailActivity.class);
                     i.putExtra("videoId", videoListEntityObjectHttpResult3.getData().get(position).getVideoId());
@@ -238,6 +238,7 @@ public class LiveIndexTabFragment2 extends Fragment
     @Override
     public void onRefresh() {
         getVideos();
+        springView.onFinishFreshAndLoad();
     }
 
     @Override

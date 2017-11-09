@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -8,10 +9,12 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +34,7 @@ import com.alipay.sdk.app.PayTask;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
@@ -38,6 +42,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoOrderDto;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer;
@@ -50,7 +55,16 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 
+import java.util.Map;
 import java.util.Objects;
 
 import rx.Observer;
@@ -73,7 +87,7 @@ public class VideoDetailActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-    static final String TAG = VideoDetailActivity.class.getSimpleName();
+    private static final String TAG = VideoDetailActivity.class.getSimpleName();
     private Integer videoId;
 
     @Override
@@ -85,8 +99,82 @@ public class VideoDetailActivity extends AppCompatActivity {
         detailPlayer = (LandLayoutVideoPlayer) findViewById(R.id.detail_player);
         activityDetailPlayer = (RelativeLayout) findViewById(R.id.activity_detail_player);
 
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+
+            }
+        });
+
         videoId = getIntent().getIntExtra("videoId", 0);
         initView(videoId);
+    }
+
+    /**
+     * 分享
+     * @param programId
+     * @param title
+     * @param photo
+     * @param description
+     */
+    public void initShare(final int programId, final String title, final String photo, final String description) {
+
+        //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{
+                    Manifest.permission.WRITE_APN_SETTINGS};
+            ActivityCompat.requestPermissions(this, mPermissionList, 123);
+        }
+
+        mShareListener = new CustomShareListener(this);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(VideoDetailActivity.this)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
+
+                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/video/" + programId);
+                    web.setTitle(title);//标题
+                    web.setThumb(new UMImage(VideoDetailActivity.this, photo));  //缩略图
+                    web.setDescription(description);//描述
+                    new ShareAction(VideoDetailActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
+                });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    private UMShareListener mShareListener;
+    private ShareAction mShareAction;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //qq微信新浪授权防杀死
+        UMShareAPI.get(this).onSaveInstanceState(outState);
     }
 
     private void initView(Integer videoId) {
@@ -112,6 +200,8 @@ public class VideoDetailActivity extends AppCompatActivity {
                         data.getEntity().getUserId(), data.getEntity().isPayFlag());
 
                 initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId(), data.getEntity().getUserId());
+
+                initShare(data.getEntity().getVideoId(), data.getEntity().getTitle(), data.getEntity().getCoverPhoto(), data.getEntity().getDes());
             }
         }, videoId);
     }
@@ -273,9 +363,32 @@ public class VideoDetailActivity extends AppCompatActivity {
         detailPlayer.getShareButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.show(VideoDetailActivity.this, "share");
+                ShareBoardConfig config = new ShareBoardConfig();
+                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                mShareAction.open(config);
             }
         });
+
+
+        if (detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING) {
+            HttpData.getInstance().HttpDataEditPlayCount(new Observer<HttpResult3>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult3 httpResult3) {
+
+                }
+            }, videoId);
+        }
+
     }
 
     @Override
@@ -314,6 +427,9 @@ public class VideoDetailActivity extends AppCompatActivity {
         //GSYPreViewManager.instance().releaseMediaPlayer();
         if (orientationUtils != null)
             orientationUtils.releaseListener();
+
+        //内存泄漏，在使用分享或者授权的Activity中，重写onDestory()方法：
+        UMShareAPI.get(this).release();
     }
 
 

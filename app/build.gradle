@@ -120,7 +120,7 @@ dependencies {
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_shareboard.jar')
-    compile project(':videoplayer')
+//    compile project(':videoplayer')
     compile files('libs/alipaySdk-20170309.jar')
     //    compile files('libs/libammsdk.jar')
 
