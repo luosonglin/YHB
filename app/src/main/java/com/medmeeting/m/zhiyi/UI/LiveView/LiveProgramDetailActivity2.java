@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +39,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
@@ -48,7 +51,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
 import com.medmeeting.m.zhiyi.UI.MineView.MyOrderActivity;
-import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailCommandFragment;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -63,7 +65,16 @@ import com.snappydb.SnappydbException;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -113,6 +124,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     private ImageView cover;
     private TextView buyBtn;
     private ImageView back;
+    private ImageView share;
 
 
     @Override
@@ -128,9 +140,95 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         buyBtn = (TextView) findViewById(R.id.buy);
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(view -> finish());
+        share = (ImageView) findViewById(R.id.share);
+        share.setOnClickListener(view ->{
+            ShareBoardConfig config = new ShareBoardConfig();
+            config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+            mShareAction.open(config);
+        });
+
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        });
 
         programId = getIntent().getIntExtra("programId", 0);
         initView(programId);
+    }
+
+    /**
+     * 屏幕横竖屏切换时避免出现window leak的问题
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mShareAction.close();
+
+        //如果旋转了就全屏
+        if (isPlay && !isPause) {
+            detailPlayer.onConfigurationChanged(this, newConfig, orientationUtils);
+        }
+    }
+
+    public void initShare(final int programId, final String title, final String photo, final String description) {
+
+        //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{
+                    Manifest.permission.WRITE_APN_SETTINGS};
+            ActivityCompat.requestPermissions(this, mPermissionList, 123);
+        }
+
+        mShareListener = new CustomShareListener(this);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(LiveProgramDetailActivity2.this)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
+
+                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + programId);
+                    web.setTitle(title);//标题
+                    web.setThumb(new UMImage(LiveProgramDetailActivity2.this, photo));  //缩略图
+                    web.setDescription(description);//描述
+                    new ShareAction(LiveProgramDetailActivity2.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
+                });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    private UMShareListener mShareListener;
+    private ShareAction mShareAction;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //qq微信新浪授权防杀死
+        UMShareAPI.get(this).onSaveInstanceState(outState);
     }
 
     private void initView(Integer programId) {
@@ -174,6 +272,11 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 //                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
 
                 initTagsView(data.getEntity());
+
+                initShare(programId,
+                        data.getEntity().getTitle(),
+                        data.getEntity().getCoverPhoto(),
+                        data.getEntity().getDes());
             }
         }, programId);
     }
@@ -431,15 +534,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     }
 
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        //如果旋转了就全屏
-        if (isPlay && !isPause) {
-            detailPlayer.onConfigurationChanged(this, newConfig, orientationUtils);
-        }
-    }
-
     private GSYVideoPlayer getCurPlay() {
         if (detailPlayer.getFullWindowPlayer() != null) {
             return detailPlayer.getFullWindowPlayer();
@@ -468,7 +562,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
 //        mIndexChildAdapter.addFragment(VideoDetailCommandFragment.newInstance(liveProgramDateilsEntity.getRoomId()), "评论");
         mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(liveProgramDateilsEntity, liveProgramDateilsEntity.getId()), "详情");
-        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(liveProgramDateilsEntity.getRoomId()), "相关视频");
+        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(liveProgramDateilsEntity.getRoomId()), "相关预告");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);

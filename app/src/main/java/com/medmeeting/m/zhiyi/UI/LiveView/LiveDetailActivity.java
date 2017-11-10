@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,23 +92,29 @@ public class LiveDetailActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        toolbar.setTitle("");//标题
-//        toolbar.setSubtitle(R.string.app_name);//二级标题
-//        toolbar.setLogo(R.mipmap.ic_launcher);//设置logo
         getSupportActionBar().setTitle("");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
         toolbar.setNavigationOnClickListener(v -> finish());
-        toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.tab_icon_share_nor));
+
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
-                case R.id.share:
+                case R.id.action_share:
                     ShareBoardConfig config = new ShareBoardConfig();
                     config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
                     mShareAction.open(config);
                     break;
             }
-            return false;
+            return true;
         });
+    }
+
+    /**
+     * 菜单栏 修改器下拉刷新模式
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_live_program_toolbar, menu);
+        return true;
     }
 
     public void initShare(Bundle savedInstanceState, final int roomId, final String title, final String phone, final String description){

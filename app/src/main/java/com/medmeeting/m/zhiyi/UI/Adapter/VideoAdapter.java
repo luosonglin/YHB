@@ -34,7 +34,7 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListEntity> {
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.author, item.getAuthorName())
+                .setText(R.id.author, item.getAuthorName() + " | "+item.getAuthorTitle())
                 .setText(R.id.sum, "观看 " + item.getPlayCount() + "    收藏 " + item.getCollectCount())
                 .setText(R.id.time, DateUtil.formatDate(item.getCreateTime(), DateUtil.TYPE_08));
 

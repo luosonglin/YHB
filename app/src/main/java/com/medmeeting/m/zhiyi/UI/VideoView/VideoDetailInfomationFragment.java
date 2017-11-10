@@ -116,7 +116,11 @@ public class VideoDetailInfomationFragment extends Fragment {
                     startActivity(intent);
                 });
                 title.setText(data.getEntity().getTitle());
-                authorName.setText(data.getEntity().getAuthorName());
+                if (data.getEntity().getAuthorTitle().equals("") || data.getEntity().getAuthorTitle() == null) {
+                    authorName.setText(data.getEntity().getAuthorName());
+                } else {
+                    authorName.setText(data.getEntity().getAuthorName() + " | " + data.getEntity().getAuthorTitle());
+                }
                 time.setText("时间：   " + DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_06));
                 if (data.getEntity().getChargeType().equals("no")) {
                     type.setText("观看：   公开免费");
