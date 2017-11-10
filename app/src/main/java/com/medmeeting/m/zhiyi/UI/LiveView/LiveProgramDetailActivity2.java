@@ -7,7 +7,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -44,8 +43,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.GiftMessage;
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.InputPanel;
 import com.medmeeting.m.zhiyi.UI.MineView.MyOrderActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailCommandFragment;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -147,9 +144,9 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
 
                     if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-                        loginRongCloudChatRoom(Data.getUserId()+"", audienceUserNickName, url);
+                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserNickName, url);
                     } else {
-                        loginRongCloudChatRoom(Data.getUserId()+"", audienceUserName, url);
+                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserName, url);
                     }
                 } catch (SnappydbException e) {
                     e.printStackTrace();
@@ -255,11 +252,60 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
         if (detailPlayer.getFullscreenButton() != null) {
             detailPlayer.getFullscreenButton().setOnClickListener(v -> {
-                //直接横屏
-                orientationUtils.resolveByClick();
 
-                //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
-                detailPlayer.startWindowFullscreen(LiveProgramDetailActivity2.this, true, true);
+//                initChat(url);
+
+//                //直接横屏
+//                orientationUtils.resolveByClick();
+//
+//                //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
+//                detailPlayer.startWindowFullscreen(LiveProgramDetailActivity2.this, true, true);
+
+                startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
+                        .putExtra("programId", programId)
+                        .putExtra("url", url));
+
+//                //init 互动view
+//                LiveKit.addEventHandler(handler);
+//                chatListAdapter = new ChatListAdapter();
+//                detailPlayer.getChatListView().setAdapter(chatListAdapter);
+//
+//                detailPlayer.getBtnDan().setOnClickListener(view -> {
+//                    if (detailPlayer.getChatListView().getVisibility() == View.VISIBLE) {
+//                        detailPlayer.getChatListView().setVisibility(View.GONE);
+//                        detailPlayer.getBtnDan().setImageResource(R.mipmap.icon_dan_close);
+//                    } else if (detailPlayer.getChatListView().getVisibility() == View.GONE) {
+//                        detailPlayer.getChatListView().setVisibility(View.VISIBLE);
+//                        detailPlayer.getBtnDan().setImageResource(R.mipmap.icon_dan);
+//                    }
+//                });
+//                detailPlayer.getBtnGift().setOnClickListener(view -> {
+//                    GiftMessage msg = new GiftMessage("2", "送您一个礼物");
+//                    LiveKit.sendMessage(msg);
+//                });
+//                detailPlayer.getHeartLayout().setOnClickListener(view -> {
+//                    detailPlayer.getHeartLayout().post(() -> {
+//                        int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+//                        detailPlayer.getHeartLayout().addHeart(rgb);
+//                    });
+//                    GiftMessage msg = new GiftMessage("1", "点赞了");
+//                    LiveKit.sendMessage(msg);
+//                });
+//
+//                detailPlayer.setInputPanelListener(new InputPanel.InputPanelListener() {
+//                    @Override
+//                    public void onSendClick(String text) {
+//                        final TextMessage content = TextMessage.obtain(text);
+//                        LiveKit.sendMessage(content);
+//                    }
+//                });
+////            bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
+////                @Override
+////                public void onSendClick(String text) {
+////                    final TextMessage content = TextMessage.obtain(text);
+////                    LiveKit.sendMessage(content);
+////                }
+////            });
             });
         }
 
@@ -294,7 +340,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 //                audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
 //                Log.e(TAG, "haha" + audienceUserName + " " + audienceUserNickName);
 //
-//                if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+//                if (audienceUserName == null || audienceUserName.equals("、") || audienceUserName.equals("null")) {
 //                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity2.this, "userId"), audienceUserNickName, url);
 //                } else {
 //                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailActivity2.this, "userId"), audienceUserName, url);
@@ -310,6 +356,8 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 //        });
 
 //        detailPlayer.getFullscreenButton().setVisibility(View.GONE);
+
+
     }
 
     @Override
@@ -700,63 +748,8 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
         Log.e("initchat", "initChat()");
 
-//        try {
-//            audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
-//            audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
-//            Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
-//
-//            if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-//                loginRongCloudChatRoom(Data.getUserId()+"", audienceUserNickName, url);
-//            } else {
-//                loginRongCloudChatRoom(Data.getUserId()+"", audienceUserName, url);
-//            }
-//        } catch (SnappydbException e) {
-//            e.printStackTrace();
-//        } finally {
-            //init 互动view
-            LiveKit.addEventHandler(handler);
-            chatListAdapter = new ChatListAdapter();
-            detailPlayer.getChatListView().setAdapter(chatListAdapter);
 
-            detailPlayer.getBtnDan().setOnClickListener(view -> {
-                if (detailPlayer.getChatListView().getVisibility() == View.VISIBLE) {
-                    detailPlayer.getChatListView().setVisibility(View.GONE);
-                    detailPlayer.getBtnDan().setImageResource(R.mipmap.icon_dan_close);
-                } else if (detailPlayer.getChatListView().getVisibility() == View.GONE) {
-                    detailPlayer.getChatListView().setVisibility(View.VISIBLE);
-                    detailPlayer.getBtnDan().setImageResource(R.mipmap.icon_dan);
-                }
-            });
-            detailPlayer.getBtnGift().setOnClickListener(view -> {
-                GiftMessage msg = new GiftMessage("2", "送您一个礼物");
-                LiveKit.sendMessage(msg);
-            });
-            detailPlayer.getHeartLayout().setOnClickListener(view -> {
-                detailPlayer.getHeartLayout().post(() -> {
-                    int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-                    detailPlayer.getHeartLayout().addHeart(rgb);
-                });
-                GiftMessage msg = new GiftMessage("1", "点赞了");
-                LiveKit.sendMessage(msg);
-            });
-
-            detailPlayer.setInputPanelListener(new InputPanel.InputPanelListener() {
-                @Override
-                public void onSendClick(String text) {
-                    final TextMessage content = TextMessage.obtain(text);
-                    LiveKit.sendMessage(content);
-                }
-            });
-//            bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
-//                @Override
-//                public void onSendClick(String text) {
-//                    final TextMessage content = TextMessage.obtain(text);
-//                    LiveKit.sendMessage(content);
-//                }
-//            });
-
-            joinChatRoom(programId + "");
-//        }
+        joinChatRoom(programId + "");
     }
 
     /**
@@ -776,31 +769,26 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
             }
 
             @Override
             public void onNext(HttpResult3<Object, RCUserDto> data) {
-                Log.e(TAG, "onNext");
                 LiveKit.connect(data.getEntity().getToken(),
                         new RongIMClient.ConnectCallback() {
                             @Override
                             public void onTokenIncorrect() {
-                                Log.e(TAG, "connect onTokenIncorrect");
+                                Log.e(TAG, "LiveKit.connect onTokenIncorrect");
                                 // 检查appKey 与token是否匹配.
                             }
 
                             @Override
                             public void onSuccess(String s) {
-                                Log.e(TAG, "connect onSuccess");
+                                Log.e(TAG, "LiveKit.connect onSuccess " + s);
                             }
 
                             @Override
                             public void onError(RongIMClient.ErrorCode errorCode) {
-                                Log.e(TAG, "connect onError = " + errorCode);
+                                Log.e(TAG, "LiveKit.connect onError = " + errorCode);
                                 // 根据errorCode 检查原因.
                             }
                         });
@@ -845,13 +833,13 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 TextMessage content = TextMessage.obtain("进入了房间");
                 LiveKit.sendMessage(content);
 
-                Log.e(TAG + " joinChatRoom: ", content + "" + content.getUserInfo().getName());
+                Log.e(TAG + " LiveKit.joinChatRoom: ", content + "" + content.getUserInfo().getName());
             }
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
 //                Toast.makeText(LivePlayerActivity.this, "聊天室加入失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "聊天室加入失败! errorCode = " + errorCode);
+                Log.e(TAG, "LiveKit.聊天室加入失败! errorCode = " + errorCode);
             }
         });
     }
