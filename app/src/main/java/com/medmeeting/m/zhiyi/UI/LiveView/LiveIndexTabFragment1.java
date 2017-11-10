@@ -42,7 +42,7 @@ public class LiveIndexTabFragment1 extends Fragment
     private BaseQuickAdapter mQuickAdapter;
     private int PageIndex = 1;
     private SpringView springView;
-    private LiveSearchDto2 liveSearchDto2 = new LiveSearchDto2();
+    private LiveSearchDto2 liveSearchDto2 = new LiveSearchDto2(1000);
     private static final String TAG = LiveIndexTabFragment1.class.getSimpleName();
 
 

@@ -305,4 +305,8 @@ public interface APILiveService {
     //POST /v1/anchor/livePay/{programId}/extract 新增 节目门票 提现申请
     @POST("/v1/anchor/livePay/{programId}/extract")
     Observable<HttpResult3<Object, LiveExtract>> extract(@Path("programId") Integer programId);
+
+    //POST /v1/liveProgram/page 获取直播节目一栏-分页
+    @POST("/v1/liveProgram/page")
+    Observable<HttpResult3<LiveDto, Object>> getProgramLists(@Body LiveSearchDto basePageSearchEntity);
 }

@@ -186,7 +186,7 @@ public class LiveFragment extends Fragment
     @Override
     public void onLoadMoreRequested() {
         PageIndex++;
-        liveSearchDto2.setPageNum(PageIndex);
+        liveSearchDto2.setPageSize(PageIndex);
         present.LoadData(true, liveSearchDto2);
     }
 

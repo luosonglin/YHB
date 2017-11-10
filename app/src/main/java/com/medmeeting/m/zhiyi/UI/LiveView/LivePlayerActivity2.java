@@ -288,7 +288,11 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
         detailPlayer.getTitleTextView().setVisibility(View.VISIBLE);
         detailPlayer.getBackButton().setVisibility(View.VISIBLE);
         detailPlayer.getBackButton().setOnClickListener(view -> finish());
+
+        detailPlayer.getShareButton().setVisibility(View.GONE);
         detailPlayer.getShareButton().setOnClickListener(view -> ToastUtils.show(LivePlayerActivity2.this, "share"));
+
+        detailPlayer.getFullscreenButton().setVisibility(View.GONE);
 
 //
 //        //直接横屏

@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import java.lang.ref.WeakReference;
@@ -76,36 +78,12 @@ public class LiveAndVideoRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_and_video_room);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolBar();
-//        initShare(savedInstanceState, getIntent().getExtras().getInt("roomId"),
-//                getIntent().getExtras().getString("title"),
-//                getIntent().getExtras().getString("coverPhote"),
-//                getIntent().getExtras().getString("description"));
 
         initView(getIntent().getExtras().getInt("userId", 0));
-    }
 
-    private void toolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
-        toolbar.setNavigationOnClickListener(v -> finish());
-//        toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.tab_icon_share_nor));
-//        toolbar.setOnMenuItemClickListener(item -> {
-//            switch (item.getItemId()) {
-//                case R.id.share:
-//                    ShareBoardConfig config = new ShareBoardConfig();
-//                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-//                    mShareAction.open(config);
-//                    break;
-//            }
-//            return false;
-//        });
-    }
-
-    public void initShare(Bundle savedInstanceState, final int roomId, final String title, final String phone, final String description) {
         //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
         UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
             @Override
@@ -128,6 +106,56 @@ public class LiveAndVideoRoomActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void toolBar() {
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle("");
+//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
+//        toolbar.setNavigationOnClickListener(v -> finish());
+//        toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.tab_icon_share_nor));
+//        toolbar.setOnMenuItemClickListener(item -> {
+//            switch (item.getItemId()) {
+//                case R.id.share:
+//                    ShareBoardConfig config = new ShareBoardConfig();
+//                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+//                    mShareAction.open(config);
+//                    break;
+//            }
+//            return false;
+//        });
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_share:
+                    ShareBoardConfig config = new ShareBoardConfig();
+                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                    mShareAction.open(config);
+                    break;
+            }
+            return true;
+        });
+
+    }
+
+    /**
+     * 菜单栏 修改器下拉刷新模式
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_live_program_toolbar, menu);
+        return true;
+    }
+
+    public void initShare(final int roomId, final String title, final String phone, final String description) {
+
         //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
         if (Build.VERSION.SDK_INT >= 23) {
             String[] mPermissionList = new String[]{
@@ -141,7 +169,7 @@ public class LiveAndVideoRoomActivity extends AppCompatActivity {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/" + roomId);
+                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#/person/" + roomId);
                     web.setTitle(title);//标题
                     web.setThumb(new UMImage(LiveAndVideoRoomActivity.this, phone));  //缩略图
                     web.setDescription(description);//描述
@@ -258,7 +286,7 @@ public class LiveAndVideoRoomActivity extends AppCompatActivity {
                     ToastUtils.show(LiveAndVideoRoomActivity.this, data.getMsg());
                     return;
                 }
-                titleTv.setText(data.getEntity().getName() + " | " + data.getEntity().getPostion());
+                titleTv.setText(data.getEntity().getName());// + " | " + data.getEntity().getPostion());
                 userNameTv.setText(data.getEntity().getHospital() + "");
                 Glide.with(LiveAndVideoRoomActivity.this)
                         .load(data.getEntity().getUserPic())
@@ -277,6 +305,13 @@ public class LiveAndVideoRoomActivity extends AppCompatActivity {
                     intent.putExtra("description", data.getEntity().getRoomList().get(position).getDes());
                     startActivity(intent);
                 });
+
+
+                initShare(data.getEntity().getUserId(),
+                        data.getEntity().getName() + "的主页",
+                        data.getEntity().getUserPic(),
+                        "我是" + data.getEntity().getName() + "，我在医会宝开了直播间，快来看看吧");
+
             }
         }, userId);
 

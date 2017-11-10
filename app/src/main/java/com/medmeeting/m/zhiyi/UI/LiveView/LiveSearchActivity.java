@@ -13,7 +13,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,10 +21,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Presenter.ListSearchListPresent;
-import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
@@ -39,7 +36,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
-import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 
@@ -51,7 +47,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
-public class LiveSearchActivity extends AppCompatActivity implements SpringView.OnFreshListener, LiveListView {
+public class LiveSearchActivity extends AppCompatActivity {
 
     //    @Bind(R.id.toolbar_title)
 //    TextView toolbarTitleTv;
@@ -130,100 +126,20 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
 
     private void initLivesView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
-        springView = (SpringView) findViewById(R.id.springview);
-
-        //设置下拉刷新监听
-        springView.setListener(this);
-        //设置下拉刷新样式
-        springView.setType(SpringView.Type.FOLLOW);
-        springView.setHeader(new DefaultHeader(this));
-
-        progress = (ProgressActivity) findViewById(R.id.progress);
         //设置RecyclerView的显示模式  当前List模式
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setLayoutManager(new GridLayoutManager(LiveSearchActivity.this, 2));
-//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..
-        progress.showLoading();
+//        progress.showLoading();
         //设置适配器
-//        mQuickAdapter = new TagAdapter(R.layout.item_tag, null);
         mQuickAdapter = new LiveAdapter(R.layout.item_live, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
-        mQuickAdapter.openLoadMore(6, true);
+//        mQuickAdapter.openLoadMore(6, true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
-        present = new ListSearchListPresent(this);
-        //请求网络数据
-//        liveSearchDto.setKeyword("");
-//        present.LoadData(false, liveSearchDto);
-        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE2, Constant.EMPTY_CONTEXT2);
-    }
-
-    @Override
-    public void showProgress() {
-        progress.showLoading();
-    }
-
-    @Override
-    public void hideProgress() {
-        progress.showContent();
-    }
-
-    @Override
-    public void newDatas(List<LiveDto> newsList) {
-        //进入显示的初始数据或者下拉刷新显示的数据
-        mQuickAdapter.setNewData(newsList);//新增数据
-        mQuickAdapter.openLoadMore(10, true);//设置是否可以下拉加载  以及加载条数
-        springView.onFinishFreshAndLoad();//刷新完成
-    }
-
-    @Override
-    public void addDatas(List<LiveDto> addList) {
-        //新增自动加载的的数据
-        mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
-    }
-
-    @Override
-    public void showLoadFailMsg() {
-        //设置加载错误页显示
-        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                PageIndex = 1;
-//                present.LoadData("1",PageIndex,false);
-                present.LoadData(false, liveSearchDto);
-            }
-        });
-    }
-
-    @Override
-    public void showLoadCompleteAllData() {
-        //所有数据加载完成后显示
-        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
-        View view = this.getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
-        mQuickAdapter.addFooterView(view);
-    }
-
-    @Override
-    public void showNoData() {
-        springView.onFinishFreshAndLoad();
-        //设置无数据显示页面
-        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
-    }
-
-
-    @Override
-    public void onRefresh() {
-        springView.onFinishFreshAndLoad();
-    }
-
-    @Override
-    public void onLoadmore() {
-
     }
 
     @OnClick({R.id.type, R.id.search_tv})
@@ -276,28 +192,29 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
 
                 if ("公开".equals(type)) {
                     liveSearchDto.setKeyword(searchEt.getText().toString());
-                    liveSearchDto.setRoomNumber("");
+                    liveSearchDto.setRoomNumber(null);
                     liveSearchDto.setLabelIds(labelIds);
                 } else if ("私密".equals(type)) {
                     liveSearchDto.setKeyword("");
                     liveSearchDto.setRoomNumber(searchEt.getText().toString());// test data 411826
                     liveSearchDto.setLabelIds(labelIds);
                 }
-//                present.LoadData(false, liveSearchDto);
 
-                HttpData.getInstance().HttpDataGetLives(new Observer<HttpResult3<LiveDto, Object>>() {
+//                present.LoadData(false, liveSearchDto);
+                //请求网络数据
+                HttpData.getInstance().HttpDataGetPrograms(new Observer<HttpResult3<LiveDto, Object>>() {
                     @Override
                     public void onCompleted() {
-                        Log.e(TAG, "onCompleted");
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
+
                     }
 
                     @Override
                     public void onNext(HttpResult3<LiveDto, Object> data) {
-                        Log.e(TAG, "onNext");
                         mQuickAdapter.setNewData(data.getData());
                         mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                             Intent i = new Intent(LiveSearchActivity.this, LiveProgramDetailActivity2.class);
@@ -413,7 +330,7 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                     labelIds.clear();
                     labelIds.add(tagDto.getId());
                     liveSearchDto.setLabelIds(labelIds);
-                    present.LoadData(false, liveSearchDto);
+//                    present.LoadData(false, liveSearchDto);
 
                     labelVideo = tagDto.getId();
 

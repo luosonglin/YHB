@@ -563,6 +563,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataGetPrograms(Observer<HttpResult3<LiveDto, Object>> observer, LiveSearchDto liveSearchDto) {
+        Observable observable = service_live.getProgramLists(liveSearchDto);
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 插入观察者
