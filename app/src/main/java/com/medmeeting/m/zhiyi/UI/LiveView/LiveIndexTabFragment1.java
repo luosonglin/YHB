@@ -169,7 +169,7 @@ public class LiveIndexTabFragment1 extends Fragment
                     mUserTv.setText(firstData.getAuthorName() + " | " + firstData.getAuthorTitle());
                     mTimeTv.setText(DateUtil.formatDate(firstData.getStartTime(), DateUtil.TYPE_06));
 
-                    mHeaderView.setOnClickListener(view -> {
+                    mBackgroundTv.setOnClickListener(view -> {
                         if (firstData.getUserId() == Data.getUserId()) {
                             startActivity(new Intent(getActivity(), LiveProgramDetailAuthorActivity.class)
                                     .putExtra("programId", firstData.getId()));
@@ -178,13 +178,22 @@ public class LiveIndexTabFragment1 extends Fragment
                                     .putExtra("programId", firstData.getId()));
                         }
                     });
+                    mAvatarIv.setOnClickListener(view -> {
+                        Intent intent = new Intent(getActivity(), LiveDetailActivity.class);
+                        intent.putExtra("roomId", firstData.getRoomId());
+                        intent.putExtra("coverPhote", firstData.getCoverPhoto());
+                        intent.putExtra("title", firstData.getTitle());
+                        intent.putExtra("authorName", firstData.getAuthorName());
+                        intent.putExtra("description", firstData.getDes());
+                        startActivity(intent);
+                    });
                     mQuickAdapter.addHeaderView(mHeaderView);
                     datas.remove(0);
                 }
 
                 mQuickAdapter.setNewData(datas);
                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    Log.e("hhhaaa", data.getData().get(position).getUserId() +" "+ Data.getUserId());
+                    Log.e("hhhaaa", data.getData().get(position).getUserId() + " " + Data.getUserId());
                     if (data.getData().get(position).getUserId() == Data.getUserId()) {
                         startActivity(new Intent(getActivity(), LiveProgramDetailAuthorActivity.class)
                                 .putExtra("programId", data.getData().get(position).getId()));
