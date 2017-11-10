@@ -89,6 +89,15 @@
             android:text="观看："
             android:textSize="14sp"
             android:textColor="@color/grey"/>
+        <TextView
+            android:id="@+id/collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="10dp"
+            android:text="收藏："
+            android:textSize="14sp"
+            android:textColor="@color/grey"/>
     </LinearLayout>
 
     <View

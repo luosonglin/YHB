@@ -71,6 +71,7 @@ import rx.Observer;
 
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_NORMAL;
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING;
+import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PLAYING_BUFFERING_START;
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PREPAREING;
 
 public class VideoDetailActivity extends AppCompatActivity {
@@ -369,8 +370,10 @@ public class VideoDetailActivity extends AppCompatActivity {
             }
         });
 
-
-        if (detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING) {
+        if (detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING
+                || detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING_BUFFERING_START
+                || detailPlayer.getCurrentState() == CURRENT_STATE_NORMAL
+                || detailPlayer.getCurrentState() == CURRENT_STATE_PREPAREING) {
             HttpData.getInstance().HttpDataEditPlayCount(new Observer<HttpResult3>() {
                 @Override
                 public void onCompleted() {

@@ -170,6 +170,7 @@
                     android:ellipsize="marquee"
                     android:lines="1"
                     android:paddingLeft="2dp"
+                    android:layout_toLeftOf="@+id/time"
                     android:text=""
                     android:textSize="12sp" />
 

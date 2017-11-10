@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +20,9 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveAndVideoRoomActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
 
@@ -40,6 +43,8 @@ public class LiveProgramDetailInfoFragment extends Fragment {
     RxShineButton like;
     @Bind(R.id.time)
     TextView time;
+    @Bind(R.id.collect)
+    TextView collect;
     @Bind(R.id.type)
     TextView type;
     @Bind(R.id.des)
@@ -98,13 +103,20 @@ public class LiveProgramDetailInfoFragment extends Fragment {
 
     private void initView(LiveProgramDateilsEntity mLiveProgramDateilsEntity) {
         title.setText(mLiveProgramDateilsEntity.getTitle());
-        authorName.setText(mLiveProgramDateilsEntity.getAuthorName());
+        authorName.setText(mLiveProgramDateilsEntity.getAuthorName() + " | " + mLiveProgramDateilsEntity.getTitle());
         Glide.with(getActivity())
                 .load(mLiveProgramDateilsEntity.getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .transform(new GlideCircleTransform(getActivity()))
                 .into(avatar);
-        time.setText(DateUtil.formatDate(mLiveProgramDateilsEntity.getCreateTime(), DateUtil.TYPE_04));
+        avatar.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+            intent.putExtra("userId", mLiveProgramDateilsEntity.getRoomUserId());
+            startActivity(intent);
+        });
+        time.setText(DateUtil.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtil.TYPE_04) +" ~ "+DateUtil.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtil.TYPE_04));
+        collect.setText("收藏：" + mLiveProgramDateilsEntity.getCollectCount());
         if (mLiveProgramDateilsEntity.getChargeType().equals("no")) {
             type.setText("观看：   公开免费");
         } else {

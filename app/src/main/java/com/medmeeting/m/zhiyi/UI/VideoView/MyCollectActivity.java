@@ -19,7 +19,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
-import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.MineView.MyCollectLiveActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MyCollectVideoActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -175,7 +175,7 @@ public class MyCollectActivity extends AppCompatActivity {
                 }
                 mAdapter2.addData(mLives);
                 mAdapter2.setOnRecyclerViewItemClickListener((view, position) -> {
-                    Intent i = new Intent(MyCollectActivity.this, LiveProgramDetailActivity.class);
+                    Intent i = new Intent(MyCollectActivity.this, LiveProgramDetailActivity2.class);
                     i.putExtra("programId", data.getData().get(position).getId());
                     startActivity(i);
                 });

@@ -349,7 +349,7 @@ public class LiveDetailActivity extends AppCompatActivity {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(LiveDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
         mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播");
-        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "视频");
+//        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "视频");
         mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "详情");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数

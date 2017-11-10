@@ -48,7 +48,7 @@ import rx.Observer;
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 30/10/2017 2:06 PM
- * @describe 陆庆生这种人的主页
+ * @describe 红V主页
  * @email iluosonglin@gmail.com
  * @org Healife
  */

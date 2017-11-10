@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -270,6 +271,9 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                 });
                 break;
             case R.id.search_tv:
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+
                 if ("公开".equals(type)) {
                     liveSearchDto.setKeyword(searchEt.getText().toString());
                     liveSearchDto.setRoomNumber("");
@@ -412,6 +416,8 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                     present.LoadData(false, liveSearchDto);
 
                     labelVideo = tagDto.getId();
+
+                    searchEt.setText("");
                     break;
             }
         });

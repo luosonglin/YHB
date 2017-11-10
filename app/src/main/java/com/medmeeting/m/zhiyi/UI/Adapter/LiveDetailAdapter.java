@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
-import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailAuthorActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -47,7 +47,7 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
                 Log.e(TAG, "1: " + mUserId + " " + item.getUserId());
             } else {
                 //用户进的直播节目详情页
-                intent = new Intent(mContext, LiveProgramDetailActivity.class);
+                intent = new Intent(mContext, LiveProgramDetailActivity2.class);
                 Log.e(TAG, "2: " + mUserId + " " + item.getUserId());
             }
             intent.putExtra("programId", item.getId());

@@ -14,7 +14,7 @@ import com.medmeeting.m.zhiyi.UI.Adapter.MyPayLiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
@@ -80,7 +80,7 @@ public class MyCollectLiveActivity extends AppCompatActivity {
 
                 mAdapter.addData(data.getData());
                 mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    Intent i = new Intent(MyCollectLiveActivity.this, LiveProgramDetailActivity.class);
+                    Intent i = new Intent(MyCollectLiveActivity.this, LiveProgramDetailActivity2.class);
                     i.putExtra("programId", data.getData().get(position).getId());
                     startActivity(i);
                 });
