@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
-import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -38,7 +37,7 @@ public class NewsActivity extends AppCompatActivity {
     @Bind(R.id.content_wei_bo)
     RelativeLayout contentWeiBo;
     @Bind(R.id.blog_image)
-    weiboGridView blogImage;
+    com.medmeeting.m.zhiyi.Widget.weibogridview.weiboGridView blogImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

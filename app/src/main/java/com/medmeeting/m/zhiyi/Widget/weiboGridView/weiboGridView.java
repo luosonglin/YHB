@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.Widget.weiboGridView;
+package com.medmeeting.m.zhiyi.Widget.weibogridview;
 
 import android.content.Context;
 import android.util.AttributeSet;

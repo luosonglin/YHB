@@ -46,7 +46,6 @@ public class LiveIndexTabFragment2 extends Fragment
     private LiveSearchDto2 liveSearchDto2 = new LiveSearchDto2();
     private static final String TAG = LiveIndexTabFragment2.class.getSimpleName();
 
-
     private View mHeaderView;
     private RecyclerView mTagsRecyclerView;
     private BaseQuickAdapter mTagsAdapter;

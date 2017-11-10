@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -26,10 +28,15 @@ import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.VideoAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
@@ -93,6 +100,12 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
 
     private TagAdapter mBaseQuickAdapter;
 
+    //以下为视频
+
+    private RecyclerView mRecyclerView2;
+    private BaseQuickAdapter mQuickAdapter2;
+    private Integer labelVideo = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,18 +116,15 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
 
         initTagsView();
         initLivesView();
+
+        initVideoView();
     }
 
     private void initToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
     }
 
     private void initLivesView() {
@@ -269,44 +279,82 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                     liveSearchDto.setRoomNumber(searchEt.getText().toString());// test data 411826
                     liveSearchDto.setLabelIds(labelIds);
                 }
-                present.LoadData(false, liveSearchDto);
+//                present.LoadData(false, liveSearchDto);
+
+                HttpData.getInstance().HttpDataGetLives(new Observer<HttpResult3<LiveDto, Object>>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<LiveDto, Object> data) {
+                        Log.e(TAG, "onNext");
+                        mQuickAdapter.setNewData(data.getData());
+                        mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                            Intent i = new Intent(LiveSearchActivity.this, LiveProgramDetailActivity2.class);
+                            i.putExtra("programId", data.getData().get(position).getId());
+                            startActivity(i);
+                        });
+                    }
+                }, liveSearchDto);
+
+
+                if (mQuickAdapter.getData() != null) {
+                    //视频api
+                    VideoListSearchEntity searchEntity = new VideoListSearchEntity();
+                    searchEntity.setPageNum(1);
+                    searchEntity.setPageSize(100);
+                    searchEntity.setKeyword(searchEt.getText().toString());
+                    searchEntity.setLabelId(labelVideo);
+                    searchEntity.setRoomId(null);
+                    searchEntity.setProgramId(null);
+                    searchEntity.setRoomNumber(null);
+                    searchEntity.setVideoUserId(null);
+                    HttpData.getInstance().HttpDataGetVideos(new Observer<HttpResult3<VideoListEntity, Object>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            //设置页面为加载错误
+                            Log.e(TAG, "onError: " + e.getMessage()
+                                    + "\n" + e.getCause()
+                                    + "\n" + e.getLocalizedMessage()
+                                    + "\n" + e.getStackTrace());
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3<VideoListEntity, Object> videoListEntityObjectHttpResult3) {
+                            if (!videoListEntityObjectHttpResult3.getStatus().equals("success")) {
+                                ToastUtils.show(LiveSearchActivity.this, videoListEntityObjectHttpResult3.getMsg());
+                                return;
+                            }
+                            mQuickAdapter2.setNewData(videoListEntityObjectHttpResult3.getData());
+                            mQuickAdapter2.setOnRecyclerViewItemClickListener((view, position) -> {
+                                Intent i = new Intent(LiveSearchActivity.this, VideoDetailActivity.class);
+                                i.putExtra("videoId", videoListEntityObjectHttpResult3.getData().get(position).getVideoId());
+                                startActivity(i);
+                            });
+                        }
+                    }, searchEntity);
+                }
+
                 break;
         }
     }
 
     private void initTagsView() {
-//        searchEt.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                searchType = LiveSearchActivity.KEYWORD;
-//                searchKey = charSequence.toString();
-//                initSearchView(searchType, searchKey);
-//
-//                if (charSequence.length() == 0) {
-//                    tagsSwipeRefreshLyt.setVisibility(View.VISIBLE);
-//                } else {
-//                    tagsSwipeRefreshLyt.setVisibility(View.GONE);
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//
-//            }
-//        });
-
         tagsSwipeRefreshLyt.setColorSchemeResources(R.color.colorAccent);
-        tagsSwipeRefreshLyt.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                tagsSwipeRefreshLyt.setRefreshing(false);
-                testSingleTagsAdapter();
-            }
+        tagsSwipeRefreshLyt.setOnRefreshListener(() -> {
+            tagsSwipeRefreshLyt.setRefreshing(false);
+            testSingleTagsAdapter();
         });
 
         testSingleTagsAdapter();
@@ -340,105 +388,50 @@ public class LiveSearchActivity extends AppCompatActivity implements SpringView.
                 Log.e(TAG, "onNext");
             }
         });
-        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                TagDto tagDto = (TagDto) adapter.getItem(position);
-                switch (view.getId()) {
-                    case R.id.name:
-//                        if (!tags_confirm.contains(tagDto)) {
-//                            tags_confirm.add(tagDto);
-//                            view.setBackgroundResource(R.drawable.textview_all_blue);
-//                        } else {
-//                            tags_confirm.remove(tagDto);
-//                            view.setBackgroundResource(R.drawable.textview_radius_grey);
-//                        }
+        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener((adapter, view, position) -> {
+            TagDto tagDto = (TagDto) adapter.getItem(position);
+            switch (view.getId()) {
+                case R.id.name:
+                    searchEt.setHint("");
+                    searchEt.setEnabled(false);
+                    searchTagLlyt.setVisibility(View.VISIBLE);
+                    searchTagTv.setText(tagDto.getLabelName());
+                    searchTagIv.setOnClickListener(view1 -> {
+                        searchTagLlyt.setVisibility(View.GONE);
+                        tagsSwipeRefreshLyt.setVisibility(View.VISIBLE);
+                        searchEt.setHint("请输入主播名或选择某一直播分类");
+                        searchEt.setEnabled(true);
+                    });
+                    tagsSwipeRefreshLyt.setVisibility(View.GONE);
 
-                        searchEt.setHint("");
-                        searchEt.setEnabled(false);
-                        searchTagLlyt.setVisibility(View.VISIBLE);
-                        searchTagTv.setText(tagDto.getLabelName());
-                        searchTagIv.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                searchTagLlyt.setVisibility(View.GONE);
-                                tagsSwipeRefreshLyt.setVisibility(View.VISIBLE);
-                                searchEt.setHint("请输入主播名或选择某一直播分类");
-                                searchEt.setEnabled(true);
-                            }
-                        });
-                        tagsSwipeRefreshLyt.setVisibility(View.GONE);
+                    liveSearchDto.setKeyword("");
+                    liveSearchDto.setRoomNumber("");
+                    labelIds.clear();
+                    labelIds.add(tagDto.getId());
+                    liveSearchDto.setLabelIds(labelIds);
+                    present.LoadData(false, liveSearchDto);
 
-                        liveSearchDto.setKeyword("");
-                        liveSearchDto.setRoomNumber("");
-                        labelIds.clear();
-                        labelIds.add(tagDto.getId());
-                        liveSearchDto.setLabelIds(labelIds);
-                        present.LoadData(false, liveSearchDto);
-                        break;
-                }
+                    labelVideo = tagDto.getId();
+                    break;
             }
         });
-//        final SLSingleAdapter<ClassifyTag.ListBean> adapter = new SLSingleAdapter<ClassifyTag.ListBean>(LiveSearchActivity.this, R.layout.item_live_classify_tag) {
-//            @Override
-//            protected void bindData(SLViewHolder holder, final ClassifyTag.ListBean item) {
-//                final TextView tagNameTv = holder.getView(R.id.tag_name);
-//                tagNameTv.setText(item.getLabelName());
-//                tagNameTv.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        searchKey = Integer.toString(item.getId());
-//
-//                        searchEt.setHint("");
-//                        searchEt.setEnabled(false);
-//
-//                        searchTagLlyt.setVisibility(View.VISIBLE);
-//                        searchTagTv.setText(item.getLabelName());
-//                        searchTagIv.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                searchTagLlyt.setVisibility(View.GONE);
-//                                tagsSwipeRefreshLyt.setVisibility(View.VISIBLE);
-//                                searchEt.setHint("请输入主播名或选择某一直播分类");
-//                                searchEt.setEnabled(true);
-//                            }
-//                        });
-//
-//                        tagsSwipeRefreshLyt.setVisibility(View.GONE);
-//
-//                        searchType = LiveSearchActivity.LABELID;
-//                        initSearchView(searchType, searchKey);
-//                    }
-//                });
-//            }
-//        };
-//        tagsRecyclerView.setAdapter(adapter);
-//
-//        Subscriber subscriber = new Subscriber() {
-//            @Override
-//            public void onCompleted() {
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//                ToastUtils.show(LiveSearchActivity.this, e.getMessage());
-//                Log.e(TAG, e.getMessage());
-//            }
-//
-//            @Override
-//            public void onNext(Object o) {
-//                if (o instanceof ClassifyTag) {
-//                    tags = ((ClassifyTag) o).getList();
-//                    adapter.setData(tags);
-//                }
-//            }
-//        };
-//
-//        HttpManager.generate(LiveService.class, LiveSearchActivity.this)
-//                .getTagList()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(subscriber);
+    }
+
+    private void initVideoView() {
+        mRecyclerView2 = (RecyclerView) findViewById(R.id.rv_list2);
+        //设置RecyclerView的显示模式  当前List模式
+        mRecyclerView2.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        //如果Item高度固定  增加该属性能够提高效率
+        mRecyclerView2.setHasFixedSize(true);
+        //设置页面为加载中..
+//        progress.showLoading();
+        //设置适配器
+        mQuickAdapter2 = new VideoAdapter(R.layout.item_live, null);
+        //设置加载动画
+        mQuickAdapter2.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        //设置是否自动加载以及加载个数
+//        mQuickAdapter.openLoadMore(6, true);
+        //将适配器添加到RecyclerView
+        mRecyclerView2.setAdapter(mQuickAdapter2);
     }
 }
