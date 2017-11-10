@@ -359,6 +359,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         }
 
         detailPlayer.getTitleTextView().setVisibility(View.VISIBLE);
+        detailPlayer.getTitleTextView().setText("           ");
         detailPlayer.getBackButton().setVisibility(View.VISIBLE);
         detailPlayer.getBackButton().setOnClickListener(view -> finish());
         detailPlayer.getShareButton().setOnClickListener(new View.OnClickListener() {

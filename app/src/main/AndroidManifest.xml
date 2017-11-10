@@ -288,6 +288,12 @@
         <activity android:name=".UI.MineView.MyVideoActivity" />
         <activity android:name=".UI.VideoView.VideoUpdateActivity" />
         <activity android:name=".UI.VideoView.VideoInTagActivity" />
+        <activity android:name=".UI.LiveView.LiveTicketActivity2" />
+
+        <activity
+            android:name=".UI.WalletView.WalletWebActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

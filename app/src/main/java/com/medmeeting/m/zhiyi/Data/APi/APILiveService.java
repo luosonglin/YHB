@@ -12,6 +12,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveExtract;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
@@ -143,9 +144,6 @@ public interface APILiveService {
     @GET("/v1/anchor/livePay/{programId}/list")
     Observable<HttpResult3<Object, LiveTicketDto>> getPayList(@Path("programId") Integer programId);
 
-    //POST /v1/anchor/livePay/{programId}/extract 新增 节目门票 提现申请
-    @POST("/v1/anchor/livePay/{programId}/extract")
-    Observable<HttpResult3> extract(@Path("programId") Integer programId);
 
     //DELETE /v1/anchor/{roomId}/liveProgram/{programId} 删除直播节目
     @DELETE("/v1/anchor/{roomId}/liveProgram/{programId}")
@@ -216,9 +214,6 @@ public interface APILiveService {
     @POST("/v1/user/wallet/finance")
     Observable<HttpResult3> withdraw(@Body ExtractEntity extractEntity);
 
-    //GET /v1/anchor/livePay/{programId}/settlement 获取直播节目的结算信息
-    @GET("/v1/anchor/livePay/{programId}/settlement")
-    Observable<HttpResult3<Object, LiveSettlementEntity>> getLiveSettlement(@Path("programId") Integer programId);
 
     //POST /v1/anchor/livePay/{programId}/settlement 新增直播节目结算
     @POST("/v1/anchor/livePay/{programId}/settlement")
@@ -298,4 +293,16 @@ public interface APILiveService {
     //POST /v1/liveProgram/user/collect 我的收藏-直播节目
     @POST("/v1/liveProgram/user/collect")
     Observable<HttpResult3<LiveDto, Object>> getLiveCollect(@Body BasePageSearchEntity basePageSearchEntity);
+
+    /**
+     * 直播结算
+     */
+    //GET /v1/anchor/livePay/{programId}/settlement 获取直播节目的结算信息
+    @GET("/v1/anchor/livePay/{programId}/settlement")
+    Observable<HttpResult3<Object, LiveSettlementEntity>> getLiveSettlement(@Path("programId") Integer programId);
+
+
+    //POST /v1/anchor/livePay/{programId}/extract 新增 节目门票 提现申请
+    @POST("/v1/anchor/livePay/{programId}/extract")
+    Observable<HttpResult3<Object, LiveExtract>> extract(@Path("programId") Integer programId);
 }

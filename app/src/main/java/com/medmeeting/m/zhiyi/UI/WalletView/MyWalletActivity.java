@@ -9,12 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletInfoDto;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import java.lang.reflect.Method;
@@ -37,6 +39,9 @@ public class MyWalletActivity extends AppCompatActivity {
     Button tradeDetailBtn;
     @Bind(R.id.agreement)
     Button radioBtn;
+    @Bind(R.id.agreement_llyt)
+    LinearLayout agreementLlyt;
+
     private Handler mHandler2;
     private Runnable mRunnable;
 
@@ -106,7 +111,7 @@ public class MyWalletActivity extends AppCompatActivity {
                 if (walletInfo.getStatus().equals("success")) {
                     mHandler2.removeCallbacks(mRunnable);
                     balanceTv.setText("¥ " + walletInfo.getEntity().getBalance());
-                    balance = walletInfo.getEntity().getBalance()+"";
+                    balance = walletInfo.getEntity().getBalance() + "";
                     password = walletInfo.getEntity().getPassword();
                 } else {
                     ToastUtils.show(MyWalletActivity.this, walletInfo.getMsg() + "");
@@ -122,6 +127,9 @@ public class MyWalletActivity extends AppCompatActivity {
                 radioBtn.setBackground(getResources().getDrawable(R.mipmap.my_wallet_radio_button));
             ToastUtils.show(MyWalletActivity.this, isAgreement + "");
         });
+
+        agreementLlyt.setOnClickListener(view ->
+                BrowserActivity.launch(MyWalletActivity.this, "http://webview.medmeeting.com/#/page/payment-protocol", "《代收付协议》"));
     }
 
     private void toolBar() {
@@ -212,7 +220,11 @@ public class MyWalletActivity extends AppCompatActivity {
                 break;
             case R.id.trade_detail_btn:
 //                BrowserActivity.launch(MyWalletActivity.this, "http://webview.medmeeting.com/#/wallet/record-list", "交易明细");
-                RecordActivity.launch(MyWalletActivity.this, "http://webview.medmeeting.com/#/wallet/record-list", "交易明细");
+//                RecordActivity.launch(MyWalletActivity.this, "http://webview.medmeeting.com/#/wallet/record-list", "交易明细");
+
+                startActivity(new Intent(MyWalletActivity.this, WalletWebActivity.class)
+                        .putExtra("url", "http://webview.medmeeting.com/#/wallet/record-list"));
+
                 break;
         }
     }

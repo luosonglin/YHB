@@ -9,14 +9,14 @@ import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
 import com.qiniu.pili.droid.streaming.StreamingEnv;
-import com.squareup.leakcanary.LeakCanary;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
-//import com.vondear.rxtools.RxUtils;
 import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
 
 import java.util.ArrayList;
 import java.util.List;
+
+//import com.vondear.rxtools.RxUtils;
 
 public class BaseApplication extends MultiDexApplication {//Application {
 
@@ -35,7 +35,7 @@ public class BaseApplication extends MultiDexApplication {//Application {
         instance = this;
 
         //初始化Leak内存泄露检测工具
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
 
         //工具类
 //        RxUtils.init(this);

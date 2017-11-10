@@ -51,6 +51,8 @@ public class WithdrawActivity extends AppCompatActivity {
 
     private ExtractEntity extractEntity = new ExtractEntity();
 
+    private String withdrawType = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,8 +110,14 @@ public class WithdrawActivity extends AppCompatActivity {
                                 ToastUtils.show(WithdrawActivity.this, result.getMsg());
                                 return;
                             }
-                            actualArrival.setText("实际到账：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getAmount() + "</font>" + "元"));
-                            tax.setText("扣税：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getTallages() + "</font>" + "元"));
+                            Log.e("withdrawType", withdrawType+"");
+                            if (withdrawType.equals("public")) {
+                                actualArrival.setText("实际到账：" + amount.getText().toString().trim() + "元");
+                                tax.setText("扣税： 0元");
+                            } else {
+                                actualArrival.setText("实际到账：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getAmount() + "</font>" + "元"));
+                                tax.setText("扣税：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getTallages() + "</font>" + "元"));
+                            }
                         }
                     }, Double.parseDouble(charSequence.toString()));
                 }
@@ -121,6 +129,7 @@ public class WithdrawActivity extends AppCompatActivity {
                 Log.e("输入结束执行该方法", "输入结束");
             }
         });
+
     }
 
     /**
@@ -164,7 +173,7 @@ public class WithdrawActivity extends AppCompatActivity {
                         }
                         ToastUtils.show(WithdrawActivity.this, httpResult3.getMsg());
                         Intent i = new Intent(WithdrawActivity.this, WithdrawStatusActivity.class);
-                        i.putExtra("amount",  amount.getText().toString().trim());
+                        i.putExtra("amount", amount.getText().toString().trim());
                         startActivity(i);
                         finish();
                     }
@@ -182,6 +191,9 @@ public class WithdrawActivity extends AppCompatActivity {
             extractEntity.setExtractType(data.getStringExtra("extractType"));
             extractEntity.setWithdrawType(data.getStringExtra("withdrawType"));
             extractEntity.setWalletId(data.getIntExtra("walletId", 0));
+
+
+            withdrawType = data.getStringExtra("withdrawType");
         }
 
     }

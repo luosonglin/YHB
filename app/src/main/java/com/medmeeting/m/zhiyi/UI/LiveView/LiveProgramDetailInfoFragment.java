@@ -103,7 +103,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
 
     private void initView(LiveProgramDateilsEntity mLiveProgramDateilsEntity) {
         title.setText(mLiveProgramDateilsEntity.getTitle());
-        authorName.setText(mLiveProgramDateilsEntity.getAuthorName() + " | " + mLiveProgramDateilsEntity.getTitle());
+        authorName.setText(mLiveProgramDateilsEntity.getAuthorName() + " | " + mLiveProgramDateilsEntity.getAuthorTitle());
         Glide.with(getActivity())
                 .load(mLiveProgramDateilsEntity.getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

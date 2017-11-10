@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailOtherFragment;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -349,6 +350,7 @@ public class LiveDetailActivity extends AppCompatActivity {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(LiveDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
         mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播");
+        mIndexChildAdapter.addFragment(VideoDetailOtherFragment.newInstance(roomId), "视频");
 //        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "视频");
         mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "详情");
 

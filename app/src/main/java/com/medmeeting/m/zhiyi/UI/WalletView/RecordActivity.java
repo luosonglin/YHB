@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -18,8 +20,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.Widget.CircleProgressView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,6 +58,7 @@ public class RecordActivity extends AppCompatActivity {
         }
         setupWebView(url);
     }
+
     public void initToolBar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -155,7 +162,39 @@ public class RecordActivity extends AppCompatActivity {
                 return true;
             }
         });
+        mWebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
         mWebView.loadUrl(url);
+    }
+
+    private String info;
+
+    public class JSHook {
+        @JavascriptInterface
+        public void printWebLog(String str) {
+            Log.e(" WebView: ", str);
+        }
+
+
+        public String GET_TOKEN;
+
+        @JavascriptInterface
+        public String getUserIdInWeb(final String string) {
+            Log.e("TAG", " getUserIdInWeb");
+            try {
+                // 解析js传递过来的json串
+                JSONObject mJson = new JSONObject(string);
+                GET_TOKEN = mJson.optString("GET_TOKEN");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e("TAG", " GET_TOKEN:" + GET_TOKEN);
+
+            return Data.getUserToken();
+        }
+
+        public String getInfo() {
+            return "获取手机内的信息！！";
+        }
     }
 
 

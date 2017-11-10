@@ -125,7 +125,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                     mShareAction.open(config);
                     break;
                 case R.id.analyse:
-                    Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity.class);
+                    Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity2.class);
                     intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
                     startActivity(intent);
                     break;

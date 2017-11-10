@@ -19,7 +19,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
-import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
@@ -169,10 +168,10 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
 
     private void getPhoneCode() {
 
-        if (!PhoneUtils.isMobile(mobilePhone.getText().toString().trim())) {
-            ToastUtils.show(AlipayAccountModifyActivity.this, "手机号格式不正确,请重新输入");
-            return;
-        }
+//        if (!PhoneUtils.isMobile(mobilePhone.getText().toString().trim())) {
+//            ToastUtils.show(AlipayAccountModifyActivity.this, "手机号格式不正确,请重新输入");
+//            return;
+//        }
         timer.start();
         HttpData.getInstance().HttpDataGetAuthMessage(new Observer<HttpResult3>() {
             @Override
