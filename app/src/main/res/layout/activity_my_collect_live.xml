@@ -4,14 +4,15 @@
     android:id="@+id/activity_detail_player"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:layout_marginTop="24dp">
+    android:layout_marginTop="24dp"
+    android:background="@color/white">
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="2dp"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="2dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -19,15 +20,16 @@
             android:layout_height="50dp"
             android:background="@color/white"
             android:elevation="2dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:text="我的收藏"
                 android:gravity="center"
+                android:text="直播收藏"
                 android:textColor="@color/black"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
@@ -37,6 +39,7 @@
         android:layout_height="1dp"
         android:layout_below="@+id/appbar"
         android:background="@color/grey1" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,12 +49,6 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_list2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white" />

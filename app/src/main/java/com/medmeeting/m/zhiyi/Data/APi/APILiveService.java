@@ -294,4 +294,8 @@ public interface APILiveService {
     //POST /v1/open/video/editPlayCount/{videoId} 更新视频播放次数+1
     @POST("/v1/open/video/editPlayCount/{videoId}")
     Observable<HttpResult3> editPlayCount(@Path("videoId") Integer videoId);
+
+    //POST /v1/liveProgram/user/collect 我的收藏-直播节目
+    @POST("/v1/liveProgram/user/collect")
+    Observable<HttpResult3<LiveDto, Object>> getLiveCollect(@Body BasePageSearchEntity basePageSearchEntity);
 }

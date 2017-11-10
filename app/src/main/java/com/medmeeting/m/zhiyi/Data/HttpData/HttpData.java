@@ -506,6 +506,10 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getCollect(basePageSearchEntity);
         setSubscribe(observable, observer);
     }
+    public void HttpDataGetLiveCollect(Observer<HttpResult3<LiveDto, Object>> observer, BasePageSearchEntity basePageSearchEntity) {
+        Observable observable = service_live.getLiveCollect(basePageSearchEntity);
+        setSubscribe(observable, observer);
+    }
 
     public void HttpDataGetUserRedRoom(Observer<HttpResult3<Object, UserRedEntity>> observer, Integer userId) {
         Observable observable = service_live.getUserRedRoom(userId);

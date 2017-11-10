@@ -283,6 +283,8 @@
 
         <activity android:name=".UI.VideoView.MyCollectActivity" />
         <activity android:name=".UI.MineView.MyOrderActivity" />
+        <activity android:name=".UI.MineView.MyCollectLiveActivity" />
+        <activity android:name=".UI.MineView.MyCollectVideoActivity" />
         <activity android:name=".UI.VideoView.LiveAndVideoRoomActivity" />
         <activity android:name=".UI.MineView.MyOrderLiveActivity" />
         <activity android:name=".UI.MineView.MyOrderVideoActivity" />
