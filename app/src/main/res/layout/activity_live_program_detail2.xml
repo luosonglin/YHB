@@ -16,9 +16,40 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <View
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="230dp" />
+                android:layout_height="230dp">
+
+                <ImageView
+                    android:id="@+id/cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:src="@mipmap/alipay_icon" />
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@mipmap/back_grey"/>
+
+                <TextView
+                    android:id="@+id/buy"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/textview_side_white"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:shadowColor="#ff000000"
+                    android:shadowDx="5"
+                    android:shadowDy="5"
+                    android:shadowRadius="10"
+                    android:text=" "
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
 
             <!--显示头部滑块-->
             <RelativeLayout
@@ -39,15 +70,16 @@
                     app:tabSelectedTextColor="@color/lightskyblue"
                     app:tabTextColor="@color/black" />
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/grey1"/>
+                android:background="@color/grey1" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -55,6 +87,43 @@
         android:id="@+id/detail_player"
         android:layout_width="match_parent"
         android:layout_height="230dp"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:visibility="gone" />
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="230dp">-->
+    <!--<TextView-->
+    <!--android:id="@+id/buy"-->
+    <!--android:layout_width="100dp"-->
+    <!--android:layout_height="30dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:background="@drawable/textview_side_white"-->
+    <!--android:gravity="center"-->
+    <!--android:lines="1"-->
+    <!--android:text=" "-->
+    <!--android:shadowColor="#ff000000"-->
+    <!--android:shadowDx="5"-->
+    <!--android:shadowDy="5"-->
+    <!--android:shadowRadius="10"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="12sp" />-->
+
+    <!--</RelativeLayout>-->
+
+    <!--<android.support.design.widget.AppBarLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:elevation="0dp"-->
+    <!--android:layout_marginTop="24dp"-->
+    <!--android:theme="@style/AppTheme.NoActionBar.AppBarOverlay">-->
+    <!--<android.support.v7.widget.Toolbar-->
+    <!--android:id="@+id/toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="?attr/actionBarSize"-->
+    <!--android:background="@color/white"-->
+    <!--app:popupTheme="@style/OverflowMenuStyle"/>-->
+    <!--</android.support.design.widget.AppBarLayout>-->
+
 
 </RelativeLayout>

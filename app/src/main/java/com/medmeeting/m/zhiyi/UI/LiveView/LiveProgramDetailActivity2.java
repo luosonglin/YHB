@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -23,6 +24,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -30,6 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
@@ -106,6 +110,11 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     private String audienceUserName;
     private String audienceUserNickName;
 
+    private ImageView cover;
+    private TextView buyBtn;
+    private ImageView back;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +123,11 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
         detailPlayer = (LandLayoutLivePlayer) findViewById(R.id.detail_player);
         activityDetailPlayer = (RelativeLayout) findViewById(R.id.activity_detail_player);
+
+        cover = (ImageView) findViewById(R.id.cover);
+        buyBtn = (TextView) findViewById(R.id.buy);
+        back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(view -> finish());
 
         programId = getIntent().getIntExtra("programId", 0);
         initView(programId);
@@ -136,7 +150,11 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     ToastUtils.show(LiveProgramDetailActivity2.this, data.getMsg());
                     return;
                 }
-                url = data.getEntity().getRtmpPlayUrl();
+                url = data.getEntity().getRtmpPlayUrl() + "";
+
+                initFakerPlayer(url, data.getEntity().getCoverPhoto(), data.getEntity().getTitle(),
+                        data.getEntity().getChargeType(), data.getEntity().getPrice(),
+                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
 
                 try {
                     audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
@@ -152,20 +170,52 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     e.printStackTrace();
                 }
 
-                initPlayer(data.getEntity().getRtmpPlayUrl(), data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
-                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
+//                initPlayer(data.getEntity().getRtmpPlayUrl()+" made", data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
+//                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
 
                 initTagsView(data.getEntity());
-
-//                if (detailPlayer.isIfCurrentIsFullscreen())
-//                    initChat(data.getEntity().getRtmpPlayUrl());
-
             }
         }, programId);
     }
 
+    private void initFakerPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId) {
+        Glide.with(LiveProgramDetailActivity2.this)
+                .load(photo)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade()
+                .into(cover);
+
+        Log.e("initPlayer(1", url);
+        if (url == null) {
+            Log.e("initPlayer(1", "fuck");
+        }
+
+        if (chargeType.equals("yes") && payFlag == 0) {
+            buyBtn.setVisibility(View.VISIBLE);
+            buyBtn.setText("购买 " + price + " 元");
+            buyBtn.setTextSize(12);
+            buyBtn.setTextColor(Color.WHITE);
+            buyBtn.setOnClickListener(view -> initPopupwindow(programId));
+            Log.e("eeee", chargeType + " " + payFlag + " " + detailPlayer.getBuyButton().getText().toString());
+        } else {
+            buyBtn.setVisibility(View.VISIBLE);
+            buyBtn.setText("点击开始");
+            buyBtn.setTextSize(12);
+            buyBtn.setTextColor(Color.WHITE);
+            buyBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
+                            .putExtra("programId", programId)
+                            .putExtra("url", url));
+                }
+            });
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void initPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId) {
+        Log.e("initPlayer() ", url);
         //外部辅助的旋转，帮助全屏
         orientationUtils = new OrientationUtils(this, detailPlayer);
         //初始化不打开外部的旋转
@@ -252,9 +302,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
         if (detailPlayer.getFullscreenButton() != null) {
             detailPlayer.getFullscreenButton().setOnClickListener(v -> {
-
-//                initChat(url);
-
 //                //直接横屏
 //                orientationUtils.resolveByClick();
 //
@@ -264,51 +311,9 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
                         .putExtra("programId", programId)
                         .putExtra("url", url));
-
-//                //init 互动view
-//                LiveKit.addEventHandler(handler);
-//                chatListAdapter = new ChatListAdapter();
-//                detailPlayer.getChatListView().setAdapter(chatListAdapter);
-//
-//                detailPlayer.getBtnDan().setOnClickListener(view -> {
-//                    if (detailPlayer.getChatListView().getVisibility() == View.VISIBLE) {
-//                        detailPlayer.getChatListView().setVisibility(View.GONE);
-//                        detailPlayer.getBtnDan().setImageResource(R.mipmap.icon_dan_close);
-//                    } else if (detailPlayer.getChatListView().getVisibility() == View.GONE) {
-//                        detailPlayer.getChatListView().setVisibility(View.VISIBLE);
-//                        detailPlayer.getBtnDan().setImageResource(R.mipmap.icon_dan);
-//                    }
-//                });
-//                detailPlayer.getBtnGift().setOnClickListener(view -> {
-//                    GiftMessage msg = new GiftMessage("2", "送您一个礼物");
-//                    LiveKit.sendMessage(msg);
-//                });
-//                detailPlayer.getHeartLayout().setOnClickListener(view -> {
-//                    detailPlayer.getHeartLayout().post(() -> {
-//                        int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-//                        detailPlayer.getHeartLayout().addHeart(rgb);
-//                    });
-//                    GiftMessage msg = new GiftMessage("1", "点赞了");
-//                    LiveKit.sendMessage(msg);
-//                });
-//
-//                detailPlayer.setInputPanelListener(new InputPanel.InputPanelListener() {
-//                    @Override
-//                    public void onSendClick(String text) {
-//                        final TextMessage content = TextMessage.obtain(text);
-//                        LiveKit.sendMessage(content);
-//                    }
-//                });
-////            bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
-////                @Override
-////                public void onSendClick(String text) {
-////                    final TextMessage content = TextMessage.obtain(text);
-////                    LiveKit.sendMessage(content);
-////                }
-////            });
             });
         }
-
+        Log.e("initPlayer(2", url);
         /**
          * 对比userId chargeType url
          */
@@ -323,6 +328,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 detailPlayer.getBuyButton().setText("购买 " + price + " 元");
                 detailPlayer.getBuyButton().setTextSize(12);
                 detailPlayer.getBuyButton().setOnClickListener(view -> initPopupwindow(programId));
+                Log.e("eeee", chargeType + " " + payFlag + " " + detailPlayer.getBuyButton().getText().toString());
             } else {
                 detailPlayer.getStartButton().setVisibility(View.VISIBLE);
                 detailPlayer.getBuyButton().setVisibility(View.GONE);
@@ -460,7 +466,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     private void setUpViewPager(ViewPager viewPager, LiveProgramDateilsEntity liveProgramDateilsEntity) {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(LiveProgramDetailActivity2.this.getSupportFragmentManager());//.getChildFragmentManager()
 
-        mIndexChildAdapter.addFragment(VideoDetailCommandFragment.newInstance(liveProgramDateilsEntity.getRoomId()), "评论");
+//        mIndexChildAdapter.addFragment(VideoDetailCommandFragment.newInstance(liveProgramDateilsEntity.getRoomId()), "评论");
         mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(liveProgramDateilsEntity, liveProgramDateilsEntity.getId()), "详情");
         mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(liveProgramDateilsEntity.getRoomId()), "相关视频");
 

@@ -62,19 +62,27 @@ public class RecordActivity extends AppCompatActivity {
         mToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_record_all:
-                    url = "http://webview.medmeeting.com/#/wallet/record-list";
+//                    url = "http://webview.medmeeting.com/#/wallet/record-list";
+                    RecordActivity.launch(RecordActivity.this, "http://webview.medmeeting.com/#/wallet/record-list", "交易明细");
+                    finish();
                     break;
                 case R.id.action_record_withdraw:
-                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=EXTRACT";
+//                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=EXTRACT";
+                    RecordActivity.launch(RecordActivity.this, "http://webview.medmeeting.com/#/wallet/record-list?serviceType=EXTRACT", "交易明细");
+                    finish();
                     break;
                 case R.id.action_record_income:
-                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=SETTLE";
+//                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=SETTLE";
+                    RecordActivity.launch(RecordActivity.this, "http://webview.medmeeting.com/#/wallet/record-list?serviceType=SETTLE", "交易明细");
+                    finish();
                     break;
                 case R.id.action_record_refund:
-                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=REFOUND";
+//                    url = "http://webview.medmeeting.com/#/wallet/record-list?serviceType=REFOUND";
+                    RecordActivity.launch(RecordActivity.this, "http://webview.medmeeting.com/#/wallet/record-list?serviceType=REFOUND", "交易明细");
+                    finish();
                     break;
             }
-            setupWebView(url);
+//            setupWebView(url);
             return true;
         });
     }

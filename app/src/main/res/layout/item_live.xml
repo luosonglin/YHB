@@ -170,7 +170,7 @@
                     android:ellipsize="marquee"
                     android:lines="1"
                     android:paddingLeft="2dp"
-                    android:text="ha"
+                    android:text=""
                     android:textSize="12sp" />
 
                 <TextView

@@ -298,10 +298,13 @@ public class LiveProgramDetailActivity extends AppCompatActivity {
                                     } catch (SnappydbException e) {
                                         e.printStackTrace();
                                     } finally {
-                                        Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
-                                        intent.putExtra("rtmpPlayUrl", data.getEntity().getRtmpPlayUrl());
-                                        intent.putExtra("programId", programId);
-                                        startActivity(intent);
+//                                        Intent intent = new Intent(LiveProgramDetailActivity.this, LivePlayerActivity.class);
+//                                        intent.putExtra("rtmpPlayUrl", data.getEntity().getRtmpPlayUrl());
+//                                        intent.putExtra("programId", programId);
+//                                        startActivity(intent);
+                                        startActivity(new Intent(LiveProgramDetailActivity.this, LivePlayerActivity2.class)
+                                                .putExtra("programId", programId)
+                                                .putExtra("url", data.getEntity().getRtmpPlayUrl()));
                                     }
                                 });
                                 break;
