@@ -41,7 +41,7 @@
                 segmentedgroup:sc_checked_text_color="@color/white"
                 segmentedgroup:sc_corner_radius="100dp"
                 segmentedgroup:sc_tint_color="@color/white"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RadioButton
                     android:id="@+id/button21"

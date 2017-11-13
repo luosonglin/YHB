@@ -24,9 +24,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.fragment.BottomPanelFragment2;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.gles.FBO;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
@@ -71,7 +69,6 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.ChatRoomInfo;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
-import rx.Observer;
 
 public class StreamingBaseActivity extends Activity implements
         View.OnLayoutChangeListener,
@@ -715,38 +712,39 @@ public class StreamingBaseActivity extends Activity implements
                         .setIcon(R.mipmap.logo)
                         .setTitle("")
                         .setMessage("您确定要退出直播吗？")
-                        .setNegativeButton("暂时退出", new DialogInterface.OnClickListener() {
+                        .setNegativeButton("退出", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 finish();
                             }
                         })
-                        .setPositiveButton("彻底关闭", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                HttpData.getInstance().HttpDataCloseProgram(new Observer<HttpResult3>() {
-                                    @Override
-                                    public void onCompleted() {
-                                        Log.e(TAG, "onCompleted");
-                                    }
+//                        .setPositiveButton("彻底关闭", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                HttpData.getInstance().HttpDataCloseProgram(new Observer<HttpResult3>() {
+//                                    @Override
+//                                    public void onCompleted() {
+//                                        Log.e(TAG, "onCompleted");
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Throwable e) {
+//                                        Log.e(TAG, "onError: " + e.getMessage()
+//                                                + "\n" + e.getCause()
+//                                                + "\n" + e.getLocalizedMessage()
+//                                                + "\n" + e.getStackTrace());
+//                                    }
+//
+//                                    @Override
+//                                    public void onNext(HttpResult3 httpResult3) {
+//                                        Log.e(TAG, "onNext");
+//                                        if (httpResult3.getStatus().equals("success"))
+//                                            finish();
+//                                    }
+//                                }, programId);
+//                            }
+//                        })
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Log.e(TAG, "onError: " + e.getMessage()
-                                                + "\n" + e.getCause()
-                                                + "\n" + e.getLocalizedMessage()
-                                                + "\n" + e.getStackTrace());
-                                    }
-
-                                    @Override
-                                    public void onNext(HttpResult3 httpResult3) {
-                                        Log.e(TAG, "onNext");
-                                        if (httpResult3.getStatus().equals("success"))
-                                            finish();
-                                    }
-                                }, programId);
-                            }
-                        })
 //                        .setNeutralButton("", new DialogInterface.OnClickListener() {
 //                            @Override
 //                            public void onClick(DialogInterface dialogInterface, int i) {

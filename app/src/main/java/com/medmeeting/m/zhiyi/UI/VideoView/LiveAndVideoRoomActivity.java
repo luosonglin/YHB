@@ -109,27 +109,10 @@ public class LiveAndVideoRoomActivity extends AppCompatActivity {
     }
 
     private void toolBar() {
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setTitle("");
-//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
-//        toolbar.setNavigationOnClickListener(v -> finish());
-//        toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.tab_icon_share_nor));
-//        toolbar.setOnMenuItemClickListener(item -> {
-//            switch (item.getItemId()) {
-//                case R.id.share:
-//                    ShareBoardConfig config = new ShareBoardConfig();
-//                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-//                    mShareAction.open(config);
-//                    break;
-//            }
-//            return false;
-//        });
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey2));
         toolbar.setNavigationOnClickListener(v -> finish());
 
         toolbar.setOnMenuItemClickListener(item -> {

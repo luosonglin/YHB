@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.FinishedEventListPresent;
@@ -103,7 +102,7 @@ public class MyMeetingActivity extends AppCompatActivity
         //请求网络数据
         options.put("userId", userId);
         options.put("pageNum", PageIndex);
-        options.put("pageSize", "10");
+        options.put("pageSize", "100");
         present.LoadData(false, options);
 
         mRecyclerView2 = (RecyclerView) findViewById(R.id.rv_list2);
@@ -123,46 +122,9 @@ public class MyMeetingActivity extends AppCompatActivity
         //请求网络数据
         options2.put("userId", userId);
         options2.put("pageNum", PageIndex);
-        options2.put("pageSize", "10");
+        options2.put("pageSize", "100");
         present2.LoadData(false, options2);
 
-//        mRecyclerView.setVisibility(View.VISIBLE);
-//        mRecyclerView2.setVisibility(View.INVISIBLE);
-    }
-
-    private void initListener() {
-        //设置自动加载监听
-        mQuickAdapter.setOnLoadMoreListener(this);
-
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(MyMeetingActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(MyMeetingActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-        mQuickAdapter2.setOnLoadMoreListener(this);
-
-        mQuickAdapter2.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(MyMeetingActivity.this, "点击了" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQuickAdapter2.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(MyMeetingActivity.this, "长按了" + position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
     }
 
     @Override
