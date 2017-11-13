@@ -455,24 +455,21 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
         });
 
         TextView confirmTv = (TextView) popupView.findViewById(R.id.confirm_tag);
-        confirmTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tags_confirm.size() <= 3) {
-                    String classify = "";
-                    for (TagDto i : tags_confirm) {
-                        videoLabelIds += i.getId() + ",";
-                        classify += " " + i.getLabelName();
-                        Log.e(TAG, i.getLabelName());
-                    }
-                    classifyTv.setText(classify);
-                    videoLabelIds = videoLabelIds.substring(0, videoLabelIds.length() - 1);
-                    window.dismiss();
-                } else if (tags_confirm.size() == 0) {
-                    ToastUtils.show(LiveUpdateRoomActivity.this, "请选择直播分类标签");
-                } else {
-                    ToastUtils.show(LiveUpdateRoomActivity.this, "只能选3个标签，请重新筛选");
+        confirmTv.setOnClickListener(view -> {
+            if (tags_confirm.size() <= 3) {
+                String classify1 = "";
+                for (TagDto i : tags_confirm) {
+                    videoLabelIds += i.getId() + ",";
+                    classify1 += " " + i.getLabelName();
+                    Log.e(TAG, i.getLabelName());
                 }
+                classifyTv.setText(classify1);
+                videoLabelIds = videoLabelIds.substring(0, videoLabelIds.length() - 1);
+                window.dismiss();
+            } else if (tags_confirm.size() == 0) {
+                ToastUtils.show(LiveUpdateRoomActivity.this, "请选择直播分类标签");
+            } else {
+                ToastUtils.show(LiveUpdateRoomActivity.this, "只能选3个标签，请重新筛选");
             }
         });
     }

@@ -3,7 +3,6 @@ package com.medmeeting.m.zhiyi.UI.LiveView.live;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
@@ -711,13 +710,8 @@ public class StreamingBaseActivity extends Activity implements
                 new AlertDialog.Builder(StreamingBaseActivity.this)
                         .setIcon(R.mipmap.logo)
                         .setTitle("")
-                        .setMessage("您确定要退出直播吗？")
-                        .setNegativeButton("退出", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        })
+                        .setMessage("确定退出直播？")
+                        .setNegativeButton("确定", (dialogInterface, i) -> finish())
 //                        .setPositiveButton("彻底关闭", new DialogInterface.OnClickListener() {
 //                            @Override
 //                            public void onClick(DialogInterface dialogInterface, int i) {
@@ -744,13 +738,7 @@ public class StreamingBaseActivity extends Activity implements
 //                                }, programId);
 //                            }
 //                        })
-
-//                        .setNeutralButton("", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                ToastUtils.show(StreamingBaseActivity.this, "3");
-//                            }
-//                        })
+                        .setNeutralButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())
                         .show();
             }
         });
