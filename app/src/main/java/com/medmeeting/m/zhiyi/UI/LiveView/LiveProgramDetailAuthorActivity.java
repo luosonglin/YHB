@@ -65,7 +65,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     private TextView titleTv, name, title, programIdTv;
     private ImageView backgroundIv, userPic;
     private Integer roomId = 0;
-    private Integer programId = 0;
+    private Integer programId;
     private TextView detailTv;
 
     @Override
@@ -83,7 +83,9 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         detailTv = (TextView) findViewById(R.id.detail);
 
         toolBar();
-        initView(getIntent().getExtras().getInt("programId"));
+
+        programId = getIntent().getExtras().getInt("programId");
+        initView(programId);
 
         //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
         UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
@@ -264,7 +266,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             String result = data.getStringExtra(CaptureActivity.SCAN_QRCODE_RESULT);
             Bitmap bitmap = data.getParcelableExtra(CaptureActivity.SCAN_QRCODE_BITMAP);
 
-            Log.e(TAG, "扫码结果：" + result + " " + bitmap);
+            Log.e(TAG, "扫码结果：" + result + " " + bitmap+" "+ programId);
 
             if (result != null) {
                 Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveLoginWebActivity.class);
