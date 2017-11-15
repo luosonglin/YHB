@@ -33,12 +33,14 @@ public class VideoCommandAdapter extends BaseQuickAdapter<VideoCommentUserEntity
                 .transform(new GlideCircleTransform(mContext))
                 .into((ImageView) helper.getView(R.id.avatar));
 
-        if (!item.getName().equals("")) {
-            helper.setText(R.id.name, item.getName());
+        if (item.getName() != null) {
+            if (!item.getName().equals("")) {
+                helper.setText(R.id.name, item.getName());
+            }
         } else {
             helper.setText(R.id.name, item.getNickName());
         }
         helper.setText(R.id.time, DateUtil.formatDate(item.getCreateTime(), DateUtil.TYPE_06));
-        helper.setText(R.id.content,item.getContent());
+        helper.setText(R.id.content, item.getContent());
     }
 }

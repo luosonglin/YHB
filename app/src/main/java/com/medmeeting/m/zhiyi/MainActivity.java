@@ -27,6 +27,7 @@ import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
 import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment2;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -48,7 +49,7 @@ import rx.Observer;
 //import com.vondear.rxtools.RxDeviceUtils;
 
 public class MainActivity extends AppCompatActivity
-        implements IndexFragment.OnFragmentInteractionListener,
+        implements IndexFragment.OnFragmentInteractionListener,IndexFragment2.OnFragmentInteractionListener,
         MeetingFragment.OnFragmentInteractionListener,
         LiveIndexFragment.OnFragmentInteractionListener,
         MineFragment.OnFragmentInteractionListener {
