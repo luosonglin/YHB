@@ -141,7 +141,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(view -> finish());
         share = (ImageView) findViewById(R.id.share);
-        share.setOnClickListener(view ->{
+        share.setOnClickListener(view -> {
             ShareBoardConfig config = new ShareBoardConfig();
             config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
             mShareAction.open(config);
@@ -252,7 +252,8 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
                 initFakerPlayer(url, data.getEntity().getCoverPhoto(), data.getEntity().getTitle(),
                         data.getEntity().getChargeType(), data.getEntity().getPrice(),
-                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
+                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId(),
+                        data.getEntity().getLiveStatus());
 
                 try {
                     audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
@@ -281,7 +282,8 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         }, programId);
     }
 
-    private void initFakerPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId) {
+    //liveStatus (string, optional): 直播状态（ready：准备中，play：直播中，wait：断开中，end：已结束） ,
+    private void initFakerPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId, String liveStatus) {
         Glide.with(LiveProgramDetailActivity2.this)
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -301,18 +303,41 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
             buyBtn.setOnClickListener(view -> initPopupwindow(programId));
             Log.e("eeee", chargeType + " " + payFlag + " " + detailPlayer.getBuyButton().getText().toString());
         } else {
-            buyBtn.setVisibility(View.VISIBLE);
-            buyBtn.setText("点击开始");
-            buyBtn.setTextSize(12);
-            buyBtn.setTextColor(Color.WHITE);
-            buyBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
-                            .putExtra("programId", programId)
-                            .putExtra("url", url));
-                }
-            });
+            switch (liveStatus) {
+                case "ready":
+                    buyBtn.setVisibility(View.VISIBLE);
+                    buyBtn.setText("主播正在准备中");
+                    buyBtn.setTextSize(12);
+                    buyBtn.setTextColor(Color.WHITE);
+                    buyBtn.setClickable(false);
+                    break;
+                case "play":
+                    buyBtn.setVisibility(View.VISIBLE);
+                    buyBtn.setText("点击开始");
+                    buyBtn.setTextSize(12);
+                    buyBtn.setTextColor(Color.WHITE);
+                    buyBtn.setClickable(true);
+                    buyBtn.setOnClickListener(view ->
+                            startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
+                                    .putExtra("programId", programId)
+                                    .putExtra("url", url)));
+                    break;
+                case "wait":
+                    buyBtn.setVisibility(View.VISIBLE);
+                    buyBtn.setText("主播已离开");
+                    buyBtn.setTextSize(12);
+                    buyBtn.setTextColor(Color.WHITE);
+                    buyBtn.setClickable(false);
+                    break;
+                case "end":
+                    buyBtn.setVisibility(View.VISIBLE);
+                    buyBtn.setText("直播已结束");
+                    buyBtn.setTextSize(12);
+                    buyBtn.setTextColor(Color.WHITE);
+                    buyBtn.setClickable(false);
+                    break;
+            }
+
         }
     }
 

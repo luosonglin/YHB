@@ -90,6 +90,8 @@ public class VideoDetailActivity extends AppCompatActivity {
     private static final String TAG = VideoDetailActivity.class.getSimpleName();
     private Integer videoId;
 
+    private TextView start_status;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
