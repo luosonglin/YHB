@@ -98,7 +98,10 @@ public class MyOrderActivity extends AppCompatActivity {
     }
 
     private void getMyPayLiveService() {
-        HttpData.getInstance().HttpDataGetMyPayLives(new Observer<HttpResult3<LiveDto, Object>>() {
+        BasePageSearchEntity searchEntity = new BasePageSearchEntity();
+        searchEntity.setPageNum(1);
+        searchEntity.setPageSize(100);
+        HttpData.getInstance().HttpDataGetMyPayLive(new Observer<HttpResult3<LiveDto, Object>>() {
             @Override
             public void onCompleted() {
 
@@ -134,13 +137,14 @@ public class MyOrderActivity extends AppCompatActivity {
                             .putExtra("programId", data.getData().get(position).getId()));
                 });
             }
-        });
+        }, searchEntity);
+
     }
 
     private void getMyPayVideoService() {
         BasePageSearchEntity searchEntity = new BasePageSearchEntity();
         searchEntity.setPageNum(1);
-        searchEntity.setPageSize(3);
+        searchEntity.setPageSize(100);
         HttpData.getInstance().HttpDataGetMyPayVideo(new Observer<HttpResult3<VideoListEntity, Object>>() {
             @Override
             public void onCompleted() {

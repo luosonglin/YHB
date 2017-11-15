@@ -568,6 +568,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataGetMyPayLive(Observer<HttpResult3<LiveDto, Object>> observer, BasePageSearchEntity basePageSearchEntity) {
+        Observable observable = service_live.getMyPayLive(basePageSearchEntity);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *

@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="12dp"
+            android:text="医会宝"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccbcc" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:visibility="visible">
+        <!--app:ctTabTextColor="@color/ssxinheihui1"-->
+        <!--app:ctTabSelectedTextColor="@color/ssxinhongse1"-->
+        <!--android:background="@color/ssqianhui"-->
+
+        <ImageView
+            android:id="@+id/new_category_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="7.0dip"
+            android:layout_marginTop="6.0dip"
+            android:layout_toLeftOf="@+id/icon_category"
+            android:src="@drawable/ic_new_category_tip_dark"
+            android:visibility="gone" />
+
+
+        <!--<me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabViewIndicator-->
+        <!--android:id="@+id/tab1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="?attr/main_bg"-->
+        <!--app:ctMode="scrollable"-->
+        <!--app:ctTabSelectedTextColor="@color/ssxinhongse1"-->
+        <!--app:ctTabTextColor="?attr/font_color"-->
+        <!--app:ctTabTextSize="16sp"-->
+        <!--app:ctTabWidth="50dp"-->
+        <!--app:isColorUi="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"></me.weyye.todaynews.ui.view.colortrackview.ColorTrackTabViewIndicator>-->
+        <com.medmeeting.m.zhiyi.Widget.colortrackview.ColorTrackTabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:tabIndicatorColor="#fff85959"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="#fff85959"
+            app:tabTextAppearance="@style/TextAppearanceBig"
+            app:tabTextColor="#ff222222" />
+
+        <ImageView
+            android:id="@+id/icon_category"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/shadow_add_titlebar_new"
+            android:paddingLeft="5dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_category_expand" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ffe8e8e8" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

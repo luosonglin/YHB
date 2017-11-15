@@ -120,7 +120,7 @@
                     android:background="@drawable/edittext_delete_line"
                     android:hint="可提现- -元"
                     android:maxLines="1"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:minWidth="120dp"
                     android:textColor="@color/black"
                     android:textSize="24sp" />

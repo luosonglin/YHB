@@ -254,9 +254,6 @@ public interface APILiveService {
     @GET("/v1/open/userRed/details/{userId}")
     Observable<HttpResult3<Object, UserRedEntity>> getUserRedRoom(@Path("userId") Integer userId);
 
-    //POST /v1/video/user/order 我的订单-视频
-    @POST("/v1/video/user/order")
-    Observable<HttpResult3<VideoListEntity, Object>> getMyPayVideo(@Body BasePageSearchEntity basePageSearchEntity);
 
     // /v1/auchor/video/page 获取我的视频一览（分页）
     @POST("/v1/auchor/video/page")
@@ -309,4 +306,12 @@ public interface APILiveService {
     //POST /v1/liveProgram/page 获取直播节目一栏-分页
     @POST("/v1/liveProgram/page")
     Observable<HttpResult3<LiveDto, Object>> getProgramLists(@Body LiveSearchDto basePageSearchEntity);
+
+    //POST /v1/liveProgram/user/order 我的订单-直播节目
+    @POST("/v1/liveProgram/user/order")
+    Observable<HttpResult3<LiveDto, Object>> getMyPayLive(@Body BasePageSearchEntity basePageSearchEntity);
+
+    //POST /v1/video/user/order 我的订单-视频
+    @POST("/v1/video/user/order")
+    Observable<HttpResult3<VideoListEntity, Object>> getMyPayVideo(@Body BasePageSearchEntity basePageSearchEntity);
 }

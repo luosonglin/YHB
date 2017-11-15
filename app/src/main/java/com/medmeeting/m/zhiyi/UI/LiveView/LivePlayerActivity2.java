@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
@@ -31,6 +32,7 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import java.util.Random;
 
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.ChatRoomInfo;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
 
@@ -57,6 +59,7 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
     private ImageView btnHeart;
     private HeartLayout heartLayout;
     private Random random = new Random();
+    private TextView sumTv;
 
     private int programId;
 
@@ -294,13 +297,36 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
 
         detailPlayer.getFullscreenButton().setVisibility(View.GONE);
 
+
 //
 //        //直接横屏
 //        orientationUtils.resolveByClick();
 //
 //        //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
 //        detailPlayer.startWindowFullscreen(LivePlayerActivity2.this, true, true);
+
+        sumTv = (TextView) findViewById(R.id.sum);
+
+        mHandler2 = new Handler();
+        mHandler2.post(new Runnable() {
+            @Override
+            public void run() {
+                LiveKit.getChatRoomSum(programId + "", 500, new RongIMClient.ResultCallback<ChatRoomInfo>() {
+                    @Override
+                    public void onSuccess(ChatRoomInfo chatRoomInfo) {
+                        sumTv.setText("" + chatRoomInfo.getTotalMemberCount());
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                    }
+                });
+                mHandler2.postDelayed(this, 2000);
+            }
+        });
     }
+
+    private Handler mHandler2;
 
     @Override
     public void onBackPressed() {

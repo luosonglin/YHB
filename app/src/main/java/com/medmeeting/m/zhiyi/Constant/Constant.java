@@ -33,4 +33,8 @@ public class Constant {
     public static final String EXTRA_DATA = "extra_data";
     public static final String EXTRA_URL = "url";
     public static final String EXTRA_TITLE = "title";
+
+
+    String TITLE_SELECTED = "explore_title_selected";
+    String TITLE_UNSELECTED = "explore_title_unselected";
 }

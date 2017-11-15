@@ -92,6 +92,26 @@ public class WithdrawActivity extends AppCompatActivity {
                 // 输入的内容变化的监听
                 Log.e("输入过程中执行该方法", "文字变化");
 
+                if (charSequence.toString().contains(".")) {
+                    Log.e("hhh1", charSequence.toString().toString() + " " + charSequence.toString().split("\\.").length + " " + "10".length());
+                    if (charSequence.toString().split("\\.").length == 2) {
+                        if (charSequence.toString().split("\\.")[1].length() > 2) {
+                            Log.e("hhh2", charSequence.toString().toString() + " " + charSequence.toString().split("\\.")[1].length());
+                            ToastUtils.show(WithdrawActivity.this, "只能输入小数点后两位，\n请重新输入");
+//                            amount.setFocusable(false);
+//                            amount.setEnabled(false);
+                            return;
+                        } else if (charSequence.toString().split("\\.")[1].length() == 2) {
+                            Log.e("hhh2", charSequence.toString().toString() + " " + charSequence.toString().split("\\.")[1].length());
+//                            amount.setFocusable(false);
+//                            amount.setEnabled(false);
+                        }
+                        amount.setFocusable(true);
+                    }
+                } else {
+                    amount.setFocusable(true);
+                    amount.setEnabled(true);
+                }
                 if (!charSequence.toString().equals("")) {
                     HttpData.getInstance().HttpDataGetTallage(new Observer<HttpResult3<Object, TallageDto>>() {
                         @Override
@@ -101,7 +121,7 @@ public class WithdrawActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
-
+                            ToastUtils.show(WithdrawActivity.this, e.getMessage());
                         }
 
                         @Override
@@ -110,7 +130,7 @@ public class WithdrawActivity extends AppCompatActivity {
                                 ToastUtils.show(WithdrawActivity.this, result.getMsg());
                                 return;
                             }
-                            Log.e("withdrawType", withdrawType+"");
+                            Log.e("withdrawType", withdrawType + "");
                             if (withdrawType.equals("public")) {
                                 actualArrival.setText("实际到账：" + amount.getText().toString().trim() + "元");
                                 tax.setText("扣税： 0元");
@@ -128,6 +148,10 @@ public class WithdrawActivity extends AppCompatActivity {
                 // 输入后的监听
                 Log.e("输入结束执行该方法", "输入结束");
             }
+        });
+        amount.setOnClickListener(view -> {
+            amount.setFocusable(true);
+            amount.setEnabled(true);
         });
 
     }

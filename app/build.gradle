@@ -185,6 +185,8 @@ dependencies {
     compile 'com.shuyu:GSYVideoPlayer:2.1.0'
 
 
+    //多种Item布局展示
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.8.5'
 }
 //Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 //> com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException:

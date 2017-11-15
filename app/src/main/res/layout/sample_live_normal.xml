@@ -191,6 +191,7 @@
             android:paddingRight="10dp"
             android:scaleType="centerInside"
             android:src="@mipmap/video_share_grey" />
+
     </LinearLayout>
 
     <RelativeLayout
