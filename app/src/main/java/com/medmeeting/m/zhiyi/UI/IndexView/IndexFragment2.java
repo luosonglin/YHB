@@ -105,7 +105,7 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
             }
         });
         //隐藏指示器
-        tab.setSelectedTabIndicatorHeight(0);
+        tab.setSelectedTabIndicatorHeight(6);
     }
 
     /**
