@@ -320,6 +320,7 @@ public interface APILiveService {
      * 新闻
      */
     ///v1/app/Common/A/getLabels 标签模块_获取栏目标签接口
+    @GET("/v1/app/Common/A/getLabels")
     Observable<HttpResult3<LiveLabel, Object>>  getLabels();
 
 }

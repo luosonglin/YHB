@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.medmeeting.m.zhiyi.MVP.Listener.OnChannelDragListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.Channel;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by Administrator on 2017/1/5 0005.
  */
 
-public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
+public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
     private BaseViewHolder mEditViewHolder;
     private boolean mIsEdit;
     private long startTime;
@@ -32,14 +33,14 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
     private static final long SPACE_TIME = 100;
     private RecyclerView mRecyclerView;
 
-    public ChannelAdapter(List<Channel> data) {
+    public ChannelAdapter(List<LiveLabel> data) {
         super(data);
         //默认没有编辑
         mIsEdit = false;
-        addItemType(Channel.TYPE_MY, R.layout.item_channel_title);
-        addItemType(Channel.TYPE_MY_CHANNEL, R.layout.item_channel);
-        addItemType(Channel.TYPE_OTHER, R.layout.item_channel_title);
-        addItemType(Channel.TYPE_OTHER_CHANNEL, R.layout.item_channel);
+        addItemType(LiveLabel.TYPE_MY, R.layout.item_channel_title);
+        addItemType(LiveLabel.TYPE_MY_CHANNEL, R.layout.item_channel);
+        addItemType(LiveLabel.TYPE_OTHER, R.layout.item_channel_title_other);
+        addItemType(LiveLabel.TYPE_OTHER_CHANNEL, R.layout.item_channel_other);
     }
 
     @Override
@@ -55,13 +56,13 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
     }
 
     @Override
-    protected void convert(final BaseViewHolder baseViewHolder, final Channel channel) {
+    protected void convert(final BaseViewHolder baseViewHolder, final LiveLabel channel) {
         switch (baseViewHolder.getItemViewType()) {
-            case Channel.TYPE_MY:
+            case LiveLabel.TYPE_MY:
                 //我的频道
                 //赋值，以便之后修改文字
                 mEditViewHolder = baseViewHolder;
-                baseViewHolder.setText(R.id.tvTitle, channel.Title)
+                baseViewHolder.setText(R.id.tvTitle, channel.getLabelName())
                         .setOnClickListener(R.id.tvEdit, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -75,12 +76,12 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
                             }
                         });
                 break;
-            case Channel.TYPE_OTHER:
+            case LiveLabel.TYPE_OTHER:
                 //频道推荐
-                baseViewHolder.setText(R.id.tvTitle, channel.Title)
+                baseViewHolder.setText(R.id.tvTitle, channel.getLabelName())
                         .setVisible(R.id.tvEdit, false);
                 break;
-            case Channel.TYPE_MY_CHANNEL:
+            case LiveLabel.TYPE_MY_CHANNEL:
                 //我的频道列表
                 baseViewHolder
                         .setVisible(R.id.ivDelete, mIsEdit)//编辑模式就显示删除按钮
@@ -119,7 +120,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
                         return false;
                     }
                 }).getView(R.id.ivDelete).setTag(true);//在我的频道里面设置true标示，之后会根据这个标示来判断编辑模式是否显示
-                baseViewHolder.setText(R.id.tvChannel, channel.Title).setOnClickListener(R.id.ivDelete, new View.OnClickListener() {
+                baseViewHolder.setText(R.id.tvChannel, channel.getLabelName()).setOnClickListener(R.id.ivDelete, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //执行删除，移动到推荐频道列表
@@ -162,9 +163,9 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
 
                 });
                 break;
-            case Channel.TYPE_OTHER_CHANNEL:
+            case LiveLabel.TYPE_OTHER_CHANNEL:
                 //频道推荐列表
-                baseViewHolder.setText(R.id.tvChannel, channel.Title).setVisible(R.id.ivDelete, false)
+                baseViewHolder.setText(R.id.tvChannel, channel.getLabelName()).setVisible(R.id.ivDelete, false)
                         .setOnClickListener(R.id.tvChannel, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -215,7 +216,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
     public int getMyChannelSize() {
         int size = 0;
         for (int i = 0; i < mData.size(); i++) {
-            Channel channel = (Channel) mData.get(i);
+            LiveLabel channel = (LiveLabel) mData.get(i);
             if (channel.getItemType() == Channel.TYPE_MY_CHANNEL) {
                 size++;
             }
@@ -299,8 +300,8 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
         //之前找到了第一个pos直接返回
 //        if (mOtherFirstPosition != 0) return mOtherFirstPosition;
         for (int i = 0; i < mData.size(); i++) {
-            Channel channel = (Channel) mData.get(i);
-            if (Channel.TYPE_OTHER_CHANNEL == channel.getItemType()) {
+            LiveLabel channel = (LiveLabel) mData.get(i);
+                            if (LiveLabel.TYPE_OTHER_CHANNEL == channel.getItemType()) {
                 //找到第一个直接返回
                 return i;
             }
@@ -315,8 +316,8 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<Channel> {
      */
     private int getMyLastPosition() {
         for (int i = mData.size() - 1; i > -1; i--) {
-            Channel channel = (Channel) mData.get(i);
-            if (Channel.TYPE_MY_CHANNEL == channel.getItemType()) {
+            LiveLabel channel = (LiveLabel) mData.get(i);
+            if (LiveLabel.TYPE_MY_CHANNEL == channel.getItemType()) {
                 //找到第一个直接返回
                 return i;
             }

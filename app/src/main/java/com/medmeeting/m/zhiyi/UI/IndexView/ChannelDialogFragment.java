@@ -20,6 +20,7 @@ import com.medmeeting.m.zhiyi.MVP.Listener.OnChannelListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.ChannelAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.Channel;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
 
 import java.io.Serializable;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
 import static com.medmeeting.m.zhiyi.UI.Entity.Channel.TYPE_MY_CHANNEL;
 
 public class ChannelDialogFragment extends DialogFragment implements OnChannelDragListener {
-    private List<Channel> mDatas = new ArrayList<>();
+    private List<LiveLabel> mDatas = new ArrayList<>();
     private ChannelAdapter mAdapter;
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -69,7 +70,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnChannelDr
         processLogic();
     }
 
-    public static ChannelDialogFragment newInstance(List<Channel> selectedDatas, List<Channel> unselectedDatas) {
+    public static ChannelDialogFragment newInstance(List<LiveLabel> selectedDatas, List<LiveLabel> unselectedDatas) {
         ChannelDialogFragment dialogFragment = new ChannelDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstanceValue.DATA_SELECTED, (Serializable) selectedDatas);
@@ -78,7 +79,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnChannelDr
         return dialogFragment;
     }
 
-    private void setDataType(List<Channel> datas, int type) {
+    private void setDataType(List<LiveLabel> datas, int type) {
         for (int i = 0; i < datas.size(); i++) {
             datas.get(i).setItemType(type);
         }
@@ -86,15 +87,15 @@ public class ChannelDialogFragment extends DialogFragment implements OnChannelDr
 
 
     private void processLogic() {
-        mDatas.add(new Channel(Channel.TYPE_MY, "您已订阅的节目", ""));
+        mDatas.add(new LiveLabel(Channel.TYPE_MY, 0, "您已订阅的节目"));
         Bundle bundle = getArguments();
-        List<Channel> selectedDatas = (List<Channel>) bundle.getSerializable(ConstanceValue.DATA_SELECTED);
-        List<Channel> unselectedDatas = (List<Channel>) bundle.getSerializable(ConstanceValue.DATA_UNSELECTED);
+        List<LiveLabel> selectedDatas = (List<LiveLabel>) bundle.getSerializable(ConstanceValue.DATA_SELECTED);
+        List<LiveLabel> unselectedDatas = (List<LiveLabel>) bundle.getSerializable(ConstanceValue.DATA_UNSELECTED);
         setDataType(selectedDatas, TYPE_MY_CHANNEL);
         setDataType(unselectedDatas, Channel.TYPE_OTHER_CHANNEL);
 
         mDatas.addAll(selectedDatas);
-        mDatas.add(new Channel(Channel.TYPE_OTHER, "节目推荐", ""));
+        mDatas.add(new LiveLabel(Channel.TYPE_OTHER, 1, "节目推荐"));
         mDatas.addAll(unselectedDatas);
 
 
@@ -151,7 +152,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnChannelDr
     }
 
     private void onMove(int starPos, int endPos) {
-        Channel startChannel = mDatas.get(starPos);
+        LiveLabel startChannel = mDatas.get(starPos);
         //先删除之前的位置
         mDatas.remove(starPos);
         //添加到现在的位置

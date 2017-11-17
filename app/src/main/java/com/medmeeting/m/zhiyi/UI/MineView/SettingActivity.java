@@ -31,6 +31,7 @@ import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CleanUtils;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.qiniu.android.http.ResponseInfo;
@@ -183,6 +184,7 @@ public class SettingActivity extends AppCompatActivity {
             Data.clearUserToken();
             Data.clearUserId();
             Data.clearPayType();
+            SharedPreferencesMgr.clearAll();
             startActivity(new Intent(SettingActivity.this, LoginActivity.class));
         });
     }

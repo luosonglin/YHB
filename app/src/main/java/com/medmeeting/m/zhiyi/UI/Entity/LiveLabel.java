@@ -1,5 +1,9 @@
 package com.medmeeting.m.zhiyi.UI.Entity;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
+import java.io.Serializable;
+
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 16/11/2017 7:44 PM
@@ -7,7 +11,11 @@ package com.medmeeting.m.zhiyi.UI.Entity;
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class LiveLabel {
+public class LiveLabel extends MultiItemEntity implements Serializable {
+    public static final int TYPE_MY = 1;
+    public static final int TYPE_OTHER = 2;
+    public static final int TYPE_MY_CHANNEL = 3;
+    public static final int TYPE_OTHER_CHANNEL = 4;
 
     /**
      * id : 14
@@ -24,6 +32,16 @@ public class LiveLabel {
     private int searchCount;
     private int sort;
     private String iconUrl;
+
+    public LiveLabel(int id, String labelName) {
+        this(TYPE_MY_CHANNEL, id, labelName);
+    }
+
+    public LiveLabel(int type, int id, String labelName) {
+        this.id = id;
+        this.labelName = labelName;
+        itemType = type;
+    }
 
     public int getId() {
         return id;
