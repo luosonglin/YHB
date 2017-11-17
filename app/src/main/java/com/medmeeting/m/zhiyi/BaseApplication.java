@@ -8,6 +8,7 @@ import android.util.Log;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
+import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
 import com.qiniu.pili.droid.streaming.StreamingEnv;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -39,6 +40,8 @@ public class BaseApplication extends MultiDexApplication {//Application {
 
         //工具类
 //        RxUtils.init(this);
+
+        SharedPreferencesMgr.init(this, "medmeeting");
 
         //初始化异常管理工具
         Recovery.getInstance()

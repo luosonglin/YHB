@@ -1,61 +1,62 @@
-package com.medmeeting.m.zhiyi.UI.OtherVIew;
+package com.medmeeting.m.zhiyi.UI.IndexView;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.medmeeting.m.zhiyi.Base.BaseFragment;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
-import com.medmeeting.m.zhiyi.MVP.Presenter.NewsListPresent;
-import com.medmeeting.m.zhiyi.MVP.View.NewsListView;
+import com.medmeeting.m.zhiyi.MVP.Listener.OnChannelListener;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.NewsAdapter;
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
-import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
-import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
-import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
-import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
-import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerClickListener;
+import com.medmeeting.m.zhiyi.UI.Adapter.ChannelPagerAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.Channel;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
+import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.CommonUtil;
+import com.medmeeting.m.zhiyi.Util.ConstanceValue;
+import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
+import com.medmeeting.m.zhiyi.Widget.colortrackview.ColorTrackTabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 
-public class IndexFragment2 extends Fragment
-        implements BaseQuickAdapter.RequestLoadMoreListener,
-        SpringView.OnFreshListener,
-        NewsListView {
+import static com.medmeeting.m.zhiyi.Util.ConstanceValue.TITLE_SELECTED;
+import static com.medmeeting.m.zhiyi.Util.ConstanceValue.TITLE_UNSELECTED;
+
+public class IndexFragment2 extends Fragment implements OnChannelListener {
 
     private static final String TAG = IndexFragment2.class.getSimpleName();
+    @Bind(R.id.location)
+    TextView location;
+    @Bind(R.id.new_category_tip)
+    ImageView newCategoryTip;
+    @Bind(R.id.tab)
+    ColorTrackTabLayout tab;
+    @Bind(R.id.icon_category)
+    ImageView iconCategory;
+    @Bind(R.id.vp)
+    ViewPager vp;
+    private ChannelPagerAdapter mTitlePagerAdapter;
 
-    private List<String> bannerImages = new ArrayList<>();
-    private List<String> bannerTitles = new ArrayList<>();
-
-    private RecyclerView mRecyclerView;
-    private ProgressActivity progress;
-    private BaseQuickAdapter mQuickAdapter;
-    private int PageIndex = 1;
-    private int PageSize = 10;
-    private SpringView springView;
-    private NewsListPresent present;
-    private View mHeaderView;
-    private Banner mBanner;
-
+    public List<Channel> mSelectedDatas = new ArrayList<>();
+    public List<Channel> mUnSelectedDatas = new ArrayList<>();
+    private List<BaseFragment> mFragments;
+    private Gson mGson = new Gson();
     private OnFragmentInteractionListener mListener;
 
     public IndexFragment2() {
@@ -77,90 +78,83 @@ public class IndexFragment2 extends Fragment
         View view = inflater.inflate(R.layout.fragment_index2, container, false);
         ButterKnife.bind(this, view);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
-        springView = (SpringView) view.findViewById(R.id.springview);
-        //设置下拉刷新监听
-        springView.setListener(this);
-        //设置下拉刷新样式
-        springView.setType(SpringView.Type.OVERLAP);
-
-
-        progress = (ProgressActivity) view.findViewById(R.id.progress);
-        //设置RecyclerView的显示模式  当前List模式
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //如果Item高度固定  增加该属性能够提高效率
-        mRecyclerView.setHasFixedSize(true);
-        //设置页面为加载中..
-        progress.showLoading();
-        //设置适配器
-        mQuickAdapter = new NewsAdapter(R.layout.item_news, null);
-
-        //头view
-        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
-        mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
-        HttpData.getInstance().HttpDataGetBanner(new Observer<BannerDto>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
-            }
-
-            @Override
-            public void onNext(final BannerDto bannerDto) {
-                for (BannerDto.BannersBean i : bannerDto.getBanners()) {
-                    bannerImages.add("http://www.medmeeting.com/upload/banner/" + i.getBanner());
-                    bannerTitles.add(i.getTitle());
-                }
-                mBanner.setImages(bannerImages)
-                        .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
-                        .setBannerTitles(bannerTitles)
-                        .setBannerAnimation(Transformer.BackgroundToForeground)
-                        .setImageLoader(new GlideImageLoader())
-                        .start();
-                mBanner.setOnBannerClickListener(new OnBannerClickListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("eventId", bannerDto.getBanners().get(position - 1).getId() + "");
-                        bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                });
-                mQuickAdapter.addHeaderView(mHeaderView);
-            }
-        });
-
-        //设置加载动画
-        mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        //设置是否自动加载以及加载个数
-        mQuickAdapter.openLoadMore(6, true);
-        //将适配器添加到RecyclerView
-        mRecyclerView.setAdapter(mQuickAdapter);
-//        present = new BookListPresent(this);
-        present = new NewsListPresent(this);
-        //请求网络数据
-        present.LoadData(false, PageIndex, PageSize);
-
-        initListener();
+        initView();
         return view;
     }
 
-    private void initListener() {
+    private void initView() {
+        getTitleData();
+        mFragments = new ArrayList<>();
+        for (int i = 0; i < mSelectedDatas.size(); i++) {
+            NewsFragment fragment = NewsFragment.newInstance(mSelectedDatas.get(i).TitleCode);
+            mFragments.add(fragment);
+        }
+        mTitlePagerAdapter = new ChannelPagerAdapter(getChildFragmentManager(), mFragments, mSelectedDatas);
+        vp.setAdapter(mTitlePagerAdapter);
+        vp.setOffscreenPageLimit(mSelectedDatas.size());
+
+        tab.setTabPaddingLeftAndRight(CommonUtil.dip2px(10), CommonUtil.dip2px(10));
+        tab.setupWithViewPager(vp);
+        tab.post(new Runnable() {
+            @Override
+            public void run() {
+                //设置最小宽度，使其可以在滑动一部分距离
+                ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
+                slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
+            }
+        });
+        //隐藏指示器
+        tab.setSelectedTabIndicatorHeight(0);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    /**
+     * 获取标题数据
+     */
+    private void getTitleData() {
+        String selectTitle = SharedPreferencesMgr.getString(TITLE_SELECTED, "");
+        String unselectTitle = SharedPreferencesMgr.getString(TITLE_UNSELECTED, "");
+
+//        Log.e(IndexFragment2.this.getActivity().getLocalClassName(), "333 "+selectTitle);
+//        Log.e(IndexFragment2.this.getActivity().getLocalClassName(), unselectTitle);
+
+        if (TextUtils.isEmpty(selectTitle) || TextUtils.isEmpty(unselectTitle)) {
+            //本地没有title
+            String[] titleStr = getResources().getStringArray(R.array.home_title);
+            String[] titlesCode = getResources().getStringArray(R.array.home_title_code);
+            //默认添加了全部频道
+            for (int i = 0; i < titlesCode.length; i++) {
+                String t = titleStr[i];
+                String code = titlesCode[i];
+                mSelectedDatas.add(new Channel(t, code));
+            }
+
+            //获取label
+            HttpData.getInstance().HttpDataGetLabels(new Observer<HttpResult3<LiveLabel, Object>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult3<LiveLabel, Object> data) {
+
+                }
+            });
+
+
+            String selectedStr = mGson.toJson(mSelectedDatas);
+            SharedPreferencesMgr.setString(TITLE_SELECTED, selectedStr);
+        } else {
+            //之前添加过
+            List<Channel> selecteData = mGson.fromJson(selectTitle, new TypeToken<List<Channel>>() {}.getType());
+            List<Channel> unselecteData = mGson.fromJson(unselectTitle, new TypeToken<List<Channel>>() {}.getType());
+            mSelectedDatas.addAll(selecteData);
+            mUnSelectedDatas.addAll(unselecteData);
         }
     }
 
@@ -187,87 +181,65 @@ public class IndexFragment2 extends Fragment
         ButterKnife.unbind(this);
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+    @OnClick(R.id.icon_category)
+    public void onClick() {
+        ChannelDialogFragment dialogFragment = ChannelDialogFragment.newInstance(mSelectedDatas, mUnSelectedDatas);
+        dialogFragment.setOnChannelListener(this);
+        dialogFragment.show(getChildFragmentManager(), "CHANNEL");
+        dialogFragment.setOnDismissListener(dialog -> {
+            mTitlePagerAdapter.notifyDataSetChanged();
+            vp.setOffscreenPageLimit(mSelectedDatas.size());
+            tab.setCurrentItem(tab.getSelectedTabPosition());
+            ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
+            //注意：因为最开始设置了最小宽度，所以重新测量宽度的时候一定要先将最小宽度设置为0
+            slidingTabStrip.setMinimumWidth(0);
+            slidingTabStrip.measure(0, 0);
+            slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
 
-    //自动加载
-    @Override
-    public void onLoadMoreRequested() {
-        PageIndex++;
-//        present.LoadData("1",PageIndex,true);
-        present.LoadData(true, PageIndex, PageSize);
-    }
+            //保存选中和未选中的channel
+            SharedPreferencesMgr.setString(ConstanceValue.TITLE_SELECTED, mGson.toJson(mSelectedDatas));
+            SharedPreferencesMgr.setString(ConstanceValue.TITLE_UNSELECTED, mGson.toJson(mUnSelectedDatas));
 
-    //下拉刷新
-    @Override
-    public void onRefresh() {
-        PageIndex = 1;
-//        present.LoadData("1",PageIndex,false);
-        present.LoadData(false, PageIndex, PageSize);
-    }
-
-    //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
-    @Override
-    public void onLoadmore() {
-
-    }
-
-    /*
-    * MVP模式的相关状态
-    *
-    * */
-    @Override
-    public void showProgress() {
-        progress.showLoading();
-    }
-
-    @Override
-    public void hideProgress() {
-        progress.showContent();
-    }
-
-    @Override
-    public void newDatas(List<BlogDto.BlogBean.ListBean> newsList) {
-        //进入显示的初始数据或者下拉刷新显示的数据
-        mQuickAdapter.setNewData(newsList);//新增数据
-        mQuickAdapter.openLoadMore(10, true);//设置是否可以下拉加载  以及加载条数
-        springView.onFinishFreshAndLoad();//刷新完成
-    }
-
-    @Override
-    public void addDatas(List<BlogDto.BlogBean.ListBean> addList) {
-        //新增自动加载的的数据
-        mQuickAdapter.notifyDataChangedAfterLoadMore(addList, true);
-    }
-
-    @Override
-    public void showLoadFailMsg() {
-        //设置加载错误页显示
-        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageIndex = 1;
-//                present.LoadData("1",PageIndex,false);
-                present.LoadData(false, PageIndex, PageSize);
-            }
+//            Log.e(IndexFragment2.this.getActivity().getLocalClassName(), "111 "+mGson.toJson(mSelectedDatas));
+//            Log.e(IndexFragment2.this.getActivity().getLocalClassName(), mGson.toJson(mUnSelectedDatas));
+//
+//            Log.e(IndexFragment2.this.getActivity().getLocalClassName(), "222 "+SharedPreferencesMgr.getString(TITLE_SELECTED, ""));
+//            Log.e(IndexFragment2.this.getActivity().getLocalClassName(), SharedPreferencesMgr.getString(TITLE_UNSELECTED, ""));
         });
     }
 
     @Override
-    public void showLoadCompleteAllData() {
-        //所有数据加载完成后显示
-        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
-        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
-        mQuickAdapter.addFooterView(view);
+    public void onItemMove(int starPos, int endPos) {
+        listMove(mSelectedDatas, starPos, endPos);
+        listMove(mFragments, starPos, endPos);
+    }
+
+    private void listMove(List datas, int starPos, int endPos) {
+        Object o = datas.get(starPos);
+        //先删除之前的位置
+        datas.remove(starPos);
+        //添加到现在的位置
+        datas.add(endPos, o);
     }
 
     @Override
-    public void showNoData() {
-        springView.onFinishFreshAndLoad();
-        //设置无数据显示页面
-        progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
+    public void onMoveToMyChannel(int starPos, int endPos) {
+        //移动到我的频道
+        Channel channel = mUnSelectedDatas.remove(starPos);
+        mSelectedDatas.add(endPos, channel);
+        mFragments.add(NewsFragment.newInstance(channel.TitleCode));
     }
+
+    @Override
+    public void onMoveToOtherChannel(int starPos, int endPos) {
+        //移动到推荐频道
+        mUnSelectedDatas.add(endPos, mSelectedDatas.remove(starPos));
+        mFragments.remove(starPos);
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
+    }
+
 
 }

@@ -129,6 +129,7 @@ public class IndexNewsFragment extends BaseMvpFragment<HomePresenter> implements
             //本地没有title
             String[] titleStr = getResources().getStringArray(R.array.home_title);
             String[] titlesCode = getResources().getStringArray(R.array.home_title_code);
+
             //默认添加了全部频道
             for (int i = 0; i < titlesCode.length; i++) {
                 String t = titleStr[i];

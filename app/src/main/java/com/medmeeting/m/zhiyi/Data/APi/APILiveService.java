@@ -13,6 +13,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveExtract;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
@@ -314,4 +315,11 @@ public interface APILiveService {
     //POST /v1/video/user/order 我的订单-视频
     @POST("/v1/video/user/order")
     Observable<HttpResult3<VideoListEntity, Object>> getMyPayVideo(@Body BasePageSearchEntity basePageSearchEntity);
+
+    /**
+     * 新闻
+     */
+    ///v1/app/Common/A/getLabels 标签模块_获取栏目标签接口
+    Observable<HttpResult3<LiveLabel, Object>>  getLabels();
+
 }

@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical"
     tools:context="com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment2">
@@ -29,10 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="#cccbcc" />
-m
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
+        android:background="@color/white"
         android:visibility="visible">
 
         <ImageView
@@ -50,6 +51,7 @@ m
             android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/icon_category"
             android:background="@color/white"
             app:tabIndicatorColor="#fff85959"
             app:tabMode="scrollable"
@@ -78,7 +80,5 @@ m
         android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-
 
 </LinearLayout>

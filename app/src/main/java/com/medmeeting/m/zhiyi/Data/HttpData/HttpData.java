@@ -28,6 +28,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
@@ -573,6 +574,13 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    /**
+     * 新闻
+     */
+    public void HttpDataGetLabels(Observer<HttpResult3<LiveLabel, Object>> observer) {
+        Observable observable = service_live.getLabels();
+        setSubscribe(observable, observer);
+    }
     /**
      * 插入观察者
      *

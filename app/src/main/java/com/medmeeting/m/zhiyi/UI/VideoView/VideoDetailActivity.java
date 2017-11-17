@@ -254,7 +254,7 @@ public class VideoDetailActivity extends AppCompatActivity {
                     .setShowFullAnimation(false)    //是否使用全屏动画效果
                     .setNeedLockFull(true)  //是否需要全屏锁定屏幕功能
                     .setSeekRatio(1)    //调整触摸滑动快进的比例
-                    .setUrl(url)
+                    .setUrl(url)//"http://baobab.wdjcdn.com/1451897812703c.mp4"
                     .setCacheWithPlay(false)
                     .setVideoTitle(title)
                     .setStandardVideoAllCallBack(new SampleListener() {
