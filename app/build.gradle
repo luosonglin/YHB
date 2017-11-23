@@ -42,6 +42,8 @@ android {
         multiDexEnabled true
     }
 
+    useLibrary 'org.apache.http.legacy'
+
     signingConfigs {
         release {
             storeFile file('yihuibao_luo.jks')

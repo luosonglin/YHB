@@ -17,9 +17,6 @@ import com.medmeeting.m.zhiyi.Util.RxBus;
 import rx.Observable;
 import rx.Subscription;
 
-/**
- * Created by Administrator on 2016/8/4 0004.
- */
 public abstract class BaseFragment extends Fragment {
     protected Activity mContext;
     protected boolean mIsFirstVisible = true;

@@ -9,6 +9,7 @@ import com.medmeeting.m.zhiyi.Data.APi.APIService;
 import com.medmeeting.m.zhiyi.Data.APi.CacheProviders;
 import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
+import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
@@ -73,6 +74,7 @@ import java.util.Map;
 
 import io.rx_cache.Reply;
 import io.rx_cache.internal.RxCache;
+import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -501,6 +503,7 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getCollect(basePageSearchEntity);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetLiveCollect(Observer<HttpResult3<LiveDto, Object>> observer, BasePageSearchEntity basePageSearchEntity) {
         Observable observable = service_live.getLiveCollect(basePageSearchEntity);
         setSubscribe(observable, observer);
@@ -516,7 +519,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataGetMyVideo(Observer<HttpResult3<VideoInfoUserEntity, Object>> observer,  BasePageSearchEntity basePageSearchEntity) {
+    public void HttpDataGetMyVideo(Observer<HttpResult3<VideoInfoUserEntity, Object>> observer, BasePageSearchEntity basePageSearchEntity) {
         Observable observable = service_live.getMyVideo(basePageSearchEntity);
         setSubscribe(observable, observer);
     }
@@ -525,6 +528,7 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.deleteVideo(videoId);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataUpdateVideo(Observer<HttpResult3> observer, EditVideoEntity entity) {
         Observable observable = service_live.updateVideo(entity);
         setSubscribe(observable, observer);
@@ -534,14 +538,17 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getSettlementDetail(videoId);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetSettlementList(Observer<HttpResult3<PaySettlement, Object>> observer, Integer videoId) {
         Observable observable = service_live.getSettlementList(videoId);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataEditPlayCount(Observer<HttpResult3> observer, Integer videoId) {
         Observable observable = service_live.editPlayCount(videoId);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataAddSettlement(Observer<HttpResult3> observer, Integer videoId) {
         Observable observable = service_live.addSettlement(videoId);
         setSubscribe(observable, observer);
@@ -574,6 +581,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+
     /**
      * 新闻
      */
@@ -581,6 +589,30 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getLabels();
         setSubscribe(observable, observer);
     }
+
+    public void HttpDataLoginByPwd(Observer<HttpResult3<Object, AccessToken>> observer, Map<String, Object> map) {
+        Observable observable = service_live.loginByPwd(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetUserInfo(Observer<HttpResult3<Object, UserInfoDto>> observer) {
+        Observable observable = service_live.getUserInfo();
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataGetCode(Observer<HttpResult3> observer, Map<String, Object> map) {
+        Observable observable = service_live.getCode(map);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataLoginByCode(Observer<HttpResult3<Object, AccessToken>> observer, Map<String, Object> map) {
+        Observable observable = service_live.getCode(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataReadImageCode(Observer<ResponseBody> observer, Map<String, Object> map) {
+        Observable observable = service_live.getImageCode(map);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *

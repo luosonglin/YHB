@@ -9,6 +9,8 @@ import com.medmeeting.m.zhiyi.Base.BaseFragment;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
 
+import butterknife.ButterKnife;
+
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 14/11/2017 2:43 PM
@@ -17,9 +19,20 @@ import com.medmeeting.m.zhiyi.Util.ConstanceValue;
  * @org Healife
  */
 public class NewsFragment extends BaseFragment {
+
     @Override
     protected View loadViewLayout(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_index, null);
+        View v = inflater.inflate(R.layout.fragment_news, null);
+        ButterKnife.bind(this, rootView);
+        return v;
+    }
+
+    public static NewsFragment newInstance(String code) {
+        NewsFragment fragment = new NewsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstanceValue.DATA, code);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -37,11 +50,14 @@ public class NewsFragment extends BaseFragment {
 
     }
 
-    public static NewsFragment newInstance(String code) {
-        NewsFragment fragment = new NewsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstanceValue.DATA, code);
-        fragment.setArguments(bundle);
-        return fragment;
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

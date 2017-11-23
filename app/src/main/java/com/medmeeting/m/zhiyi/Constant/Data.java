@@ -4,6 +4,7 @@ package com.medmeeting.m.zhiyi.Constant;
 import com.medmeeting.m.zhiyi.UI.Entity.ChatDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MainDateDto;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,5 +127,31 @@ public class Data {
 
     public static void setTradeId(String tradeId) {
         Data.tradeId = tradeId;
+    }
+
+    /**
+     * 简易Session管理
+     */
+    public static String session = "";
+
+    public static String getSession() {
+        return session;
+    }
+
+    public static void setSession(String session) {
+        Data.session = session;
+    }
+
+    /**
+     *
+     */
+    public static InputStream inputStream;
+
+    public static InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public static void setInputStream(InputStream inputStream) {
+        Data.inputStream = inputStream;
     }
 }

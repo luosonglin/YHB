@@ -1,6 +1,12 @@
 package com.medmeeting.m.zhiyi.Data.Retrofit;
 
+import android.os.Build;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.medmeeting.m.zhiyi.BuildConfig;
 import com.medmeeting.m.zhiyi.Constant.Data;
+import com.medmeeting.m.zhiyi.Constant.NetConstants;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +16,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+
+import static android.R.attr.versionName;
 
 /*
  * okHttp的配置
@@ -30,6 +38,9 @@ public class OkHttpUtils {
             mOkHttpClient = new OkHttpClient.Builder()
                     //添加拦截器
                     .addInterceptor(mTokenInterceptor)
+//                    .addInterceptor(configInterceptor)
+//                    .addInterceptor(responseInterceptor)
+
                     //添加日志拦截器
                     .addNetworkInterceptor(mHttpLoggingInterceptor)
                     //添加网络连接器
@@ -76,12 +87,25 @@ public class OkHttpUtils {
         public Response intercept(Chain chain) throws IOException {
             Request originalRequest = chain.request();
             Request authorised = null;
+            Log.e("wwww ",Data.getSession());
             authorised = originalRequest.newBuilder()
-//                    .header("FromSource", "1.0")
+//                    authorised.header("FromSource", "1.0")
                     //钱包测试用户token
-//                    .header("Authorization", "bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuWMu-WunTI2OTcwNCIsInVzZXJJZCI6IjEwMDEwMiIsInJvbGUiOiIxIiwiY3JlYXRlZCI6MTUwNzUxNzIwNDczOCwiZXhwIjoxNTA1ODE0MjM3NDQyLCJpc3MiOiJoZWFsaWZlIiwiYXVkIjoiMDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjYifQ.E9NVVakq5S71n-w_q4A707jjCLOjLNbLYhlfkOYk6kU")
+//                    authorised.header("Authorization", "bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuWMu-WunTI2OTcwNCIsInVzZXJJZCI6IjEwMDEwMiIsInJvbGUiOiIxIiwiY3JlYXRlZCI6MTUwNzUxNzIwNDczOCwiZXhwIjoxNTA1ODE0MjM3NDQyLCJpc3MiOiJoZWFsaWZlIiwiYXVkIjoiMDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjYifQ.E9NVVakq5S71n-w_q4A707jjCLOjLNbLYhlfkOYk6kU")
                     .header("Authorization", Data.getUserToken())
+                    .header("User-Agent", String.format("%s/%s (Linux; Android %s; %s Build/%s)", "YiHuiBao", versionName, Build.VERSION.RELEASE, Build.MANUFACTURER, Build.ID))
+                    .header("Set-Cookie", Data.getSession())
                     .build();
+            // JSESSIONID=81639CFA7830C33B347EC27AA76E0FCB; Path=/; HttpOnly
+
+
+//            Request.Builder builder = originalRequest.newBuilder();
+//            builder.header("Authorization", Data.getUserToken());
+//            builder.header("User-Agent", String.format("%s/%s (Linux; Android %s; %s Build/%s)", "YiHuiBao", versionName, Build.VERSION.RELEASE, Build.MANUFACTURER, Build.ID));
+//            if (chain.request().headers().get(NetConstants.ADD_COOKIE) != null) {
+//                builder.header("Set-Cookie", Data.getSession());
+//            }
+//            builder.build();
             return chain.proceed(authorised);
         }
     };
@@ -90,4 +114,53 @@ public class OkHttpUtils {
      * 日志拦截器
      */
     private static final Interceptor mHttpLoggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+
+    /**
+     *
+     */
+    private static final Interceptor configInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request.Builder builder = chain.request().newBuilder();
+
+            // add costom headers......
+
+            if (chain.request().headers().get(NetConstants.ADD_COOKIE) != null) {
+                Log.e("000 ", NetConstants.ADD_COOKIE + "");
+                Log.e("000 ", Data.getSession() + "");
+                builder.removeHeader(NetConstants.ADD_COOKIE);
+                if (!TextUtils.isEmpty(Data.getSession())) { //Session管理
+                    builder.header("Set-Cookie", Data.getSession());
+                }
+            }
+
+            Request request = builder.build();
+            if (BuildConfig.DEBUG) {
+                Log.d("TAG", "request url : " + request.url());
+            }
+            return chain.proceed(request);
+        }
+    };
+    private static final Interceptor responseInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Response response = chain.proceed(chain.request());
+            //存入Session
+            if (response.header("Set-Cookie") != null) {
+                Data.setSession(response.header("Set-Cookie"));
+                Log.e("TAG", response.body().source() + Data.getSession());
+                Log.e("TAG", response.body().byteStream() + Data.getSession());
+                Log.e("TAG", response.body().charStream() + Data.getSession());
+                Log.e("TAG", response.body().contentType() + Data.getSession());
+                Log.e("TAG", response.body().string() + Data.getSession());
+
+                Data.setInputStream(response.body().byteStream());
+            }
+//            Log.e("res  ", response.body().bytes()+"");
+            //刷新API调用时间
+//            SessionManager.setLastApiCallTime(System.currentTimeMillis());
+
+            return response;
+        }
+    };
 }

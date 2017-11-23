@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.Data.APi;
 
+import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
@@ -28,6 +29,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
@@ -46,6 +48,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -320,7 +323,32 @@ public interface APILiveService {
      * 新闻
      */
     ///v1/app/Common/A/getLabels 标签模块_获取栏目标签接口
-    @GET("/v1/app/Common/A/getLabels")
+    @GET("/v1/app/Common/F/getLabels")
     Observable<HttpResult3<LiveLabel, Object>>  getLabels();
+
+    /**
+     * 用户
+     */
+    //GET /v1/oauth/token/pwd 2.0新版本手机号+密码登录接口
+    @GET("/v1/oauth/token/pwd")
+    Observable<HttpResult3<Object, AccessToken>> loginByPwd(@QueryMap Map<String, Object> map);
+
+    //GET /v1/users/app/info APP-获取个人信息
+    @GET("/v1/users/app/info")
+    Observable<HttpResult3<Object, UserInfoDto>> getUserInfo();
+
+    //GET /v1/token/imageCode/read 读取图形验证码
+    @GET("/v1/token/imageCode/read")
+    Observable<ResponseBody> getImageCode(@QueryMap Map<String, Object> map);
+
+    //GET /v1/token/code 2.0 App登录注册之前获取短信验证码接口
+//    @Headers(NetConstants.ADD_COOKIE)
+    @GET("/v1/token/code")
+    Observable<HttpResult3> getCode(@QueryMap Map<String, Object> map);
+
+    //GET /v1/oauth/token 2.0新版本手机号+验证码登录接口
+    @GET("/v1/oauth/token")
+    Observable<HttpResult3<Object, AccessToken>> loginByCode(@QueryMap Map<String, Object> map);
+
 
 }

@@ -19,7 +19,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
-import com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment2;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveIndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
@@ -27,7 +26,7 @@ import com.medmeeting.m.zhiyi.UI.MeetingView.ExchangeBusinessCardActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
 import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
-//import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -50,7 +49,7 @@ import rx.Observer;
 
 public class MainActivity extends AppCompatActivity implements
 //        IndexFragment.OnFragmentInteractionListener,
-        IndexFragment2.OnFragmentInteractionListener,
+        IndexFragment.OnFragmentInteractionListener,
         MeetingFragment.OnFragmentInteractionListener,
         LiveIndexFragment.OnFragmentInteractionListener,
         MineFragment.OnFragmentInteractionListener {
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
     TextView tabSelfTitle;
 
     private FragmentManager fragmentManager;
-    private IndexFragment2 mIndexFragment;
+    private IndexFragment mIndexFragment;
     private MeetingFragment mMeetingFragment;
     //    private CommunityFragment mLiveIndexFragment;
     private LiveIndexFragment mLiveIndexFragment;
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements
         //默认第一项选中
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
-            mIndexFragment = (IndexFragment2) fragmentManager.findFragmentByTag(TABORDERSTAG);
+            mIndexFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABORDERSTAG);
             mMeetingFragment = (MeetingFragment) fragmentManager.findFragmentByTag(TABMERCHANDISE);
             mLiveIndexFragment = (LiveIndexFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
             mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
@@ -240,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements
                 tabOrdersTitle.setTextColor(activeColorRecourse);
                 if (mIndexFragment == null) {
                     // 如果Fragment为空，则创建一个并添加到界面上
-                    mIndexFragment = new IndexFragment2();
+                    mIndexFragment = new IndexFragment();
                     fragmentTransaction.add(R.id.container, mIndexFragment, TABORDERSTAG);
                 } else {
                     // 如果Fragment不为空，则直接将它显示出来

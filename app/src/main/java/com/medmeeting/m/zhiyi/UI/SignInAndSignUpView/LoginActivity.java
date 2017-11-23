@@ -9,12 +9,15 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -34,21 +37,31 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
-import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
-import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,11 +104,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private TextView mTurnPasswordView;
     private boolean isCode = true;
 
+    //图形验证码
+    private RelativeLayout mTxRlyt;
+    private EditText mTxCodeView;
+    private static ImageView mGetTxCodeView;
+
     // timer
     private CountDownTimer timer = new CountDownTimer(60000, 1000) {
         @Override
         public void onTick(long l) {
-            mGetCodeView.setEnabled(false );
+            mGetCodeView.setEnabled(false);
             mGetCodeView.setText("剩余" + l / 1000 + "秒");
         }
 
@@ -129,35 +147,44 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Animation animation= AnimationUtils.loadAnimation(LoginActivity.this,R.anim.login_background_translate_anim);
+                Animation animation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.login_background_translate_anim);
                 mBackgroundImageView.startAnimation(animation);
             }
-        },1000);
+        }, 1000);
 
         // Set up the login form.
         mPhoneView = (AutoCompleteTextView) findViewById(R.id.phone);
         populateAutoComplete();
 
+        mTxRlyt = (RelativeLayout) findViewById(R.id.tx_rlyt);
+        mTxRlyt.setVisibility(View.VISIBLE);
+        mTxCodeView = (EditText) findViewById(R.id.tx_code);
+        mGetTxCodeView = (ImageView) findViewById(R.id.get_tx_code_textview);
+
+        new WorkThread().start();
+
+        getTxCodeView();
+        mGetTxCodeView.setOnClickListener(view -> {
+//            getTxCodeView()
+            new WorkThread().start();
+        });
+
         mCodeView = (EditText) findViewById(R.id.code);
-        mCodeView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                } else if (!isCode) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
+        mCodeView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                attemptLogin();
+                return true;
+            } else if (!isCode) {
+                attemptLogin();
+                return true;
             }
+            return false;
         });
 
         mGetCodeView = (TextView) findViewById(R.id.get_code_textview);
         mGetCodeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timer.start();
                 getPhoneCode();
             }
         });
@@ -182,67 +209,210 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         mTurnPasswordView = (TextView) findViewById(R.id.turn_password);
-        mTurnPasswordView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            /*    if (isCode) {
-                    isCode = false;
-                    mTurnPasswordView.setText("切换密码登录");
-                    mGetCodeView.setVisibility(View.GONE);
-                    mCodeView.setHint("请输入密码");
-//                    mCodeView.setInputType(InputType.TYPE_NULL);
-                } else {
-                    isCode = true;
-                    mTurnPasswordView.setText("切换验证码登录");
-                    mGetCodeView.setVisibility(View.VISIBLE);
-                    mCodeView.setHint("请输入验证码");
-                    mCodeView.setInputType(InputType.TYPE_CLASS_NUMBER);
-                }
-*/
-                isCode = !isCode;
-                if (!isCode) {
-                    mTurnPasswordView.setText("切换验证码登录");
-                    mGetCodeView.setVisibility(View.GONE);
-                    mCodeView.setHint("请输入密码");
-                    mCodeView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    return;
-                }
-                mTurnPasswordView.setText("切换密码登录");
-                mGetCodeView.setVisibility(View.VISIBLE);
-                mCodeView.setHint("请输入验证码");
-                mCodeView.setInputType(InputType.TYPE_CLASS_NUMBER);
+        mTurnPasswordView.setOnClickListener(view -> {
+            isCode = !isCode;
+            if (!isCode) {
+                mTurnPasswordView.setText("切换验证码登录");
+                mGetCodeView.setVisibility(View.GONE);
+                mCodeView.setHint("请输入密码");
+                mCodeView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                mTxRlyt.setVisibility(View.GONE);
                 return;
             }
+            mTurnPasswordView.setText("切换密码登录");
+            mGetCodeView.setVisibility(View.VISIBLE);
+            mCodeView.setHint("请输入验证码");
+            mCodeView.setInputType(InputType.TYPE_CLASS_NUMBER);
+            mTxRlyt.setVisibility(View.VISIBLE);
+            return;
         });
     }
 
-    private void getPhoneCode() {
+    public static void getTxCodeView() {
+//        String url = Constant.API_SERVER_LIVE_TEST + "/"+"v1/token/imageCode/read?v=" + System.currentTimeMillis();
+//        GlideUrl glideUrl = new GlideUrl(url);
+//        Glide.with(LoginActivity.this)
+//                .load(glideUrl)
+//                .crossFade()
+//                .listener(new RequestListener<GlideUrl, GlideDrawable>() {
+//                    @Override
+//                    public boolean onException(Exception e, GlideUrl model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                        Log.e(getLocalClassName(), model.getHeaders().get("Set-Cookie"));
+//                        Log.e(getApplicationContext().toString(),"资源加载异常");
+//                        return false;
+//                    }
+//
+//                    @Override
+//                    public boolean onResourceReady(GlideDrawable resource, GlideUrl model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+////                        Log.e(getLocalClassName(), model.getHeaders().get("HOST"));
+//                        try {
+//                            Log.e(getLocalClassName(), model.toURL().getUserInfo()+"");
+//                        } catch (MalformedURLException e) {
+//                            e.printStackTrace();
+//                        }
+//                        Log.e(getApplicationContext().toString(),"图片加载完成");
+//                        return false;
+//                    }
+//                })
+//                .into(mGetTxCodeView);
 
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("v", System.currentTimeMillis());
+//        HttpData.getInstance().HttpDataReadImageCode(new Observer<ResponseBody>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                Log.e("aae ", e.getMessage());
+//
+//                Bitmap pic = null;
+//                InputStream is = Data.getInputStream();
+//                Log.e("is ", is + "");
+//                if (is != null) {
+////                    pic = BitmapFactory.decodeStream(is);   // 关键是这句代码
+////                    Log.e("pic ", pic+"");
+////                    mGetTxCodeView.setImageBitmap(pic);
+//                    getBitmap(is);
+//                }
+//            }
+//
+//            @Override
+//            public void onNext(ResponseBody d) {
+////                Glide.with(LoginActivity.this)
+////                        .load(d)
+////                        .crossFade()
+////                        .into(mGetTxCodeView);
+//                Log.e("aa ", d.toString());
+//            }
+//        }, map);
+////
+//        ResponseBody responseBody = Data.getResponseBody();
+//        if (responseBody != null)
+//            Glide.with(LoginActivity.this)
+//                    .load(responseBody)
+//                    .crossFade()
+//                    .into(mGetTxCodeView);
+
+//        mGetTxCodeView.setImageBitmap(bitmap);
+
+
+    }
+
+    public static void getBitmap(InputStream inputStream) {
+        Bitmap pic = null;
+        try {
+            pic = BitmapFactory.decodeStream(inputStream);   // 关键是这句代码
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0) {
+                mGetTxCodeView.setImageBitmap(pic);
+            }
+        }
+    };
+
+    //工作线程
+    private class WorkThread extends Thread {
+        @Override
+        public void run() {
+            //......处理比较耗时的操作
+            getBitmapFromServer(Constant.API_SERVER_LIVE + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
+
+            //处理完成后给handler发送消息
+            Message msg = new Message();
+            msg.what = 0;
+            handler.sendMessage(msg);
+        }
+    }
+
+    Bitmap pic = null;
+
+    public void getBitmapFromServer(String imagePath) {
+
+        HttpGet get = new HttpGet(imagePath);
+        HttpClient client = new DefaultHttpClient();
+
+        try {
+            HttpResponse response = client.execute(get);
+            HttpEntity entity = response.getEntity();
+            InputStream is = entity.getContent();
+
+            pic = BitmapFactory.decodeStream(is);   // 关键是这句代码
+            Log.e("aaa ", pic + "");
+            Log.e("aaa ", response.getEntity() + "");
+            Log.e("aaa ", response.getFirstHeader("Set-Cookie") + "");//Set-Cookie: JSESSIONID=B24E8934E24E9CF953D946BAC196BEF6; Path=/; HttpOnly
+
+            Data.setSession(response.getFirstHeader("Set-Cookie").getValue().split(";")[0] + "");
+
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        return pic;
+    }
+
+    private void getPhoneCode() {
         if (!PhoneUtils.isMobile(mPhoneView.getText().toString().trim())) {
             ToastUtils.show(LoginActivity.this, "手机号格式不正确,请重新输入");
             return;
         }
+        timer.start();
+//        HttpData.getInstance().HttpDataGetPhoneCode(new Observer<SignUpCodeDto>() {
+//            @Override
+//            public void onCompleted() {
+//                Log.e(TAG, "onCompleted");
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                //设置页面为加载错误
+//                ToastUtils.show(LoginActivity.this, e.getMessage());
+//            }
+//
+//            @Override
+//            public void onNext(SignUpCodeDto signUpCodeDto) {
+//                Log.e(TAG, "onNext sms " + signUpCodeDto.getData().getMsg() + " " + signUpCodeDto.getCode());
+//            }
+//        }, mPhoneView.getText().toString().trim());
 
-        HttpData.getInstance().HttpDataGetPhoneCode(new Observer<SignUpCodeDto>() {
+        Map<String, Object> options = new HashMap<>();
+        options.put("phone", mPhoneView.getText().toString().trim());
+        options.put("imgCode", mTxCodeView.getText().toString().trim());
+
+        HttpData.getInstance().HttpDataGetCode(new Observer<HttpResult3>() {
             @Override
             public void onCompleted() {
-                Log.e(TAG, "onCompleted");
+
             }
 
             @Override
             public void onError(Throwable e) {
-                //设置页面为加载错误
-                Log.e(TAG, "onError: "+e.getMessage()
-                        +"\n"+e.getCause()
-                        +"\n"+e.getLocalizedMessage()
-                        +"\n"+e.getStackTrace());
+                ToastUtils.show(LoginActivity.this, e.getMessage());
             }
 
             @Override
-            public void onNext(SignUpCodeDto signUpCodeDto) {
-                Log.e(TAG, "onNext sms "+ signUpCodeDto.getData().getMsg() + " " + signUpCodeDto.getCode());
+            public void onNext(HttpResult3 data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(LoginActivity.this, data.getMsg());
+//                    getTxCodeView();
+                    timer.cancel();
+//                    new WorkThread().start();
+                    mGetCodeView.setEnabled(true);
+                    mGetCodeView.setText("获取验证码");
+                    return;
+                }
+                ToastUtils.show(LoginActivity.this, data.getMsg());
             }
-        }, mPhoneView.getText().toString().trim());
+        }, options);
     }
 
     private void populateAutoComplete() {
@@ -486,7 +656,70 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (isCode) {
                 map.put("code", mPassword);
-                HttpData.getInstance().HttpDataLogin(new Observer<SignUpDto>() {
+//                HttpData.getInstance().HttpDataLogin(new Observer<SignUpDto>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        mCodeView.setError("验证码错误");
+//                        mCodeView.requestFocus();
+//                        showProgress(false);
+//
+//                        Log.e(TAG, "onError: " + e.getMessage()
+//                                + "\n" + e.getCause()
+//                                + "\n" + e.getLocalizedMessage()
+//                                + "\n" + e.getStackTrace());
+//                    }
+//
+//                    @Override
+//                    public void onNext(SignUpDto signUpDto) {
+//
+//                        Data.setUserId(signUpDto.getData().getUser().getId());
+//
+//                        try {
+//                            DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
+//                            DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
+//                            DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
+//                            DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
+//                            DBUtils.put(LoginActivity.this, "confirmNumber", signUpDto.getData().getUser().getConfirmNumber() + "");
+//                            DBUtils.put(LoginActivity.this, "tokenId", signUpDto.getData().getUser().getTokenId() + "");
+//
+//                        } catch (SnappydbException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
+//                            @Override
+//                            public void onCompleted() {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onNext(HttpResult3<Object, UserTokenDto> token) {
+//                                try {
+//                                    DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+//                                } catch (SnappydbException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                Data.setUserToken(token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+//
+//                                Log.d(TAG, "Login succeed!");
+//                                finish();
+//                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                            }
+//                        }, signUpDto.getData().getUser().getId());
+//                    }
+//                }, map);
+
+                HttpData.getInstance().HttpDataLoginByCode(new Observer<HttpResult3<Object, AccessToken>>() {
                     @Override
                     public void onCompleted() {
 
@@ -494,34 +727,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     @Override
                     public void onError(Throwable e) {
-                        mCodeView.setError("验证码错误");
-                        mCodeView.requestFocus();
-                        showProgress(false);
 
-                        Log.e(TAG, "onError: " + e.getMessage()
-                                + "\n" + e.getCause()
-                                + "\n" + e.getLocalizedMessage()
-                                + "\n" + e.getStackTrace());
                     }
 
                     @Override
-                    public void onNext(SignUpDto signUpDto) {
+                    public void onNext(HttpResult3<Object, AccessToken> data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(LoginActivity.this, data.getMsg());
+                            return;
+                        }
 
-                        Data.setUserId(signUpDto.getData().getUser().getId());
-
+                        Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
                         try {
-                            DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
-                            DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
-                            DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
-                            DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
-                            DBUtils.put(LoginActivity.this, "confirmNumber", signUpDto.getData().getUser().getConfirmNumber()+"");
-                            DBUtils.put(LoginActivity.this, "tokenId", signUpDto.getData().getUser().getTokenId()+"");
-
+                            DBUtils.put(LoginActivity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
 
-                        HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
+                        HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
                             @Override
                             public void onCompleted() {
 
@@ -529,28 +752,103 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                             @Override
                             public void onError(Throwable e) {
-
+                                ToastUtils.show(LoginActivity.this, e.getMessage());
                             }
 
                             @Override
-                            public void onNext(HttpResult3<Object, UserTokenDto> token) {
+                            public void onNext(HttpResult3<Object, UserInfoDto> data2) {
+                                if (!data2.getStatus().equals("success")) {
+                                    ToastUtils.show(LoginActivity.this, data2.getMsg());
+                                    return;
+                                }
+
+                                Data.setUserId(data2.getEntity().getId());
                                 try {
-                                    DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+                                    DBUtils.put(LoginActivity.this, "userId", data2.getEntity().getId() + "");
+                                    DBUtils.put(LoginActivity.this, "userName", data2.getEntity().getName() + "");
+                                    DBUtils.put(LoginActivity.this, "userNickName", data2.getEntity().getNickName() + "");
+                                    DBUtils.put(LoginActivity.this, "authentication", data2.getEntity().getAuthenStatus() + "");
+                                    DBUtils.put(LoginActivity.this, "confirmNumber", data2.getEntity().getConfirmNumber() + "");
+                                    DBUtils.put(LoginActivity.this, "tokenId", data2.getEntity().getTokenId() + "");
                                 } catch (SnappydbException e) {
                                     e.printStackTrace();
+                                } finally {
+                                    Log.d(TAG, "Login succeed!");
+                                    finish();
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
-                                Data.setUserToken(token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
-
-                                Log.d(TAG, "Login succeed!");
-                                finish();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             }
-                        }, signUpDto.getData().getUser().getId());
+                        });
                     }
                 }, map);
+
+
             } else {
-                map.put("password", mPassword);
-                HttpData.getInstance().HttpDataLoginByPassword(new Observer<SignUpDto>() {
+                map.put("pwd", mPassword);
+//                HttpData.getInstance().HttpDataLoginByPassword(new Observer<SignUpDto>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        mCodeView.setError("密码错误");
+//                        mCodeView.requestFocus();
+//                        showProgress(false);
+//
+//                        Log.e(TAG, "onError: " + e.getMessage()
+//                                + "\n" + e.getCause()
+//                                + "\n" + e.getLocalizedMessage()
+//                                + "\n" + e.getStackTrace());
+//                    }
+//
+//                    @Override
+//                    public void onNext(SignUpDto signUpDto) {
+//
+//                        Data.setUserId(signUpDto.getData().getUser().getId());
+//
+//                        try {
+//                            DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
+//                            DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
+//                            DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
+//                            DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
+//                            DBUtils.put(LoginActivity.this, "confirmNumber", signUpDto.getData().getUser().getConfirmNumber()+"");
+//                            DBUtils.put(LoginActivity.this, "tokenId", signUpDto.getData().getUser().getTokenId()+"");
+//
+//                        } catch (SnappydbException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
+//                            @Override
+//                            public void onCompleted() {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onNext(HttpResult3<Object, UserTokenDto> token) {
+//                                try {
+//                                    DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+//                                } catch (SnappydbException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                Data.setUserToken(token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+//
+//                                Log.d(TAG, "Login succeed!");
+//                                finish();
+//                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                            }
+//                        }, signUpDto.getData().getUser().getId());
+//                    }
+//                }, map);
+
+                HttpData.getInstance().HttpDataLoginByPwd(new Observer<HttpResult3<Object, AccessToken>>() {
                     @Override
                     public void onCompleted() {
 
@@ -558,34 +856,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     @Override
                     public void onError(Throwable e) {
-                        mCodeView.setError("密码错误");
-                        mCodeView.requestFocus();
-                        showProgress(false);
-
-                        Log.e(TAG, "onError: " + e.getMessage()
-                                + "\n" + e.getCause()
-                                + "\n" + e.getLocalizedMessage()
-                                + "\n" + e.getStackTrace());
+                        ToastUtils.show(LoginActivity.this, e.getMessage());
                     }
 
                     @Override
-                    public void onNext(SignUpDto signUpDto) {
+                    public void onNext(HttpResult3<Object, AccessToken> data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(LoginActivity.this, data.getMsg());
+                            return;
+                        }
 
-                        Data.setUserId(signUpDto.getData().getUser().getId());
-
+                        Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
                         try {
-                            DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
-                            DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
-                            DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
-                            DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
-                            DBUtils.put(LoginActivity.this, "confirmNumber", signUpDto.getData().getUser().getConfirmNumber()+"");
-                            DBUtils.put(LoginActivity.this, "tokenId", signUpDto.getData().getUser().getTokenId()+"");
-
+                            DBUtils.put(LoginActivity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
 
-                        HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
+                        HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
                             @Override
                             public void onCompleted() {
 
@@ -593,23 +881,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                             @Override
                             public void onError(Throwable e) {
-
+                                ToastUtils.show(LoginActivity.this, e.getMessage());
                             }
 
                             @Override
-                            public void onNext(HttpResult3<Object, UserTokenDto> token) {
+                            public void onNext(HttpResult3<Object, UserInfoDto> data2) {
+                                if (!data2.getStatus().equals("success")) {
+                                    ToastUtils.show(LoginActivity.this, data2.getMsg());
+                                    return;
+                                }
+
+                                Data.setUserId(data2.getEntity().getId());
                                 try {
-                                    DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
+                                    DBUtils.put(LoginActivity.this, "userId", data2.getEntity().getId() + "");
+                                    DBUtils.put(LoginActivity.this, "userName", data2.getEntity().getName() + "");
+                                    DBUtils.put(LoginActivity.this, "userNickName", data2.getEntity().getNickName() + "");
+                                    DBUtils.put(LoginActivity.this, "authentication", data2.getEntity().getAuthenStatus() + "");
+                                    DBUtils.put(LoginActivity.this, "confirmNumber", data2.getEntity().getConfirmNumber() + "");
+                                    DBUtils.put(LoginActivity.this, "tokenId", data2.getEntity().getTokenId() + "");
                                 } catch (SnappydbException e) {
                                     e.printStackTrace();
+                                } finally {
+                                    Log.d(TAG, "Login succeed!");
+                                    finish();
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 }
-                                Data.setUserToken(token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
-
-                                Log.d(TAG, "Login succeed!");
-                                finish();
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             }
-                        }, signUpDto.getData().getUser().getId());
+                        });
                     }
                 }, map);
             }

@@ -7,6 +7,7 @@ public interface ConstanceValue {
     String DATA = "data";
     String DATA_SELECTED = "dataSelected";
     String DATA_UNSELECTED = "dataUnselected";
+
     String ARTICLE_GENRE_GALLERY = "gallery";
     String ARTICLE_GENRE_VIDEO = "video";
     String  ARTICLE_GENRE_ARTICLE = "article";
@@ -16,6 +17,8 @@ public interface ConstanceValue {
     String SP_THEME = "theme";
     int THEME_LIGHT = 1;
     int THEME_NIGHT = 2;
+
+
     /**
      * 修改主题
      */
