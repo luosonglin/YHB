@@ -19,6 +19,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
+import com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment2;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveIndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
@@ -26,10 +27,10 @@ import com.medmeeting.m.zhiyi.UI.MeetingView.ExchangeBusinessCardActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
 import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
-import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
@@ -49,7 +50,7 @@ import rx.Observer;
 
 public class MainActivity extends AppCompatActivity implements
 //        IndexFragment.OnFragmentInteractionListener,
-        IndexFragment.OnFragmentInteractionListener,
+        IndexFragment2.OnFragmentInteractionListener,
         MeetingFragment.OnFragmentInteractionListener,
         LiveIndexFragment.OnFragmentInteractionListener,
         MineFragment.OnFragmentInteractionListener {
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements
     TextView tabSelfTitle;
 
     private FragmentManager fragmentManager;
-    private IndexFragment mIndexFragment;
+    private IndexFragment2 mIndexFragment;
     private MeetingFragment mMeetingFragment;
     //    private CommunityFragment mLiveIndexFragment;
     private LiveIndexFragment mLiveIndexFragment;
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements
         //默认第一项选中
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
-            mIndexFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABORDERSTAG);
+            mIndexFragment = (IndexFragment2) fragmentManager.findFragmentByTag(TABORDERSTAG);
             mMeetingFragment = (MeetingFragment) fragmentManager.findFragmentByTag(TABMERCHANDISE);
             mLiveIndexFragment = (LiveIndexFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
             mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
@@ -239,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements
                 tabOrdersTitle.setTextColor(activeColorRecourse);
                 if (mIndexFragment == null) {
                     // 如果Fragment为空，则创建一个并添加到界面上
-                    mIndexFragment = new IndexFragment();
+                    mIndexFragment = new IndexFragment2();
                     fragmentTransaction.add(R.id.container, mIndexFragment, TABORDERSTAG);
                 } else {
                     // 如果Fragment不为空，则直接将它显示出来
@@ -467,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtils.show(MainActivity.this, e.getMessage());
             }
 
             @Override

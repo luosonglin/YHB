@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
+import com.medmeeting.m.zhiyi.Util.DateUtil;
 
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
             case "1":
                 if (!TextUtils.isEmpty(blog.getImages())) {
                     //单图片文章
-//                    ImageLoaderUtils.displayImage(blog.getImages(), (ImageView) baseViewHolder.getView(R.id.ivRightImg1));
                     Glide.with(mContext)
                             .load(blog.getImages())
                             .crossFade()
@@ -67,8 +67,20 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                 }
                 break;
             case "3":
+                Glide.with(mContext)
+                        .load(blog.getImages())
+                        .crossFade()
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into((ImageView) baseViewHolder.getView(R.id.ivRightImg1));
+                baseViewHolder.setVisible(R.id.rlRightImg, true)
+                        .setVisible(R.id.viewFill, true)
+                        .setVisible(R.id.llVideo, true).setText(R.id.tvDuration, blog.getTitle());
                 break;
         }
+        baseViewHolder.setText(R.id.tvTitle, blog.getTitle())
+                .setText(R.id.tvAuthorName, blog.getAuthorName())
+                .setText(R.id.tvCommentCount, blog.getCommentCount() + "评论")
+                .setText(R.id.tvTime, DateUtil.formatDate(blog.getCreatedAt(), DateUtil.TYPE_02));
     }
 
     private void setGone(BaseViewHolder baseViewHolder) {

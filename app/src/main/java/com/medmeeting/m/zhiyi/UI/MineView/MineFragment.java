@@ -194,7 +194,7 @@ public class MineFragment extends Fragment {
                     Glide.with(getActivity())
                             .load(item.getData().getUser().getUserPic())
                             .crossFade()
-//                            .placeholder(R.mipmap.avator_default)
+                            .placeholder(R.mipmap.avator_default)
                             .into(headIv);
 
                     try {

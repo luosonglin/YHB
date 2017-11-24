@@ -13,7 +13,13 @@ public class SharedPreferencesMgr {
 
     private SharedPreferencesMgr(Context context, String fileName) {
         this.context = context;
-        sPrefs = context.getSharedPreferences(fileName, Context.MODE_WORLD_READABLE);
+        sPrefs = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        //7.0后
+//        代码调用，存放在data/data/包名/xxx
+//        目录下的文件设置
+//        Context.MODE_WORLD_READABLE = 1
+//        Context.MODE_WORLD_WRITEABLE = 2
+//        会抛安全异常！！！
     }
 
     public static void init(Context context, String fileName) {
