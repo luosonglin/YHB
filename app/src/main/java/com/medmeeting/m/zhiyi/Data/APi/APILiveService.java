@@ -350,5 +350,7 @@ public interface APILiveService {
     @GET("/v1/oauth/token")
     Observable<HttpResult3<Object, AccessToken>> loginByCode(@QueryMap Map<String, Object> map);
 
-
+//    //GET /v1/msgs/codes 发送验证码接口
+//    @GET("/v1/msgs/codes")
+//    Observable<HttpResult3>
 }

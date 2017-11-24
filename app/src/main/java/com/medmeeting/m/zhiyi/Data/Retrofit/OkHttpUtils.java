@@ -26,6 +26,7 @@ import static android.R.attr.versionName;
 public class OkHttpUtils {
 
     private static OkHttpClient mOkHttpClient;
+    private static OkHttpClient mOkHttpClientCookie;
 
     /**
      * 获取OkHttpClient对象
@@ -53,6 +54,34 @@ public class OkHttpUtils {
         }
 
         return mOkHttpClient;
+    }
+
+    /**
+     * 获取Cookie OkHttpClient对象
+     */
+    public static OkHttpClient getCookieOkHttpClient() {
+
+        if (null == mOkHttpClientCookie) {
+
+            //同样okhttp3后也使用build设计模式
+            mOkHttpClientCookie = new OkHttpClient.Builder()
+                    //添加拦截器
+                    .addInterceptor(mCookieInterceptor)
+//                    .addInterceptor(configInterceptor)
+//                    .addInterceptor(responseInterceptor)
+
+                    //添加日志拦截器
+                    .addNetworkInterceptor(mHttpLoggingInterceptor)
+                    //添加网络连接器
+                    //设置请求读写的超时时间
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+        }
+
+        return mOkHttpClientCookie;
     }
 
     /**
@@ -87,25 +116,29 @@ public class OkHttpUtils {
         public Response intercept(Chain chain) throws IOException {
             Request originalRequest = chain.request();
             Request authorised = null;
-            Log.e("wwww ",Data.getSession());
             authorised = originalRequest.newBuilder()
 //                    authorised.header("FromSource", "1.0")
                     //钱包测试用户token
 //                    authorised.header("Authorization", "bearer_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1bmlxdWVfbmFtZSI6IuWMu-WunTI2OTcwNCIsInVzZXJJZCI6IjEwMDEwMiIsInJvbGUiOiIxIiwiY3JlYXRlZCI6MTUwNzUxNzIwNDczOCwiZXhwIjoxNTA1ODE0MjM3NDQyLCJpc3MiOiJoZWFsaWZlIiwiYXVkIjoiMDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjYifQ.E9NVVakq5S71n-w_q4A707jjCLOjLNbLYhlfkOYk6kU")
                     .header("Authorization", Data.getUserToken())
                     .header("User-Agent", String.format("%s/%s (Linux; Android %s; %s Build/%s)", "YiHuiBao", versionName, Build.VERSION.RELEASE, Build.MANUFACTURER, Build.ID))
-                    .header("Set-Cookie", Data.getSession())
+//                    .header("Cookie", Data.getSession())
                     .build();
-            // JSESSIONID=81639CFA7830C33B347EC27AA76E0FCB; Path=/; HttpOnly
+            return chain.proceed(authorised);
+        }
+    };
 
-
-//            Request.Builder builder = originalRequest.newBuilder();
-//            builder.header("Authorization", Data.getUserToken());
-//            builder.header("User-Agent", String.format("%s/%s (Linux; Android %s; %s Build/%s)", "YiHuiBao", versionName, Build.VERSION.RELEASE, Build.MANUFACTURER, Build.ID));
-//            if (chain.request().headers().get(NetConstants.ADD_COOKIE) != null) {
-//                builder.header("Set-Cookie", Data.getSession());
-//            }
-//            builder.build();
+    private static final Interceptor mCookieInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request originalRequest = chain.request();
+            Request authorised = null;
+            Log.e("wwww ",Data.getSession());
+            authorised = originalRequest.newBuilder()
+                    .header("Authorization", Data.getUserToken())
+                    .header("User-Agent", String.format("%s/%s (Linux; Android %s; %s Build/%s)", "YiHuiBao", versionName, Build.VERSION.RELEASE, Build.MANUFACTURER, Build.ID))
+                    .header("Cookie", Data.getSession())
+                    .build();
             return chain.proceed(authorised);
         }
     };
@@ -130,7 +163,7 @@ public class OkHttpUtils {
                 Log.e("000 ", Data.getSession() + "");
                 builder.removeHeader(NetConstants.ADD_COOKIE);
                 if (!TextUtils.isEmpty(Data.getSession())) { //Session管理
-                    builder.header("Set-Cookie", Data.getSession());
+                    builder.header("Cookie", Data.getSession());
                 }
             }
 

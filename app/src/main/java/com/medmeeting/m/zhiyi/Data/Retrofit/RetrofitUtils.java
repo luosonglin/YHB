@@ -15,9 +15,11 @@ public abstract class RetrofitUtils {
     private static Retrofit mRetrofit;
     private static Retrofit mRetrofitMeeting;
     private static Retrofit mRetrofitLive;
+    private static Retrofit mRetrofitCookie;
 
     private static OkHttpClient mOkHttpClient;
     private static OkHttpClient mOkHttpClientLive;
+    private static OkHttpClient mOkHttpClientCookie;
 
     /**
      * 获取Retrofit对象
@@ -115,6 +117,33 @@ public abstract class RetrofitUtils {
         }
 
         return mRetrofitLive;
+    }
+
+    /**
+     * 短信Retrofit对象 Cookie
+     *
+     * @return
+     */
+    protected static Retrofit getCookieRetrofit() {
+
+        if (null == mOkHttpClientCookie) {
+
+            if (null == mOkHttpClientCookie) {
+                mOkHttpClientCookie = OkHttpUtils.getCookieOkHttpClient();
+            }
+            mRetrofitCookie = new Retrofit.Builder()
+                    //设置服务器路径
+                    .baseUrl(Constant.API_SERVER_LIVE + "/")
+                    //添加转化库，默认是Gson
+                    .addConverterFactory(GsonConverterFactory.create())
+                    //添加回调库，采用RxJava
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    //设置使用okhttp网络请求
+                    .client(mOkHttpClientCookie)
+                    .build();
+        }
+
+        return mRetrofitCookie;
     }
 
 }

@@ -656,69 +656,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (isCode) {
                 map.put("code", mPassword);
-//                HttpData.getInstance().HttpDataLogin(new Observer<SignUpDto>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        mCodeView.setError("验证码错误");
-//                        mCodeView.requestFocus();
-//                        showProgress(false);
-//
-//                        Log.e(TAG, "onError: " + e.getMessage()
-//                                + "\n" + e.getCause()
-//                                + "\n" + e.getLocalizedMessage()
-//                                + "\n" + e.getStackTrace());
-//                    }
-//
-//                    @Override
-//                    public void onNext(SignUpDto signUpDto) {
-//
-//                        Data.setUserId(signUpDto.getData().getUser().getId());
-//
-//                        try {
-//                            DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
-//                            DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
-//                            DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
-//                            DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
-//                            DBUtils.put(LoginActivity.this, "confirmNumber", signUpDto.getData().getUser().getConfirmNumber() + "");
-//                            DBUtils.put(LoginActivity.this, "tokenId", signUpDto.getData().getUser().getTokenId() + "");
-//
-//                        } catch (SnappydbException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
-//                            @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onNext(HttpResult3<Object, UserTokenDto> token) {
-//                                try {
-//                                    DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
-//                                } catch (SnappydbException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                Data.setUserToken(token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
-//
-//                                Log.d(TAG, "Login succeed!");
-//                                finish();
-//                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                            }
-//                        }, signUpDto.getData().getUser().getId());
-//                    }
-//                }, map);
-
+                map.put("source", "android");
                 HttpData.getInstance().HttpDataLoginByCode(new Observer<HttpResult3<Object, AccessToken>>() {
                     @Override
                     public void onCompleted() {
@@ -727,13 +665,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                     @Override
                     public void onError(Throwable e) {
-
+                        ToastUtils.show(LoginActivity.this, e.getMessage());
                     }
 
                     @Override
                     public void onNext(HttpResult3<Object, AccessToken> data) {
                         if (!data.getStatus().equals("success")) {
                             ToastUtils.show(LoginActivity.this, data.getMsg());
+                            showProgress(false);
                             return;
                         }
 
@@ -785,69 +724,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             } else {
                 map.put("pwd", mPassword);
-//                HttpData.getInstance().HttpDataLoginByPassword(new Observer<SignUpDto>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        mCodeView.setError("密码错误");
-//                        mCodeView.requestFocus();
-//                        showProgress(false);
-//
-//                        Log.e(TAG, "onError: " + e.getMessage()
-//                                + "\n" + e.getCause()
-//                                + "\n" + e.getLocalizedMessage()
-//                                + "\n" + e.getStackTrace());
-//                    }
-//
-//                    @Override
-//                    public void onNext(SignUpDto signUpDto) {
-//
-//                        Data.setUserId(signUpDto.getData().getUser().getId());
-//
-//                        try {
-//                            DBUtils.put(LoginActivity.this, "userId", signUpDto.getData().getUser().getId() + "");
-//                            DBUtils.put(LoginActivity.this, "userName", signUpDto.getData().getUser().getName() + "");
-//                            DBUtils.put(LoginActivity.this, "userNickName", signUpDto.getData().getUser().getNickName() + "");
-//                            DBUtils.put(LoginActivity.this, "authentication", signUpDto.getData().getUser().getAuthenStatus() + "");
-//                            DBUtils.put(LoginActivity.this, "confirmNumber", signUpDto.getData().getUser().getConfirmNumber()+"");
-//                            DBUtils.put(LoginActivity.this, "tokenId", signUpDto.getData().getUser().getTokenId()+"");
-//
-//                        } catch (SnappydbException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        HttpData.getInstance().HttpDataGetToken(new Observer<HttpResult3<Object, UserTokenDto>>() {
-//                            @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onNext(HttpResult3<Object, UserTokenDto> token) {
-//                                try {
-//                                    DBUtils.put(LoginActivity.this, "userToken", token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
-//                                } catch (SnappydbException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                Data.setUserToken(token.getEntity().getTokenType() + "_" + token.getEntity().getAccessToken());
-//
-//                                Log.d(TAG, "Login succeed!");
-//                                finish();
-//                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                            }
-//                        }, signUpDto.getData().getUser().getId());
-//                    }
-//                }, map);
-
                 HttpData.getInstance().HttpDataLoginByPwd(new Observer<HttpResult3<Object, AccessToken>>() {
                     @Override
                     public void onCompleted() {
@@ -863,6 +739,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     public void onNext(HttpResult3<Object, AccessToken> data) {
                         if (!data.getStatus().equals("success")) {
                             ToastUtils.show(LoginActivity.this, data.getMsg());
+                            showProgress(false);
                             return;
                         }
 

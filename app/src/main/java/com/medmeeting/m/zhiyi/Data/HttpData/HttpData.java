@@ -95,6 +95,7 @@ public class HttpData extends RetrofitUtils {
     protected static final APIService service = getRetrofit().create(APIService.class);
     protected static final APIMeetingService service_meeting = getMeetingRetrofit().create(APIMeetingService.class);
     protected static final APILiveService service_live = getLiveRetrofit().create(APILiveService.class);
+    protected static final APILiveService service_cookie = getCookieRetrofit().create(APILiveService.class);    //验证码需要Cookie
 
     private static final String TAG = HttpData.class.getSimpleName();
 
@@ -600,11 +601,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
     public void HttpDataGetCode(Observer<HttpResult3> observer, Map<String, Object> map) {
-        Observable observable = service_live.getCode(map);
+        Observable observable = service_cookie.getCode(map);
         setSubscribe(observable, observer);
     }
     public void HttpDataLoginByCode(Observer<HttpResult3<Object, AccessToken>> observer, Map<String, Object> map) {
-        Observable observable = service_live.getCode(map);
+        Observable observable = service_live.loginByCode(map);
         setSubscribe(observable, observer);
     }
 
