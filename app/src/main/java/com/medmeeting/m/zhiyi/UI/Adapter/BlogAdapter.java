@@ -82,9 +82,9 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
         }
 
         baseViewHolder.setText(R.id.tvTitle, blog.getTitle())
-                .setText(R.id.tvAuthorName, blog.getAuthorName())
+                .setText(R.id.tvAuthorName, " " + blog.getAuthorName())
                 .setText(R.id.tvCommentCount, "评论" + blog.getCommentCount())
-                .setText(R.id.tvTime, DateUtil.formatDate(blog.getCreatedAt(), DateUtil.TYPE_09));
+                .setText(R.id.tvTime, " " + DateUtil.formatDate(blog.getCreatedAt(), DateUtil.TYPE_09));
     }
 
     private void setGone(BaseViewHolder baseViewHolder) {

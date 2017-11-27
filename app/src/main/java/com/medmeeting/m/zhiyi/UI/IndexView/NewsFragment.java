@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.medmeeting.m.zhiyi.Base.BaseFragment;
@@ -171,6 +172,7 @@ public class NewsFragment extends BaseFragment {
     private List<String> bannerImages = new ArrayList<>();
     private List<String> bannerTitles = new ArrayList<>();
     private RecyclerView mHeaderRecyclerView;
+    private TextView mHeaderMeetingView;
     private HeaderMeetingAdapter mHeaderMeetingAdapter;
 
     private void getHeaderView() {
@@ -214,6 +216,7 @@ public class NewsFragment extends BaseFragment {
             }
         });
 
+        mHeaderMeetingView = (TextView) mHeaderView.findViewById(R.id.meeting_count);
         mHeaderRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -244,6 +247,7 @@ public class NewsFragment extends BaseFragment {
                     return;
                 }
                 mHeaderMeetingAdapter.addData(data.getData());
+                mHeaderMeetingView.setText("全部 (" + data.getData().size() + ") >");
             }
         });
 
