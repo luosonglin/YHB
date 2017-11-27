@@ -11,8 +11,10 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
@@ -600,10 +602,12 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getUserInfo();
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetCode(Observer<HttpResult3> observer, Map<String, Object> map) {
         Observable observable = service_cookie.getCode(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataLoginByCode(Observer<HttpResult3<Object, AccessToken>> observer, Map<String, Object> map) {
         Observable observable = service_live.loginByCode(map);
         setSubscribe(observable, observer);
@@ -611,6 +615,15 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataReadImageCode(Observer<ResponseBody> observer, Map<String, Object> map) {
         Observable observable = service_live.getImageCode(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataFindLabelBlogs(Observer<HttpResult3<Blog, Object>> observer, Map<String, Object> map) {
+        Observable observable = service_live.findLabelBlogs(map);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataGetHomeBannerList(Observer<HttpResult3<AdminEventActive, Object>> observer) {
+        Observable observable = service_live.getHomeBannerList();
         setSubscribe(observable, observer);
     }
 

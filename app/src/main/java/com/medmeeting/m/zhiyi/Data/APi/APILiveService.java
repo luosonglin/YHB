@@ -2,7 +2,9 @@ package com.medmeeting.m.zhiyi.Data.APi;
 
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
@@ -320,13 +322,6 @@ public interface APILiveService {
     Observable<HttpResult3<VideoListEntity, Object>> getMyPayVideo(@Body BasePageSearchEntity basePageSearchEntity);
 
     /**
-     * 新闻
-     */
-    ///v1/app/Common/A/getLabels 标签模块_获取栏目标签接口
-    @GET("/v1/app/Common/A/getLocalLabel")
-    Observable<HttpResult3<Object, IndexLabel>>  getLabels();
-
-    /**
      * 用户
      */
     //GET /v1/oauth/token/pwd 2.0新版本手机号+密码登录接口
@@ -353,4 +348,20 @@ public interface APILiveService {
 //    //GET /v1/msgs/codes 发送验证码接口
 //    @GET("/v1/msgs/codes")
 //    Observable<HttpResult3>
+
+
+    /**
+     * 新闻
+     */
+    ///v1/app/Common/A/getLabels 标签模块_获取栏目标签接口
+    @GET("/v1/app/Common/A/getLocalLabel")
+    Observable<HttpResult3<Object, IndexLabel>>  getLabels();
+
+    //GET /v1/app/Home/E/findLabelBlogList 首页模块_获取首页相关标签新闻列表
+    @GET("/v1/app/Home/E/findLabelBlogList")
+    Observable<HttpResult3<Blog, Object>> findLabelBlogs(@QueryMap Map<String, Object> map);
+
+    //GET /v1/app/Home/A/getHomeBannerList 首页模块_获取首页banner接口
+    @GET("/v1/app/Home/A/getHomeBannerList")
+    Observable<HttpResult3<AdminEventActive, Object>> getHomeBannerList();
 }
