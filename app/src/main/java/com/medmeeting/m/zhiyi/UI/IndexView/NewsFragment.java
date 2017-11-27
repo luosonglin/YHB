@@ -100,7 +100,11 @@ public class NewsFragment extends BaseFragment {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData();
+                //如果是推荐页，自动加载header view
+                if (mLabelId == 0)
+                    getHeaderView();
+                else
+                    getData();
             }
         });
         mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
