@@ -43,6 +43,15 @@ public class LiveLabel extends MultiItemEntity implements Serializable {
         itemType = type;
     }
 
+    public LiveLabel(int id, String labelName, int useCount, int searchCount, int sort, String iconUrl) {
+        this.id = id;
+        this.labelName = labelName;
+        this.useCount = useCount;
+        this.searchCount = searchCount;
+        this.sort = sort;
+        this.iconUrl = iconUrl;
+    }
+
     public int getId() {
         return id;
     }

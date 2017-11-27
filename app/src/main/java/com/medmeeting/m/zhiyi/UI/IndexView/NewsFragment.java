@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,9 +127,14 @@ public class NewsFragment extends BaseFragment {
     @Override
     protected void lazyLoad() {
         super.lazyLoad();
-//        if (TextUtils.isEmpty(mTitleCode))
-//            mTitleCode = getArguments().getString(ConstanceValue.DATA);
-        getData();
+        if (TextUtils.isEmpty(mLabelId+""))
+            mLabelId = getArguments().getInt(ConstanceValue.DATA);
+
+        //如果是推荐页，自动加载header view
+        if (mLabelId == 0)
+            getHeaderView();
+        else
+            getData();
     }
 
     private void getData() {
@@ -161,7 +167,6 @@ public class NewsFragment extends BaseFragment {
                     ToastUtils.show(getActivity(), data.getMsg());
                     return;
                 }
-                getHeaderView();
                 mAdapter.setNewData(data.getData());
                 Log.e(getActivity().getLocalClassName(), data.getData().get(0).getTitle());
                 srl.setRefreshing(false);
@@ -238,7 +243,6 @@ public class NewsFragment extends BaseFragment {
         mHeaderLiveView = (TextView) mHeaderView.findViewById(R.id.live_count);
         mHeaderLiveImage1 = (ImageView) mHeaderView.findViewById(R.id.live_image1);
         mHeaderLiveImage2 = (ImageView) mHeaderView.findViewById(R.id.live_image2);
-
         mHeaderLiveName1 = (TextView) mHeaderView.findViewById(R.id.live_name1);
         mHeaderLiveName11 = (TextView) mHeaderView.findViewById(R.id.live_name11);
         mHeaderLiveName2 = (TextView) mHeaderView.findViewById(R.id.live_name2);
@@ -306,7 +310,7 @@ public class NewsFragment extends BaseFragment {
         mHeaderRecyclerView.setHasFixedSize(true);
         mHeaderMeetingAdapter = new HeaderMeetingAdapter(R.layout.item_header_meeting, null);
         //设置是否自动加载以及加载个数
-        mHeaderMeetingAdapter.openLoadMore(6, true);
+        mHeaderMeetingAdapter.openLoadMore(2, true);
         //将适配器添加到RecyclerView
         mHeaderRecyclerView.setAdapter(mHeaderMeetingAdapter);
         HttpData.getInstance().HttpDataGetgreatEventList(new Observer<HttpResult3<Event, Object>>() {
@@ -332,6 +336,7 @@ public class NewsFragment extends BaseFragment {
         });
 
         mAdapter.addHeaderView(mHeaderView);
+        srl.setRefreshing(false);
     }
 
     @Override

@@ -145,13 +145,17 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
                 @Override
                 public void onNext(HttpResult3<Object, IndexLabel> data) {
                     //默认添加频道
-                    mSelectedDatas.addAll(data.getEntity().getDefaultList());
+                    List<LiveLabel> liveLabels = new ArrayList<>();
+                    liveLabels.add(new LiveLabel(0, "推荐", 0, 0, 0, ""));
+                    liveLabels.addAll(data.getEntity().getDefaultList());
+
+                    mSelectedDatas.addAll(liveLabels);
                     String selectedStr = mGson.toJson(mSelectedDatas);
                     SharedPreferencesMgr.setString(TITLE_SELECTED, selectedStr);
 
                     mUnSelectedDatas.addAll(data.getEntity().getSysList());
                     String unselectTitle = mGson.toJson(mUnSelectedDatas);
-                    SharedPreferencesMgr.setString(TITLE_UNSELECTED, selectedStr);
+                    SharedPreferencesMgr.setString(TITLE_UNSELECTED, unselectTitle);
 
                     initView();
                 }
