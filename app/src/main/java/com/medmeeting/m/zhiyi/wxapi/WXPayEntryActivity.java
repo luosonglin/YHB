@@ -102,6 +102,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                         Log.e(TAG, "onNext");
                     }
                 }, Data.getTradeId());
+                //*********我的订单页
+                //*********我的订单页
+                //*********我的订单页
+                //*********我的订单页
+                //*********我的订单页
                 startActivity(new Intent(this, MyPayLiveRoomActivity.class));
             }
             finish();

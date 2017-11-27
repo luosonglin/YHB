@@ -222,6 +222,10 @@ public interface APILiveService {
     Observable<HttpResult3> withdraw(@Body ExtractEntity extractEntity);
 
 
+    ////////**********************
+    ////////**********************
+    ////////**********************
+    ////////**********************
     //POST /v1/anchor/livePay/{programId}/settlement 新增直播节目结算
     @POST("/v1/anchor/livePay/{programId}/settlement")
     Observable<HttpResult3> postLiveSettlement(@Path("programId") Integer programId);
@@ -306,6 +310,11 @@ public interface APILiveService {
     Observable<HttpResult3<Object, LiveSettlementEntity>> getLiveSettlement(@Path("programId") Integer programId);
 
 
+    //*************************
+    //*************************
+    //*************************
+    //*************************
+    //*************************
     //POST /v1/anchor/livePay/{programId}/extract 新增 节目门票 提现申请
     @POST("/v1/anchor/livePay/{programId}/extract")
     Observable<HttpResult3<Object, LiveExtract>> extract(@Path("programId") Integer programId);
@@ -369,4 +378,8 @@ public interface APILiveService {
     //GET /v1/app/Home/B/greatEventList 首页模块_首页会议精选_查看会议精选列表
     @GET("/v1/app/Home/B/greatEventList")
     Observable<HttpResult3<Event, Object>> greatEventList();
+
+    //GET /v1/app/Home/M/selectVideoLive 首页模块_查看直播列表
+    @GET("/v1/app/Home/M/selectVideoLive")
+    Observable<HttpResult3<Blog, Object>> selectVideoLive();
 }

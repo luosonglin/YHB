@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -171,6 +173,20 @@ public class NewsFragment extends BaseFragment {
     private Banner mBanner;
     private List<String> bannerImages = new ArrayList<>();
     private List<String> bannerTitles = new ArrayList<>();
+
+    private RelativeLayout mHeaderLive;
+    private RelativeLayout mHeaderLive1;
+    private RelativeLayout mHeaderLive2;
+    private TextView mHeaderLiveView;
+    private ImageView mHeaderLiveImage1;
+    private ImageView mHeaderLiveImage2;
+    private TextView mHeaderLiveName1;
+    private TextView mHeaderLiveName11;
+    private TextView mHeaderLiveName2;
+    private TextView mHeaderLiveName22;
+    private TextView mHeaderLiveStatus1;
+    private TextView mHeaderLiveStatus2;
+
     private RecyclerView mHeaderRecyclerView;
     private TextView mHeaderMeetingView;
     private HeaderMeetingAdapter mHeaderMeetingAdapter;
@@ -213,6 +229,70 @@ public class NewsFragment extends BaseFragment {
 //                    intent.putExtras(bundle);
 //                    startActivity(intent);
                 });
+            }
+        });
+
+        mHeaderLive = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt);
+        mHeaderLive1 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt1);
+        mHeaderLive2 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt2);
+        mHeaderLiveView = (TextView) mHeaderView.findViewById(R.id.live_count);
+        mHeaderLiveImage1 = (ImageView) mHeaderView.findViewById(R.id.live_image1);
+        mHeaderLiveImage2 = (ImageView) mHeaderView.findViewById(R.id.live_image2);
+
+        mHeaderLiveName1 = (TextView) mHeaderView.findViewById(R.id.live_name1);
+        mHeaderLiveName11 = (TextView) mHeaderView.findViewById(R.id.live_name11);
+        mHeaderLiveName2 = (TextView) mHeaderView.findViewById(R.id.live_name2);
+        mHeaderLiveName22 = (TextView) mHeaderView.findViewById(R.id.live_name22);
+        mHeaderLiveStatus1 = (TextView) mHeaderView.findViewById(R.id.status1);
+        mHeaderLiveStatus2 = (TextView) mHeaderView.findViewById(R.id.status2);
+        HttpData.getInstance().HttpDataSelectVideoLive(new Observer<HttpResult3<Blog, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Blog, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+                    return;
+                }
+                switch (data.getData().size()) {
+                    case 0:
+                        mHeaderLive.setVisibility(View.GONE);
+                        mHeaderLive1.setVisibility(View.GONE);
+                        mHeaderLive2.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        mHeaderLive.setVisibility(View.VISIBLE);
+                        mHeaderLive1.setVisibility(View.VISIBLE);
+                        mHeaderLive2.setVisibility(View.GONE);
+                        mHeaderLiveView.setText("下午好，今天有一场直播");
+                        mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
+                        mHeaderLiveName1.setText(data.getData().get(0).getTitle());
+                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName());
+                        mHeaderLiveStatus1.setText(data.getData().get(0).getStatus());
+                        break;
+                    case 2:
+                        mHeaderLive.setVisibility(View.VISIBLE);
+                        mHeaderLive1.setVisibility(View.VISIBLE);
+                        mHeaderLive2.setVisibility(View.VISIBLE);
+                        mHeaderLiveView.setText("下午好，今天有两场直播");
+                        mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
+                        mHeaderLiveName1.setText(data.getData().get(0).getTitle());
+                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName());
+                        mHeaderLiveStatus1.setText(data.getData().get(0).getStatus());
+                        mHeaderLiveImage2.setImageResource(R.mipmap.index_alert2);
+                        mHeaderLiveName2.setText(data.getData().get(1).getTitle());
+                        mHeaderLiveName22.setText(data.getData().get(1).getAuthorName());
+                        mHeaderLiveStatus2.setText(data.getData().get(1).getStatus());
+                        break;
+                }
             }
         });
 

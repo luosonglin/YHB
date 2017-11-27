@@ -631,6 +631,10 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.greatEventList();
         setSubscribe(observable, observer);
     }
+    public void HttpDataSelectVideoLive(Observer<HttpResult3<Blog, Object>> observer) {
+        Observable observable = service_live.selectVideoLive();
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 插入观察者
