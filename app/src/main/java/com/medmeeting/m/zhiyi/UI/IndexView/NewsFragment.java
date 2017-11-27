@@ -14,8 +14,10 @@ import com.medmeeting.m.zhiyi.Base.BaseFragment;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BlogAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.HeaderMeetingAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
+import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -23,7 +25,6 @@ import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,6 +168,8 @@ public class NewsFragment extends BaseFragment {
     private Banner mBanner;
     private List<String> bannerImages = new ArrayList<>();
     private List<String> bannerTitles = new ArrayList<>();
+    private RecyclerView mHeaderRecyclerView;
+    private HeaderMeetingAdapter mHeaderMeetingAdapter;
 
     private void getHeaderView() {
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
@@ -198,20 +201,51 @@ public class NewsFragment extends BaseFragment {
                         .setBannerAnimation(Transformer.BackgroundToForeground)
                         .setImageLoader(new GlideImageLoader())
                         .start();
-                mBanner.setOnBannerClickListener(new OnBannerClickListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-//                        Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
-//                        Bundle bundle = new Bundle();
-//                        bundle.putString("eventId", bannerDto.getBanners().get(position - 1).getId() + "");
-//                        bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
-//                        intent.putExtras(bundle);
-//                        startActivity(intent);
-                    }
+                mBanner.setOnBannerClickListener(position -> {
+//                    Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("eventId", bannerDto.getBanners().get(position - 1).getId() + "");
+//                    bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
+//                    intent.putExtras(bundle);
+//                    startActivity(intent);
                 });
-                mAdapter.addHeaderView(mHeaderView);
             }
         });
+
+        mHeaderRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
+        //设置布局管理器
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mHeaderRecyclerView.setLayoutManager(linearLayoutManager);
+        //如果Item高度固定  增加该属性能够提高效率
+        mHeaderRecyclerView.setHasFixedSize(true);
+        mHeaderMeetingAdapter = new HeaderMeetingAdapter(R.layout.item_header_meeting, null);
+        //设置是否自动加载以及加载个数
+        mHeaderMeetingAdapter.openLoadMore(6, true);
+        //将适配器添加到RecyclerView
+        mHeaderRecyclerView.setAdapter(mHeaderMeetingAdapter);
+        HttpData.getInstance().HttpDataGetgreatEventList(new Observer<HttpResult3<Event, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Event, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+                    return;
+                }
+                mHeaderMeetingAdapter.addData(data.getData());
+            }
+        });
+
+        mAdapter.addHeaderView(mHeaderView);
     }
 
     @Override

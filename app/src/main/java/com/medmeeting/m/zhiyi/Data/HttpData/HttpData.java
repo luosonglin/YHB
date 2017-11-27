@@ -20,6 +20,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
@@ -624,6 +625,10 @@ public class HttpData extends RetrofitUtils {
     }
     public void HttpDataGetHomeBannerList(Observer<HttpResult3<AdminEventActive, Object>> observer) {
         Observable observable = service_live.getHomeBannerList();
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataGetgreatEventList(Observer<HttpResult3<Event, Object>> observer) {
+        Observable observable = service_live.greatEventList();
         setSubscribe(observable, observer);
     }
 

@@ -8,6 +8,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
@@ -364,4 +365,8 @@ public interface APILiveService {
     //GET /v1/app/Home/A/getHomeBannerList 首页模块_获取首页banner接口
     @GET("/v1/app/Home/A/getHomeBannerList")
     Observable<HttpResult3<AdminEventActive, Object>> getHomeBannerList();
+
+    //GET /v1/app/Home/B/greatEventList 首页模块_首页会议精选_查看会议精选列表
+    @GET("/v1/app/Home/B/greatEventList")
+    Observable<HttpResult3<Event, Object>> greatEventList();
 }
