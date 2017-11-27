@@ -20,6 +20,7 @@ import com.medmeeting.m.zhiyi.MVP.Listener.OnChannelListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.ChannelPagerAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.CommonUtil;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
@@ -130,7 +131,7 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
 //            }
 
             //获取label
-            HttpData.getInstance().HttpDataGetLabels(new Observer<HttpResult3<LiveLabel, Object>>() {
+            HttpData.getInstance().HttpDataGetLabels(new Observer<HttpResult3<Object, IndexLabel>>() {
                 @Override
                 public void onCompleted() {
 
@@ -142,12 +143,15 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
                 }
 
                 @Override
-                public void onNext(HttpResult3<LiveLabel, Object> data) {
-                    //默认添加了全部频道
-                    mSelectedDatas.addAll(data.getData());
-
+                public void onNext(HttpResult3<Object, IndexLabel> data) {
+                    //默认添加频道
+                    mSelectedDatas.addAll(data.getEntity().getDefaultList());
                     String selectedStr = mGson.toJson(mSelectedDatas);
                     SharedPreferencesMgr.setString(TITLE_SELECTED, selectedStr);
+
+                    mUnSelectedDatas.addAll(data.getEntity().getSysList());
+                    String unselectTitle = mGson.toJson(mUnSelectedDatas);
+                    SharedPreferencesMgr.setString(TITLE_UNSELECTED, selectedStr);
 
                     initView();
                 }

@@ -8,13 +8,13 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveExtract;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
@@ -323,8 +323,8 @@ public interface APILiveService {
      * 新闻
      */
     ///v1/app/Common/A/getLabels 标签模块_获取栏目标签接口
-    @GET("/v1/app/Common/F/getLabels")
-    Observable<HttpResult3<LiveLabel, Object>>  getLabels();
+    @GET("/v1/app/Common/A/getLocalLabel")
+    Observable<HttpResult3<Object, IndexLabel>>  getLabels();
 
     /**
      * 用户

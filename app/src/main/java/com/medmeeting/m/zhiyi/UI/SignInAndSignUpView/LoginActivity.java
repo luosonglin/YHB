@@ -698,6 +698,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             public void onNext(HttpResult3<Object, UserInfoDto> data2) {
                                 if (!data2.getStatus().equals("success")) {
                                     ToastUtils.show(LoginActivity.this, data2.getMsg());
+                                    showProgress(false);
                                     return;
                                 }
 

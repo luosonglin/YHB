@@ -1,13 +1,22 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.medmeeting.m.zhiyi.Base.BaseFragment;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Adapter.BlogAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -20,14 +29,12 @@ import butterknife.ButterKnife;
  */
 public class NewsFragment extends BaseFragment {
 
-//    @Bind(R.id.recyclerView)
-//    RecyclerView recyclerView;
-//    @Bind(R.id.srl)
-//    SwipeRefreshLayout srl;
+    RecyclerView recyclerView;
+    SwipeRefreshLayout srl;
 
-//    private String mTitleCode = "";
-//    protected List<Blog> mDatas = new ArrayList<>();
-//    protected BaseQuickAdapter mAdapter;
+    private String mTitleCode = "";
+    protected List<Blog> mDatas = new ArrayList<>();
+    protected BaseQuickAdapter mAdapter;
 
     @Override
     protected View loadViewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -46,39 +53,40 @@ public class NewsFragment extends BaseFragment {
 
     @Override
     protected void bindViews(View view) {
-
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
     }
 
     @Override
     protected void processLogic() {
-//        initCommonRecyclerView(createAdapter(), null);
-//        mTitleCode = getArguments().getString(ConstanceValue.DATA);
+        initCommonRecyclerView(createAdapter(), null);
+        mTitleCode = getArguments().getString(ConstanceValue.DATA);
     }
 
-//    public RecyclerView initCommonRecyclerView(BaseQuickAdapter adapter, RecyclerView.ItemDecoration decoration) {
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        if (decoration != null) {
-//            recyclerView.addItemDecoration(decoration);
-//        }
-//        recyclerView.setAdapter(adapter);
-//        return recyclerView;
-//    }
-//
-//    protected BaseQuickAdapter createAdapter() {
-//        return mAdapter = new BlogAdapter(mDatas);
-//    }
+    public RecyclerView initCommonRecyclerView(BaseQuickAdapter adapter, RecyclerView.ItemDecoration decoration) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if (decoration != null) {
+            recyclerView.addItemDecoration(decoration);
+        }
+        recyclerView.setAdapter(adapter);
+        return recyclerView;
+    }
+
+    protected BaseQuickAdapter createAdapter() {
+        return mAdapter = new BlogAdapter(mDatas);
+    }
 
     @Override
     protected void setListener() {
-//        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                getData();
-//            }
-//        });
-//        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int i) {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+            }
+        });
+        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int i) {
 //                News news = mDatas.get(i);
 //                ///item_seo_url的值是item/6412427713050575361/  ,取出6412427713050575361
 //                String itemId = news.item_seo_url.replace("item/", "").replace("/", "");
@@ -93,8 +101,8 @@ public class NewsFragment extends BaseFragment {
 //                } else {
 //                    BaseNewsActivity.startNews(mContext, url, news.group_id, itemId);
 //                }
-//            }
-//        });
+            }
+        });
     }
 
     @Override
@@ -102,18 +110,19 @@ public class NewsFragment extends BaseFragment {
         super.lazyLoad();
 //        if (TextUtils.isEmpty(mTitleCode))
 //            mTitleCode = getArguments().getString(ConstanceValue.DATA);
-//        getData();
+        getData();
     }
 
     private void getData() {
-//        if (mDatas.size() == 0) {
-//
-//            //没加载过数据
-////            if (loadingView == null) loadingView = get(R.id.loadingView);
-////            loadingView.setVisibility(View.VISIBLE);
-////            loadingView.showLoading();
-//        }
-////        mvpPresenter.getNewsList(mTitleCode);
+        if (mDatas.size() == 0) {
+
+            //没加载过数据
+//            if (loadingView == null) loadingView = get(R.id.loadingView);
+//            loadingView.setVisibility(View.VISIBLE);
+//            loadingView.showLoading();
+        }
+//        mvpPresenter.getNewsList(mTitleCode);
+
     }
 
     @Override
