@@ -41,6 +41,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                     baseViewHolder.setVisible(R.id.rlRightImg, true)
                             .setVisible(R.id.viewFill, true);
                 }
+
                 break;
             case "2":
                 baseViewHolder.setVisible(R.id.llCenterImg, true);
@@ -71,16 +72,19 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                         .load(blog.getImages())
                         .crossFade()
                         .placeholder(R.mipmap.ic_launcher)
-                        .into((ImageView) baseViewHolder.getView(R.id.ivRightImg1));
-                baseViewHolder.setVisible(R.id.rlRightImg, true)
-                        .setVisible(R.id.viewFill, true)
-                        .setVisible(R.id.llVideo, true).setText(R.id.tvDuration, blog.getTitle());
+                        .into((ImageView) baseViewHolder.getView(R.id.ivRightImg2));
+                baseViewHolder.setVisible(R.id.rlRightImg, false)
+                        .setVisible(R.id.viewFill, false)
+                        .setVisible(R.id.llVideo, false)
+                        .setVisible(R.id.videoRlyt, true)
+                        .setText(R.id.tvDuration1, blog.getBlogType());
                 break;
         }
+
         baseViewHolder.setText(R.id.tvTitle, blog.getTitle())
                 .setText(R.id.tvAuthorName, blog.getAuthorName())
-                .setText(R.id.tvCommentCount, blog.getCommentCount() + "评论")
-                .setText(R.id.tvTime, DateUtil.formatDate(blog.getCreatedAt(), DateUtil.TYPE_02));
+                .setText(R.id.tvCommentCount, "评论" + blog.getCommentCount())
+                .setText(R.id.tvTime, DateUtil.formatDate(blog.getCreatedAt(), DateUtil.TYPE_09));
     }
 
     private void setGone(BaseViewHolder baseViewHolder) {
@@ -88,6 +92,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                 .setVisible(R.id.llCenterImg, false)
                 .setVisible(R.id.rlBigImg, false)
                 .setVisible(R.id.llVideo, false)
-                .setVisible(R.id.rlRightImg, false);
+                .setVisible(R.id.rlRightImg, false)
+                .setVisible(R.id.videoRlyt, false);
     }
 }

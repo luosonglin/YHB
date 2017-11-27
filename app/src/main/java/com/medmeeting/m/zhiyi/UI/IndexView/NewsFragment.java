@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.UI.IndexView;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -73,7 +74,7 @@ public class NewsFragment extends BaseFragment {
 
     @Override
     protected void processLogic() {
-        initCommonRecyclerView(createAdapter(), null);
+        initCommonRecyclerView(createAdapter(), new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mLabelId = getArguments().getInt(ConstanceValue.DATA);
     }
 
@@ -160,6 +161,7 @@ public class NewsFragment extends BaseFragment {
                 getHeaderView();
                 mAdapter.setNewData(data.getData());
                 Log.e(getActivity().getLocalClassName(), data.getData().get(0).getTitle());
+                srl.setRefreshing(false);
             }
         }, map);
     }
