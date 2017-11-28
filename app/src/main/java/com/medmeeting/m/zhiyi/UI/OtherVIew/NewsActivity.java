@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,7 +55,9 @@ public class NewsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
     private View mFooterView;
+
     private int blogId;
+    private boolean collectionType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
 
+        initToolbar();
         toolbar.setTitle("");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         setSupportActionBar(toolbar);
@@ -112,6 +117,7 @@ public class NewsActivity extends AppCompatActivity {
                     return;
                 }
                 initView(data.getEntity());
+                collectionType = data.getEntity().isCollectionType();
             }
         }, map);
     }
@@ -206,7 +212,47 @@ public class NewsActivity extends AppCompatActivity {
                 inputEditor.setText("");
             }
         }, blogComment);
+    }
 
+
+    private void initToolbar() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
+        toolbar.setNavigationOnClickListener(view -> finish());
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_share:
+                    break;
+                case R.id.action_collect:
+                    break;
+                case R.id.action_collect_no:
+                    break;
+            }
+            return true;
+        });
+    }
+
+    /**
+     * 菜单栏 修改器下拉刷新模式
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_blog_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.e(getLocalClassName(), collectionType+"");
+        if (collectionType) {
+            menu.findItem(R.id.action_collect).setVisible(true);
+            menu.findItem(R.id.action_collect_no).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_collect).setVisible(false);
+            menu.findItem(R.id.action_collect_no).setVisible(true);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 }
 
