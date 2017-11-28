@@ -1,7 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -80,8 +79,6 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                         .setVisible(R.id.llVideo, false)
                         .setVisible(R.id.videoRlyt, true);
                 baseViewHolder.setText(R.id.tvDuration1, TimeUtils.getTimeFromSecond(blog.getTimeSecond()));
-                Log.e("aaa ", blog.getTimeSecond()+"");
-                Log.e("aaa ", TimeUtils.getTimeFromSecond(blog.getTimeSecond())+"");
                 break;
         }
 

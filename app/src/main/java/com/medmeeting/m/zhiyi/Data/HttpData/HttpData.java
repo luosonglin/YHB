@@ -658,6 +658,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataInsertCollection(Observer<HttpResult3> observer, Map<String, Object> map) {
+        Observable observable = service_live.insertCollection(map);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *

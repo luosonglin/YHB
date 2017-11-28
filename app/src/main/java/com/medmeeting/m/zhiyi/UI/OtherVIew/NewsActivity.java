@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -66,11 +65,6 @@ public class NewsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initToolbar();
-        toolbar.setTitle("");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        toolbar.setNavigationOnClickListener(view -> finish());
 
         blogId = getIntent().getIntExtra("blogId", 0);
         getBlogDetailService(blogId);
@@ -118,6 +112,7 @@ public class NewsActivity extends AppCompatActivity {
                 }
                 initView(data.getEntity());
                 collectionType = data.getEntity().isCollectionType();
+                invalidateOptionsMenu(); //重新绘制menu
             }
         }, map);
     }
@@ -223,10 +218,61 @@ public class NewsActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_share:
+                    ToastUtils.show(NewsActivity.this, "share");
                     break;
                 case R.id.action_collect:
+                    Map<String, Object> map1 = new HashMap<>();
+                    map1.put("blogId", blogId);
+                    map1.put("collectionType", false);
+                    HttpData.getInstance().HttpDataInsertCollection(new Observer<HttpResult3>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastUtils.show(NewsActivity.this, e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3 data) {
+                            if (!data.getStatus().equals("success")) {
+                                ToastUtils.show(NewsActivity.this, data.getMsg());
+                                return;
+                            }
+                            ToastUtils.show(NewsActivity.this, "取消收藏");
+                            collectionType = false;
+                            invalidateOptionsMenu(); //重新绘制menu
+                        }
+                    }, map1);
                     break;
                 case R.id.action_collect_no:
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("blogId", blogId);
+                    map.put("collectionType", true);
+                    HttpData.getInstance().HttpDataInsertCollection(new Observer<HttpResult3>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastUtils.show(NewsActivity.this, e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3 data) {
+                            if (!data.getStatus().equals("success")) {
+                                ToastUtils.show(NewsActivity.this, data.getMsg());
+                                return;
+                            }
+                            ToastUtils.show(NewsActivity.this, "收藏成功");
+                            collectionType = true;
+                            invalidateOptionsMenu(); //重新绘制menu
+                        }
+                    }, map);
                     break;
             }
             return true;
@@ -244,7 +290,6 @@ public class NewsActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        Log.e(getLocalClassName(), collectionType+"");
         if (collectionType) {
             menu.findItem(R.id.action_collect).setVisible(true);
             menu.findItem(R.id.action_collect_no).setVisible(false);

@@ -404,4 +404,8 @@ public interface APILiveService {
     //POST /v1/app/Home/K/insertComment 首页模块_添加相关新闻评论
     @POST("/v1/app/Home/K/insertComment")
     Observable<HttpResult3> insertComment(@Body BlogComment blogComment);
+
+    //POST /v1/app/Home/L/insertCollection 首页模块_收藏指定新闻
+    @POST("/v1/app/Home/L/insertCollection")
+    Observable<HttpResult3> insertCollection(@QueryMap Map<String, Object> map);
 }

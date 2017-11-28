@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.medmeeting.m.zhiyi.UI.OtherVIew.NewsActivity"
@@ -31,8 +30,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="left"
-                android:text="干物妹标题标题标题标题干物妹标题标题标题标题"
                 android:maxLines="2"
+                android:text="干物妹标题标题标题标题干物妹标题标题标题标题"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -75,7 +74,7 @@
                 android:layout_marginTop="16dp"
                 android:text="..."
                 android:textColor="@color/black"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,41 +89,105 @@
                     app:spacing="4dp" />
             </LinearLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="20dp">
+
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="1.5dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/deepskyblue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/line4"
+                    android:gravity="center_vertical"
+                    android:text="最新评论"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey1" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="50dp"
+                android:background="@color/white" />
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp">
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
         <View
-            android:id="@+id/line4"
-            android:layout_width="1.5dp"
-            android:layout_height="14dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/deepskyblue" />
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/input_llyt"
+            android:background="@color/grey1" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/input_llyt"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/line4"
-            android:gravity="center_vertical"
-            android:text="最新评论"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-    </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey1" />
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/fragment_video_detail_command"/>
-</LinearLayout>
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <RelativeLayout
+                android:id="@+id/input_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/input_editor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/input_emoji_btn"
+                    android:background="@drawable/edittext_delete_line"
+                    android:hint="我来说几句"
+                    android:labelFor="@id/input_editor"
+                    android:maxLines="4"
+                    android:paddingLeft="12dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/input_send"
+                android:layout_width="60dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:background="@color/cornflowerblue"
+                android:enabled="true"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/rc_send"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
