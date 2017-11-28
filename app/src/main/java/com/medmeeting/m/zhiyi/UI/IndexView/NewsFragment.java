@@ -184,7 +184,7 @@ public class NewsFragment extends BaseFragment {
 //                                bundle.putString("blogId", data.getData().get(i).getId()+"");
 //                                bundle.putSerializable("blog", data.getData().get(i));
 //                                intent.putExtras(bundle);
-                                intent.putExtra("blodId", data.getData().get(i).getId());
+                                intent.putExtra("blogId", data.getData().get(i).getId());
                                 break;
                             case "2":
                                 break;

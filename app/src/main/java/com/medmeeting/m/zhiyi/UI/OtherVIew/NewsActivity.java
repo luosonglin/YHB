@@ -50,16 +50,9 @@ public class NewsActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
 
-        int blogId = getIntent().getExtras().getInt("blogId");
-        getBlogDetailService(blogId);
-
+        getBlogDetailService(getIntent().getIntExtra("blogId", 0));
     }
 
     @Override
@@ -84,6 +77,7 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(NewsActivity.this, e.getMessage());
+                finish();
             }
 
             @Override
