@@ -144,7 +144,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnChannelDr
 
     @Override
     public void onItemMove(int starPos, int endPos) {
-//        if (starPos < 0||endPos<0) return;
+        if (starPos < 0||endPos<0) return;
         //我的频道之间移动
         if (mOnChannelListener != null)
             mOnChannelListener.onItemMove(starPos - 1, endPos - 1);//去除标题所占的一个index

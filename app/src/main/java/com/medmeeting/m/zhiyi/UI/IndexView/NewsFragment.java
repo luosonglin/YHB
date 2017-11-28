@@ -1,12 +1,12 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.NewsActivity;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
@@ -107,31 +108,31 @@ public class NewsFragment extends BaseFragment {
                     getData();
             }
         });
-        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int i) {
-//                News news = mDatas.get(i);
-//                ///item_seo_url的值是item/6412427713050575361/  ,取出6412427713050575361
-//                String itemId = news.item_seo_url.replace("item/", "").replace("/", "");
-//                StringBuffer urlSb = new StringBuffer("http://m.toutiao.com/");
-//                if (!itemId.startsWith("i"))
-//                    urlSb.append("i");
-//                urlSb.append(itemId).append("/info/");
-//                String url = urlSb.toString();
-//                if (news.article_genre.equals(ConstanceValue.ARTICLE_GENRE_VIDEO)) {
-//                    //视频
-//                    BaseNewsActivity.startVideo(mContext, url, news.group_id, itemId);
-//                } else {
-//                    BaseNewsActivity.startNews(mContext, url, news.group_id, itemId);
-//                }
-            }
-        });
+//        mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int i) {
+////                News news = mDatas.get(i);
+////                ///item_seo_url的值是item/6412427713050575361/  ,取出6412427713050575361
+////                String itemId = news.item_seo_url.replace("item/", "").replace("/", "");
+////                StringBuffer urlSb = new StringBuffer("http://m.toutiao.com/");
+////                if (!itemId.startsWith("i"))
+////                    urlSb.append("i");
+////                urlSb.append(itemId).append("/info/");
+////                String url = urlSb.toString();
+////                if (news.article_genre.equals(ConstanceValue.ARTICLE_GENRE_VIDEO)) {
+////                    //视频
+////                    BaseNewsActivity.startVideo(mContext, url, news.group_id, itemId);
+////                } else {
+////                    BaseNewsActivity.startNews(mContext, url, news.group_id, itemId);
+////                }
+//            }
+//        });
     }
 
     @Override
     protected void lazyLoad() {
         super.lazyLoad();
-        if (TextUtils.isEmpty(mLabelId+""))
+        if (TextUtils.isEmpty(mLabelId + ""))
             mLabelId = getArguments().getInt(ConstanceValue.DATA);
 
         //如果是推荐页，自动加载header view
@@ -172,7 +173,27 @@ public class NewsFragment extends BaseFragment {
                     return;
                 }
                 mAdapter.setNewData(data.getData());
-                Log.e(getActivity().getLocalClassName(), data.getData().get(0).getTitle());
+                mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int i) {
+                        Intent intent = null;
+                        switch (data.getData().get(i).getBlogType()) {
+                            case "1":
+                                intent = new Intent(getActivity(), NewsActivity.class);
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("blogId", data.getData().get(i).getId()+"");
+//                                bundle.putSerializable("blog", data.getData().get(i));
+//                                intent.putExtras(bundle);
+                                intent.putExtra("blodId", data.getData().get(i).getId());
+                                break;
+                            case "2":
+                                break;
+                            case "3":
+                                break;
+                        }
+                        startActivity(intent);
+                    }
+                });
                 srl.setRefreshing(false);
             }
         }, map);

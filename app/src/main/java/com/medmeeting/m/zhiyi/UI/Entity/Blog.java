@@ -7,7 +7,7 @@ package com.medmeeting.m.zhiyi.UI.Entity;
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class Blog {
+public class Blog {//implements Serializable {
 
     /**
      * id : 5

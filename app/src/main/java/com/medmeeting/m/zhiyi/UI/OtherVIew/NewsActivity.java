@@ -7,18 +7,21 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
+import com.medmeeting.m.zhiyi.UI.Entity.Blog;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.Util.DateUtil;
-import com.squareup.picasso.Picasso;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
+import rx.Observer;
 
 public class NewsActivity extends AppCompatActivity {
 
@@ -28,8 +31,6 @@ public class NewsActivity extends AppCompatActivity {
     TextView name;
     @Bind(R.id.time)
     TextView time;
-    @Bind(R.id.pic)
-    CircleImageView avatar;
     @Bind(R.id.title)
     TextView title;
     @Bind(R.id.content)
@@ -56,7 +57,8 @@ public class NewsActivity extends AppCompatActivity {
             }
         });
 
-        initView();
+        int blogId = getIntent().getExtras().getInt("blogId");
+        getBlogDetailService(blogId);
 
     }
 
@@ -70,21 +72,38 @@ public class NewsActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void initView() {
-        String blogId = getIntent().getExtras().getString("blogId");
-        Serializable blog = getIntent().getExtras().getSerializable("blog");
+    private void getBlogDetailService(Integer blogId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("blogId", blogId);
+        HttpData.getInstance().HttpDataGetPicNews(new Observer<HttpResult3<Object, Blog>>() {
+            @Override
+            public void onCompleted() {
 
-        BlogDto.BlogBean.ListBean blogDetail = (BlogDto.BlogBean.ListBean) blog;
+            }
 
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(NewsActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, Blog> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(NewsActivity.this, data.getMsg());
+                    return;
+                }
+                initView(data.getEntity());
+            }
+        }, map);
+    }
+
+    private void initView(Blog blogDetail) {
         //刚打开页面的瞬间显示
-        //微博内容
-        name.setText(blogDetail.getName());
-        Picasso.with(this).load(blogDetail.getUserPic())
-                .error(R.mipmap.avator_default)
-                .into(avatar);
-        time.setText(DateUtil.formatDate(blogDetail.getCreatedAt(), DateUtil.TYPE_05));
-
         title.setText(blogDetail.getTitle());
+        //微博内容
+        name.setText(blogDetail.getAuthorName());
+        time.setText(DateUtil.formatDate(blogDetail.getPushDate(), DateUtil.TYPE_10));
+
         content.setText(blogDetail.getContent());
 
         //九图
@@ -94,19 +113,18 @@ public class NewsActivity extends AppCompatActivity {
         }
         blogImage.setVisibility(View.VISIBLE);
 
-
         String blogImages = blogDetail.getImages();
         if (blogImages != null) {
             List<String> images = new ArrayList<>();
-            for (String i : blogImages.split(";")) {
+            for (String i : blogImages.split(",")) {
                 images.add(i);
             }
             blogImage.render(images);
         } else {
             blogImage.setVisibility(View.GONE);
         }
-
     }
+
 
 }
 

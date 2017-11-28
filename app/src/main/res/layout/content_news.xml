@@ -29,10 +29,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="干物妹标题标题标题标题"
+                android:gravity="left"
+                android:text="干物妹标题标题标题标题干物妹标题标题标题标题"
+                android:maxLines="2"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -46,23 +47,13 @@
                     android:layout_alignParentLeft="true"
                     android:orientation="horizontal">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/pic"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignTop="@+id/doctor_llyt"
-                        android:background="@drawable/avator_white"
-                        android:src="@mipmap/avator_default" />
-
                     <TextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="6dp"
-                        android:text=""
+                        android:text="中新网"
                         android:textColor="@color/grey"
                         android:textSize="10sp" />
                 </LinearLayout>
@@ -72,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text=""
+                    android:text="11/28"
                     android:textSize="10sp" />
             </RelativeLayout>
 

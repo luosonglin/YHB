@@ -635,6 +635,10 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.selectVideoLive();
         setSubscribe(observable, observer);
     }
+    public void HttpDataGetPicNews(Observer<HttpResult3<Object, Blog>> observer, Map<String, Object> map) {
+        Observable observable = service_live.getPicNews(map);
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 插入观察者
