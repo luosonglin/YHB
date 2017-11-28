@@ -29,7 +29,7 @@ import java.util.List;
 public class PopMenu {
 
     /**
-     * 默认的列数为4个
+     * 默认的列数为3个
      */
     private static final int DEFAULT_COLUMN_COUNT = 3;
 

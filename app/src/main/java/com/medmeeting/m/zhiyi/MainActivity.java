@@ -309,9 +309,9 @@ public class MainActivity extends AppCompatActivity implements
     private void initPopMenu(boolean isProfessor) {
         if (isProfessor) {
             mPopMenu = new PopMenu.Builder().attachToActivity(MainActivity.this)
+                    .addMenuItem(new PopMenuItem("创建直播", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
                     .addMenuItem(new PopMenuItem("大会签到", getResources().getDrawable(R.mipmap.tabbar_compose_idea)))
                     .addMenuItem(new PopMenuItem("交换名片", getResources().getDrawable(R.mipmap.tabbar_compose_photo)))
-                    .addMenuItem(new PopMenuItem("建直播间", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
 //                    .addMenuItem(new PopMenuItem("发病例", getResources().getDrawable(R.mipmap.tabbar_compose_lbs)))
 //                    .addMenuItem(new PopMenuItem("我的钱包", getResources().getDrawable(R.mipmap.tabbar_compose_review)))
 //                    .addMenuItem(new PopMenuItem("发起直播", getResources().getDrawable(R.mipmap.tabbar_compose_more)))
@@ -343,12 +343,14 @@ public class MainActivity extends AppCompatActivity implements
      * @param position
      */
     private void PopMenuItemClick(int position) {
-        Intent intent;
         switch (position) {
             case 0:
-                startActivity(new Intent(MainActivity.this, PlusSignedDetailsActivity.class));
+                startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));
                 break;
             case 1:
+                startActivity(new Intent(MainActivity.this, PlusSignedDetailsActivity.class));
+                break;
+            case 2:
                 String confirmNumber = "";
                 final String TAG_CARD = "002";
                 try {
@@ -369,22 +371,6 @@ public class MainActivity extends AppCompatActivity implements
                 intent2.putExtras(bundle2);
                 startActivity(intent2);
                 break;
-            case 2:
-                startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));
-//                intent = new Intent(MainActivity.this, ListvViewActivity.class);
-//                startActivity(intent);
-                break;
-//            case 3:
-//                // 唤出RecoveryActivity
-////                BookListDto bookListDto=null;
-////                Toast.makeText(MainActivity.this, bookListDto.getBookName(), Toast.LENGTH_SHORT).show();
-//                break;
-//            case 4:
-////                startActivity(new Intent(MainActivity.this, WalletActivity.class));
-//                break;
-//            case 5:
-////                startActivity(new Intent(MainActivity.this, LiveBuildActivity.class));
-//                break;
         }
     }
 
