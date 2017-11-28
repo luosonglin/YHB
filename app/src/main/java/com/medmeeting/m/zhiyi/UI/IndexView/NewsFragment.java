@@ -361,7 +361,49 @@ public class NewsFragment extends BaseFragment {
         });
 
         mAdapter.addHeaderView(mHeaderView);
-        srl.setRefreshing(false);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageNum", 1);
+        map.put("pageSize", 100);
+        HttpData.getInstance().HttpDataFindGenBlogList(new Observer<HttpResult3<Blog, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Blog, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+                    return;
+                }
+                mAdapter.setNewData(data.getData());
+                mAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+                    Intent intent = null;
+                    switch (data.getData().get(i).getBlogType()) {
+                        case "1":
+                            intent = new Intent(getActivity(), NewsActivity.class);
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("blogId", data.getData().get(i).getId()+"");
+//                                bundle.putSerializable("blog", data.getData().get(i));
+//                                intent.putExtras(bundle);
+                            intent.putExtra("blogId", data.getData().get(i).getId());
+                            break;
+                        case "2":
+                            break;
+                        case "3":
+                            break;
+                    }
+                    startActivity(intent);
+                });
+                srl.setRefreshing(false);
+            }
+        }, map);
     }
 
     @Override

@@ -162,11 +162,10 @@
                 </RelativeLayout>
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="2dp">
 
                     <TextView
                         android:id="@+id/tvAuthorName"
@@ -174,6 +173,9 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="0.0dip"
+                        android:layout_toLeftOf="@+id/info_llyt"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
                         android:drawableLeft="@mipmap/index_news_author_icon"
                         android:maxLines="1"
                         android:text="  中新网移动版"
@@ -181,9 +183,10 @@
                         android:textSize="13dp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/info_llyt"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
+                        android:layout_alignParentRight="true"
                         android:orientation="horizontal">
 
                         <TextView
@@ -205,7 +208,7 @@
                             android:textColor="@color/grey"
                             android:textSize="13dp" />
                     </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <RelativeLayout

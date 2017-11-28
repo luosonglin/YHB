@@ -623,20 +623,29 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.findLabelBlogs(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetHomeBannerList(Observer<HttpResult3<AdminEventActive, Object>> observer) {
         Observable observable = service_live.getHomeBannerList();
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetgreatEventList(Observer<HttpResult3<Event, Object>> observer) {
         Observable observable = service_live.greatEventList();
         setSubscribe(observable, observer);
     }
+
     public void HttpDataSelectVideoLive(Observer<HttpResult3<Blog, Object>> observer) {
         Observable observable = service_live.selectVideoLive();
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetPicNews(Observer<HttpResult3<Object, Blog>> observer, Map<String, Object> map) {
         Observable observable = service_live.getPicNews(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataFindGenBlogList(Observer<HttpResult3<Blog, Object>> observer, Map<String, Object> map) {
+        Observable observable = service_live.findGenBlogList(map);
         setSubscribe(observable, observer);
     }
 

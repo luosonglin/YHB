@@ -383,6 +383,10 @@ public interface APILiveService {
     @GET("/v1/app/Home/M/selectVideoLive")
     Observable<HttpResult3<Blog, Object>> selectVideoLive();
 
+    //GET /v1/app/Home/D/findGenBlogList 首页模块_首页普通新闻_查看会新闻列表
+    @GET("/v1/app/Home/D/findGenBlogList")
+    Observable<HttpResult3<Blog, Object>> findGenBlogList(@QueryMap Map<String, Object> map);
+
     //GET /v1/app/Home/I/getPicNews 首页模块_获取图文新闻
     @GET("/v1/app/Home/I/getPicNews")
     Observable<HttpResult3<Object, Blog>> getPicNews(@QueryMap Map<String, Object> map);
