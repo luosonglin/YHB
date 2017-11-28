@@ -11,7 +11,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class NewsActivity extends AppCompatActivity {
         title.setText(blogDetail.getTitle());
         //微博内容
         name.setText(blogDetail.getAuthorName());
-        time.setText(DateUtil.formatDate(blogDetail.getPushDate(), DateUtil.TYPE_10));
+        time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
 
         content.setText(blogDetail.getContent());
 

@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -8,7 +9,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
+import com.medmeeting.m.zhiyi.Util.TimeUtils;
 
 import java.util.List;
 
@@ -76,15 +78,17 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                 baseViewHolder.setVisible(R.id.rlRightImg, false)
                         .setVisible(R.id.viewFill, false)
                         .setVisible(R.id.llVideo, false)
-                        .setVisible(R.id.videoRlyt, true)
-                        .setText(R.id.tvDuration1, blog.getBlogType());
+                        .setVisible(R.id.videoRlyt, true);
+                baseViewHolder.setText(R.id.tvDuration1, TimeUtils.getTimeFromSecond(blog.getTimeSecond()));
+                Log.e("aaa ", blog.getTimeSecond()+"");
+                Log.e("aaa ", TimeUtils.getTimeFromSecond(blog.getTimeSecond())+"");
                 break;
         }
 
         baseViewHolder.setText(R.id.tvTitle, blog.getTitle())
                 .setText(R.id.tvAuthorName, " " + blog.getAuthorName())
                 .setText(R.id.tvCommentCount, "评论" + blog.getCommentCount())
-                .setText(R.id.tvTime, " " + DateUtil.formatDate(blog.getCreatedAt(), DateUtil.TYPE_09));
+                .setText(R.id.tvTime, " " + DateUtils.formatDate(blog.getCreatedAt(), DateUtils.TYPE_09));
     }
 
     private void setGone(BaseViewHolder baseViewHolder) {

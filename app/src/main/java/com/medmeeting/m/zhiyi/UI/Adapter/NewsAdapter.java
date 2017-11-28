@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.NewsActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
@@ -38,7 +38,7 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
 
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.author, item.getName())
-                .setText(R.id.time, DateUtil.formatDate(item.getCreatedAt(), DateUtil.TYPE_06));
+                .setText(R.id.time, DateUtils.formatDate(item.getCreatedAt(), DateUtils.TYPE_06));
 
         Glide.with(mContext)
                 .load(item.getUserPic())

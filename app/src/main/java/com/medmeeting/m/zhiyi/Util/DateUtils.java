@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtil {
+public class DateUtils {
     public static final String TYPE_01 = "yyyy-MM-dd HH:mm:ss";
     public static final String TYPE_02 = "yyyy-MM-dd";
     public static final String TYPE_03 = "HH:mm:ss";
@@ -17,7 +17,7 @@ public class DateUtil {
     public static final String TYPE_09 = "MM月dd日";
     public static final String TYPE_10 = "yyyy/MM/dd HH:mm";
 
-    public DateUtil() {
+    public DateUtils() {
     }
 
     public static String formatDate(long time, String format) {

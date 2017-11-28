@@ -36,7 +36,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
@@ -476,7 +476,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 }
                 mLiveSettingPopupWindow.dismiss();
                 startTime.setText(startDateTime);
-                expectBeginTime = DateUtil.dateToLong(mStartDate);
+                expectBeginTime = DateUtils.dateToLong(mStartDate);
 
             } else if ("END".equals(sign)) {
 
@@ -508,7 +508,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 }
                 mLiveSettingPopupWindow.dismiss();
                 endTime.setText(endDateTime);
-                expectEndTime = DateUtil.dateToLong(mEndDate);
+                expectEndTime = DateUtils.dateToLong(mEndDate);
             }
         });
 

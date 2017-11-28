@@ -21,7 +21,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.VideoView.LiveAndVideoRoomActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
@@ -115,7 +115,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
             intent.putExtra("userId", mLiveProgramDateilsEntity.getRoomUserId());
             startActivity(intent);
         });
-        time.setText(DateUtil.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtil.TYPE_04) +" ~ "+DateUtil.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtil.TYPE_04));
+        time.setText(DateUtils.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtils.TYPE_04) +" ~ "+ DateUtils.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtils.TYPE_04));
         collect.setText("收藏：" + mLiveProgramDateilsEntity.getCollectCount());
         if (mLiveProgramDateilsEntity.getChargeType().equals("no")) {
             type.setText("观看：   公开免费");
@@ -196,7 +196,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .crossFade()
                         .into(avatar);
-                time.setText(DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_04));
+                time.setText(DateUtils.formatDate(data.getEntity().getCreateTime(), DateUtils.TYPE_04));
                 if (data.getEntity().getChargeType().equals("no")) {
                     type.setText("观看：   公开免费");
                 } else {

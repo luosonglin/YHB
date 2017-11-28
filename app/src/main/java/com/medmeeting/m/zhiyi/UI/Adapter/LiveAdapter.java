@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
@@ -37,9 +37,9 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
         helper.setText(R.id.sum, item.getOnlineCount() + "")
                 .setText(R.id.title, item.getRoomTitle() + "")
                 .setText(R.id.name, item.getTitle())
-//                .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06));
+//                .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06));
                 .setText(R.id.author, item.getAuthorName() + " | "+item.getAuthorTitle())
-                .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06));
+                .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06));
 
         if (item.getPrice() == 0) {//item.getChargeType().equals("no")
             helper.getView(R.id.price).setVisibility(View.GONE);

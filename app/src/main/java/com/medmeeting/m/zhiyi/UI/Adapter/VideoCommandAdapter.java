@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
@@ -40,7 +40,7 @@ public class VideoCommandAdapter extends BaseQuickAdapter<VideoCommentUserEntity
         } else {
             helper.setText(R.id.name, item.getNickName());
         }
-        helper.setText(R.id.time, DateUtil.formatDate(item.getCreateTime(), DateUtil.TYPE_06));
+        helper.setText(R.id.time, DateUtils.formatDate(item.getCreateTime(), DateUtils.TYPE_06));
         helper.setText(R.id.content, item.getContent());
     }
 }

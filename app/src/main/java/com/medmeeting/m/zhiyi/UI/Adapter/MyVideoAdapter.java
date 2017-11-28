@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.MyViewHolder;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class MyVideoAdapter extends RecyclerView.Adapter {
                 .crossFade()
                 .into(viewHolder.background);
 
-        viewHolder.liveNumber.setText(DateUtil.formatDate(mList.get(position).getCreateTime(), DateUtil.TYPE_08));
+        viewHolder.liveNumber.setText(DateUtils.formatDate(mList.get(position).getCreateTime(), DateUtils.TYPE_08));
 
         if (mList.get(position).getChargeType().equals("no")) {
             viewHolder.price.setText("免费");

@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailAuthorActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -27,7 +27,7 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06))
+                .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06))
                 .setText(R.id.sum, "已报名：" + item.getPayCount() + " 人")
                 .setText(R.id.status, item.getLiveStatus());
 

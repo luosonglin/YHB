@@ -17,7 +17,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
@@ -121,7 +121,7 @@ public class VideoDetailInfomationFragment extends Fragment {
                 } else {
                     authorName.setText(data.getEntity().getAuthorName() + " | " + data.getEntity().getAuthorTitle());
                 }
-                time.setText("时间：   " + DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_06));
+                time.setText("时间：   " + DateUtils.formatDate(data.getEntity().getCreateTime(), DateUtils.TYPE_06));
                 if (data.getEntity().getChargeType().equals("no")) {
                     type.setText("观看：   公开免费");
                 } else {

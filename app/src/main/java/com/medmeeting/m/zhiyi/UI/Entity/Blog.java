@@ -79,6 +79,7 @@ public class Blog {//implements Serializable {
      * labelName : general
      * authorName : general
      * collectionType : false
+     *  "timeSecond": 1
      */
 
     private int id;
@@ -106,6 +107,7 @@ public class Blog {//implements Serializable {
     private String labelName;
     private String authorName;
     private boolean collectionType;
+    private int timeSecond;
 
     public int getId() {
         return id;
@@ -305,5 +307,13 @@ public class Blog {//implements Serializable {
 
     public void setCollectionType(boolean collectionType) {
         this.collectionType = collectionType;
+    }
+
+    public int getTimeSecond() {
+        return timeSecond;
+    }
+
+    public void setTimeSecond(int timeSecond) {
+        this.timeSecond = timeSecond;
     }
 }

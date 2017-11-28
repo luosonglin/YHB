@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -30,7 +30,7 @@ public class FinishedEventAdapter extends BaseQuickAdapter<FollowFinishedEvent> 
 
         helper.setText(R.id.name, item.getEventName())
                 .setText(R.id.address, item.getEventAddress()+"")
-                .setText(R.id.ha1, DateUtil.formatDate(item.getEventStartTime(), DateUtil.TYPE_07));
+                .setText(R.id.ha1, DateUtils.formatDate(item.getEventStartTime(), DateUtils.TYPE_07));
 
         helper.getView(R.id.item_meeting).setOnClickListener(new View.OnClickListener() {
             @Override

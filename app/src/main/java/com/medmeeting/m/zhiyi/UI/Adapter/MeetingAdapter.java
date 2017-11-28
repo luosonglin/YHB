@@ -10,7 +10,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
@@ -33,8 +33,8 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
 
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.address, item.getAddress() + "")
-                .setText(R.id.ha1, DateUtil.formatDate(item.getStartDate(), DateUtil.TYPE_07))
-                .setText(R.id.ha2, "~ " + DateUtil.formatDate(item.getEndDate(), DateUtil.TYPE_07));
+                .setText(R.id.ha1, DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_07))
+                .setText(R.id.ha2, "~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
 
         Glide.with(mContext)
                 .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
@@ -52,8 +52,8 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
                 bundle.putString("eventId", item.getId() + "");
                 bundle.putString("eventTitle", item.getTitle());
                 bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + item.getBanner());
-                bundle.putString("description", "时间： " + DateUtil.formatDate(item.getStartDate(), DateUtil.TYPE_02)
-                        + " ~ " + DateUtil.formatDate(item.getEndDate(), DateUtil.TYPE_02)
+                bundle.putString("description", "时间： " + DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02)
+                        + " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02)
                         + " \n "
                         + "地点： " + item.getAddress());
                 intent.putExtras(bundle);

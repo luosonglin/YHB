@@ -38,7 +38,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.http.ResponseInfo;
@@ -186,8 +186,8 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 theme.setText(data.getEntity().getTitle());
                 name.setText(data.getEntity().getAuthorName());
                 title.setText(data.getEntity().getAuthorTitle());
-                startTime.setText(DateUtil.formatDate(data.getEntity().getStartTime(), DateUtil.TYPE_01));
-                endTime.setText(DateUtil.formatDate(data.getEntity().getEndTime(), DateUtil.TYPE_01));
+                startTime.setText(DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_01));
+                endTime.setText(DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_01));
                 if (data.getEntity().getChargeType().equals("no")) {
                     free.setBackground(getResources().getDrawable(R.drawable.button_live_free));
                     free.setTextColor(getResources().getColor(R.color.white));
@@ -585,7 +585,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                     mLiveSettingPopupWindow.dismiss();
                     startTime.setText(startDateTime);
 //                    expectBeginTime = DateUtils.stringToLong(startDateTime, DateUtils.TYPE_01);
-                    expectBeginTime = DateUtil.dateToLong(mStartDate);
+                    expectBeginTime = DateUtils.dateToLong(mStartDate);
 
                 } else if ("END".equals(sign)) {
 
@@ -618,7 +618,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                     mLiveSettingPopupWindow.dismiss();
                     endTime.setText(endDateTime);
 //                    expectEndTime = DateUtils.stringToLong(endDateTime, DateUtils.TYPE_01);
-                    expectEndTime = DateUtil.dateToLong(mEndDate);
+                    expectEndTime = DateUtils.dateToLong(mEndDate);
                 }
             }
         });
