@@ -653,6 +653,10 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getNewsCommentList(map);
         setSubscribe(observable, observer);
     }
+    public void HttpDataInsertComment(Observer<HttpResult3> observer, BlogComment blogComment) {
+        Observable observable = service_live.insertComment(blogComment);
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 插入观察者

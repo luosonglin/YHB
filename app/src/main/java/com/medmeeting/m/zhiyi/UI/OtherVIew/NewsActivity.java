@@ -2,10 +2,10 @@ package com.medmeeting.m.zhiyi.UI.OtherVIew;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +28,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 
 public class NewsActivity extends AppCompatActivity {
@@ -51,6 +52,8 @@ public class NewsActivity extends AppCompatActivity {
     Button inputSend;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
+    private View mFooterView;
+    private int blogId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +67,17 @@ public class NewsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         toolbar.setNavigationOnClickListener(view -> finish());
 
-        getBlogDetailService(getIntent().getIntExtra("blogId", 0));
+        blogId = getIntent().getIntExtra("blogId", 0);
+        getBlogDetailService(blogId);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(NewsActivity.this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new BlogCommentAdapter(R.layout.item_video_command, null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.openLoadMore(8, true);
         mRecyclerView.setAdapter(mAdapter);
-        getCommentService(getIntent().getIntExtra("blogId", 0));
+        getCommentService(blogId);
     }
 
     @Override
@@ -166,8 +169,44 @@ public class NewsActivity extends AppCompatActivity {
                 } else {
                     mAdapter.addData(data.getData());
                 }
+
+                mFooterView = LayoutInflater.from(NewsActivity.this).inflate(R.layout.item_blog_footer, null);
+                mAdapter.addFooterView(mFooterView);
             }
         }, map);
+    }
+
+    @OnClick(R.id.input_send)
+    public void onClick() {
+        if (inputEditor.getText().toString().trim().equals("")) {
+            ToastUtils.show(NewsActivity.this, "不能发空评论");
+            return;
+        }
+        BlogComment blogComment = new BlogComment();
+        blogComment.setBlogId(blogId);
+        blogComment.setContent(inputEditor.getText().toString().trim());
+        HttpData.getInstance().HttpDataInsertComment(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(NewsActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3 data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(NewsActivity.this, data.getMsg());
+                    return;
+                }
+                getCommentService(blogId);
+                inputEditor.setText("");
+            }
+        }, blogComment);
+
     }
 }
 

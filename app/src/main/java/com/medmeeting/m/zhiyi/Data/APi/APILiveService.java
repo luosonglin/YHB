@@ -400,4 +400,8 @@ public interface APILiveService {
     //GET /v1/app/Home/H/getNewsCommentList 首页模块_获取该新闻的评论列表
     @GET("/v1/app/Home/H/getNewsCommentList")
     Observable<HttpResult3<BlogComment, Object>> getNewsCommentList(@QueryMap Map<String, Object> map);
+
+    //POST /v1/app/Home/K/insertComment 首页模块_添加相关新闻评论
+    @POST("/v1/app/Home/K/insertComment")
+    Observable<HttpResult3> insertComment(@Body BlogComment blogComment);
 }
