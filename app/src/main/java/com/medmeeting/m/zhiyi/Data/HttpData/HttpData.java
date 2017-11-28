@@ -15,6 +15,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
+import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
@@ -646,6 +647,10 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataFindGenBlogList(Observer<HttpResult3<Blog, Object>> observer, Map<String, Object> map) {
         Observable observable = service_live.findGenBlogList(map);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataGetNewsCommentList(Observer<HttpResult3<BlogComment, Object>> observer, Map<String, Object> map) {
+        Observable observable = service_live.getNewsCommentList(map);
         setSubscribe(observable, observer);
     }
 

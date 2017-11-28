@@ -5,6 +5,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
+import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
@@ -387,7 +388,16 @@ public interface APILiveService {
     @GET("/v1/app/Home/D/findGenBlogList")
     Observable<HttpResult3<Blog, Object>> findGenBlogList(@QueryMap Map<String, Object> map);
 
+    /**
+     * 新闻
+     * @param map
+     * @return
+     */
     //GET /v1/app/Home/I/getPicNews 首页模块_获取图文新闻
     @GET("/v1/app/Home/I/getPicNews")
     Observable<HttpResult3<Object, Blog>> getPicNews(@QueryMap Map<String, Object> map);
+
+    //GET /v1/app/Home/H/getNewsCommentList 首页模块_获取该新闻的评论列表
+    @GET("/v1/app/Home/H/getNewsCommentList")
+    Observable<HttpResult3<BlogComment, Object>> getNewsCommentList(@QueryMap Map<String, Object> map);
 }
