@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
-import com.medmeeting.m.zhiyi.UI.VideoView.LiveIndexTabFragment2;
 
 /**
  * @author NapoleonRohaha_Songlin
@@ -63,7 +62,7 @@ public class MyCollectActivity extends AppCompatActivity {
         mIndexChildAdapter.addFragment(MyCollectMeetingFragment.newInstance(), "会议");
         mIndexChildAdapter.addFragment(MyCollectBlogFragment.newInstance(), "新闻");
 
-        viewPager.setOffscreenPageLimit(2);//缓存view 的个数
+        viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);
     }
 }

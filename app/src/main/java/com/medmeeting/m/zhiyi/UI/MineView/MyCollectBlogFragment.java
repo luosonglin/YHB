@@ -18,7 +18,7 @@ import com.medmeeting.m.zhiyi.UI.Adapter.BlogAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.OtherVIew.NewsActivity;
+import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;

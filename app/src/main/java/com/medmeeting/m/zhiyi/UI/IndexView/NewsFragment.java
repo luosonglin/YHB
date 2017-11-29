@@ -24,7 +24,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.OtherVIew.NewsActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -169,7 +168,7 @@ public class NewsFragment extends BaseFragment {
                                 intent.putExtra("blogId", data.getData().get(i).getId());
                                 break;
                             case "3":
-                                intent = new Intent(getActivity(), VideoDetailActivity.class);
+                                intent = new Intent(getActivity(), NewsVideoActivity.class);
                                 intent.putExtra("videoId", data.getData().get(i).getId());
                                 break;
                         }
@@ -377,7 +376,7 @@ public class NewsFragment extends BaseFragment {
                             intent.putExtra("blogId", data.getData().get(i).getId());
                             break;
                         case "3":
-                            intent = new Intent(getActivity(), VideoDetailActivity.class);
+                            intent = new Intent(getActivity(), NewsVideoActivity.class);
                             intent.putExtra("videoId", data.getData().get(i).getId());
                             break;
                     }

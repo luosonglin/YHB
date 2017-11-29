@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.UI.OtherVIew;
+package com.medmeeting.m.zhiyi.UI.IndexView;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

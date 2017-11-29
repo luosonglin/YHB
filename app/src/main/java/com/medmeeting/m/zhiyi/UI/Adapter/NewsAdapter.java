@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
-import com.medmeeting.m.zhiyi.UI.OtherVIew.NewsActivity;
+import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
