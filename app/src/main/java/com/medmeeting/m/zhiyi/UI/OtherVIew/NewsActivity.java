@@ -18,6 +18,7 @@ import com.medmeeting.m.zhiyi.UI.Adapter.BlogCommentAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -228,58 +229,10 @@ public class NewsActivity extends AppCompatActivity {
                     ToastUtils.show(NewsActivity.this, "share");
                     break;
                 case R.id.action_collect:
-                    Map<String, Object> map1 = new HashMap<>();
-                    map1.put("blogId", blogId);
-                    map1.put("collectionType", false);
-                    HttpData.getInstance().HttpDataInsertCollection(new Observer<HttpResult3>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ToastUtils.show(NewsActivity.this, e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(HttpResult3 data) {
-                            if (!data.getStatus().equals("success")) {
-                                ToastUtils.show(NewsActivity.this, data.getMsg());
-                                return;
-                            }
-                            ToastUtils.show(NewsActivity.this, "取消收藏");
-                            collectionType = false;
-                            invalidateOptionsMenu(); //重新绘制menu
-                        }
-                    }, map1);
+                    collectService(true);
                     break;
                 case R.id.action_collect_no:
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("blogId", blogId);
-                    map.put("collectionType", true);
-                    HttpData.getInstance().HttpDataInsertCollection(new Observer<HttpResult3>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ToastUtils.show(NewsActivity.this, e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(HttpResult3 data) {
-                            if (!data.getStatus().equals("success")) {
-                                ToastUtils.show(NewsActivity.this, data.getMsg());
-                                return;
-                            }
-                            ToastUtils.show(NewsActivity.this, "收藏成功");
-                            collectionType = true;
-                            invalidateOptionsMenu(); //重新绘制menu
-                        }
-                    }, map);
+                    collectService(false);
                     break;
             }
             return true;
@@ -306,5 +259,44 @@ public class NewsActivity extends AppCompatActivity {
         }
         return super.onPrepareOptionsMenu(menu);
     }
+
+    /**
+     * 收藏API
+     * @param oldCollected
+     */
+    private void collectService(boolean oldCollected) {
+        UserCollect userCollect = new UserCollect();
+        userCollect.setServiceId(blogId);
+        userCollect.setServiceType("BLOG");
+        HttpData.getInstance().HttpDataCollect(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(NewsActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3 httpResult3) {
+                if (!httpResult3.getStatus().equals("success")) {
+                    ToastUtils.show(NewsActivity.this, httpResult3.getMsg());
+                    return;
+                }
+                if (oldCollected) {     //老状态是 已收藏
+                    ToastUtils.show(NewsActivity.this, "取消收藏");
+                    collectionType = false;
+                    invalidateOptionsMenu(); //重新绘制menu
+                } else {
+                    ToastUtils.show(NewsActivity.this, "收藏成功");
+                    collectionType = true;
+                    invalidateOptionsMenu(); //重新绘制menu
+                }
+            }
+        }, userCollect);
+    }
+
 }
 
