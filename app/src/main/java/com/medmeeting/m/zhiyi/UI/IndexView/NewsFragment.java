@@ -25,6 +25,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.NewsActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
@@ -161,15 +162,15 @@ public class NewsFragment extends BaseFragment {
                         switch (data.getData().get(i).getBlogType()) {
                             case "1":
                                 intent = new Intent(getActivity(), NewsActivity.class);
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("blogId", data.getData().get(i).getId()+"");
-//                                bundle.putSerializable("blog", data.getData().get(i));
-//                                intent.putExtras(bundle);
                                 intent.putExtra("blogId", data.getData().get(i).getId());
                                 break;
                             case "2":
+                                intent = new Intent(getActivity(), NewsActivity.class);
+                                intent.putExtra("blogId", data.getData().get(i).getId());
                                 break;
                             case "3":
+                                intent = new Intent(getActivity(), VideoDetailActivity.class);
+                                intent.putExtra("videoId", data.getData().get(i).getId());
                                 break;
                         }
                         startActivity(intent);
@@ -369,15 +370,15 @@ public class NewsFragment extends BaseFragment {
                     switch (data.getData().get(i).getBlogType()) {
                         case "1":
                             intent = new Intent(getActivity(), NewsActivity.class);
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("blogId", data.getData().get(i).getId()+"");
-//                                bundle.putSerializable("blog", data.getData().get(i));
-//                                intent.putExtras(bundle);
                             intent.putExtra("blogId", data.getData().get(i).getId());
                             break;
                         case "2":
+                            intent = new Intent(getActivity(), NewsActivity.class);
+                            intent.putExtra("blogId", data.getData().get(i).getId());
                             break;
                         case "3":
+                            intent = new Intent(getActivity(), VideoDetailActivity.class);
+                            intent.putExtra("videoId", data.getData().get(i).getId());
                             break;
                     }
                     startActivity(intent);

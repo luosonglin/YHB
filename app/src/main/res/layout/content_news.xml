@@ -15,6 +15,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="50dp"
         android:overScrollMode="never">
 
         <LinearLayout
@@ -26,12 +27,13 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
                 android:gravity="left"
                 android:maxLines="2"
-                android:text="干物妹标题标题标题标题干物妹标题标题标题标题"
+                android:text="干物妹"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
@@ -124,8 +126,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="50dp"
+                android:layout_height="wrap_content"
                 android:background="@color/white" />
         </LinearLayout>
     </ScrollView>

@@ -70,7 +70,14 @@ public class NewsActivity extends AppCompatActivity {
         getBlogDetailService(blogId);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
+        //recyclerview禁止滑动
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new BlogCommentAdapter(R.layout.item_video_command, null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);

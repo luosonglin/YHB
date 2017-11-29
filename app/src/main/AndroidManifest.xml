@@ -277,7 +277,7 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".UI.LiveView.LivePlayerActivity2"/>
 
-        <activity android:name=".UI.VideoView.MyCollectActivity" />
+        <activity android:name=".UI.MineView.MyCollectActivity" />
         <activity android:name=".UI.MineView.MyOrderActivity" />
         <activity android:name=".UI.MineView.MyCollectLiveActivity" />
         <activity android:name=".UI.MineView.MyCollectVideoActivity" />

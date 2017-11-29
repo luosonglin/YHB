@@ -31,7 +31,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
-import com.medmeeting.m.zhiyi.UI.VideoView.MyCollectActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.snappydb.SnappydbException;
