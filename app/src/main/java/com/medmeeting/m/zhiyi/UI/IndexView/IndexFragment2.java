@@ -216,31 +216,33 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.icon_category)
-    public void onClick() {
-        ChannelDialogFragment dialogFragment = ChannelDialogFragment.newInstance(mSelectedDatas, mUnSelectedDatas);
-        dialogFragment.setOnChannelListener(this);
-        dialogFragment.show(getChildFragmentManager(), "CHANNEL");
-        dialogFragment.setOnDismissListener(dialog -> {
-            mTitlePagerAdapter.notifyDataSetChanged();
-            vp.setOffscreenPageLimit(mSelectedDatas.size());
-            tab.setCurrentItem(tab.getSelectedTabPosition());
-            ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
-            //注意：因为最开始设置了最小宽度，所以重新测量宽度的时候一定要先将最小宽度设置为0
-            slidingTabStrip.setMinimumWidth(0);
-            slidingTabStrip.measure(0, 0);
-            slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
+    @OnClick({R.id.search_icon, R.id.icon_category})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.search_icon:
+                ToastUtils.show(getActivity(), "search");
+//                startActivity(new Intent(getActivity(), ));
+                break;
+            case R.id.icon_category:
+                ChannelDialogFragment dialogFragment = ChannelDialogFragment.newInstance(mSelectedDatas, mUnSelectedDatas);
+                dialogFragment.setOnChannelListener(this);
+                dialogFragment.show(getChildFragmentManager(), "CHANNEL");
+                dialogFragment.setOnDismissListener(dialog -> {
+                    mTitlePagerAdapter.notifyDataSetChanged();
+                    vp.setOffscreenPageLimit(mSelectedDatas.size());
+                    tab.setCurrentItem(tab.getSelectedTabPosition());
+                    ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
+                    //注意：因为最开始设置了最小宽度，所以重新测量宽度的时候一定要先将最小宽度设置为0
+                    slidingTabStrip.setMinimumWidth(0);
+                    slidingTabStrip.measure(0, 0);
+                    slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
 
-            //保存选中和未选中的channel
-            SharedPreferencesMgr.setString(ConstanceValue.TITLE_SELECTED, mGson.toJson(mSelectedDatas));
-            SharedPreferencesMgr.setString(ConstanceValue.TITLE_UNSELECTED, mGson.toJson(mUnSelectedDatas));
-
-//            Log.e(IndexFragment2.this.getActivity().getLocalClassName(), "111 "+mGson.toJson(mSelectedDatas));
-//            Log.e(IndexFragment2.this.getActivity().getLocalClassName(), mGson.toJson(mUnSelectedDatas));
-//
-//            Log.e(IndexFragment2.this.getActivity().getLocalClassName(), "222 "+SharedPreferencesMgr.getString(TITLE_SELECTED, ""));
-//            Log.e(IndexFragment2.this.getActivity().getLocalClassName(), SharedPreferencesMgr.getString(TITLE_UNSELECTED, ""));
-        });
+                    //保存选中和未选中的channel
+                    SharedPreferencesMgr.setString(ConstanceValue.TITLE_SELECTED, mGson.toJson(mSelectedDatas));
+                    SharedPreferencesMgr.setString(ConstanceValue.TITLE_UNSELECTED, mGson.toJson(mUnSelectedDatas));
+                });
+                break;
+        }
     }
 
     @Override

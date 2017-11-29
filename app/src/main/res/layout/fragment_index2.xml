@@ -24,6 +24,15 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/search_icon"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            />
+
     </RelativeLayout>
 
     <View
