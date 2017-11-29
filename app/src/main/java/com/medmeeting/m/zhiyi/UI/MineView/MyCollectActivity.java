@@ -61,7 +61,7 @@ public class MyCollectActivity extends AppCompatActivity {
         mIndexChildAdapter.addFragment(MyCollectLiveFragment.newInstance(), "直播");
         mIndexChildAdapter.addFragment(MyCollectVideoFragment.newInstance(), "视频");
         mIndexChildAdapter.addFragment(MyCollectMeetingFragment.newInstance(), "会议");
-        mIndexChildAdapter.addFragment(LiveIndexTabFragment2.newInstance(), "新闻");
+        mIndexChildAdapter.addFragment(MyCollectBlogFragment.newInstance(), "新闻");
 
         viewPager.setOffscreenPageLimit(2);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);

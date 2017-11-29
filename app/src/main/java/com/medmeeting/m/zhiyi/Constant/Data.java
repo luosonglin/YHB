@@ -154,4 +154,21 @@ public class Data {
     public static void setInputStream(InputStream inputStream) {
         Data.inputStream = inputStream;
     }
+
+    /**
+     * 搜索历史
+     */
+    public static List<String> searchHistory = new ArrayList<>();
+
+    public static List<String> getSearchHistory() {
+        return searchHistory;
+    }
+
+    public static void setSearchHistory(List<String> searchHistory) {
+        Data.searchHistory = searchHistory;
+    }
+
+    public static void clearSearchHistory() {
+        Data.searchHistory.clear();
+    }
 }

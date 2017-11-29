@@ -408,4 +408,8 @@ public interface APILiveService {
     //POST /v1/app/Home/L/insertCollection 首页模块_收藏指定新闻
     @POST("/v1/app/Home/L/insertCollection")
     Observable<HttpResult3> insertCollection(@QueryMap Map<String, Object> map);
+
+    //GET /v1/app/Home/N/selectCollectList 首页模块_查看收藏新闻列表
+    @GET("/v1/app/Home/N/selectCollectList")
+    Observable<HttpResult3<Blog, Object>> selectCollectList(@QueryMap Map<String, Object> map);
 }

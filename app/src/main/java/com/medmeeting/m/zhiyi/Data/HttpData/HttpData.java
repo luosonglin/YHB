@@ -206,10 +206,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
-        Observable observable = service_meeting.followEvent(map);
-        setSubscribe(observable, observer);
-    }
+//    public void HttpDataFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
+//        Observable observable = service_meeting.followEvent(map);
+//        setSubscribe(observable, observer);
+//    }
 
     /**
      * 以下用于会议报名页
@@ -660,6 +660,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataInsertCollection(Observer<HttpResult3> observer, Map<String, Object> map) {
         Observable observable = service_live.insertCollection(map);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataSelectCollectList(Observer<HttpResult3<Blog, Object>> observer, Map<String, Object> map) {
+        Observable observable = service_live.selectCollectList(map);
         setSubscribe(observable, observer);
     }
 

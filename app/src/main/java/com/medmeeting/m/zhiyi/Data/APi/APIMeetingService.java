@@ -43,8 +43,8 @@ public interface APIMeetingService {
     Observable<HttpResult4> checkFollowEvent(@QueryMap Map<String, Object> map);//?userId=21&eventId=172
 
     //关注会议 关注? "N": "Y"
-    @GET("/phoneEvent/followEvent")
-    Observable<HttpResult4> followEvent(@QueryMap Map<String, Object> map);//?userId=21&eventId=172&follow=Y
+//    @GET("/phoneEvent/followEvent")
+//    Observable<HttpResult4> followEvent(@QueryMap Map<String, Object> map);//?userId=21&eventId=172&follow=Y
 
     //获取该会议的支付方式 弹窗
     @GET("/cRegiests/paymentStatus")
