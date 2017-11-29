@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -220,8 +221,7 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.search_icon:
-                ToastUtils.show(getActivity(), "search");
-//                startActivity(new Intent(getActivity(), ));
+                startActivity(new Intent(getActivity(), SearchActicity.class));
                 break;
             case R.id.icon_category:
                 ChannelDialogFragment dialogFragment = ChannelDialogFragment.newInstance(mSelectedDatas, mUnSelectedDatas);

@@ -293,6 +293,7 @@
             android:name=".UI.WalletView.WalletWebActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.IndexView.SearchActicity"/>
     </application>
 
 </manifest>
