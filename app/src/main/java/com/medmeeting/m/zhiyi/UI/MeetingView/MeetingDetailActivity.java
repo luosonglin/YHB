@@ -217,66 +217,66 @@ public class MeetingDetailActivity extends AppCompatActivity {
                         mShareAction.open(config);
                         break;
                     case R.id.action_collect:
-                        collectService(true);
-//                        followEventOptions.put("userId", userId);
-//                        followEventOptions.put("eventId", eventId);
-//                        followEventOptions.put("follow", "N");
-//                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
-//                            @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                Log.e(TAG, "onError: " + e.getMessage()
-//                                        + "\n" + e.getCause()
-//                                        + "\n" + e.getLocalizedMessage()
-//                                        + "\n" + e.getStackTrace());
-//                            }
-//
-//                            @Override
-//                            public void onNext(HttpResult4 httpResult4) {
-//                                if (!httpResult4.getStatus().equals("200")) {
-//                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
-//                                    return;
-//                                }
-//                                ToastUtils.show(MeetingDetailActivity.this, "取消关注");
-//                                isFollowEvent = false;
-//                                invalidateOptionsMenu(); //重新绘制menu
-//                            }
-//                        }, followEventOptions);
+//                        collectService(true);
+                        followEventOptions.put("userId", userId);
+                        followEventOptions.put("eventId", eventId);
+                        followEventOptions.put("follow", "N");
+                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "onError: " + e.getMessage()
+                                        + "\n" + e.getCause()
+                                        + "\n" + e.getLocalizedMessage()
+                                        + "\n" + e.getStackTrace());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult4 httpResult4) {
+                                if (!httpResult4.getStatus().equals("200")) {
+                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
+                                    return;
+                                }
+                                ToastUtils.show(MeetingDetailActivity.this, "取消关注");
+                                isFollowEvent = false;
+                                invalidateOptionsMenu(); //重新绘制menu
+                            }
+                        }, followEventOptions);
                         break;
                     case R.id.action_collect_no:
-                        collectService(false);
-//                        followEventOptions.put("userId", userId);
-//                        followEventOptions.put("eventId", eventId);
-//                        followEventOptions.put("follow", "Y");
-//                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
-//                            @Override
-//                            public void onCompleted() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//                                Log.e(TAG, "onError: " + e.getMessage()
-//                                        + "\n" + e.getCause()
-//                                        + "\n" + e.getLocalizedMessage()
-//                                        + "\n" + e.getStackTrace());
-//                            }
-//
-//                            @Override
-//                            public void onNext(HttpResult4 httpResult4) {
-//                                if (!httpResult4.getStatus().equals("200")) {
-//                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
-//                                    return;
-//                                }
-//                                ToastUtils.show(MeetingDetailActivity.this, "成功关注");
-//                                isFollowEvent = true;
-//                                invalidateOptionsMenu(); //重新绘制menu
-//                            }
-//                        }, followEventOptions);
+//                        collectService(false);
+                        followEventOptions.put("userId", userId);
+                        followEventOptions.put("eventId", eventId);
+                        followEventOptions.put("follow", "Y");
+                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e(TAG, "onError: " + e.getMessage()
+                                        + "\n" + e.getCause()
+                                        + "\n" + e.getLocalizedMessage()
+                                        + "\n" + e.getStackTrace());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult4 httpResult4) {
+                                if (!httpResult4.getStatus().equals("200")) {
+                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
+                                    return;
+                                }
+                                ToastUtils.show(MeetingDetailActivity.this, "成功关注");
+                                isFollowEvent = true;
+                                invalidateOptionsMenu(); //重新绘制menu
+                            }
+                        }, followEventOptions);
                         break;
                     case R.id.action_enroll:
                         Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);

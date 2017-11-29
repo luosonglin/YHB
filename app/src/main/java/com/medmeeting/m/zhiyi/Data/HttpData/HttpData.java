@@ -206,10 +206,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-//    public void HttpDataFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
-//        Observable observable = service_meeting.followEvent(map);
-//        setSubscribe(observable, observer);
-//    }
+    public void HttpDataFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
+        Observable observable = service_meeting.followEvent(map);
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 以下用于会议报名页
