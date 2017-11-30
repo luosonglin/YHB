@@ -42,7 +42,6 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                     baseViewHolder.setVisible(R.id.rlRightImg, true)
                             .setVisible(R.id.viewFill, true);
                 }
-
                 break;
             case "2":
                 baseViewHolder.setVisible(R.id.llCenterImg, true);

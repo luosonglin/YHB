@@ -106,26 +106,8 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
                 slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
             }
         });
-        //隐藏指示器
-        tab.setSelectedTabIndicatorHeight(6);
-
-        //test
-//        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
+        //隐藏指示器时候为0
+        tab.setSelectedTabIndicatorHeight(6);//设置当前被选中标签的高度
     }
 
     /**
@@ -134,9 +116,6 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
     private void getTitleData() {
         String selectTitle = SharedPreferencesMgr.getString(TITLE_SELECTED, "");
         String unselectTitle = SharedPreferencesMgr.getString(TITLE_UNSELECTED, "");
-
-//        Log.e(IndexFragment2.this.getActivity().getLocalClassName(), "333 "+selectTitle);
-//        Log.e(IndexFragment2.this.getActivity().getLocalClassName(), unselectTitle);
 
         if (TextUtils.isEmpty(selectTitle) || TextUtils.isEmpty(unselectTitle)) {
             //本地没有title
@@ -241,6 +220,7 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
                     SharedPreferencesMgr.setString(ConstanceValue.TITLE_SELECTED, mGson.toJson(mSelectedDatas));
                     SharedPreferencesMgr.setString(ConstanceValue.TITLE_UNSELECTED, mGson.toJson(mUnSelectedDatas));
                 });
+                mTitlePagerAdapter.notifyDataSetChanged();
                 break;
         }
     }

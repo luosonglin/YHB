@@ -35,8 +35,8 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
 
     public ChannelAdapter(List<LiveLabel> data) {
         super(data);
-        //默认没有编辑
-        mIsEdit = false;
+        //默认进入编辑
+        mIsEdit = true;
         addItemType(LiveLabel.TYPE_MY, R.layout.item_channel_title);
         addItemType(LiveLabel.TYPE_MY_CHANNEL, R.layout.item_channel);
         addItemType(LiveLabel.TYPE_OTHER, R.layout.item_channel_title_other);
@@ -59,7 +59,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
     protected void convert(final BaseViewHolder baseViewHolder, final LiveLabel channel) {
         switch (baseViewHolder.getItemViewType()) {
             case LiveLabel.TYPE_MY:
-                //我的频道
+                //已订阅的节目
                 //赋值，以便之后修改文字
                 mEditViewHolder = baseViewHolder;
                 baseViewHolder.setText(R.id.tvTitle, channel.getLabelName())
@@ -77,7 +77,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
                         });
                 break;
             case LiveLabel.TYPE_OTHER:
-                //频道推荐
+                //节目推荐
                 baseViewHolder.setText(R.id.tvTitle, channel.getLabelName())
                         .setVisible(R.id.tvEdit, false);
                 break;
@@ -97,71 +97,75 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
                                     onChannelDragListener.onStarDrag(baseViewHolder);
                                 return true;
                             }
-                        }).setOnTouchListener(R.id.tvChannel, new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (!mIsEdit) return false;//正常模式无需监听触摸
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                startTime = System.currentTimeMillis();
-                                break;
-                            case MotionEvent.ACTION_MOVE:
-                                if (System.currentTimeMillis() - startTime > SPACE_TIME) {
-                                    //当MOVE事件与DOWN事件的触发的间隔时间大于100ms时，则认为是拖拽starDrag
-                                    if (onChannelDragListener != null)
-                                        onChannelDragListener.onStarDrag(baseViewHolder);
+                        })
+                        .setOnTouchListener(R.id.tvChannel, new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                if (!mIsEdit) return false;//正常模式无需监听触摸
+                                switch (event.getAction()) {
+                                    case MotionEvent.ACTION_DOWN:
+                                        startTime = System.currentTimeMillis();
+                                        break;
+                                    case MotionEvent.ACTION_MOVE:
+                                        if (System.currentTimeMillis() - startTime > SPACE_TIME) {
+                                            //当MOVE事件与DOWN事件的触发的间隔时间大于100ms时，则认为是拖拽starDrag
+                                            if (onChannelDragListener != null)
+                                                onChannelDragListener.onStarDrag(baseViewHolder);
+                                        }
+                                        break;
+                                    case MotionEvent.ACTION_CANCEL:
+                                    case MotionEvent.ACTION_UP:
+                                        startTime = 0;
+                                        break;
                                 }
-                                break;
-                            case MotionEvent.ACTION_CANCEL:
-                            case MotionEvent.ACTION_UP:
-                                startTime = 0;
-                                break;
-                        }
-                        return false;
-                    }
-                }).getView(R.id.ivDelete).setTag(true);//在我的频道里面设置true标示，之后会根据这个标示来判断编辑模式是否显示
-                baseViewHolder.setText(R.id.tvChannel, channel.getLabelName()).setOnClickListener(R.id.ivDelete, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //执行删除，移动到推荐频道列表
-                        if (mIsEdit) {
-                            int otherFirstPosition = getOtherFirstPosition();
-                            int currentPosition = getViewHolderPosition(baseViewHolder);
-                            //获取到目标View
-                            View targetView = mRecyclerView.getLayoutManager().findViewByPosition(otherFirstPosition);
-                            //获取当前需要移动的View
-                            View currentView = mRecyclerView.getLayoutManager().findViewByPosition(currentPosition);
-                            // 如果targetView不在屏幕内,则indexOfChild为-1  此时不需要添加动画,因为此时notifyItemMoved自带一个向目标移动的动画
-                            // 如果在屏幕内,则添加一个位移动画
-                            if (mRecyclerView.indexOfChild(targetView) >= 0 && otherFirstPosition != -1) {
-                                RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
-                                int spanCount = ((GridLayoutManager) manager).getSpanCount();
-                                int targetX = targetView.getLeft();
-                                int targetY = targetView.getTop();
-                                int myChannelSize = getMyChannelSize();//这里我是为了偷懒 ，算出来我的频道的大小
-                                if (myChannelSize % spanCount == 1) {
-                                    //我的频道最后一行 之后一个，移动后
-                                    targetY -= targetView.getHeight();
-                                }
-
-                                //我的频道 移动到 推荐频道的第一个
-                                channel.setItemType(Channel.TYPE_OTHER_CHANNEL);//改为推荐频道类型
-
-                                if (onChannelDragListener != null)
-                                    onChannelDragListener.onMoveToOtherChannel(currentPosition, otherFirstPosition - 1);
-                                startAnimation(currentView, targetX, targetY);
-                            } else {
-                                channel.setItemType(Channel.TYPE_OTHER_CHANNEL);//改为推荐频道类型
-                                if (otherFirstPosition == -1) otherFirstPosition = mData.size();
-                                if (onChannelDragListener != null)
-                                    onChannelDragListener.onMoveToOtherChannel(currentPosition, otherFirstPosition - 1);
+                                return false;
                             }
+                        })
+                        .getView(R.id.ivDelete).setTag(true);//在我的频道里面设置true标示，之后会根据这个标示来判断编辑模式是否显示
+                baseViewHolder.setText(R.id.tvChannel, channel.getLabelName())
+                        .setOnClickListener(R.id.ivDelete, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //执行删除，移动到推荐频道列表
+                                if (mIsEdit) {
+                                    int otherFirstPosition = getOtherFirstPosition();
+                                    int currentPosition = getViewHolderPosition(baseViewHolder);
+                                    //获取到目标View
+                                    View targetView = mRecyclerView.getLayoutManager().findViewByPosition(otherFirstPosition);
+                                    //获取当前需要移动的View
+                                    View currentView = mRecyclerView.getLayoutManager().findViewByPosition(currentPosition);
+                                    // 如果targetView不在屏幕内,则indexOfChild为-1  此时不需要添加动画,因为此时notifyItemMoved自带一个向目标移动的动画
+                                    // 如果在屏幕内,则添加一个位移动画
+                                    if (mRecyclerView.indexOfChild(targetView) >= 0 && otherFirstPosition != -1) {
+                                        RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
+                                        int spanCount = ((GridLayoutManager) manager).getSpanCount();
+                                        int targetX = targetView.getLeft();
+                                        int targetY = targetView.getTop();
+                                        int myChannelSize = getMyChannelSize();//这里我是为了偷懒 ，算出来我的频道的大小
+                                        if (myChannelSize % spanCount == 1) {
+                                            //我的频道最后一行 之后一个，移动后
+                                            targetY -= targetView.getHeight();
+                                        }
+
+                                        //我的频道 移动到 推荐频道的第一个
+                                        channel.setItemType(Channel.TYPE_OTHER_CHANNEL);//改为推荐频道类型
+
+                                        if (onChannelDragListener != null)
+                                            onChannelDragListener.onMoveToOtherChannel(currentPosition, otherFirstPosition - 1);
+                                        startAnimation(currentView, targetX, targetY);
+                                    } else {
+                                        channel.setItemType(Channel.TYPE_OTHER_CHANNEL);//改为推荐频道类型
+                                        if (otherFirstPosition == -1)
+                                            otherFirstPosition = mData.size();
+                                        if (onChannelDragListener != null)
+                                            onChannelDragListener.onMoveToOtherChannel(currentPosition, otherFirstPosition - 1);
+                                    }
 //                            GlobalParams.mRemovedChannels.add(channel);
-                        }
-                    }
+                                }
+                            }
 
 
-                });
+                        });
                 break;
             case LiveLabel.TYPE_OTHER_CHANNEL:
                 //频道推荐列表
@@ -301,7 +305,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
 //        if (mOtherFirstPosition != 0) return mOtherFirstPosition;
         for (int i = 0; i < mData.size(); i++) {
             LiveLabel channel = (LiveLabel) mData.get(i);
-                            if (LiveLabel.TYPE_OTHER_CHANNEL == channel.getItemType()) {
+            if (LiveLabel.TYPE_OTHER_CHANNEL == channel.getItemType()) {
                 //找到第一个直接返回
                 return i;
             }
