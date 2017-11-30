@@ -8,8 +8,12 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,7 +25,9 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Adapter.BlogCommentAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
+import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
@@ -44,6 +50,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
+import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +59,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observer;
 
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_NORMAL;
@@ -100,6 +108,13 @@ public class NewsVideoActivity extends AppCompatActivity {
     private boolean isPause;
     private OrientationUtils orientationUtils;
 
+    @Bind(R.id.input_editor)
+    EditText inputEditor;
+    @Bind(R.id.input_send)
+    Button inputSend;
+    private RecyclerView mRecyclerView;
+    private BaseQuickAdapter mAdapter;
+    private View mFooterView;
 
     private Integer blogId;
 
@@ -139,6 +154,21 @@ public class NewsVideoActivity extends AppCompatActivity {
 
         blogId = getIntent().getIntExtra("blogId", 0);
         initView(blogId);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
+        //recyclerview禁止滑动
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsVideoActivity.this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        mRecyclerView.setHasFixedSize(true);
+        mAdapter = new BlogCommentAdapter(R.layout.item_video_command, null);
+        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mAdapter.openLoadMore(8, true);
+        mRecyclerView.setAdapter(mAdapter);
+        getCommentService(blogId);
     }
 
     /**
@@ -213,6 +243,7 @@ public class NewsVideoActivity extends AppCompatActivity {
                     return;
                 }
                 initBlogView(data.getEntity().getBlog());
+
                 initSourceVideoView(data.getEntity().getVideoDetailsEntity());
 
                 initPlayer(data.getEntity().getBlog().getVideoUrl(), data.getEntity().getBlog().getImages(), data.getEntity().getBlog().getTitle());
@@ -224,7 +255,7 @@ public class NewsVideoActivity extends AppCompatActivity {
 
     private void initBlogView(Blog blogDetail) {
         //刚打开页面的瞬间显示
-        title.setText(blogDetail.getTitle());
+        title.setText(blogDetail.getTitle()+"");
         //微博内容
         name.setText(blogDetail.getAuthorName());
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
@@ -260,6 +291,70 @@ public class NewsVideoActivity extends AppCompatActivity {
         videoName.setText(videoDetailsEntity.getTitle());
         videoSum.setText("收藏" + videoDetailsEntity.getCollectCount());
         videoTime.setText(DateUtils.formatDate(videoDetailsEntity.getCreateTime(), DateUtils.TYPE_06));
+    }
+
+    private void getCommentService(int blogId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("blogId", blogId);
+        HttpData.getInstance().HttpDataGetNewsCommentList(new Observer<HttpResult3<BlogComment, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(NewsVideoActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<BlogComment, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(NewsVideoActivity.this, data.getMsg());
+                    return;
+                }
+                if (mAdapter.getData() != null) {
+                    mAdapter.setNewData(data.getData());
+                } else {
+                    mAdapter.addData(data.getData());
+                }
+
+                mFooterView = LayoutInflater.from(NewsVideoActivity.this).inflate(R.layout.item_blog_footer, null);
+                mAdapter.addFooterView(mFooterView);
+            }
+        }, map);
+    }
+
+    @OnClick(R.id.input_send)
+    public void onClick() {
+        if (inputEditor.getText().toString().trim().equals("")) {
+            ToastUtils.show(NewsVideoActivity.this, "不能发空评论");
+            return;
+        }
+        BlogComment blogComment = new BlogComment();
+        blogComment.setBlogId(blogId);
+        blogComment.setContent(inputEditor.getText().toString().trim());
+        HttpData.getInstance().HttpDataInsertComment(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(NewsVideoActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3 data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(NewsVideoActivity.this, data.getMsg());
+                    return;
+                }
+                getCommentService(blogId);
+                inputEditor.setText("");
+            }
+        }, blogComment);
     }
 
     private void initPlayer(String url, String photo, String title) {

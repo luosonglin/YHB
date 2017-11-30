@@ -9,6 +9,7 @@
         android:id="@+id/post_detail_nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -16,9 +17,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <View
+            <com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer
+                android:id="@+id/detail_player"
                 android:layout_width="match_parent"
-                android:layout_height="230dp" />
+                android:layout_height="230dp"
+                android:layout_alignParentTop="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,7 +38,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="left"
                     android:maxLines="2"
-                    android:text="干物妹"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -201,7 +204,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="12dp">
 
                     <View
                         android:id="@+id/line4"
@@ -239,10 +242,65 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer
-        android:id="@+id/detail_player"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_alignParentTop="true" />
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/input_llyt"
+            android:background="@color/grey1" />
+
+        <LinearLayout
+            android:id="@+id/input_llyt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <RelativeLayout
+                android:id="@+id/input_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/input_editor"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/input_emoji_btn"
+                    android:background="@drawable/edittext_delete_line"
+                    android:hint="我来说几句"
+                    android:labelFor="@id/input_editor"
+                    android:maxLines="4"
+                    android:paddingLeft="12dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/input_send"
+                android:layout_width="60dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:background="@color/cornflowerblue"
+                android:enabled="true"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="@string/rc_send"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
