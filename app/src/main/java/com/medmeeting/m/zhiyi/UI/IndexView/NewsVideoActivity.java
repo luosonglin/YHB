@@ -5,28 +5,18 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
-import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailCommandFragment;
-import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailFareFragment;
-import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailInfomationFragment;
-import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailOtherFragment;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer;
@@ -45,6 +35,7 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import rx.Observer;
@@ -61,29 +52,21 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class NewsVideoActivity  extends AppCompatActivity {
+public class NewsVideoActivity extends AppCompatActivity {
 
     NestedScrollView postDetailNestedScroll;
     LandLayoutVideoPlayer detailPlayer;
     RelativeLayout activityDetailPlayer;
-
     private boolean isPlay;
     private boolean isPause;
-
     private OrientationUtils orientationUtils;
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
-    private static final String TAG = NewsVideoActivity.class.getSimpleName();
-    private Integer videoId;
-
-    private TextView start_status;
+    private Integer blogId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_detail);
+        setContentView(R.layout.activity_news_video);
 
         postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
         detailPlayer = (LandLayoutVideoPlayer) findViewById(R.id.detail_player);
@@ -113,12 +96,13 @@ public class NewsVideoActivity  extends AppCompatActivity {
             }
         });
 
-        videoId = getIntent().getIntExtra("videoId", 0);
-        initView(videoId);
+        blogId = getIntent().getIntExtra("blogId", 0);
+        initView(blogId);
     }
 
     /**
      * 分享
+     *
      * @param programId
      * @param title
      * @param photo
@@ -167,8 +151,10 @@ public class NewsVideoActivity  extends AppCompatActivity {
         UMShareAPI.get(this).onSaveInstanceState(outState);
     }
 
-    private void initView(Integer videoId) {
-        HttpData.getInstance().HttpDataGetVideoDetail(new Observer<HttpResult3<Object, VideoDetailsEntity>>() {
+    private void initView(Integer blogId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("blogId", blogId);
+        HttpData.getInstance().HttpDataGetVideoNews(new Observer<HttpResult3<Object, BlogVideoEntity>>() {
             @Override
             public void onCompleted() {
 
@@ -180,23 +166,20 @@ public class NewsVideoActivity  extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(HttpResult3<Object, VideoDetailsEntity> data) {
+            public void onNext(HttpResult3<Object, BlogVideoEntity> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(NewsVideoActivity.this, data.getMsg());
                     return;
                 }
 
-                initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
-                        data.getEntity().getUserId(), data.getEntity().isPayFlag());
+                initPlayer(data.getEntity().getBlog().getVideoUrl(), data.getEntity().getBlog().getImages(), data.getEntity().getBlog().getTitle());
 
-                initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId(), data.getEntity().getUserId());
-
-                initShare(data.getEntity().getVideoId(), data.getEntity().getTitle(), data.getEntity().getCoverPhoto(), data.getEntity().getDes());
+                initShare(data.getEntity().getBlog().getId(), data.getEntity().getBlog().getTitle(), data.getEntity().getBlog().getImages(), data.getEntity().getBlog().getAuthorName());
             }
-        }, videoId);
+        }, map);
     }
 
-    private void initPlayer(String url, String photo, String title, String chargeType, float price, Integer userId, boolean payFlag) {
+    private void initPlayer(String url, String photo, String title) {
         //外部辅助的旋转，帮助全屏
         orientationUtils = new OrientationUtils(this, detailPlayer);
         //初始化不打开外部的旋转
@@ -272,7 +255,9 @@ public class NewsVideoActivity  extends AppCompatActivity {
 
 
         //增加封面
-        new DownloadImageTaskUtil(detailPlayer.getCoverPhoto()).execute(photo);
+        if (photo != null)
+            new DownloadImageTaskUtil(detailPlayer.getCoverPhoto()).execute(photo);
+
         if (detailPlayer.getCurrentState() == CURRENT_STATE_NORMAL
                 || detailPlayer.getCurrentState() == CURRENT_STATE_PREPAREING
                 || detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING) {
@@ -325,7 +310,7 @@ public class NewsVideoActivity  extends AppCompatActivity {
                 public void onNext(HttpResult3 httpResult3) {
 
                 }
-            }, videoId);
+            }, blogId);
         }
 
     }
@@ -387,39 +372,6 @@ public class NewsVideoActivity  extends AppCompatActivity {
         }
         return detailPlayer;
     }
-
-    private void initTagsView(Integer videoId, Integer roomId, Integer userId) {
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-
-        //为ViewPager设置高度
-        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
-
-        viewPager.setLayoutParams(params);
-
-        setUpViewPager(viewPager, videoId, roomId, userId);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(1).select();
-    }
-
-    private void setUpViewPager(ViewPager viewPager, Integer videoId, Integer roomId, Integer userId) {
-        IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(NewsVideoActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
-
-        mIndexChildAdapter.addFragment(VideoDetailCommandFragment.newInstance(videoId), "评论");
-        mIndexChildAdapter.addFragment(VideoDetailInfomationFragment.newInstance(videoId), "详情");
-
-        if (userId.equals(Data.getUserId())) {
-            mIndexChildAdapter.addFragment(VideoDetailFareFragment.newInstance(videoId), "收费统计");
-        } else {
-            mIndexChildAdapter.addFragment(VideoDetailOtherFragment.newInstance(roomId), "相关视频");
-        }
-
-        viewPager.setOffscreenPageLimit(3);//缓存view 的个数
-        viewPager.setAdapter(mIndexChildAdapter);
-    }
-
 
 
 }

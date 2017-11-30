@@ -109,6 +109,7 @@ public class Blog {//implements Serializable {
     private boolean collectionType;
     private int timeSecond;
 
+
     public int getId() {
         return id;
     }
