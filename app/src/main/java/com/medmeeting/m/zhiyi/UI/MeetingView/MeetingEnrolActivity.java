@@ -78,7 +78,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
     private String URL_MeetingDetail;// = "http://wap.medmeeting.com/#!/reg/";//http://wap.medmeeting.com/#!/reg/:eventId
     private static String userAgent;
     private String url;
-    private String eventId;
+    private Integer eventId;
     private String eventTitle;
     private String userId;
     private String version;
@@ -114,7 +114,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        eventId = bundle.getString("eventId");
+        eventId = bundle.getInt("eventId");
         URL_MeetingDetail = bundle.getString("url");
         title = bundle.getString("title");
         eventTitle = bundle.getString("eventTitle");

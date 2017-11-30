@@ -426,4 +426,8 @@ public interface APILiveService {
     @GET("/v1/app/Event/B/getEventCollect")
     Observable<HttpResult3<Object, CollectType>> getEventCollect(@QueryMap Map<String, Object> map);
 
+    //GET /v1/app/Event/C/getEventCollectList 会议模块_获取收藏列表
+    @GET("/v1/app/Event/C/getEventCollectList")
+    Observable<HttpResult3<Event, Object>> getEventCollectList();
+
 }

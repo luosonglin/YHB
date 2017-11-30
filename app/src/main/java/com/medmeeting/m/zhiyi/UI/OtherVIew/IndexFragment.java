@@ -129,7 +129,7 @@ public class IndexFragment extends Fragment
                     public void OnBannerClick(int position) {
                         Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("eventId", bannerDto.getBanners().get(position - 1).getId() + "");
+                        bundle.putInt("eventId", bannerDto.getBanners().get(position - 1).getId());
                         bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
                         intent.putExtras(bundle);
                         startActivity(intent);

@@ -64,7 +64,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private String URL;
     private static String userAgent;
     private String version;
-    private String eventId;
+    private Integer eventId;
     private String userId;
     private String openId = null;
 
@@ -85,7 +85,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         mWebView = (BridgeWebView) findViewById(R.id.WebView);
         a = (TextView) findViewById(R.id.a);
 
-        eventId = getIntent().getExtras().getString("eventId");
+        eventId = getIntent().getExtras().getInt("eventId");
         try {
             userId = DBUtils.get(MeetingDetailActivity.this, "userId");
         } catch (SnappydbException e) {
@@ -348,11 +348,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
                     ToastUtils.show(MeetingDetailActivity.this, data.getMsg());
                     return;
                 }
-                if (data.getEntity().isCollectType()) {
-                    isFollowEvent = true;
-                } else {
-                    isFollowEvent = false;
-                }
+                isFollowEvent = data.getEntity().isCollectType();
             }
         }, map);
     }
@@ -715,7 +711,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
      */
     private void collectService(boolean oldCollected) {
         UserCollect userCollect = new UserCollect();
-        userCollect.setServiceId(Integer.parseInt(eventId));
+        userCollect.setServiceId(eventId);
         userCollect.setServiceType("EVENT");
         HttpData.getInstance().HttpDataCollect(new Observer<HttpResult3>() {
             @Override

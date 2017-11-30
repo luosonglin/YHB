@@ -11,7 +11,7 @@ public class UserCollect {
 
     /**
      * serviceId : 5
-     * serviceType : VIDEO
+     * serviceType :   PROG：直播节目，VIDEO：视频，EVENT：会议，BLOG：新闻
      */
 
     private int serviceId;

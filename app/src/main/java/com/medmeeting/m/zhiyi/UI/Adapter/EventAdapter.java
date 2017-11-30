@@ -1,15 +1,11 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
+import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -17,18 +13,24 @@ import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
 import java.util.List;
 
-public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
-    public MeetingAdapter(int layoutResId, List<MeetingDto> data) {
+/**
+ * @author NapoleonRohaha_Songlin
+ * @date on 30/11/2017 4:23 PM
+ * @describe TODO
+ * @email iluosonglin@gmail.com
+ * @org Healife
+ */
+public class EventAdapter extends BaseQuickAdapter<Event> {
+    public EventAdapter(int layoutResId, List<Event> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final MeetingDto item) {
+    protected void convert(BaseViewHolder helper, final Event item) {
         Glide.with(mContext)
                 .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
-//                .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
@@ -43,22 +45,5 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
                 .transform(new GlideCircleTransform(mContext))
                 .placeholder(R.mipmap.avator_default)
                 .into((ImageView) helper.getView(R.id.avatar));
-
-        helper.getView(R.id.item_meeting).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, MeetingDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("eventId", item.getId());
-                bundle.putString("eventTitle", item.getTitle());
-                bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + item.getBanner());
-                bundle.putString("description", "时间： " + DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02)
-                        + " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02)
-                        + " \n "
-                        + "地点： " + item.getAddress());
-                intent.putExtras(bundle);
-                mContext.startActivity(intent);
-            }
-        });
     }
 }

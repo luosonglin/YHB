@@ -37,7 +37,7 @@ public class FinishedEventAdapter extends BaseQuickAdapter<FollowFinishedEvent> 
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MeetingDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("eventId", item.getEventId()+"");
+                bundle.putInt("eventId", item.getEventId());
                 bundle.putString("eventTitle", item.getEventName());
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);

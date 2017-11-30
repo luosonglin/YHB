@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.MyOrderAdapter;
-import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Adapter.EventAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
-import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
@@ -64,7 +64,8 @@ public class MyCollectMeetingFragment  extends Fragment
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置适配器
-        mQuickAdapter = new MyOrderAdapter(R.layout.item_video_others, null);
+//        mQuickAdapter = new MyOrderAdapter(R.layout.item_video_others, null);
+        mQuickAdapter = new EventAdapter(R.layout.item_meeting, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
@@ -78,8 +79,7 @@ public class MyCollectMeetingFragment  extends Fragment
     }
 
     private void getMyCollectMeetingService() {
-        BasePageSearchEntity searchEntity = new BasePageSearchEntity();
-        HttpData.getInstance().HttpDataGetCollect(new Observer<HttpResult3<VideoListEntity, Object>>() {
+        HttpData.getInstance().HttpDataGetEventCollectList(new Observer<HttpResult3<Event, Object>>() {
             @Override
             public void onCompleted() {
 
@@ -91,19 +91,30 @@ public class MyCollectMeetingFragment  extends Fragment
             }
 
             @Override
-            public void onNext(HttpResult3<VideoListEntity, Object> data) {
+            public void onNext(HttpResult3<Event, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity(), data.getMsg());
                     return;
                 }
                 mQuickAdapter.setNewData(data.getData());
                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    Intent i = new Intent(getActivity(), VideoDetailActivity.class);
-                    i.putExtra("videoId", data.getData().get(position).getVideoId());
-                    startActivity(i);
+//                    Intent i = new Intent(getActivity(), MeetingDetailActivity.class);
+//                    i.putExtra("eventId", data.getData().get(position).getId());
+//                    startActivity(i);
+                    Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("eventId", data.getData().get(position).getId());
+                    bundle.putString("eventTitle", data.getData().get(position).getTitle());
+                    bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
+                    bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+                            + " ~ " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+                            + " \n "
+                            + "地点： " + data.getData().get(position).getAddress());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 });
             }
-        }, searchEntity);
+        });
     }
 
     @Override
