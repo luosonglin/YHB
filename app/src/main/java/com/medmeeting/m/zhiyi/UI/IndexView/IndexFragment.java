@@ -40,9 +40,9 @@ import rx.Observer;
 import static com.medmeeting.m.zhiyi.Util.ConstanceValue.TITLE_SELECTED;
 import static com.medmeeting.m.zhiyi.Util.ConstanceValue.TITLE_UNSELECTED;
 
-public class IndexFragment2 extends Fragment implements OnChannelListener {
+public class IndexFragment extends Fragment implements OnChannelListener {
 
-    private static final String TAG = IndexFragment2.class.getSimpleName();
+    private static final String TAG = IndexFragment.class.getSimpleName();
     @Bind(R.id.location)
     TextView location;
     @Bind(R.id.new_category_tip)
@@ -61,11 +61,11 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
     private Gson mGson = new Gson();
     private OnFragmentInteractionListener mListener;
 
-    public IndexFragment2() {
+    public IndexFragment() {
     }
 
-    public static IndexFragment2 newInstance() {
-        IndexFragment2 fragment = new IndexFragment2();
+    public static IndexFragment newInstance() {
+        IndexFragment fragment = new IndexFragment();
         return fragment;
     }
 
@@ -77,7 +77,7 @@ public class IndexFragment2 extends Fragment implements OnChannelListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_index2, container, false);
+        View view = inflater.inflate(R.layout.fragment_index, container, false);
         ButterKnife.bind(this, view);
 
         getTitleData();

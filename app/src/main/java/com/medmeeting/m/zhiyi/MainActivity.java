@@ -17,7 +17,7 @@ import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
-import com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment2;
+import com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveIndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
@@ -39,11 +39,8 @@ import butterknife.OnClick;
 import io.rong.imlib.RongIMClient;
 import rx.Observer;
 
-//import com.vondear.rxtools.RxDeviceUtils;
-
 public class MainActivity extends AppCompatActivity implements
-//        IndexFragment.OnFragmentInteractionListener,
-        IndexFragment2.OnFragmentInteractionListener,
+        IndexFragment.OnFragmentInteractionListener,
         MeetingFragment.OnFragmentInteractionListener,
         LiveIndexFragment.OnFragmentInteractionListener,
         MineFragment.OnFragmentInteractionListener {
@@ -103,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements
     TextView tabSelfTitle;
 
     private FragmentManager fragmentManager;
-    private IndexFragment2 mIndexFragment;
+    private IndexFragment mIndexFragment;
     private MeetingFragment mMeetingFragment;
     //    private CommunityFragment mLiveIndexFragment;
     private LiveIndexFragment mLiveIndexFragment;
@@ -147,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements
         //默认第一项选中
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
-            mIndexFragment = (IndexFragment2) fragmentManager.findFragmentByTag(TABORDERSTAG);
+            mIndexFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABORDERSTAG);
             mMeetingFragment = (MeetingFragment) fragmentManager.findFragmentByTag(TABMERCHANDISE);
             mLiveIndexFragment = (LiveIndexFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
             mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
@@ -233,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements
                 tabOrdersTitle.setTextColor(activeColorRecourse);
                 if (mIndexFragment == null) {
                     // 如果Fragment为空，则创建一个并添加到界面上
-                    mIndexFragment = new IndexFragment2();
+                    mIndexFragment = new IndexFragment();
                     fragmentTransaction.add(R.id.container, mIndexFragment, TABORDERSTAG);
                 } else {
                     // 如果Fragment不为空，则直接将它显示出来
