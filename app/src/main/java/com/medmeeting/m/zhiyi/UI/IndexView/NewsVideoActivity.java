@@ -31,6 +31,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -99,6 +100,8 @@ public class NewsVideoActivity extends AppCompatActivity {
     TextView videoTime;
     @Bind(R.id.video_source_llyt)
     LinearLayout videoSourceLlyt;
+    @Bind(R.id.video_source_rlyt)
+    RelativeLayout videoSourceRlyt;
 
 
     NestedScrollView postDetailNestedScroll;
@@ -255,7 +258,7 @@ public class NewsVideoActivity extends AppCompatActivity {
 
     private void initBlogView(Blog blogDetail) {
         //刚打开页面的瞬间显示
-        title.setText(blogDetail.getTitle()+"");
+        title.setText(blogDetail.getTitle() + "");
         //微博内容
         name.setText(blogDetail.getAuthorName());
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
@@ -291,6 +294,12 @@ public class NewsVideoActivity extends AppCompatActivity {
         videoName.setText(videoDetailsEntity.getTitle());
         videoSum.setText("收藏" + videoDetailsEntity.getCollectCount());
         videoTime.setText(DateUtils.formatDate(videoDetailsEntity.getCreateTime(), DateUtils.TYPE_06));
+
+        videoSourceRlyt.setOnClickListener(view -> {
+            Intent intent = new Intent(NewsVideoActivity.this, VideoDetailActivity.class);
+            intent.putExtra("videoId", videoDetailsEntity.getVideoId());
+            startActivity(intent);
+        });
     }
 
     private void getCommentService(int blogId) {
