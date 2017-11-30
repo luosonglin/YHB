@@ -18,6 +18,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.CollectType;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
@@ -672,6 +673,12 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getVideoNews(map);
         setSubscribe(observable, observer);
     }
+    public void HttpDataGetEventCollect(Observer<HttpResult3<Object, CollectType>> observer, Map<String, Object> map) {
+        Observable observable = service_live.getEventCollect(map);
+        setSubscribe(observable, observer);
+    }
+
+
 
     /**
      * 插入观察者

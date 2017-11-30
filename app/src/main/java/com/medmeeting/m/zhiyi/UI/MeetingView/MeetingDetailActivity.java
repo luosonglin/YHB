@@ -27,6 +27,7 @@ import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.CollectType;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
@@ -217,66 +218,66 @@ public class MeetingDetailActivity extends AppCompatActivity {
                         mShareAction.open(config);
                         break;
                     case R.id.action_collect:
-//                        collectService(true);
-                        followEventOptions.put("userId", userId);
-                        followEventOptions.put("eventId", eventId);
-                        followEventOptions.put("follow", "N");
-                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e(TAG, "onError: " + e.getMessage()
-                                        + "\n" + e.getCause()
-                                        + "\n" + e.getLocalizedMessage()
-                                        + "\n" + e.getStackTrace());
-                            }
-
-                            @Override
-                            public void onNext(HttpResult4 httpResult4) {
-                                if (!httpResult4.getStatus().equals("200")) {
-                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
-                                    return;
-                                }
-                                ToastUtils.show(MeetingDetailActivity.this, "取消关注");
-                                isFollowEvent = false;
-                                invalidateOptionsMenu(); //重新绘制menu
-                            }
-                        }, followEventOptions);
+                        collectService(true);
+//                        followEventOptions.put("userId", userId);
+//                        followEventOptions.put("eventId", eventId);
+//                        followEventOptions.put("follow", "N");
+//                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
+//                            @Override
+//                            public void onCompleted() {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                Log.e(TAG, "onError: " + e.getMessage()
+//                                        + "\n" + e.getCause()
+//                                        + "\n" + e.getLocalizedMessage()
+//                                        + "\n" + e.getStackTrace());
+//                            }
+//
+//                            @Override
+//                            public void onNext(HttpResult4 httpResult4) {
+//                                if (!httpResult4.getStatus().equals("200")) {
+//                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
+//                                    return;
+//                                }
+//                                ToastUtils.show(MeetingDetailActivity.this, "取消关注");
+//                                isFollowEvent = false;
+//                                invalidateOptionsMenu(); //重新绘制menu
+//                            }
+//                        }, followEventOptions);
                         break;
                     case R.id.action_collect_no:
-//                        collectService(false);
-                        followEventOptions.put("userId", userId);
-                        followEventOptions.put("eventId", eventId);
-                        followEventOptions.put("follow", "Y");
-                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Log.e(TAG, "onError: " + e.getMessage()
-                                        + "\n" + e.getCause()
-                                        + "\n" + e.getLocalizedMessage()
-                                        + "\n" + e.getStackTrace());
-                            }
-
-                            @Override
-                            public void onNext(HttpResult4 httpResult4) {
-                                if (!httpResult4.getStatus().equals("200")) {
-                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
-                                    return;
-                                }
-                                ToastUtils.show(MeetingDetailActivity.this, "成功关注");
-                                isFollowEvent = true;
-                                invalidateOptionsMenu(); //重新绘制menu
-                            }
-                        }, followEventOptions);
+                        collectService(false);
+//                        followEventOptions.put("userId", userId);
+//                        followEventOptions.put("eventId", eventId);
+//                        followEventOptions.put("follow", "Y");
+//                        HttpData.getInstance().HttpDataFollowEvent(new Observer<HttpResult4>() {
+//                            @Override
+//                            public void onCompleted() {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//                                Log.e(TAG, "onError: " + e.getMessage()
+//                                        + "\n" + e.getCause()
+//                                        + "\n" + e.getLocalizedMessage()
+//                                        + "\n" + e.getStackTrace());
+//                            }
+//
+//                            @Override
+//                            public void onNext(HttpResult4 httpResult4) {
+//                                if (!httpResult4.getStatus().equals("200")) {
+//                                    ToastUtils.show(MeetingDetailActivity.this, httpResult4.getReturnMsg());
+//                                    return;
+//                                }
+//                                ToastUtils.show(MeetingDetailActivity.this, "成功关注");
+//                                isFollowEvent = true;
+//                                invalidateOptionsMenu(); //重新绘制menu
+//                            }
+//                        }, followEventOptions);
                         break;
                     case R.id.action_enroll:
                         Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
@@ -302,10 +303,35 @@ public class MeetingDetailActivity extends AppCompatActivity {
             }
         });
 
+//
+//        checkFollowEventOptions.put("userId", userId);
+//        checkFollowEventOptions.put("eventId", eventId);
+//        HttpData.getInstance().HttpDataCheckFollowEvent(new Observer<HttpResult4>() {
+//            @Override
+//            public void onCompleted() {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(HttpResult4 httpResult4) {
+//                if ("未关注！".equals(httpResult4.getReturnMsg())) {
+////                    b.setText("点击关注");
+//                    isFollowEvent = false;
+//                } else {
+////                    b.setText("您已关注");
+//                    isFollowEvent = true;
+//                }
+//            }
+//        }, checkFollowEventOptions);
 
-        checkFollowEventOptions.put("userId", userId);
-        checkFollowEventOptions.put("eventId", eventId);
-        HttpData.getInstance().HttpDataCheckFollowEvent(new Observer<HttpResult4>() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("eventId", eventId);
+        HttpData.getInstance().HttpDataGetEventCollect(new Observer<HttpResult3<Object, CollectType>>() {
             @Override
             public void onCompleted() {
 
@@ -313,20 +339,22 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtils.show(MeetingDetailActivity.this, e.getMessage());
             }
 
             @Override
-            public void onNext(HttpResult4 httpResult4) {
-                if ("未关注！".equals(httpResult4.getReturnMsg())) {
-//                    b.setText("点击关注");
-                    isFollowEvent = false;
-                } else {
-//                    b.setText("您已关注");
+            public void onNext(HttpResult3<Object, CollectType> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(MeetingDetailActivity.this, data.getMsg());
+                    return;
+                }
+                if (data.getEntity().isCollectType()) {
                     isFollowEvent = true;
+                } else {
+                    isFollowEvent = false;
                 }
             }
-        }, checkFollowEventOptions);
+        }, map);
     }
 
     /**
@@ -633,7 +661,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         public void onResult(SHARE_MEDIA platform) {
 
             if (platform.name().equals("WEIXIN_FAVORITE")) {
-                Toast.makeText(mActivity.get()," 收藏成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity.get(), " 收藏成功", Toast.LENGTH_SHORT).show();
             } else {
                 if (platform != SHARE_MEDIA.MORE) {
                     Toast.makeText(mActivity.get(), " 分享成功", Toast.LENGTH_SHORT).show();
@@ -682,6 +710,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
     /**
      * 收藏API
+     *
      * @param oldCollected
      */
     private void collectService(boolean oldCollected) {
