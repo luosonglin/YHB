@@ -31,8 +31,8 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
                     android:gravity="left"
                     android:maxLines="2"
                     android:text="干物妹"
@@ -80,17 +80,119 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginTop="6dp">-->
+
+                <!--<com.medmeeting.m.zhiyi.Widget.weibogridview.weiboGridView-->
+                <!--android:id="@+id/blog_image"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:spacing="4dp" />-->
+                <!--</LinearLayout>-->
+
                 <LinearLayout
+                    android:id="@+id/video_source_llyt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="6dp">
+                    android:orientation="vertical">
 
-                    <com.medmeeting.m.zhiyi.Widget.weibogridview.weiboGridView
-                        android:id="@+id/blog_image"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:spacing="4dp" />
+                        android:layout_height="30dp"
+                        android:layout_marginTop="20dp">
+
+                        <View
+                            android:id="@+id/line5"
+                            android:layout_width="1.5dp"
+                            android:layout_height="14dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="18dp"
+                            android:layout_marginRight="18dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@color/deepskyblue" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_toRightOf="@+id/line5"
+                            android:gravity="center_vertical"
+                            android:text="视频来源"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grey1" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/video_image"
+                            android:layout_width="140dp"
+                            android:layout_height="80dp"
+                            android:scaleType="fitXY"
+                            android:src="@mipmap/live_background" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_toRightOf="@+id/video_image">
+
+                            <TextView
+                                android:id="@+id/video_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="4dp"
+                                android:ellipsize="marquee"
+                                android:lines="2"
+                                android:text="简介简介简介介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginBottom="6dp">
+
+                                <TextView
+                                    android:id="@+id/video_sum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_gravity="left"
+                                    android:ellipsize="marquee"
+                                    android:lines="1"
+                                    android:paddingLeft="2dp"
+                                    android:text="观看 100    收藏 1000"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/video_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_gravity="left"
+                                    android:ellipsize="marquee"
+                                    android:lines="1"
+                                    android:paddingLeft="2dp"
+                                    android:text="2017-04-08"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+                        </RelativeLayout>
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -138,6 +240,6 @@
         android:id="@+id/detail_player"
         android:layout_width="match_parent"
         android:layout_height="230dp"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

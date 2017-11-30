@@ -8,18 +8,23 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer;
+import com.medmeeting.m.zhiyi.Widget.weibogridview.weiboGridView;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
@@ -35,9 +40,13 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observer;
 
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_NORMAL;
@@ -54,6 +63,20 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
  */
 public class NewsVideoActivity extends AppCompatActivity {
 
+    @Bind(R.id.title)
+    TextView title;
+    @Bind(R.id.name)
+    TextView name;
+    @Bind(R.id.time)
+    TextView time;
+    @Bind(R.id.content)
+    TextView content;
+    @Bind(R.id.blog_image)
+    weiboGridView blogImage;
+    @Bind(R.id.rv_list)
+    RecyclerView rvList;
+
+
     NestedScrollView postDetailNestedScroll;
     LandLayoutVideoPlayer detailPlayer;
     RelativeLayout activityDetailPlayer;
@@ -61,12 +84,14 @@ public class NewsVideoActivity extends AppCompatActivity {
     private boolean isPause;
     private OrientationUtils orientationUtils;
 
+
     private Integer blogId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_video);
+        ButterKnife.bind(this);
 
         postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
         detailPlayer = (LandLayoutVideoPlayer) findViewById(R.id.detail_player);
@@ -171,12 +196,41 @@ public class NewsVideoActivity extends AppCompatActivity {
                     ToastUtils.show(NewsVideoActivity.this, data.getMsg());
                     return;
                 }
+                initBlogView(data.getEntity().getBlog());
 
                 initPlayer(data.getEntity().getBlog().getVideoUrl(), data.getEntity().getBlog().getImages(), data.getEntity().getBlog().getTitle());
 
                 initShare(data.getEntity().getBlog().getId(), data.getEntity().getBlog().getTitle(), data.getEntity().getBlog().getImages(), data.getEntity().getBlog().getAuthorName());
             }
         }, map);
+    }
+
+    private void initBlogView(Blog blogDetail) {
+        //刚打开页面的瞬间显示
+        title.setText(blogDetail.getTitle());
+        //微博内容
+        name.setText(blogDetail.getAuthorName());
+        time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
+
+        content.setText(blogDetail.getContent());
+
+        //九图
+        if (blogDetail.getImages() == null) {
+            blogImage.setVisibility(View.GONE);
+            return;
+        }
+        blogImage.setVisibility(View.VISIBLE);
+
+        String blogImages = blogDetail.getImages();
+        if (blogImages != null) {
+            List<String> images = new ArrayList<>();
+            for (String i : blogImages.split(",")) {
+                images.add(i);
+            }
+            blogImage.render(images);
+        } else {
+            blogImage.setVisibility(View.GONE);
+        }
     }
 
     private void initPlayer(String url, String photo, String title) {
