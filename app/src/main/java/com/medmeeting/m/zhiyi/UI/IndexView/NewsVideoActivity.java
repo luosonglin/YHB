@@ -10,9 +10,13 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
@@ -20,6 +24,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -75,6 +80,17 @@ public class NewsVideoActivity extends AppCompatActivity {
     weiboGridView blogImage;
     @Bind(R.id.rv_list)
     RecyclerView rvList;
+
+    @Bind(R.id.video_image)
+    ImageView videoImage;
+    @Bind(R.id.video_name)
+    TextView videoName;
+    @Bind(R.id.video_sum)
+    TextView videoSum;
+    @Bind(R.id.video_time)
+    TextView videoTime;
+    @Bind(R.id.video_source_llyt)
+    LinearLayout videoSourceLlyt;
 
 
     NestedScrollView postDetailNestedScroll;
@@ -197,6 +213,7 @@ public class NewsVideoActivity extends AppCompatActivity {
                     return;
                 }
                 initBlogView(data.getEntity().getBlog());
+                initSourceVideoView(data.getEntity().getVideoDetailsEntity());
 
                 initPlayer(data.getEntity().getBlog().getVideoUrl(), data.getEntity().getBlog().getImages(), data.getEntity().getBlog().getTitle());
 
@@ -231,6 +248,18 @@ public class NewsVideoActivity extends AppCompatActivity {
         } else {
             blogImage.setVisibility(View.GONE);
         }
+    }
+
+    private void initSourceVideoView(VideoDetailsEntity videoDetailsEntity) {
+        Glide.with(NewsVideoActivity.this)
+                .load(videoDetailsEntity.getCoverPhoto())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade()
+                .placeholder(R.mipmap.ic_launcher)
+                .into(videoImage);
+        videoName.setText(videoDetailsEntity.getTitle());
+        videoSum.setText("收藏" + videoDetailsEntity.getCollectCount());
+        videoTime.setText(DateUtils.formatDate(videoDetailsEntity.getCreateTime(), DateUtils.TYPE_06));
     }
 
     private void initPlayer(String url, String photo, String title) {
