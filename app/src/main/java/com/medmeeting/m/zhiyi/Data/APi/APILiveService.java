@@ -430,4 +430,8 @@ public interface APILiveService {
     @GET("/v1/app/Event/C/getEventCollectList")
     Observable<HttpResult3<Event, Object>> getEventCollectList();
 
+    //GET /v1/app/Event/A/getAllEventList 会议模块_获取会议列表
+    @GET("/v1/app/Event/A/getAllEventList")
+    Observable<HttpResult3<Event, Object>> getAllEventList(@QueryMap Map<String, Object> map);
+
 }

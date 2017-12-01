@@ -681,6 +681,10 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getEventCollectList();
         setSubscribe(observable, observer);
     }
+    public void HttpDataGetAllEventList(Observer<HttpResult3<Event, Object>> observer, Map<String, Object> map) {
+        Observable observable = service_live.getAllEventList(map);
+        setSubscribe(observable, observer);
+    }
 
 
 
