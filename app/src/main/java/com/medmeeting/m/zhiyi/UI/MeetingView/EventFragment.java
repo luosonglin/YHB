@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.UI.MeetingView;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,7 @@ public class EventFragment extends Fragment {
 
     private static Integer eventType;
 
+    private SwipeRefreshLayout srl;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
 
@@ -67,6 +69,7 @@ public class EventFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -77,6 +80,12 @@ public class EventFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         getVideoComments(eventType);
+
+        //下啦刷新
+        srl.setOnRefreshListener(() -> {
+            srl.setRefreshing(false);
+//            getVideoComments(eventType);
+        });
     }
 
     private void getVideoComments(Integer eventType) {
@@ -102,6 +111,7 @@ public class EventFragment extends Fragment {
                     return;
                 }
                 mAdapter.setNewData(data.getData());
+                srl.setRefreshing(false);
             }
         }, map);
     }
