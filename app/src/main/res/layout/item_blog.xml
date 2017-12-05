@@ -180,7 +180,7 @@
                         android:maxLines="1"
                         android:text="  中新网移动版"
                         android:textColor="@color/grey"
-                        android:textSize="13dp" />
+                        android:textSize="10dp" />
 
                     <LinearLayout
                         android:id="@+id/info_llyt"
@@ -197,7 +197,7 @@
                             android:drawableLeft="@mipmap/index_news_time_icon"
                             android:text="  5分钟前"
                             android:textColor="@color/grey"
-                            android:textSize="13dp" />
+                            android:textSize="10dp" />
 
                         <TextView
                             android:id="@+id/tvCommentCount"
@@ -206,7 +206,7 @@
                             android:layout_marginLeft="5dp"
                             android:text="评论"
                             android:textColor="@color/grey"
-                            android:textSize="13dp" />
+                            android:textSize="10dp" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
