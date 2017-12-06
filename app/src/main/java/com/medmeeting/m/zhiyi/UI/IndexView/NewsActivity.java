@@ -1,10 +1,13 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -21,8 +24,11 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.medmeeting.m.zhiyi.Widget.TextViewHtmlImageGetter;
+import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +52,7 @@ public class NewsActivity extends AppCompatActivity {
     @Bind(R.id.content)
     TextView content;
     @Bind(R.id.blog_image)
-    com.medmeeting.m.zhiyi.Widget.weibogridview.weiboGridView blogImage;
+    weiboGridView blogImage;
 
     @Bind(R.id.input_editor)
     EditText inputEditor;
@@ -58,6 +64,27 @@ public class NewsActivity extends AppCompatActivity {
 
     private int blogId;
     private boolean collectionType;
+
+    Html.ImageGetter imgGetter = new Html.ImageGetter() {
+        @Override
+        public Drawable getDrawable(String source) {
+            Log.i("RG", "source---?>>>" + source);
+            Drawable drawable = null;
+            URL url;
+            try {
+                url = new URL(source);
+                Log.i("RG", "url---?>>>" + url);
+                drawable = Drawable.createFromStream(url.openStream(), ""); // 获取网路图片
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight());
+            Log.i("RG", "url---?>>>" + url);
+            return drawable;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +159,13 @@ public class NewsActivity extends AppCompatActivity {
         name.setText(blogDetail.getAuthorName());
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
 
-        content.setText(blogDetail.getContent());
+        //文章View需要写带html标签的文本
+//        content.setMovementMethod(ScrollingMovementMethod.getInstance());// 设置可滚动
+//        content.setMovementMethod(LinkMovementMethod.getInstance());//设置超链接可以打开网页
+//        content.setText(Html.fromHtml(blogDetail.getContent(), imgGetter, null));
+        content.setText(Html.fromHtml(blogDetail.getContent(), new TextViewHtmlImageGetter(getApplicationContext(), content), null));
+
+
 
         //九图
         if (blogDetail.getImages() == null) {
@@ -156,6 +189,8 @@ public class NewsActivity extends AppCompatActivity {
     private void getCommentService(int blogId) {
         Map<String, Object> map = new HashMap<>();
         map.put("blogId", blogId);
+        map.put("pageNum", 1);
+        map.put("pageSize", 100);
         HttpData.getInstance().HttpDataGetNewsCommentList(new Observer<HttpResult3<BlogComment, Object>>() {
             @Override
             public void onCompleted() {

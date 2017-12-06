@@ -36,7 +36,7 @@ import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer;
-import com.medmeeting.m.zhiyi.Widget.weibogridview.weiboGridView;
+import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
@@ -305,6 +305,8 @@ public class NewsVideoActivity extends AppCompatActivity {
     private void getCommentService(int blogId) {
         Map<String, Object> map = new HashMap<>();
         map.put("blogId", blogId);
+        map.put("pageNum", 1);
+        map.put("pageSize", 100);
         HttpData.getInstance().HttpDataGetNewsCommentList(new Observer<HttpResult3<BlogComment, Object>>() {
             @Override
             public void onCompleted() {
