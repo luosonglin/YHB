@@ -28,9 +28,9 @@ import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
-import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
-import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
-import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
+import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenu;
+import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenuItem;
+import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenuItemListener;
 import com.snappydb.SnappydbException;
 
 import butterknife.Bind;

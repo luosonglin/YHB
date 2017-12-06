@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.Widget;
+package com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -45,7 +45,7 @@ public class TextViewHtmlImageGetter implements Html.ImageGetter {
                             drawable.setLevel(1);
 
                             mTv.invalidate();
-                            mTv.setText(mTv.getText());
+                            mTv.setText(mTv.getText()); //解决图文重叠
                         }
                     }
                 });

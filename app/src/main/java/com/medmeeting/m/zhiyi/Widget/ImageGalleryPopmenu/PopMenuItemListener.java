@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.Widget.popmenu;
+package com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu;
 
 /**
  * Created by HanHailong on 16/2/18.

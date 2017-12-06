@@ -1,12 +1,15 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,11 +27,12 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.medmeeting.m.zhiyi.Widget.TextViewHtmlImageGetter;
+import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.LinkMovementMethodExt;
+import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.MessageSpan;
+import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.TextViewHtmlImageGetter;
 import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,27 +68,6 @@ public class NewsActivity extends AppCompatActivity {
 
     private int blogId;
     private boolean collectionType;
-
-    Html.ImageGetter imgGetter = new Html.ImageGetter() {
-        @Override
-        public Drawable getDrawable(String source) {
-            Log.i("RG", "source---?>>>" + source);
-            Drawable drawable = null;
-            URL url;
-            try {
-                url = new URL(source);
-                Log.i("RG", "url---?>>>" + url);
-                drawable = Drawable.createFromStream(url.openStream(), ""); // 获取网路图片
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight());
-            Log.i("RG", "url---?>>>" + url);
-            return drawable;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,12 +143,27 @@ public class NewsActivity extends AppCompatActivity {
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
 
         //文章View需要写带html标签的文本
-//        content.setMovementMethod(ScrollingMovementMethod.getInstance());// 设置可滚动
-//        content.setMovementMethod(LinkMovementMethod.getInstance());//设置超链接可以打开网页
-//        content.setText(Html.fromHtml(blogDetail.getContent(), imgGetter, null));
         content.setText(Html.fromHtml(blogDetail.getContent(), new TextViewHtmlImageGetter(getApplicationContext(), content), null));
-
-
+        final Handler handler = new Handler() {
+            public void handleMessage(Message msg) {
+                int what = msg.what;
+                if (what == 200) {
+                    MessageSpan ms = (MessageSpan) msg.obj;
+                    Object[] spans = (Object[]) ms.getObj();
+                    final ArrayList<String> list = new ArrayList<>();
+                    for (Object span : spans) {
+                        if (span instanceof ImageSpan) {
+                            Log.i("picUrl==", ((ImageSpan) span).getSource());
+                            list.add(((ImageSpan) span).getSource());
+                            Intent intent = new Intent(getApplicationContext(), ImageGalleryActivity.class);
+                            intent.putStringArrayListExtra("images", list);
+                            startActivity(intent);
+                        }
+                    }
+                }
+            }
+        };
+        content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
 
         //九图
         if (blogDetail.getImages() == null) {
@@ -297,6 +295,7 @@ public class NewsActivity extends AppCompatActivity {
 
     /**
      * 收藏API
+     *
      * @param oldCollected
      */
     private void collectService(boolean oldCollected) {

@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.Widget.popmenu;
+package com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu;
 
 import android.content.Context;
 import android.util.AttributeSet;

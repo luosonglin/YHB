@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.Widget.popmenu;
+package com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
