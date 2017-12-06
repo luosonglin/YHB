@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.Data.APi;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
+import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
@@ -13,6 +14,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
@@ -433,5 +435,9 @@ public interface APILiveService {
     //GET /v1/app/Event/A/getAllEventList 会议模块_获取会议列表
     @GET("/v1/app/Event/A/getAllEventList")
     Observable<HttpResult3<Event, Object>> getAllEventList(@QueryMap Map<String, Object> map);
+
+    //GET /v1/website/events/banners App获取banner轮播信息
+    @GET("/v1/website/events/banners")
+    Observable<HttpResult<EventBanner>> getMeetingBanner();
 
 }

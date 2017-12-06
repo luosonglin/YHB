@@ -12,6 +12,7 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
+import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
@@ -651,10 +652,12 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.findGenBlogList(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetNewsCommentList(Observer<HttpResult3<BlogComment, Object>> observer, Map<String, Object> map) {
         Observable observable = service_live.getNewsCommentList(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataInsertComment(Observer<HttpResult3> observer, BlogComment blogComment) {
         Observable observable = service_live.insertComment(blogComment);
         setSubscribe(observable, observer);
@@ -669,24 +672,31 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.selectCollectList(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetVideoNews(Observer<HttpResult3<Object, BlogVideoEntity>> observer, Map<String, Object> map) {
         Observable observable = service_live.getVideoNews(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetEventCollect(Observer<HttpResult3<Object, CollectType>> observer, Map<String, Object> map) {
         Observable observable = service_live.getEventCollect(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetEventCollectList(Observer<HttpResult3<Event, Object>> observer) {
         Observable observable = service_live.getEventCollectList();
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetAllEventList(Observer<HttpResult3<Event, Object>> observer, Map<String, Object> map) {
         Observable observable = service_live.getAllEventList(map);
         setSubscribe(observable, observer);
     }
 
-
+    public void HttpDataGetMeetingBanner(Observer<HttpResult<EventBanner>> observer) {
+        Observable observable = service_live.getMeetingBanner();
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 插入观察者

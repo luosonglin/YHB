@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +40,9 @@ import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.LinkMovementMethodExt;
+import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.MessageSpan;
+import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.TextViewHtmlImageGetter;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer;
 import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
@@ -263,7 +271,28 @@ public class NewsVideoActivity extends AppCompatActivity {
         name.setText(blogDetail.getAuthorName());
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
 
-        content.setText(blogDetail.getContent());
+        //文章View需要写带html标签的文本
+        content.setText(Html.fromHtml(blogDetail.getContent(), new TextViewHtmlImageGetter(getApplicationContext(), content), null));
+        final Handler handler = new Handler() {
+            public void handleMessage(Message msg) {
+                int what = msg.what;
+                if (what == 200) {
+                    MessageSpan ms = (MessageSpan) msg.obj;
+                    Object[] spans = (Object[]) ms.getObj();
+                    final ArrayList<String> list = new ArrayList<>();
+                    for (Object span : spans) {
+                        if (span instanceof ImageSpan) {
+                            Log.i("picUrl==", ((ImageSpan) span).getSource());
+                            list.add(((ImageSpan) span).getSource());
+                            Intent intent = new Intent(getApplicationContext(), ImageGalleryActivity.class);
+                            intent.putStringArrayListExtra("images", list);
+                            startActivity(intent);
+                        }
+                    }
+                }
+            }
+        };
+        content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
 
         //九图
         if (blogDetail.getImages() == null) {
