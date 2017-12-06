@@ -86,10 +86,7 @@ public class LinkMovementMethodExt extends LinkMovementMethod {
 
         //return false;
         return super.onTouchEvent(widget, buffer, event);
-
-
     }
-
 
     public boolean canSelectArbitrarily() {
         return true;

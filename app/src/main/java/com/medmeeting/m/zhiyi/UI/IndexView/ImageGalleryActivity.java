@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.ImageView;
 
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.Widget.photoview.PhotoViewAdapter;
@@ -17,6 +19,8 @@ public class ImageGalleryActivity extends AppCompatActivity {
     private List<String> imgUrls; //图片列表
     private ViewPager mViewPager;
 
+    private ImageView back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +32,14 @@ public class ImageGalleryActivity extends AppCompatActivity {
         if(imgUrls == null) {
             imgUrls = new ArrayList<>();
         }
+        for (String i:imgUrls) {
+            Log.e(getLocalClassName(), i);
+        }
         initGalleryViewPager();
-    }
 
+        back = (ImageView) findViewById(R.id.back);
+        back.setOnClickListener(view -> finish());
+    }
 
 
     @Override
@@ -39,13 +48,12 @@ public class ImageGalleryActivity extends AppCompatActivity {
     }
 
 
-
     private void initGalleryViewPager() {
         PhotoViewAdapter pagerAdapter = new PhotoViewAdapter(this, imgUrls);
         pagerAdapter.setOnItemChangeListener(new PhotoViewAdapter.OnItemChangeListener() {
             @Override
             public void onItemChange(int currentPosition) {
-//
+                Log.e("eee", currentPosition+"");
             }
         });
         mViewPager = (ViewPager)findViewById(R.id.viewer);
