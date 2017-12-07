@@ -85,8 +85,8 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
  */
 public class NewsVideoActivity extends AppCompatActivity {
 
-    @Bind(R.id.title)
-    TextView title;
+    @Bind(R.id.titleTv)
+    TextView titleTv;
     @Bind(R.id.name)
     TextView name;
     @Bind(R.id.time)
@@ -266,9 +266,9 @@ public class NewsVideoActivity extends AppCompatActivity {
 
     private void initBlogView(Blog blogDetail) {
         //刚打开页面的瞬间显示
-        title.setText(blogDetail.getTitle() + "");
+        titleTv.setText(blogDetail.getTitle());
         //微博内容
-        name.setText(blogDetail.getAuthorName());
+        name.setText("图文/"+blogDetail.getAuthorName());
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
 
         //文章View需要写带html标签的文本

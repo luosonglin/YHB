@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BlogCommentAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.NewsLabelAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -34,6 +35,7 @@ import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +71,10 @@ public class NewsActivity extends AppCompatActivity {
     private int blogId;
     private boolean collectionType;
 
+    @Bind(R.id.label_rv_list)
+    RecyclerView mLabelRecyclerView;
+    private BaseQuickAdapter mLabelAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +84,19 @@ public class NewsActivity extends AppCompatActivity {
         initToolbar();
 
         blogId = getIntent().getIntExtra("blogId", 0);
+//        mLabelRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL) {
+//                                                @Override
+//                                                public boolean canScrollVertically() {
+//                                                    return false;
+//                                                }
+//                                            }
+//        );
+        mLabelRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
+        mLabelRecyclerView.setHasFixedSize(true);
+        mLabelAdapter = new NewsLabelAdapter(R.layout.item_news_label_tag, null);
+        mLabelAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mLabelAdapter.openLoadMore(3, true);
+        mLabelRecyclerView.setAdapter(mLabelAdapter);
         getBlogDetailService(blogId);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
@@ -139,7 +158,7 @@ public class NewsActivity extends AppCompatActivity {
         //刚打开页面的瞬间显示
         title.setText(blogDetail.getTitle());
         //微博内容
-        name.setText(blogDetail.getAuthorName());
+        name.setText("图文/" + blogDetail.getAuthorName());
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
 
         //文章View需要写带html标签的文本
@@ -164,6 +183,25 @@ public class NewsActivity extends AppCompatActivity {
             }
         };
         content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
+
+
+
+        List<String> mLabels= new ArrayList<>();
+
+        mLabels.addAll(Arrays.asList(blogDetail.getLabelName().split(",")));
+        mLabelAdapter.setNewData(mLabels);
+
+//        if (!TextUtils.isEmpty(blogDetail.getLabelName())) {
+//            if (blogDetail.getLabelName().contains(",")) {
+//                mLabels.addAll(Arrays.asList(blogDetail.getLabelName().split(",")));
+//            } else {
+//                mLabels.add(blogDetail.getLabelName());
+//            }
+//            mLabelAdapter.setNewData(mLabels);
+//            mLabelRecyclerView.setVisibility(View.VISIBLE);
+//        } else {
+//            mLabelRecyclerView.setVisibility(View.GONE);
+//        }
 
         //九图
         if (blogDetail.getImages() == null) {

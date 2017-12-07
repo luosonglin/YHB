@@ -89,8 +89,20 @@
                     android:id="@+id/blog_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:spacing="4dp" />
+                    app:spacing="4dp"
+                    android:visibility="gone"
+                    />
             </LinearLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/label_rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white" />
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
