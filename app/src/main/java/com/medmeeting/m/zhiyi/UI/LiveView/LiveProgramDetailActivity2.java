@@ -231,6 +231,20 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         UMShareAPI.get(this).onSaveInstanceState(outState);
     }
 
+
+//    @Override
+//    protected void onResumeFragments() {
+//        initView(programId);
+//        super.onResumeFragments();
+//    }
+
+
+//    @Override
+//    protected void onRestart() {
+//        initView(programId);
+//        super.onRestart();
+//    }
+
     private void initView(Integer programId) {
         HttpData.getInstance().HttpDataGetOpenProgramDetail(new Observer<HttpResult3<Object, LiveProgramDateilsEntity>>() {
             @Override
@@ -255,22 +269,19 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                         data.getEntity().getPayFalg(), data.getEntity().getRoomUserId(),
                         data.getEntity().getLiveStatus());
 
-                try {
-                    audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
-                    audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
-                    Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
-
-                    if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserNickName, url);
-                    } else {
-                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserName, url);
-                    }
-                } catch (SnappydbException e) {
-                    e.printStackTrace();
-                }
-
-//                initPlayer(data.getEntity().getRtmpPlayUrl()+" made", data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
-//                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
+//                try {
+//                    audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
+//                    audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
+//                    Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
+//
+//                    if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+//                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserNickName, url);
+//                    } else {
+//                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserName, url);
+//                    }
+//                } catch (SnappydbException e) {
+//                    e.printStackTrace();
+//                }
 
                 initTagsView(data.getEntity());
 
@@ -317,10 +328,27 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     buyBtn.setTextSize(12);
                     buyBtn.setTextColor(Color.WHITE);
                     buyBtn.setClickable(true);
-                    buyBtn.setOnClickListener(view ->
-                            startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
-                                    .putExtra("programId", programId)
-                                    .putExtra("url", url)));
+                    buyBtn.setOnClickListener(view -> {
+
+                        try {
+                            audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
+                            audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
+                            Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
+
+                            if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+                                loginRongCloudChatRoom(Data.getUserId() + "", audienceUserNickName, url);
+                            } else {
+                                loginRongCloudChatRoom(Data.getUserId() + "", audienceUserName, url);
+                            }
+                        } catch (SnappydbException e) {
+                            e.printStackTrace();
+                        }
+                        
+                        startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
+                                .putExtra("programId", programId)
+                                .putExtra("url", url));
+
+                    });
                     break;
                 case "wait":
                     buyBtn.setVisibility(View.VISIBLE);

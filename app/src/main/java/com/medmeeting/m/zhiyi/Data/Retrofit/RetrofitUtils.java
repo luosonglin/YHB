@@ -79,45 +79,6 @@ public abstract class RetrofitUtils {
         return mRetrofitMeeting;
     }
 
-    /**
-     * 直播Retrofit对象
-     *
-     * @return
-     */
-    protected static Retrofit getLiveRetrofit() {
-
-        if (null == mOkHttpClientLive) {
-
-            if (null == mOkHttpClientLive) {
-                mOkHttpClientLive = OkHttpUtils.getOkHttpClient();
-            }
-
-            //Retrofit2后使用build设计模式
-//            mRetrofitLive = new Retrofit.Builder()
-//                    //设置服务器路径
-//                    .baseUrl(Constant.API_SERVER_LIVE + "/")
-//                    //添加转化库，默认是Gson
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    //添加回调库，采用RxJava
-//                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                    //设置使用okhttp网络请求
-//                    .client(mOkHttpClientLive)
-//                    .build();
-
-            mRetrofitLive = new Retrofit.Builder()
-                    //设置服务器路径
-                    .baseUrl(Constant.API_SERVER_LIVE_TEST + "/")
-                    //添加转化库，默认是Gson
-                    .addConverterFactory(GsonConverterFactory.create())
-                    //添加回调库，采用RxJava
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    //设置使用okhttp网络请求
-                    .client(mOkHttpClientLive)
-                    .build();
-        }
-
-        return mRetrofitLive;
-    }
 
     /**
      * 短信Retrofit对象 Cookie
@@ -146,4 +107,45 @@ public abstract class RetrofitUtils {
         return mRetrofitCookie;
     }
 
+
+
+    /**
+     * 直播Retrofit对象
+     *
+     * @return
+     */
+    protected static Retrofit getLiveRetrofit() {
+
+        if (null == mOkHttpClientLive) {
+
+            if (null == mOkHttpClientLive) {
+                mOkHttpClientLive = OkHttpUtils.getOkHttpClient();
+            }
+
+            //Retrofit2后使用build设计模式
+//            mRetrofitLive = new Retrofit.Builder()
+//                    //设置服务器路径
+//                    .baseUrl(Constant.API_SERVER_LIVE + "/")
+//                    //添加转化库，默认是Gson
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    //添加回调库，采用RxJava
+//                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                    //设置使用okhttp网络请求
+//                    .client(mOkHttpClientLive)
+//                    .build();
+
+            mRetrofitLive = new Retrofit.Builder()
+                    //设置服务器路径
+                    .baseUrl(Constant.API_SERVER_LIVE + "/")
+                    //添加转化库，默认是Gson
+                    .addConverterFactory(GsonConverterFactory.create())
+                    //添加回调库，采用RxJava
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    //设置使用okhttp网络请求
+                    .client(mOkHttpClientLive)
+                    .build();
+        }
+
+        return mRetrofitLive;
+    }
 }
