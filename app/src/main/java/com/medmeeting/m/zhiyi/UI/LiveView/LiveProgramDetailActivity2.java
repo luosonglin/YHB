@@ -343,7 +343,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
-                        
+
                         startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
                                 .putExtra("programId", programId)
                                 .putExtra("url", url));

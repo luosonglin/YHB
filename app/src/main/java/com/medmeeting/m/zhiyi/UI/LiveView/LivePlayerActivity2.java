@@ -83,6 +83,13 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
 
     }
 
+    @Override
+    public void recreate() {
+        initChat(programId);
+        initPlayer(getIntent().getStringExtra("url"), "","");
+        super.recreate();
+    }
+
     private void initChat(Integer programId) {
         //init 互动view
         LiveKit.addEventHandler(handler);

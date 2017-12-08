@@ -84,6 +84,7 @@
             android:layout_marginLeft="20dp"
             android:layout_above="@+id/bottom_bar"
             android:divider="@null"
+            android:background="@color/grey2_transparent"
             android:listSelector="@android:color/transparent"
             android:scrollbars="none"
             android:transcriptMode="alwaysScroll"/>
