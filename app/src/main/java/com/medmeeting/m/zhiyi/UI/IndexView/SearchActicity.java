@@ -70,14 +70,21 @@ public class SearchActicity extends AppCompatActivity {
         viewPager.setAdapter(mIndexChildAdapter);
     }
 
-    @OnClick({R.id.back, R.id.search_tv})
+    @OnClick({R.id.back, R.id.search_edit, R.id.search_tv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
+            case R.id.search_edit:
+                tabLayout.setVisibility(View.VISIBLE);
+                viewPager.setVisibility(View.VISIBLE);
+
+                break;
             case R.id.search_tv:
                 Data.getSearchHistory().add(searchEdit.getText().toString().trim());
+                tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
                 break;
         }
     }

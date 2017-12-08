@@ -66,13 +66,6 @@ public class SearchHistoryFragment extends Fragment {
         mRecyclerView.stopNestedScroll();
         //设置RecyclerView的显示模式  当前List模式
         if (mType.equals("0")) {
-//            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL) {
-//                                               @Override
-//                                               public boolean canScrollVertically() {
-//                                                   return false;
-//                                               }
-//                                           }
-//            );
             FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
             mRecyclerView.setLayoutManager(flowLayoutManager);
 
@@ -84,7 +77,6 @@ public class SearchHistoryFragment extends Fragment {
                 }
             });
         }
-//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL) );
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //历史数据
@@ -105,12 +97,13 @@ public class SearchHistoryFragment extends Fragment {
         } else {
             mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history1, mHistoryData);
         }
-        //设置加载动画
-        mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        //设置是否自动加载以及加载个数
-        mQuickAdapter.openLoadMore(6, true);
-        //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
+        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                ToastUtils.show(getActivity(), mQuickAdapter.getData().get(position)+"");
+            }
+        });
 
 
         if (mType.equals("0")) {
@@ -121,6 +114,8 @@ public class SearchHistoryFragment extends Fragment {
                     .setMessage("确定要删除历史搜索记录么？")
                     .setPositiveButton("确定", (dialoginterface, i) -> {
                         Data.clearSearchHistory();
+                        mHistoryData.clear();
+                        mQuickAdapter.setNewData(mHistoryData);
                         ToastUtils.show(getActivity(), "删除成功");
                     })
                     .setNegativeButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())
