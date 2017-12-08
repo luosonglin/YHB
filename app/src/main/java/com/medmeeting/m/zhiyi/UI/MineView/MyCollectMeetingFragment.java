@@ -24,7 +24,9 @@ import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rx.Observer;
 
@@ -79,6 +81,11 @@ public class MyCollectMeetingFragment  extends Fragment
     }
 
     private void getMyCollectMeetingService() {
+
+        Map<String, Object> map  = new HashMap<>();
+        map.put("pageNum", 1);
+        map.put("pageSize", 100);
+
         HttpData.getInstance().HttpDataGetEventCollectList(new Observer<HttpResult3<Event, Object>>() {
             @Override
             public void onCompleted() {
@@ -114,7 +121,7 @@ public class MyCollectMeetingFragment  extends Fragment
                     startActivity(intent);
                 });
             }
-        });
+        }, map);
     }
 
     @Override

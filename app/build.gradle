@@ -189,6 +189,9 @@ dependencies {
 
     //多种Item布局展示
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.8.5'
+
+    //流失布局，搜索页搜索历史词条有用
+    compile 'com.github.1002326270xc:LayoutManager-FlowLayout:v1.4'
 }
 //Error:Execution failed for task ':app:transformClassesWithDexForDebug'.
 //> com.android.build.api.transform.TransformException: com.android.ide.common.process.ProcessException: java.util.concurrent.ExecutionException:

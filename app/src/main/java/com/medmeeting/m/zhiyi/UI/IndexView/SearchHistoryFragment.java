@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.library.flowlayout.FlowLayoutManager;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.SearchHistoryAdapter;
@@ -65,12 +66,16 @@ public class SearchHistoryFragment extends Fragment {
         mRecyclerView.stopNestedScroll();
         //设置RecyclerView的显示模式  当前List模式
         if (mType.equals("0")) {
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            });
+//            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL) {
+//                                               @Override
+//                                               public boolean canScrollVertically() {
+//                                                   return false;
+//                                               }
+//                                           }
+//            );
+            FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+            mRecyclerView.setLayoutManager(flowLayoutManager);
+
         } else {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
                 @Override
@@ -86,8 +91,18 @@ public class SearchHistoryFragment extends Fragment {
         mHistoryData.addAll(Data.getSearchHistory());
         //设置适配器
         if (mType.equals("0")) {
+            mHistoryData.add("哇哈哈");
+            mHistoryData.add("啊哈哈哈哈哈哈");
+            mHistoryData.add("草泥马 阿斯顿阿水是");
+            mHistoryData.add("草泥马1");
+            mHistoryData.add("草泥马1333331");
+            mHistoryData.add("你大爷");
+            mHistoryData.add("你大妈");
+            mHistoryData.add("我草泥马1");
+            mHistoryData.add("草泥马1啊水淀粉1");
+            mHistoryData.add("草泥马2阿斯顿发22");
             mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history, mHistoryData);
-        }else {
+        } else {
             mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history1, mHistoryData);
         }
         //设置加载动画
@@ -98,7 +113,7 @@ public class SearchHistoryFragment extends Fragment {
         mRecyclerView.setAdapter(mQuickAdapter);
 
 
-        if(mType.equals("0")) {
+        if (mType.equals("0")) {
             mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_search_history_header, null);
             mHeaderDeleteView = (ImageView) mHeaderView.findViewById(R.id.delete);
             mHeaderDeleteView.setOnClickListener(view1 -> new AlertDialog.Builder(getActivity())

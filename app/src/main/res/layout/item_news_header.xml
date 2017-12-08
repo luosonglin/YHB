@@ -12,8 +12,7 @@
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="0dp"
-        app:cardElevation="0dp"
-        app:cardUseCompatPadding="true">
+        app:cardElevation="0dp">
 
         <com.youth.banner.Banner
             android:id="@+id/banner_news"
