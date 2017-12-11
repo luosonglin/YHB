@@ -23,6 +23,7 @@ import com.medmeeting.m.zhiyi.UI.Adapter.MyOrderAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.MyPayLiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.SearchUserRedAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
+import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
@@ -31,7 +32,9 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
@@ -243,66 +246,122 @@ public class SearchActicity extends AppCompatActivity {
                 if (!searchEdit.getText().toString().trim().equals("")) {
                     searchUser(searchEdit.getText().toString().trim());
 
+                    searchNews(searchEdit.getText().toString().trim());
+
+                    searchMeeting(searchEdit.getText().toString().trim());
 
                     searchLive(searchEdit.getText().toString().trim());
 
                     searchVideo(searchEdit.getText().toString().trim());
 
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("pageNum", 1);
-                    map.put("pageSize", 100);
-                    map.put("pojo", searchEdit.getText().toString().trim());
-                    HttpData.getInstance().HttpDataSearchBlog(new Observer<HttpResult3<Blog, Object>>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ToastUtils.show(SearchActicity.this, e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(HttpResult3<Blog, Object> data) {
-                            if (!data.getStatus().equals("success")) {
-                                ToastUtils.show(SearchActicity.this, data.getMsg());
-                                return;
-                            }
-                            if (data.getData().size() == 0) {
-                                rvNewsList.setVisibility(View.GONE);
-                                return;
-                            }
-                            rvNewsList.setVisibility(View.VISIBLE);
-
-                            mNewsAdapter.setNewData(data.getData());
-
-                            mNewsTypeView.setText("相关新闻");
-                            mNewsAdapter.addHeaderView(mNewsHeaderView);
-
-                            mNewsAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                                Intent intent = null;
-                                switch (data.getData().get(position).getBlogType()) {
-                                    case "1":
-                                        intent = new Intent(SearchActicity.this, NewsActivity.class);
-                                        intent.putExtra("blogId", data.getData().get(position).getId());
-                                        break;
-                                    case "2":
-                                        intent = new Intent(SearchActicity.this, NewsActivity.class);
-                                        intent.putExtra("blogId", data.getData().get(position).getId());
-                                        break;
-                                    case "3":
-                                        intent = new Intent(SearchActicity.this, VideoDetailActivity.class);
-                                        intent.putExtra("videoId", data.getData().get(position).getId());
-                                        break;
-                                }
-                                startActivity(intent);
-                            });
-                        }
-                    }, map);
                 }
                 break;
         }
+    }
+
+    private void searchMeeting(String word) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageNum", 1);
+        map.put("pageSize", 100);
+        map.put("pojo", word);
+        HttpData.getInstance().HttpDataSearchMeeting(new Observer<HttpResult3<Event, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(SearchActicity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Event, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(SearchActicity.this, data.getMsg());
+                    return;
+                }
+                if (data.getData().size() == 0) {
+                    rvMeetingList.setVisibility(View.GONE);
+                    return;
+                }
+                rvMeetingList.setVisibility(View.VISIBLE);
+
+                mMeetingAdapter.setNewData(data.getData());
+
+                mMeetingTypeView.setText("相关会议");
+                mMeetingAdapter.addHeaderView(mMeetingHeaderView);
+
+                mMeetingAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Intent intent = new Intent(SearchActicity.this, MeetingDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("eventId", data.getData().get(position).getId());
+                    bundle.putString("eventTitle", data.getData().get(position).getTitle());
+                    bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
+                    bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+                            + " ~ " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+                            + " \n "
+                            + "地点： " + data.getData().get(position).getAddress());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                });
+            }
+        }, map);
+    }
+
+    private void searchNews(String word) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageNum", 1);
+        map.put("pageSize", 100);
+        map.put("pojo", word);
+        HttpData.getInstance().HttpDataSearchBlog(new Observer<HttpResult3<Blog, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(SearchActicity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Blog, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(SearchActicity.this, data.getMsg());
+                    return;
+                }
+                if (data.getData().size() == 0) {
+                    rvNewsList.setVisibility(View.GONE);
+                    return;
+                }
+                rvNewsList.setVisibility(View.VISIBLE);
+
+                mNewsAdapter.setNewData(data.getData());
+
+                mNewsTypeView.setText("相关新闻");
+                mNewsAdapter.addHeaderView(mNewsHeaderView);
+
+                mNewsAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Intent intent = null;
+                    switch (data.getData().get(position).getBlogType()) {
+                        case "1":
+                            intent = new Intent(SearchActicity.this, NewsActivity.class);
+                            intent.putExtra("blogId", data.getData().get(position).getId());
+                            break;
+                        case "2":
+                            intent = new Intent(SearchActicity.this, NewsActivity.class);
+                            intent.putExtra("blogId", data.getData().get(position).getId());
+                            break;
+                        case "3":
+                            intent = new Intent(SearchActicity.this, VideoDetailActivity.class);
+                            intent.putExtra("videoId", data.getData().get(position).getId());
+                            break;
+                    }
+                    startActivity(intent);
+                });
+            }
+        }, map);
     }
 
     private void searchVideo(String word) {
