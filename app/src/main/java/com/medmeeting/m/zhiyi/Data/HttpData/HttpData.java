@@ -699,8 +699,17 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataGetRedUser(Observer<HttpResult3<UserRedEntity, Object>> observer, UserRedSearchEntity userRedEntity) {
+    public void HttpDataSearchRedUser(Observer<HttpResult3<UserRedEntity, Object>> observer, UserRedSearchEntity userRedEntity) {
         Observable observable = service_live.getRedUser(userRedEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataSearchBlog(Observer<HttpResult3<Blog, Object>> observer, Map<String, Object> map) {
+        Observable observable = service_live.findBlogList(map);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataSearchMeeting(Observer<HttpResult3<Blog, Object>> observer, Map<String, Object> map) {
+        Observable observable = service_live.findBlogList(map);
         setSubscribe(observable, observer);
     }
 

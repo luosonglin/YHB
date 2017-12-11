@@ -449,4 +449,12 @@ public interface APILiveService {
     @POST("/v1/open/user/getRedUser")
     Observable<HttpResult3<UserRedEntity, Object>> getRedUser(@Body UserRedSearchEntity userRedEntity);
 
+    //GET /v1/app/Home/G/findBlogList 首页模块_获取指定新闻列表
+    @GET("/v1/app/Home/G/findBlogList")
+    Observable<HttpResult3<Blog, Object>> findBlogList(@QueryMap Map<String, Object> map);
+
+    //GET /v1/app/Home/F/findAllContentEventList 首页模块_获取会议搜索列表
+    @GET("/v1/app/Home/F/findAllContentEventList")
+    Observable<HttpResult3<Event, Object>> findAllContentEventList(@QueryMap Map<String, Object> map);
+
 }

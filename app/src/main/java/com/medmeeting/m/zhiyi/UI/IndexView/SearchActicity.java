@@ -17,17 +17,26 @@ import android.widget.TextView;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Adapter.BlogAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.MyOrderAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.MyPayLiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.SearchUserRedAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,17 +64,20 @@ public class SearchActicity extends AppCompatActivity {
     private BaseQuickAdapter mUserAdapter;
     @Bind(R.id.rv_list_news)
     RecyclerView rvNewsList;
-    private BaseQuickAdapter mNewsAdapter;
+    private com.chad.library.adapter.base.BaseQuickAdapter mNewsAdapter;
     @Bind(R.id.rv_list_meeting)
     RecyclerView rvMeetingList;
     private BaseQuickAdapter mMeetingAdapter;
     @Bind(R.id.rv_list_live)
     RecyclerView rvLiveList;
     private BaseQuickAdapter mLiveAdapter;
+    @Bind(R.id.rv_list_video)
+    RecyclerView rvVideoList;
+    private BaseQuickAdapter mVideoAdapter;
 
-    View mUserHeaderView, mNewsHeaderView, mMeetingHeaderView, mLiveHeaderView;
-    TextView mUserTypeView, mNewsTypeView, mMeetingTypeView, mLiveTypeView;
-    TextView mUserMoreView, mNewsMoreView, mMeetingMoreView, mLiveMoreView;
+    View mUserHeaderView, mNewsHeaderView, mMeetingHeaderView, mLiveHeaderView, mVideoHeaderView;
+    TextView mUserTypeView, mNewsTypeView, mMeetingTypeView, mLiveTypeView, mVideoTypeView;
+    TextView mUserMoreView, mNewsMoreView, mMeetingMoreView, mLiveMoreView, mVideoMoreView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +150,11 @@ public class SearchActicity extends AppCompatActivity {
             }
         });
         rvNewsList.setHasFixedSize(true);
-        mNewsAdapter = new SearchUserRedAdapter(R.layout.item_user_red, null);
+        mNewsAdapter = new BlogAdapter(null);
+        //设置加载动画
+        mNewsAdapter.openLoadAnimation(com.chad.library.adapter.base.BaseQuickAdapter.SCALEIN);
+        //设置是否自动加载以及加载个数
+        mNewsAdapter.openLoadMore(6, true);
         rvNewsList.setAdapter(mNewsAdapter);
 
         //头view
@@ -185,6 +201,26 @@ public class SearchActicity extends AppCompatActivity {
         mLiveHeaderView = LayoutInflater.from(SearchActicity.this).inflate(R.layout.item_header, null);
         mLiveTypeView = (TextView) mLiveHeaderView.findViewById(R.id.type);
         mLiveMoreView = (TextView) mLiveHeaderView.findViewById(R.id.more);
+
+
+        /**
+         *相关视频
+         */
+        rvVideoList.setVisibility(View.GONE);
+        rvVideoList.setLayoutManager(new LinearLayoutManager(SearchActicity.this, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        rvVideoList.setHasFixedSize(true);
+        mVideoAdapter = new MyOrderAdapter(R.layout.item_video_others, null);
+        rvVideoList.setAdapter(mVideoAdapter);
+
+        //头view
+        mVideoHeaderView = LayoutInflater.from(SearchActicity.this).inflate(R.layout.item_header, null);
+        mVideoTypeView = (TextView) mVideoHeaderView.findViewById(R.id.type);
+        mVideoMoreView = (TextView) mVideoHeaderView.findViewById(R.id.more);
     }
 
     @OnClick({R.id.back, R.id.search_edit, R.id.search_tv})
@@ -209,9 +245,111 @@ public class SearchActicity extends AppCompatActivity {
 
 
                     searchLive(searchEdit.getText().toString().trim());
+
+                    searchVideo(searchEdit.getText().toString().trim());
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("pageNum", 1);
+                    map.put("pageSize", 100);
+                    map.put("pojo", searchEdit.getText().toString().trim());
+                    HttpData.getInstance().HttpDataSearchBlog(new Observer<HttpResult3<Blog, Object>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            ToastUtils.show(SearchActicity.this, e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3<Blog, Object> data) {
+                            if (!data.getStatus().equals("success")) {
+                                ToastUtils.show(SearchActicity.this, data.getMsg());
+                                return;
+                            }
+                            if (data.getData().size() == 0) {
+                                rvNewsList.setVisibility(View.GONE);
+                                return;
+                            }
+                            rvNewsList.setVisibility(View.VISIBLE);
+
+                            mNewsAdapter.setNewData(data.getData());
+
+                            mNewsTypeView.setText("相关新闻");
+                            mNewsAdapter.addHeaderView(mNewsHeaderView);
+
+                            mNewsAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                                Intent intent = null;
+                                switch (data.getData().get(position).getBlogType()) {
+                                    case "1":
+                                        intent = new Intent(SearchActicity.this, NewsActivity.class);
+                                        intent.putExtra("blogId", data.getData().get(position).getId());
+                                        break;
+                                    case "2":
+                                        intent = new Intent(SearchActicity.this, NewsActivity.class);
+                                        intent.putExtra("blogId", data.getData().get(position).getId());
+                                        break;
+                                    case "3":
+                                        intent = new Intent(SearchActicity.this, VideoDetailActivity.class);
+                                        intent.putExtra("videoId", data.getData().get(position).getId());
+                                        break;
+                                }
+                                startActivity(intent);
+                            });
+                        }
+                    }, map);
                 }
                 break;
         }
+    }
+
+    private void searchVideo(String word) {
+        VideoListSearchEntity searchEntity = new VideoListSearchEntity();
+        searchEntity.setPageNum(1);
+        searchEntity.setPageSize(100);
+        searchEntity.setKeyword(word);
+        searchEntity.setLabelId(null);
+        searchEntity.setRoomId(null);
+        searchEntity.setProgramId(null);
+        searchEntity.setRoomNumber(null);
+        searchEntity.setVideoUserId(null);
+        HttpData.getInstance().HttpDataGetVideos(new Observer<HttpResult3<VideoListEntity, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(SearchActicity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<VideoListEntity, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(SearchActicity.this, data.getMsg());
+                    return;
+                }
+                if (data.getData().size() == 0) {
+                    rvVideoList.setVisibility(View.GONE);
+                    return;
+                }
+                rvVideoList.setVisibility(View.VISIBLE);
+
+                mVideoAdapter.setNewData(data.getData());
+
+                mVideoTypeView.setText("相关视频");
+                mVideoAdapter.addHeaderView(mVideoHeaderView);
+
+                mVideoAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Intent i = new Intent(SearchActicity.this, VideoDetailActivity.class);
+                    i.putExtra("videoId", data.getData().get(position).getVideoId());
+                    startActivity(i);
+                });
+            }
+        }, searchEntity);
     }
 
     private void searchLive(String word) {
@@ -238,8 +376,11 @@ public class SearchActicity extends AppCompatActivity {
                     return;
                 }
 
-                if (data.getData().size() != 0)
-                    rvLiveList.setVisibility(View.VISIBLE);
+                if (data.getData().size() == 0) {
+                    rvLiveList.setVisibility(View.GONE);
+                    return;
+                }
+                rvLiveList.setVisibility(View.VISIBLE);
 
                 mLiveAdapter.setNewData(data.getData());
 
@@ -260,7 +401,7 @@ public class SearchActicity extends AppCompatActivity {
         userRedSearchEntity.setPageNum(1);
         userRedSearchEntity.setPageSize(100);
         userRedSearchEntity.setUserName(word);
-        HttpData.getInstance().HttpDataGetRedUser(new Observer<HttpResult3<UserRedEntity, Object>>() {
+        HttpData.getInstance().HttpDataSearchRedUser(new Observer<HttpResult3<UserRedEntity, Object>>() {
             @Override
             public void onCompleted() {
 
@@ -279,8 +420,11 @@ public class SearchActicity extends AppCompatActivity {
                     return;
                 }
 
-                if (data.getData().size() != 0)
-                    rvUserList.setVisibility(View.VISIBLE);
+                if (data.getData().size() == 0) {
+                    rvUserList.setVisibility(View.GONE);
+                    return;
+                }
+                rvUserList.setVisibility(View.VISIBLE);
 
                 mUserAdapter.setNewData(data.getData());
 
