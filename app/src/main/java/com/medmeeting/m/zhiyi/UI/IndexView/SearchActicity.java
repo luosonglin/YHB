@@ -18,6 +18,7 @@ import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BlogAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.EventAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.MyOrderAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.MyPayLiveAdapter;
@@ -95,8 +96,6 @@ public class SearchActicity extends AppCompatActivity {
         viewPager.setVisibility(View.VISIBLE);
         //为ViewPager设置高度
         ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-//            params.height = getActivity().getWindowManager().getDefaultDisplay().getHeight();//800
-
         viewPager.setLayoutParams(params);
 
         setUpViewPager(viewPager);
@@ -152,6 +151,7 @@ public class SearchActicity extends AppCompatActivity {
                 return false;
             }
         });
+//        rvNewsList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         rvNewsList.setHasFixedSize(true);
         mNewsAdapter = new BlogAdapter(null);
         //设置加载动画
@@ -176,8 +176,9 @@ public class SearchActicity extends AppCompatActivity {
                 return false;
             }
         });
+//        rvMeetingList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         rvMeetingList.setHasFixedSize(true);
-        mMeetingAdapter = new SearchUserRedAdapter(R.layout.item_user_red, null);
+        mMeetingAdapter = new EventAdapter(R.layout.item_meeting, null);
         rvMeetingList.setAdapter(mMeetingAdapter);
 
         //头view
@@ -196,6 +197,7 @@ public class SearchActicity extends AppCompatActivity {
                 return false;
             }
         });
+//        rvLiveList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         rvLiveList.setHasFixedSize(true);
         mLiveAdapter = new MyPayLiveAdapter(R.layout.item_video_others, null);
         rvLiveList.setAdapter(mLiveAdapter);
@@ -216,6 +218,7 @@ public class SearchActicity extends AppCompatActivity {
                 return false;
             }
         });
+//        rvVideoList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         rvVideoList.setHasFixedSize(true);
         mVideoAdapter = new MyOrderAdapter(R.layout.item_video_others, null);
         rvVideoList.setAdapter(mVideoAdapter);
@@ -242,7 +245,6 @@ public class SearchActicity extends AppCompatActivity {
                 tabLayout.setVisibility(View.GONE);
                 viewPager.setVisibility(View.GONE);
 
-
                 if (!searchEdit.getText().toString().trim().equals("")) {
                     searchUser(searchEdit.getText().toString().trim());
 
@@ -253,7 +255,6 @@ public class SearchActicity extends AppCompatActivity {
                     searchLive(searchEdit.getText().toString().trim());
 
                     searchVideo(searchEdit.getText().toString().trim());
-
                 }
                 break;
         }

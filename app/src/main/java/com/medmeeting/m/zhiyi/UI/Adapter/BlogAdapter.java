@@ -71,7 +71,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                 Glide.with(mContext)
                         .load(blog.getImages())
                         .crossFade()
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.mipmap.video_bg)
                         .into((ImageView) baseViewHolder.getView(R.id.ivRightImg2));
                 baseViewHolder.setVisible(R.id.rlRightImg, false)
                         .setVisible(R.id.viewFill, false)

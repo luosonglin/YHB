@@ -62,9 +62,9 @@
                     android:hint="请输入关键词"
                     android:imeOptions="actionSearch"
                     android:maxLines="1"
-                    android:singleLine="true"
                     android:paddingLeft="8dp"
                     android:paddingRight="0dp"
+                    android:singleLine="true"
                     android:textColor="#6f6f73"
                     android:textColorHint="@color/grey"
                     android:textSize="14sp" />
@@ -99,14 +99,13 @@
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         app:tabBackground="@color/white"
         app:tabIndicatorColor="@color/deepskyblue"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/deepskyblue"
         app:tabTextAppearance="@style/TabIndexText"
-        app:tabTextColor="@color/black"
-        android:visibility="gone"
-        />
+        app:tabTextColor="@color/black" />
 
     <View
         android:layout_width="match_parent"
@@ -117,27 +116,42 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_list_user"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_list_news"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_list_meeting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_list_live"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_list_video"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list_meeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list_live"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_list_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -709,7 +709,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
     public void HttpDataSearchMeeting(Observer<HttpResult3<Event, Object>> observer, Map<String, Object> map) {
-        Observable observable = service_live.findBlogList(map);
+        Observable observable = service_live.findAllContentEventList(map);
         setSubscribe(observable, observer);
     }
 
