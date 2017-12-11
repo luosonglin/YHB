@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -17,10 +18,14 @@ import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.MyPayLiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.SearchUserRedAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
@@ -173,15 +178,13 @@ public class SearchActicity extends AppCompatActivity {
             }
         });
         rvLiveList.setHasFixedSize(true);
-        mLiveAdapter = new SearchUserRedAdapter(R.layout.item_user_red, null);
+        mLiveAdapter = new MyPayLiveAdapter(R.layout.item_video_others, null);
         rvLiveList.setAdapter(mLiveAdapter);
 
         //头view
         mLiveHeaderView = LayoutInflater.from(SearchActicity.this).inflate(R.layout.item_header, null);
         mLiveTypeView = (TextView) mLiveHeaderView.findViewById(R.id.type);
         mLiveMoreView = (TextView) mLiveHeaderView.findViewById(R.id.more);
-
-
     }
 
     @OnClick({R.id.back, R.id.search_edit, R.id.search_tv})
@@ -199,16 +202,57 @@ public class SearchActicity extends AppCompatActivity {
                 Data.getSearchHistory().add(searchEdit.getText().toString().trim());
                 tabLayout.setVisibility(View.GONE);
                 viewPager.setVisibility(View.GONE);
-                rvUserList.setVisibility(View.VISIBLE);
 
 
                 if (!searchEdit.getText().toString().trim().equals("")) {
                     searchUser(searchEdit.getText().toString().trim());
 
 
+                    searchLive(searchEdit.getText().toString().trim());
                 }
                 break;
         }
+    }
+
+    private void searchLive(String word) {
+        LiveSearchDto liveSearchDto = new LiveSearchDto();
+        liveSearchDto.setKeyword(word);
+        liveSearchDto.setRoomNumber(null);
+        liveSearchDto.setLabelIds(null);
+        HttpData.getInstance().HttpDataGetPrograms(new Observer<HttpResult3<LiveDto, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(SearchActicity.this, e.getMessage());
+                Log.e(getLocalClassName(), e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<LiveDto, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(SearchActicity.this, data.getMsg());
+                    return;
+                }
+
+                if (data.getData().size() != 0)
+                    rvLiveList.setVisibility(View.VISIBLE);
+
+                mLiveAdapter.setNewData(data.getData());
+
+                mLiveTypeView.setText("相关直播");
+                mLiveAdapter.addHeaderView(mLiveHeaderView);
+
+                mLiveAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Intent i = new Intent(SearchActicity.this, LiveProgramDetailActivity2.class);
+                    i.putExtra("programId", data.getData().get(position).getId());
+                    startActivity(i);
+                });
+            }
+        }, liveSearchDto);
     }
 
     private void searchUser(String word) {
@@ -234,9 +278,11 @@ public class SearchActicity extends AppCompatActivity {
                     ToastUtils.show(SearchActicity.this, data.getMsg());
                     return;
                 }
-                Log.e(getLocalClassName(), data.getData().get(0).getName() + "");
-                mUserAdapter.setNewData(data.getData());
 
+                if (data.getData().size() != 0)
+                    rvUserList.setVisibility(View.VISIBLE);
+
+                mUserAdapter.setNewData(data.getData());
 
                 mUserTypeView.setText("相关用户");
                 mUserAdapter.addHeaderView(mUserHeaderView);
