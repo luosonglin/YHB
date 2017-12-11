@@ -23,8 +23,9 @@ public class Constant {
 
     public static final String FIRST_OPEN = "first_open";
 
-    //分享
-    public static final String URL_MeetingDetail = "http://wap.medmeeting.com/#!/mw/index/";
+    //会议
+//    public static final String URL_MeetingDetail = "http://wap.medmeeting.com/#!/mw/index/";
+    public static final String URL_MeetingDetail = "http://mobile.medmeeting.com/#/mw/";
 
     //微信appID
     public static final String WeChat_AppID = "wx7e6722fad8a0975c";

@@ -103,7 +103,9 @@
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/deepskyblue"
         app:tabTextAppearance="@style/TabIndexText"
-        app:tabTextColor="@color/black" />
+        app:tabTextColor="@color/black"
+        android:visibility="gone"
+        />
 
     <View
         android:layout_width="match_parent"
@@ -114,10 +116,23 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_list"
+        android:id="@+id/rv_list_user"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list_news"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list_meeting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list_live"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

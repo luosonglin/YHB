@@ -68,7 +68,7 @@ public class MyOrderActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         getMyPayLiveService();
         //头view
-        mHeaderView = LayoutInflater.from(MyOrderActivity.this).inflate(R.layout.item_collect_video_header, null);
+        mHeaderView = LayoutInflater.from(MyOrderActivity.this).inflate(R.layout.item_header, null);
         mTypeView = (TextView) mHeaderView.findViewById(R.id.type);
         mTypeView.setText("已购直播");
         mMoreView = (TextView) mHeaderView.findViewById(R.id.more);
@@ -84,7 +84,7 @@ public class MyOrderActivity extends AppCompatActivity {
         mRecyclerView2.setAdapter(mAdapter2);
         getMyPayVideoService();
         //头view
-        mHeaderView2 = LayoutInflater.from(MyOrderActivity.this).inflate(R.layout.item_collect_video_header, null);
+        mHeaderView2 = LayoutInflater.from(MyOrderActivity.this).inflate(R.layout.item_header, null);
         mTypeView2 = (TextView) mHeaderView2.findViewById(R.id.type);
         mTypeView2.setText("已购录像");
         mMoreView2 = (TextView) mHeaderView2.findViewById(R.id.more);

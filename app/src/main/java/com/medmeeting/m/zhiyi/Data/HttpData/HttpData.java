@@ -12,7 +12,6 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
-import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
@@ -25,6 +24,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
+import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
@@ -59,6 +59,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
@@ -695,6 +696,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetMeetingBanner(Observer<HttpResult<EventBanner>> observer) {
         Observable observable = service_live.getMeetingBanner();
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetRedUser(Observer<HttpResult3<UserRedEntity, Object>> observer, UserRedSearchEntity userRedEntity) {
+        Observable observable = service_live.getRedUser(userRedEntity);
         setSubscribe(observable, observer);
     }
 

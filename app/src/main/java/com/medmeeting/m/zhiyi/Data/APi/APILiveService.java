@@ -3,7 +3,6 @@ package com.medmeeting.m.zhiyi.Data.APi;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
-import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
@@ -13,6 +12,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
+import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -39,6 +39,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
@@ -439,5 +440,13 @@ public interface APILiveService {
     //GET /v1/website/events/banners App获取banner轮播信息
     @GET("/v1/website/events/banners")
     Observable<HttpResult<EventBanner>> getMeetingBanner();
+
+
+    /**
+     * 搜索
+     */
+    //POST /v1/open/user/getRedUser 检索红V用户分页
+    @POST("/v1/open/user/getRedUser")
+    Observable<HttpResult3<UserRedEntity, Object>> getRedUser(@Body UserRedSearchEntity userRedEntity);
 
 }

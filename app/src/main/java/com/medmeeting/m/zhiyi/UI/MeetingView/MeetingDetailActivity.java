@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.CollectType;
@@ -426,9 +427,9 @@ public class MeetingDetailActivity extends AppCompatActivity {
         Log.e(TAG, userAgent);
 
         if (openId != null) {
-            URL = Constant.URL_MeetingDetail + eventId + "/" + openId;
+            URL = Constant.URL_MeetingDetail + eventId;// + "/" + openId;
         } else {
-            URL = Constant.URL_MeetingDetail + eventId + "/0";
+            URL = Constant.URL_MeetingDetail + eventId;// + "/0";
         }
         mWebView.loadUrl(URL);
         Log.e(TAG, URL);
@@ -518,8 +519,9 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.e(TAG, "getUserIdInWeb" + userId + " " + GETUID);
-            return userId;
+            Log.e(TAG, "getUserIdInWeb" + userId + " " + GETUID + " "+Data.getUserToken());
+//            return userId;
+            return Data.getUserToken();
         }
 
         @JavascriptInterface
