@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -244,28 +245,29 @@ public class NewsFragment extends BaseFragment {
 //                    bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
 //                    intent.putExtras(bundle);
 //                    startActivity(intent);
+                    Log.e(getActivity().getLocalClassName(), position + "");
                     Intent intent = null;
-                    switch (data.getData().get(position).getType()) {
+                    switch (data.getData().get(position - 1).getType()) {
                         case "active":
                             intent = new Intent(getActivity(), BrowserActivity.class);
-                            intent.putExtra(Constant.EXTRA_URL, data.getData().get(position).getUrl());
-                            intent.putExtra(Constant.EXTRA_TITLE, data.getData().get(position).getTitle());
+                            intent.putExtra(Constant.EXTRA_URL, data.getData().get(position - 1).getUrl());
+                            intent.putExtra(Constant.EXTRA_TITLE, data.getData().get(position - 1).getTitle());
                             break;
                         case "live":
                             intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
-                            intent.putExtra("programId", data.getData().get(position).getId());
+                            intent.putExtra("programId", data.getData().get(position - 1).getId());
                             break;
                         case "video":
                             intent = new Intent(getActivity(), VideoDetailActivity.class);
-                            intent.putExtra("videoId", data.getData().get(position).getId());
+                            intent.putExtra("videoId", data.getData().get(position - 1).getId());
                             break;
                         case "event":
                             intent = new Intent(getActivity(), MeetingDetailActivity.class);
                             Bundle bundle = new Bundle();
-                            bundle.putInt("eventId", data.getData().get(position).getId());
-                            bundle.putString("eventTitle", data.getData().get(position).getTitle());
-                            bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
-                            bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position).getCreateDate(), DateUtils.TYPE_02));
+                            bundle.putInt("eventId", data.getData().get(position - 1).getId());
+                            bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
+                            bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position - 1).getBanner());
+                            bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position - 1).getCreateDate(), DateUtils.TYPE_02));
                             intent.putExtras(bundle);
                             break;
                     }
