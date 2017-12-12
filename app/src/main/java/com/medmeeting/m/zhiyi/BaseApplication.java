@@ -17,6 +17,8 @@ import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
+
 //import com.vondear.rxtools.RxUtils;
 
 public class BaseApplication extends MultiDexApplication {//Application {
@@ -62,6 +64,11 @@ public class BaseApplication extends MultiDexApplication {//Application {
         //#define RIGHTRONGCLOUD_IM_APPSECRET @"xVOEBe44fhL"//融云正式
         context = this;
         LiveKit.init(context, String.valueOf("qd46yzrfq3lwf"));//FakeServer.getAppKey()
+
+
+        //极光推送
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     public static Context getContext() {
