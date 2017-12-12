@@ -64,6 +64,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
@@ -377,9 +378,9 @@ public interface APILiveService {
     @GET("/v1/app/Home/E/findLabelBlogList")
     Observable<HttpResult3<Blog, Object>> findLabelBlogs(@QueryMap Map<String, Object> map);
 
-    //GET /v1/app/Home/A/getHomeBannerList 首页模块_获取首页banner接口
-    @GET("/v1/app/Home/A/getHomeBannerList")
-    Observable<HttpResult3<AdminEventActive, Object>> getHomeBannerList();
+//    //GET /v1/app/Home/A/getHomeBannerList 首页模块_获取首页banner接口
+//    @GET("/v1/app/Home/A/getHomeBannerList")
+//    Observable<HttpResult3<AdminEventActive, Object>> getHomeBannerList();
 
     //GET /v1/app/Home/B/greatEventList 首页模块_首页会议精选_查看会议精选列表
     @GET("/v1/app/Home/B/greatEventList")
@@ -456,5 +457,12 @@ public interface APILiveService {
     //GET /v1/app/Home/F/findAllContentEventList 首页模块_获取会议搜索列表
     @GET("/v1/app/Home/F/findAllContentEventList")
     Observable<HttpResult3<Event, Object>> findAllContentEventList(@QueryMap Map<String, Object> map);
+
+    /**
+     * Banner
+     */
+    //GET /v1/app/Home/A/getHomeBannerList 首页模块_获取首页/会议banner接口
+    @GET("/v1/app/Home/A/getHomeBannerList")
+    Observable<HttpResult3<AdminEventActive, Object>> getHomeBannerList(@Query("type") String type);
 
 }

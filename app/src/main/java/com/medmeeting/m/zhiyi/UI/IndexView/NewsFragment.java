@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.medmeeting.m.zhiyi.Base.BaseFragment;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BlogAdapter;
@@ -24,7 +25,12 @@ import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
 import com.youth.banner.Banner;
@@ -204,7 +210,7 @@ public class NewsFragment extends BaseFragment {
     private void getHeaderView() {
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
         mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
-        HttpData.getInstance().HttpDataGetHomeBannerList(new Observer<HttpResult3<AdminEventActive, Object>>() {
+        HttpData.getInstance().HttpDataGetBanners(new Observer<HttpResult3<AdminEventActive, Object>>() {
             @Override
             public void onCompleted() {
 
@@ -238,9 +244,35 @@ public class NewsFragment extends BaseFragment {
 //                    bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
 //                    intent.putExtras(bundle);
 //                    startActivity(intent);
+                    Intent intent = null;
+                    switch (data.getData().get(position).getType()) {
+                        case "active":
+                            intent = new Intent(getActivity(), BrowserActivity.class);
+                            intent.putExtra(Constant.EXTRA_URL, data.getData().get(position).getUrl());
+                            intent.putExtra(Constant.EXTRA_TITLE, data.getData().get(position).getTitle());
+                            break;
+                        case "live":
+                            intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
+                            intent.putExtra("programId", data.getData().get(position).getId());
+                            break;
+                        case "video":
+                            intent = new Intent(getActivity(), VideoDetailActivity.class);
+                            intent.putExtra("videoId", data.getData().get(position).getId());
+                            break;
+                        case "event":
+                            intent = new Intent(getActivity(), MeetingDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("eventId", data.getData().get(position).getId());
+                            bundle.putString("eventTitle", data.getData().get(position).getTitle());
+                            bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
+                            bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position).getCreateDate(), DateUtils.TYPE_02));
+                            intent.putExtras(bundle);
+                            break;
+                    }
+                    startActivity(intent);
                 });
             }
-        });
+        }, "HOME");
 
         mHeaderLive = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt);
         mHeaderLive1 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt1);

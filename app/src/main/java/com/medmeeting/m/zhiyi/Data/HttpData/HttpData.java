@@ -629,10 +629,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataGetHomeBannerList(Observer<HttpResult3<AdminEventActive, Object>> observer) {
-        Observable observable = service_live.getHomeBannerList();
-        setSubscribe(observable, observer);
-    }
+//    public void HttpDataGetHomeBannerList(Observer<HttpResult3<AdminEventActive, Object>> observer) {
+//        Observable observable = service_live.getHomeBannerList();
+//        setSubscribe(observable, observer);
+//    }
 
     public void HttpDataGetgreatEventList(Observer<HttpResult3<Event, Object>> observer) {
         Observable observable = service_live.greatEventList();
@@ -710,6 +710,10 @@ public class HttpData extends RetrofitUtils {
     }
     public void HttpDataSearchMeeting(Observer<HttpResult3<Event, Object>> observer, Map<String, Object> map) {
         Observable observable = service_live.findAllContentEventList(map);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataGetBanners(Observer<HttpResult3<AdminEventActive, Object>> observer, String type) {
+        Observable observable = service_live.getHomeBannerList(type);
         setSubscribe(observable, observer);
     }
 
