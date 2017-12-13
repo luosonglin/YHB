@@ -67,7 +67,7 @@ public class BaseApplication extends MultiDexApplication {//Application {
 
 
         //极光推送
-        JPushInterface.setDebugMode(true);
+        JPushInterface.setDebugMode(true);//该接口需在init接口之前调用，避免出现部分日志没打印的情况
         JPushInterface.init(this);
     }
 
