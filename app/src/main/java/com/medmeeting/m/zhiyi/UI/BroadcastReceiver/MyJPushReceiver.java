@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.BroadcastReceiver;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.medmeeting.m.zhiyi.MainActivity;
+import com.medmeeting.m.zhiyi.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import br.com.goncalves.pugnotification.notification.PugNotification;
 import cn.jpush.android.api.JPushInterface;
 
 public class MyJPushReceiver extends BroadcastReceiver {
@@ -66,6 +69,46 @@ public class MyJPushReceiver extends BroadcastReceiver {
             map.put("date", date);
 //            MyApp.data.add(map);//需要保存
             //**************解析推送过来的json数据并存放到集合中 end******************
+
+            /**
+             * 自定义通知
+             */
+            PugNotification.with(context)
+                    .load()
+//                    .identifier(identifier)
+                    .title("Android")
+                    .message(content)
+//                    .bigTextStyle(type)
+                    .smallIcon(R.mipmap.ic_launcher)
+                    .largeIcon(R.mipmap.ic_launcher)
+                    .flags(Notification.DEFAULT_ALL)
+//                    .button(icon, title, pendingIntent)
+//                    .click(activity, bundle)
+//                    .dismiss(activity, bundle)
+//                    .color(color)
+//                    .ticker(ticker)
+//                    .when(when)
+//                    .vibrate(vibrate)
+//                    .lights(color, ledOnMs, ledOfMs)
+//                    .sound(sound)
+//                    .autoCancel(autoCancel)
+                    .simple()
+                    .build();
+
+          /*  PugNotification.with(context)
+                    .load()
+                    .title(title)
+                    .message(message)
+                    .bigTextStyle(bigtext)
+                    .smallIcon(R.drawable.pugnotification_ic_launcher)
+                    .largeIcon(R.drawable.pugnotification_ic_launcher)
+                    .flags(Notification.DEFAULT_ALL)
+                    .color(android.R.color.background_dark)
+                    .custom()
+                    .background(url)
+                    .setImageLoader(Callback)
+                    .setPlaceholder(R.drawable.pugnotification_ic_placeholder)
+                    .build();*/
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
