@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:text="提示：左滑可以编辑或删除消息"
+            android:text="提示：左滑可以删除消息"
             android:textSize="12sp"
             android:textColor="@color/deepskyblue"/>
     </RelativeLayout>

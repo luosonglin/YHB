@@ -39,6 +39,7 @@ public class Event {
      * hotOrder : 3
      * eventLogo : 5
      * onlineEvent : 5
+     * sourceType :主办方创建SPONSOR,运营端创建ADMIN ,
      */
 
     private int id;
@@ -70,6 +71,15 @@ public class Event {
     private int hotOrder;
     private String eventLogo;
     private String onlineEvent;
+    private String sourceType;
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
 
     public int getId() {
         return id;

@@ -8,35 +8,42 @@
         android:icon="@mipmap/meeting_share"
         android:orderInCategory="80"
         android:title="分享"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_collect"
         android:icon="@mipmap/meeting_collect"
         android:orderInCategory="90"
         android:title="收藏"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_collect_no"
         android:icon="@mipmap/meeting_collect_no"
         android:orderInCategory="90"
         android:title="收藏"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always"
+        android:visible="false"/>
 
     <item
         android:id="@+id/action_enroll"
         android:icon="@mipmap/meeting_enroll"
         android:orderInCategory="90"
         android:title="报名"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always"
+        android:visible="false"
+        />
 
     <item
         android:id="@+id/action_order"
         android:icon="@mipmap/meeting_order"
         android:orderInCategory="90"
         android:title="订单"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always"
+        android:visible="false"
+        />
 
     <!--<item-->
         <!--android:id="@+id/action_more"-->

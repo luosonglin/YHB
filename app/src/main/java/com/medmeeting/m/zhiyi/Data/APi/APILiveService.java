@@ -13,6 +13,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
+import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -443,6 +444,10 @@ public interface APILiveService {
     //GET /v1/website/events/banners App获取banner轮播信息
     @GET("/v1/website/events/banners")
     Observable<HttpResult<EventBanner>> getMeetingBanner();
+
+    //GET /v1/eventRegister/events/{eventId}/registerSwitch App获取会议报名开关信息接口
+    @GET("/v1/eventRegister/events/{eventId}/registerSwitch")
+    Observable<HttpResult3<Object, EventRegisterSwitchVO>> registerSwitch(@Path("eventId") Integer eventId);
 
 
     /**

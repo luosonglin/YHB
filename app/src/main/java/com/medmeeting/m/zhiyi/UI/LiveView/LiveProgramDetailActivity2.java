@@ -52,7 +52,6 @@ import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
 import com.medmeeting.m.zhiyi.UI.MineView.MyOrderActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
-import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutLivePlayer;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
@@ -446,7 +445,9 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     })
                     .build(detailPlayer);
 
-        new DownloadImageTaskUtil(detailPlayer.getCoverPhoto()).execute(photo);
+//        new DownloadImageTaskUtil(detailPlayer.getCoverPhoto()).execute(photo);
+        detailPlayer.getCoverPhoto().setImageResource(R.mipmap.video_bg);
+
         if (detailPlayer.getCurrentState() == CURRENT_STATE_NORMAL
                 || detailPlayer.getCurrentState() == CURRENT_STATE_PREPAREING
                 || detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING) {

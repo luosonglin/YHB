@@ -25,6 +25,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
+import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
@@ -728,7 +729,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-
+public void HttpDataRegisterSwitch(Observer<HttpResult3<Object, EventRegisterSwitchVO>> observer, Integer eventId) {
+        Observable observable = service_live.registerSwitch(eventId);
+        setSubscribe(observable, observer);
+}
 
 
 
