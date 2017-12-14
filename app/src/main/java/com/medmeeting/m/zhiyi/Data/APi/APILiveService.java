@@ -474,4 +474,8 @@ public interface APILiveService {
     @GET("/v1/app/Home/O/selectAllPushList")
     Observable<HttpResult3<PushUserMessage, Object>> selectAllPushList(@QueryMap Map<String, Object> map);
 
+    //DELETE /v1/app/Home/Q/deletePush 首页模块_查看发送消息列表
+    @DELETE("/v1/app/Home/Q/deletePush")
+    Observable<HttpResult3> deletePush(@Query("newsId") Integer newsId);
+
 }

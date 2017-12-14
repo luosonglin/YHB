@@ -13,6 +13,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.PushUserMessage;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.MessageAdapter;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.MessageItemRemoveRecyclerView;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.OnItemClickListener;
@@ -89,12 +90,6 @@ public class MessageActivity extends AppCompatActivity {
                 mRecyclerView.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-//                        Intent intent = new Intent(MessageActivity.this, MyLiveRoomDetailActivity.class);
-//                        intent.putExtra("roomId", mList.get(position).getId());
-//                        intent.putExtra("title", mList.get(position).getTitle());
-//                        intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());
-//                        intent.putExtra("number", mList.get(position).getNumber());
-//                        startActivity(intent);
                         BrowserActivity.launch(MessageActivity.this, "http://mobile.medmeeting.com/#/wv/message/"+data.getData().get(position).getMessageId(), "消息详情");
                     }
 
@@ -106,7 +101,26 @@ public class MessageActivity extends AppCompatActivity {
                                 .setMessage("确认删除？")
                                 .setNegativeButton("算了", (dialogInterface, i) -> dialogInterface.dismiss())
                                 .setPositiveButton("确认", (dialogInterface, i) -> {
+                                    HttpData.getInstance().HttpDataDeletePush(new Observer<HttpResult3>() {
+                                        @Override
+                                        public void onCompleted() {
 
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            ToastUtils.show(MessageActivity.this, e.getMessage());
+                                        }
+
+                                        @Override
+                                        public void onNext(HttpResult3 httpResult3) {
+                                            if (!httpResult3.getStatus().equals("success")) {
+                                                ToastUtils.show(MessageActivity.this, httpResult3.getMsg());
+                                                return;
+                                            }
+                                            adapter.removeItem(position);
+                                        }
+                                    }, data.getData().get(position).getMessageId());
                                 })
                                 .show();
                     }
