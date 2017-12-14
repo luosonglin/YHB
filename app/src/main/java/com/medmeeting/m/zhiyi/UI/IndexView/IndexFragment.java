@@ -196,7 +196,7 @@ public class IndexFragment extends Fragment implements OnChannelListener {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.search_icon, R.id.icon_category})
+    @OnClick({R.id.search_icon, R.id.icon_category, R.id.message_icon})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.search_icon:
@@ -221,6 +221,9 @@ public class IndexFragment extends Fragment implements OnChannelListener {
                     SharedPreferencesMgr.setString(ConstanceValue.TITLE_UNSELECTED, mGson.toJson(mUnSelectedDatas));
                 });
                 mTitlePagerAdapter.notifyDataSetChanged();
+                break;
+            case R.id.message_icon:
+                startActivity(new Intent(getActivity(), MessageActivity.class));
                 break;
         }
     }

@@ -50,6 +50,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.PaySettlement;
 import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
+import com.medmeeting.m.zhiyi.UI.Entity.PushUserMessage;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
@@ -714,6 +715,11 @@ public class HttpData extends RetrofitUtils {
     }
     public void HttpDataGetBanners(Observer<HttpResult3<AdminEventActive, Object>> observer, String type) {
         Observable observable = service_live.getHomeBannerList(type);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataSelectAllPushList(Observer<HttpResult3<PushUserMessage, Object>> observer,  Map<String, Object> map) {
+        Observable observable = service_live.selectAllPushList(map);
         setSubscribe(observable, observer);
     }
 

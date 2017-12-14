@@ -33,6 +33,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.PaySettlement;
+import com.medmeeting.m.zhiyi.UI.Entity.PushUserMessage;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
@@ -372,7 +373,7 @@ public interface APILiveService {
      */
     ///v1/app/Common/A/getLabels 标签模块_获取栏目标签接口
     @GET("/v1/app/Common/A/getLocalLabel")
-    Observable<HttpResult3<Object, IndexLabel>>  getLabels();
+    Observable<HttpResult3<Object, IndexLabel>> getLabels();
 
     //GET /v1/app/Home/E/findLabelBlogList 首页模块_获取首页相关标签新闻列表
     @GET("/v1/app/Home/E/findLabelBlogList")
@@ -396,6 +397,7 @@ public interface APILiveService {
 
     /**
      * 新闻
+     *
      * @param map
      * @return
      */
@@ -464,5 +466,12 @@ public interface APILiveService {
     //GET /v1/app/Home/A/getHomeBannerList 首页模块_获取首页/会议banner接口
     @GET("/v1/app/Home/A/getHomeBannerList")
     Observable<HttpResult3<AdminEventActive, Object>> getHomeBannerList(@Query("type") String type);
+
+    /**
+     * 消息
+     */
+    //GET /v1/app/Home/O/selectAllPushList 首页模块_查看发送消息列表
+    @GET("/v1/app/Home/O/selectAllPushList")
+    Observable<HttpResult3<PushUserMessage, Object>> selectAllPushList(@QueryMap Map<String, Object> map);
 
 }

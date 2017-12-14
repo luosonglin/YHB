@@ -322,6 +322,8 @@
             </intent-filter>
         </receiver>
 
+
+        <activity android:name=".UI.IndexView.MessageActivity"/>
     </application>
 
 </manifest>
