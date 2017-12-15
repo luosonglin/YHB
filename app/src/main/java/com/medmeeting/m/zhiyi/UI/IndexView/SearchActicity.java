@@ -62,7 +62,6 @@ public class SearchActicity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
-
     @Bind(R.id.rv_list_user)
     RecyclerView rvUserList;
     private BaseQuickAdapter mUserAdapter;
@@ -101,7 +100,6 @@ public class SearchActicity extends AppCompatActivity {
         setUpViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
-
 
         initSearchResultView();
     }

@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,6 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.PushUserMessage;
-import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.MessageAdapter;
 import com.medmeeting.m.zhiyi.Widget.removeitemrecyclerview.MessageItemRemoveRecyclerView;
@@ -90,7 +90,11 @@ public class MessageActivity extends AppCompatActivity {
                 mRecyclerView.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        BrowserActivity.launch(MessageActivity.this, "http://mobile.medmeeting.com/#/wv/message/"+data.getData().get(position).getMessageId(), "消息详情");
+//                        BrowserActivity.launch(MessageActivity.this, "http://mobile.medmeeting.com/#/wv/message/"+data.getData().get(position).getMessageId(), "消息详情");
+                        Intent intent = new Intent(MessageActivity.this, MessageDetailActivity.class);
+                        intent.putExtra("messageId", data.getData().get(position).getMessageId());
+                        intent.putExtra("title", "消息详情");
+                        startActivity(intent);
                     }
 
                     @Override

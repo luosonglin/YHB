@@ -5,15 +5,15 @@ package com.medmeeting.m.zhiyi.Constant;
  */
 public class Constant {
 
-    public static String  ERROR_TITLE="网络连接异常";
-    public static String  ERROR_CONTEXT="请检查网络后重试";
-    public static String  ERROR_BUTTON="重试";
+    public static String ERROR_TITLE = "网络连接异常";
+    public static String ERROR_CONTEXT = "请检查网络后重试";
+    public static String ERROR_BUTTON = "重试";
 
-    public static String EMPTY_TITLE="没有找到数据";
-    public static String EMPTY_CONTEXT="换个条件试试吧";
+    public static String EMPTY_TITLE = "没有找到数据";
+    public static String EMPTY_CONTEXT = "换个条件试试吧";
 
-    public static String EMPTY_TITLE2="没有数据";
-    public static String EMPTY_CONTEXT2="输入条件试试吧";
+    public static String EMPTY_TITLE2 = "没有数据";
+    public static String EMPTY_CONTEXT2 = "输入条件试试吧";
 
     //服务器路径
     public static final String API_SERVER = "http://medmeeting.com:8080";
@@ -27,9 +27,10 @@ public class Constant {
     public static final String URL_microWebsiteDetail = "http://mobile.medmeeting.com/#/mw/";
     public static final String URL_Meeting_Detail = "http://mobile.medmeeting.com/#/wv/meeting/detail/";
     public static final String URL_Meeting_Enrol = "http://mobile.medmeeting.com/#/m/reg/sign/";
-    public static final String URL_MeetingDetail22 = "http://192.168.2.28/#/m/reg/sign/";
 
 
+    //消息
+    public static final String URL_Message_Detail = "http://mobile.medmeeting.com/#/wv/message/";
 
     //微信appID
     public static final String WeChat_AppID = "wx7e6722fad8a0975c";
