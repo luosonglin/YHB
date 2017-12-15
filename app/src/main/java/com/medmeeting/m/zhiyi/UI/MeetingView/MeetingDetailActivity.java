@@ -96,7 +96,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         }
 
         initToolbar();
-        initShare(savedInstanceState, getIntent().getExtras().getString("phone"),
+        initShare(savedInstanceState, getIntent().getExtras().getString("photo"),
                 getIntent().getExtras().getString("description"));
 
 
@@ -129,97 +129,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 invalidateOptionsMenu(); //重新绘制menu
             }
         }, eventId);
-
-/*
-        getEventStatusOptions.put("userId", userId);
-        getEventStatusOptions.put("eventId", eventId);
-        getEventStatusOptions.put("type", "regist");
-        HttpData.getInstance().HttpDataGetEventStatus(new Observer<HttpResult4>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(HttpResult4 httpResult4) {
-                status = httpResult4.getStatus();
-                invalidateOptionsMenu(); //重新绘制menu
-
-                switch (httpResult4.getStatus()) {
-                    case "2":   // 已注册 未支付info
-                        a.setText("订单详情");
-                        break;
-                    case "3":   // 已完成会议注册报名流程info
-                        a.setText("订单详情");
-                        break;
-                    case "4":   // 尚未注册报名该会议reg
-                        a.setText("个人报名");
-                        break;
-                    case "5":   // 线下支付：未上传凭证info
-                        a.setText("订单详情");
-                        break;
-                    case "6":   // 线下支付：已上传支付凭证待审核info
-                        a.setText("订单详情");
-                        break;
-                    case "7":   // 没有该用户
-                        a.setText("个人报名");
-                        break;
-                    case "8":   // 没有该订单reg
-                        a.setText("个人报名");
-                        break;
-                    case "9":   // 其余参数状态
-                        a.setText("个人报名");
-                        break;
-                    case "10":   // 参数为空
-                        a.setText("个人报名");
-                        break;
-                    case "11":   // 商家未开启报名活动
-                        a.setText("报名暂未开启");
-                        a.setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        a.setText("报名暂未开启");
-                        a.setVisibility(View.VISIBLE);
-                        break;
-                }
-//                a.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                                *//*if ("个人报名".equals(a.getText().toString())) {
-//                                    Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-//                                    i.putExtra("title", "个人报名");
-//                                    i.putExtra("url", "http://wap.medmeeting.com/#!/reg/");
-//                                    i.putExtra("eventId", eventId);
-//                                    startActivity(i);
-//                                } else if ("订单详情".equals(a.getText().toString())) {
-//                                    Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-//                                    i.putExtra("title", "订单详情");
-//                                    i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
-//                                    i.putExtra("eventId", eventId);
-//                                    startActivity(i);
-//                                } else {
-//                                    a.setClickable(false);
-//                                    ToastUtils.show(MeetingDetailActivity.this, "报名暂未开启");
-//                                }*//*
-//
-////                        Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-////                        i.putExtra("title", "订单详情");
-////                        i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
-////                        i.putExtra("eventId", eventId);
-////                        i.putExtra("eventTitle", eventTitle);
-////                        startActivity(i);
-//                        ToastUtils.show(MeetingDetailActivity.this, "ahahaaaa");
-//
-//                    }
-//                });
-
-            }
-        }, getEventStatusOptions);*/
     }
 
     private void initToolbar() {
@@ -255,8 +164,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
                     case R.id.action_enroll:
                         if (eventRegisterSwitchVO.isOpenEntrances()) {  // 是否开启报名入口
                             Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-                            i.putExtra("title", "订单详情");
-                            i.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
+                            i.putExtra("title", "报名");
                             i.putExtra("eventId", eventId);
                             i.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
                             startActivity(i);
@@ -265,16 +173,12 @@ public class MeetingDetailActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.action_order:
-                        Intent i2 = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+                        Intent i2 = new Intent(MeetingDetailActivity.this, MeetingOrderActivity.class);
                         i2.putExtra("title", "订单详情");
-                        i2.putExtra("url", "http://wap.medmeeting.com/#!/reg/info/");
                         i2.putExtra("eventId", eventId);
                         i2.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
                         startActivity(i2);
                         break;
-//                    case R.id.action_more:
-//                        ToastUtils.show(MeetingDetailActivity.this, "haha");
-//                        break;
                 }
                 return true;
             }
@@ -384,10 +288,13 @@ public class MeetingDetailActivity extends AppCompatActivity {
         settings.setUserAgentString(userAgent);//设置用户代理
         Log.e(TAG, userAgent);
 
-        if (openId != null) {
-            URL = Constant.URL_MeetingDetail + eventId;// + "/" + openId;
-        } else {
-            URL = Constant.URL_MeetingDetail + eventId;// + "/0";
+        switch (getIntent().getStringExtra("sourceType")) {     //主办方创建SPONSOR 微站,  运营端创建ADMIN 新闻,
+            case "SPONSOR":
+                URL = Constant.URL_Meeting_Detail + eventId;
+                break;
+            case "ADMIN":
+                URL = Constant.URL_microWebsiteDetail + eventId;
+                break;
         }
         mWebView.loadUrl(URL);
         Log.e(TAG, URL);
@@ -477,9 +384,9 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.e(TAG, "getUserIdInWeb" + userId + " " + GETUID + " " + Data.getUserToken());
+            Log.e(TAG, "getUserIdInWeb" + userId + " " + GETUID + " " + Data.getUserToken().substring(7));
 //            return userId;
-            return Data.getUserToken();
+            return Data.getUserToken().substring(7);
         }
 
         @JavascriptInterface

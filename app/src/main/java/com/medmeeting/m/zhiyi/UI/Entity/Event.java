@@ -71,7 +71,7 @@ public class Event {
     private int hotOrder;
     private String eventLogo;
     private String onlineEvent;
-    private String sourceType;
+    private String sourceType; //主办方创建SPONSOR 微站,  运营端创建ADMIN 新闻
 
     public String getSourceType() {
         return sourceType;

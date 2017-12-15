@@ -37,7 +37,6 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
-import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
@@ -62,7 +61,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observer;
 
-public class MeetingEnrolActivity extends AppCompatActivity {
+/**
+ * @author NapoleonRohaha_Songlin
+ * @date on 15/12/2017 10:08 AM
+ * @describe TODO
+ * @email iluosonglin@gmail.com
+ * @org Healife
+ */
+public class MeetingOrderActivity  extends AppCompatActivity {
 
     @Bind(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -73,9 +79,12 @@ public class MeetingEnrolActivity extends AppCompatActivity {
     @Bind(R.id.content_meeting_enrol)
     RelativeLayout contentMeetingEnrol;
 
-    private static final String TAG = MeetingEnrolActivity.class.getSimpleName();
+    private static final String TAG = MeetingOrderActivity.class.getSimpleName();
 
+    private static final String URL = "file:///android_asset/test.html";
+    private String URL_MeetingDetail;// = "http://wap.medmeeting.com/#!/reg/";//http://wap.medmeeting.com/#!/reg/:eventId
     private static String userAgent;
+    private String url;
     private Integer eventId;
     private String eventTitle;
     private String userId;
@@ -113,21 +122,22 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         eventId = bundle.getInt("eventId");
+        URL_MeetingDetail = bundle.getString("url");
         title = bundle.getString("title");
         eventTitle = bundle.getString("eventTitle");
 
         try {
-            userId = DBUtils.get(MeetingEnrolActivity.this, "userId");
-            String openId = DBUtils.get(MeetingEnrolActivity.this, "openId");
+            userId = DBUtils.get(MeetingOrderActivity.this, "userId");
+            String openId = DBUtils.get(MeetingOrderActivity.this, "openId");
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
 
 
-        PackageManager pm = MeetingEnrolActivity.this.getPackageManager();
+        PackageManager pm = MeetingOrderActivity.this.getPackageManager();
         PackageInfo pi = null;
         try {
-            pi = pm.getPackageInfo(MeetingEnrolActivity.this.getPackageName(), 0);
+            pi = pm.getPackageInfo(MeetingOrderActivity.this.getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -144,6 +154,20 @@ public class MeetingEnrolActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
+
+//
+//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                WebView.goBack();
+////                finish();
+//
+////                testAlipay();
+////                payV2();
+////                Log.e(TAG, "getUserIdInWeb userId:" + userId + " eventId:" + eventId + " PAY:" + PAY);
+//            }
+//        });
     }
 
 
@@ -151,6 +175,8 @@ public class MeetingEnrolActivity extends AppCompatActivity {
      * 初始化WebView配置
      */
     private void initWebView() {
+//        WebView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
         WebSettings settings = WebView.getSettings();
 
         // BindUserInfo settings
@@ -189,10 +215,39 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         settings.setUserAgentString(userAgent);//设置用户代理
         Log.e(TAG, userAgent);
 
-        WebView.loadUrl(Constant.URL_Meeting_Enrol + eventId);
-        Log.e(TAG, Constant.URL_Meeting_Enrol + eventId);
+        /*
+        export function PushAppMsg (obj, next) {
+            // APP通信事件
+            function setupWebViewJavascriptBridge (callback) {
+            if (window.WebViewJavascriptBridge) {
+                return callback(window.WebViewJavascriptBridge)
+            }
+            if (window.WVJBCallbacks) {
+                return window.WVJBCallbacks.push(callback)
+            }
+            window.WVJBCallbacks = [callback]
+            var WVJBIframe = document.createElement('iframe')
+            WVJBIframe.style.display = 'none'
+            WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__'
+            document.documentElement.appendChild(WVJBIframe)
+            setTimeout(function () {
+                document.documentElement.removeChild(WVJBIframe)
+            }, 0)
+            }
+            setupWebViewJavascriptBridge((bridge) => {
+                    bridge.callHandler('CALLAPP', obj, (response) => {
+                            next(response)
+                    })
+            })
+        }
+        */
 
-        WebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
+        WebView.loadUrl(URL_MeetingDetail + eventId);
+        Log.e(TAG, URL_MeetingDetail + eventId);
+//        WebView.loadUrl(URL);
+
+
+        WebView.addJavascriptInterface(new MeetingOrderActivity.JSHook(), "SetAndroidJavaScriptBridge");
         WebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onReceivedTitle(android.webkit.WebView view, String title) {
@@ -213,7 +268,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, WebResourceRequest request) {
                 return super.shouldOverrideUrlLoading(view, request);
             }
 
@@ -333,7 +388,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
                 @Override
                 public void onError(Throwable e) {
                     Log.e(TAG, e.getMessage());
-                    ToastUtils.show(MeetingEnrolActivity.this, e.getMessage());
+                    ToastUtils.show(MeetingOrderActivity.this, e.getMessage());
                 }
 
                 @Override
@@ -385,8 +440,8 @@ public class MeetingEnrolActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                ToastUtils.show(MeetingEnrolActivity.this, "http://www.medmeeting.com/phoneEvent/confirmPayType?paymentId="+paymentId +"&payType=line");
-//                startActivity(new Intent(MeetingEnrolActivity.this, PayDemoActivity.class));
+//                ToastUtils.show(MeetingOrderActivity.this, "http://www.medmeeting.com/phoneEvent/confirmPayType?paymentId="+paymentId +"&payType=line");
+//                startActivity(new Intent(MeetingOrderActivity.this, PayDemoActivity.class));
                 academicPopupWindow.dismiss();
 
                 Map<String, Object> options = new HashMap<>();
@@ -408,7 +463,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
                         if (httpResult4.getStatus().equals("200")) {
                             WebView.reload();
                         } else {
-                            ToastUtils.show(MeetingEnrolActivity.this, httpResult4.getReturnMsg());
+                            ToastUtils.show(MeetingOrderActivity.this, httpResult4.getReturnMsg());
                         }
 
                     }
@@ -497,17 +552,17 @@ public class MeetingEnrolActivity extends AppCompatActivity {
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        Toast.makeText(MeetingEnrolActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MeetingOrderActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                         WebView.reload();
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
-                            Toast.makeText(MeetingEnrolActivity.this, "支付结果确认中", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MeetingOrderActivity.this, "支付结果确认中", Toast.LENGTH_SHORT).show();
 
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            Toast.makeText(MeetingEnrolActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MeetingOrderActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -559,7 +614,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // 构造PayTask 对象
-                PayTask alipay = new PayTask(MeetingEnrolActivity.this);
+                PayTask alipay = new PayTask(MeetingOrderActivity.this);
                 // 调用支付接口，获取支付结果
                 String result = alipay.pay(payInfo, true);
 
@@ -663,6 +718,4 @@ public class MeetingEnrolActivity extends AppCompatActivity {
 
 
 }
-
-
 

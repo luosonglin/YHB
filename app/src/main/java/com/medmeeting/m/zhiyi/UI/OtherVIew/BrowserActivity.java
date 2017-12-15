@@ -11,7 +11,9 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -19,8 +21,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.CircleProgressView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -110,6 +117,7 @@ public class BrowserActivity extends AppCompatActivity {
         mWebView.setWebViewClient(webViewClient);
         mWebView.requestFocus(View.FOCUS_DOWN);
         mWebView.getSettings().setDefaultTextEncodingName("UTF-8");
+        mWebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
         mWebView.setWebChromeClient(new WebChromeClient() {
 
             @Override
@@ -124,6 +132,24 @@ public class BrowserActivity extends AppCompatActivity {
                 b2.show();
                 return true;
             }
+//
+//            public String GETUID;
+//
+//            @JavascriptInterface
+//            public String getUserIdInWeb(final String string) {
+//                try {
+//                    // 解析js传递过来的json串
+//                    JSONObject mJson = new JSONObject(string);
+//                    GETUID = mJson.optString("GETUID");
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Log.e(getLocalClassName(), "getUserIdInWeb" + userId + " " + GETUID + " " + Data.getUserToken());
+////            return userId;
+//                return Data.getUserToken();
+//            }
         });
         mWebView.loadUrl(url);
     }
@@ -150,6 +176,62 @@ public class BrowserActivity extends AppCompatActivity {
             view.loadDataWithBaseURL(null, errorHtml, "text/html", "UTF-8", null);
         }
     }
+
+//    /**
+//     * 设置回退
+//     *
+//     * @param keyCode
+//     * @param event
+//     * @return
+//     */
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        //退出web还是退出activity
+//        if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
+//            mWebView.goBack(); //goBack()表示返回WebView的上一页面
+//            return true;
+//        } else {
+//            this.finish();
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
+
+    public class JSHook {
+        @JavascriptInterface
+        public void javaMethod(String p) {
+            Log.e(getLocalClassName(), "JSHook.JavaMethod() called! + " + p);
+            ToastUtils.show(BrowserActivity.this, "JSHook.JavaMethod() called! + " + p);
+        }
+
+
+        public String GETUID;
+
+        @JavascriptInterface
+        public String getUserIdInWeb(final String string) {
+            try {
+                // 解析js传递过来的json串
+                JSONObject mJson = new JSONObject(string);
+                GETUID = mJson.optString("GETUID");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Log.e(getLocalClassName(), "getUserIdInWeb" + Data.getUserId()+ " " + GETUID + " " + Data.getUserToken());
+//            return userId;
+            return Data.getUserToken();
+        }
+
+        @JavascriptInterface
+        public void printWebLog(String str) {
+            Log.e(getLocalClassName() + " WebView: ", str);
+        }
+
+        public String getInfo() {
+            return "获取手机内的信息！！";
+        }
+    }
+
 
     @Override
     protected void onPause() {

@@ -24,8 +24,12 @@ public class Constant {
     public static final String FIRST_OPEN = "first_open";
 
     //会议
-//    public static final String URL_MeetingDetail = "http://wap.medmeeting.com/#!/mw/index/";
-    public static final String URL_MeetingDetail = "http://mobile.medmeeting.com/#/mw/";
+    public static final String URL_microWebsiteDetail = "http://mobile.medmeeting.com/#/mw/";
+    public static final String URL_Meeting_Detail = "http://mobile.medmeeting.com/#/wv/meeting/detail/";
+    public static final String URL_Meeting_Enrol = "http://mobile.medmeeting.com/#/m/reg/sign/";
+    public static final String URL_MeetingDetail22 = "http://192.168.2.28/#/m/reg/sign/";
+
+
 
     //微信appID
     public static final String WeChat_AppID = "wx7e6722fad8a0975c";

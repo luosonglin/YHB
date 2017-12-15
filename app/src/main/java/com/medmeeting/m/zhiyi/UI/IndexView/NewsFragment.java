@@ -123,8 +123,28 @@ public class NewsFragment extends BaseFragment {
             mLabelId = getArguments().getInt(ConstanceValue.DATA);
 
         //如果是推荐页，自动加载header view
-        if (mLabelId == 0)
+        if (mLabelId == 0) {
+            mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
+            mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
+
+            mHeaderLive = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt);
+            mHeaderLive1 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt1);
+            mHeaderLive2 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt2);
+            mHeaderLiveView = (TextView) mHeaderView.findViewById(R.id.live_count);
+            mHeaderLiveImage1 = (ImageView) mHeaderView.findViewById(R.id.live_image1);
+            mHeaderLiveImage2 = (ImageView) mHeaderView.findViewById(R.id.live_image2);
+            mHeaderLiveName1 = (TextView) mHeaderView.findViewById(R.id.live_name1);
+            mHeaderLiveName11 = (TextView) mHeaderView.findViewById(R.id.live_name11);
+            mHeaderLiveName2 = (TextView) mHeaderView.findViewById(R.id.live_name2);
+            mHeaderLiveName22 = (TextView) mHeaderView.findViewById(R.id.live_name22);
+            mHeaderLiveStatus1 = (TextView) mHeaderView.findViewById(R.id.status1);
+            mHeaderLiveStatus2 = (TextView) mHeaderView.findViewById(R.id.status2);
+
+            mHeaderMeetingView = (TextView) mHeaderView.findViewById(R.id.meeting_count);
+            mHeaderRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
+
             getHeaderView();
+        }
         else
             getData();
     }
@@ -209,8 +229,6 @@ public class NewsFragment extends BaseFragment {
     private HeaderMeetingAdapter mHeaderMeetingAdapter;
 
     private void getHeaderView() {
-        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
-        mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
         HttpData.getInstance().HttpDataGetBanners(new Observer<HttpResult3<AdminEventActive, Object>>() {
             @Override
             public void onCompleted() {
@@ -239,12 +257,6 @@ public class NewsFragment extends BaseFragment {
                         .setImageLoader(new GlideImageLoader())
                         .start();
                 mBanner.setOnBannerClickListener(position -> {
-//                    Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("eventId", bannerDto.getBanners().get(position - 1).getId() + "");
-//                    bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
-//                    intent.putExtras(bundle);
-//                    startActivity(intent);
                     Log.e(getActivity().getLocalClassName(), position + "");
                     Intent intent = null;
                     switch (data.getData().get(position - 1).getType()) {
@@ -276,18 +288,7 @@ public class NewsFragment extends BaseFragment {
             }
         }, "HOME");
 
-        mHeaderLive = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt);
-        mHeaderLive1 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt1);
-        mHeaderLive2 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt2);
-        mHeaderLiveView = (TextView) mHeaderView.findViewById(R.id.live_count);
-        mHeaderLiveImage1 = (ImageView) mHeaderView.findViewById(R.id.live_image1);
-        mHeaderLiveImage2 = (ImageView) mHeaderView.findViewById(R.id.live_image2);
-        mHeaderLiveName1 = (TextView) mHeaderView.findViewById(R.id.live_name1);
-        mHeaderLiveName11 = (TextView) mHeaderView.findViewById(R.id.live_name11);
-        mHeaderLiveName2 = (TextView) mHeaderView.findViewById(R.id.live_name2);
-        mHeaderLiveName22 = (TextView) mHeaderView.findViewById(R.id.live_name22);
-        mHeaderLiveStatus1 = (TextView) mHeaderView.findViewById(R.id.status1);
-        mHeaderLiveStatus2 = (TextView) mHeaderView.findViewById(R.id.status2);
+
         HttpData.getInstance().HttpDataSelectVideoLive(new Observer<HttpResult3<Blog, Object>>() {
             @Override
             public void onCompleted() {
@@ -339,8 +340,7 @@ public class NewsFragment extends BaseFragment {
             }
         });
 
-        mHeaderMeetingView = (TextView) mHeaderView.findViewById(R.id.meeting_count);
-        mHeaderRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
+
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

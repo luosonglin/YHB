@@ -3,10 +3,10 @@ package com.medmeeting.m.zhiyi.Data.HttpData;
 
 import android.util.Log;
 
-import com.medmeeting.m.zhiyi.Data.APi.APILiveService;
-import com.medmeeting.m.zhiyi.Data.APi.APIMeetingService;
-import com.medmeeting.m.zhiyi.Data.APi.APIService;
-import com.medmeeting.m.zhiyi.Data.APi.CacheProviders;
+import com.medmeeting.m.zhiyi.Data.API.APILiveService;
+import com.medmeeting.m.zhiyi.Data.API.APIMeetingService;
+import com.medmeeting.m.zhiyi.Data.API.APIService;
+import com.medmeeting.m.zhiyi.Data.API.CacheProviders;
 import com.medmeeting.m.zhiyi.Data.Retrofit.ApiException;
 import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;

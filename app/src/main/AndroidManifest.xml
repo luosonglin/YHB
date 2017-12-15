@@ -73,6 +73,10 @@
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".UI.MeetingView.MeetingOrderActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".UI.LiveView.LiveSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

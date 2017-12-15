@@ -1,4 +1,4 @@
-package com.medmeeting.m.zhiyi.Data.APi;
+package com.medmeeting.m.zhiyi.Data.API;
 
 
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
