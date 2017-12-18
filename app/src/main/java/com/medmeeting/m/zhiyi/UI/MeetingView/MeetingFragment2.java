@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
-import com.medmeeting.m.zhiyi.UI.IndexView.SearchActicity;
+import com.medmeeting.m.zhiyi.UI.SearchView.SearchActicity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

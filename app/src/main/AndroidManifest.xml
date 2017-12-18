@@ -299,7 +299,7 @@
             android:name=".UI.WalletView.WalletWebActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.IndexView.SearchActicity"/>
+        <activity android:name=".UI.SearchView.SearchActicity"/>
         <activity android:name=".UI.IndexView.NewsVideoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"

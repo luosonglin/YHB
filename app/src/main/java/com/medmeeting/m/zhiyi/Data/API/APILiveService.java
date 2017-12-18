@@ -274,7 +274,6 @@ public interface APILiveService {
     @GET("/v1/open/userRed/details/{userId}")
     Observable<HttpResult3<Object, UserRedEntity>> getUserRedRoom(@Path("userId") Integer userId);
 
-
     // /v1/auchor/video/page 获取我的视频一览（分页）
     @POST("/v1/auchor/video/page")
     Observable<HttpResult3<VideoInfoUserEntity, Object>> getMyVideo(@Body BasePageSearchEntity basePageSearchEntity);

@@ -24,6 +24,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.CommonUtil;
+import com.medmeeting.m.zhiyi.UI.SearchView.SearchActicity;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
 import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
