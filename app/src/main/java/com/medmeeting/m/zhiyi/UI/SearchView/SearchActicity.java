@@ -62,8 +62,9 @@ public class SearchActicity extends AppCompatActivity {
 
         mIndexChildAdapter.addFragment(SearchHistoryFragment.newInstance("0", word), "全部");
         mIndexChildAdapter.addFragment(SearchHistoryFragment.newInstance("1", word), "直播");
-        mIndexChildAdapter.addFragment(SearchHistoryFragment.newInstance("2", word), "会议");
-        mIndexChildAdapter.addFragment(SearchHistoryFragment.newInstance("3", word), "新闻");
+        mIndexChildAdapter.addFragment(SearchHistoryFragment.newInstance("2", word), "视频");
+        mIndexChildAdapter.addFragment(SearchHistoryFragment.newInstance("3", word), "会议");
+        mIndexChildAdapter.addFragment(SearchHistoryFragment.newInstance("4", word), "新闻");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);

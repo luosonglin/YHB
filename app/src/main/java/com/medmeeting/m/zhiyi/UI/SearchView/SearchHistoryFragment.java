@@ -209,13 +209,16 @@ public class SearchHistoryFragment extends Fragment {
                     case "1":
                         mUserHeaderView.setVisibility(View.GONE);
                         searchLive(mWord);
-//                        searchVideo(mWord);
                         break;
                     case "2":
                         mUserHeaderView.setVisibility(View.GONE);
-                        searchMeeting(mWord);
+                        searchVideo(mWord);
                         break;
                     case "3":
+                        mUserHeaderView.setVisibility(View.GONE);
+                        searchMeeting(mWord);
+                        break;
+                    case "4":
                         mUserHeaderView.setVisibility(View.GONE);
                         searchNews(mWord);
                         break;
@@ -368,9 +371,11 @@ public class SearchHistoryFragment extends Fragment {
 
                 mMeetingAdapter.setNewData(data.getData());
 
-                mMeetingTypeView.setText("相关会议");
-                mMeetingMoreView.setVisibility(View.GONE);
-                mMeetingAdapter.addHeaderView(mMeetingHeaderView);
+                if (mType.equals("0")) {
+                    mMeetingTypeView.setText("相关会议");
+                    mMeetingMoreView.setVisibility(View.GONE);
+                    mMeetingAdapter.addHeaderView(mMeetingHeaderView);
+                }
 
                 mMeetingAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
@@ -419,9 +424,11 @@ public class SearchHistoryFragment extends Fragment {
 
                 mNewsAdapter.setNewData(data.getData());
 
-                mNewsTypeView.setText("相关新闻");
-                mNewsMoreView.setVisibility(View.GONE);
-                mNewsAdapter.addHeaderView(mNewsHeaderView);
+                if (mType.equals("0")) {
+                    mNewsTypeView.setText("相关新闻");
+                    mNewsMoreView.setVisibility(View.GONE);
+                    mNewsAdapter.addHeaderView(mNewsHeaderView);
+                }
 
                 mNewsAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent intent = null;
@@ -480,9 +487,11 @@ public class SearchHistoryFragment extends Fragment {
 
                 mVideoAdapter.setNewData(data.getData());
 
-                mVideoTypeView.setText("相关视频");
-                mVideoMoreView.setVisibility(View.GONE);
-                mVideoAdapter.addHeaderView(mVideoHeaderView);
+                if (mType.equals("0")) {
+                    mVideoTypeView.setText("相关视频");
+                    mVideoMoreView.setVisibility(View.GONE);
+                    mVideoAdapter.addHeaderView(mVideoHeaderView);
+                }
 
                 mVideoAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), VideoDetailActivity.class);
@@ -525,9 +534,11 @@ public class SearchHistoryFragment extends Fragment {
 
                 mLiveAdapter.setNewData(data.getData());
 
-                mLiveTypeView.setText("相关直播");
-                mLiveMoreView.setVisibility(View.GONE);
-                mLiveAdapter.addHeaderView(mLiveHeaderView);
+                if (mType.equals("0")) {
+                    mLiveTypeView.setText("相关直播");
+                    mLiveMoreView.setVisibility(View.GONE);
+                    mLiveAdapter.addHeaderView(mLiveHeaderView);
+                }
 
                 mLiveAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), LiveProgramDetailActivity2.class);
