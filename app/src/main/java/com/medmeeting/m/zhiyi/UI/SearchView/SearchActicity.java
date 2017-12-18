@@ -1,11 +1,13 @@
 package com.medmeeting.m.zhiyi.UI.SearchView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.medmeeting.m.zhiyi.Constant.Data;
@@ -86,6 +88,12 @@ public class SearchActicity extends AppCompatActivity {
 //                viewPager.setVisibility(View.GONE);
 
                 setUpViewPager(viewPager, searchEdit.getText().toString().trim()+"");
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+                }
+
                 break;
         }
     }
