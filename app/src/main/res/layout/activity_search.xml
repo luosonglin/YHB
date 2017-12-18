@@ -70,7 +70,7 @@
                     android:textSize="14sp" />
             </RelativeLayout>
 
-            <TextView
+            <Button
                 android:id="@+id/search_tv"
                 android:layout_width="50dp"
                 android:layout_height="28dp"

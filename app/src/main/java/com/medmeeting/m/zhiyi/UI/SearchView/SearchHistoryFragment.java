@@ -172,7 +172,14 @@ public class SearchHistoryFragment extends Fragment {
         mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                ToastUtils.show(getActivity(), mQuickAdapter.getData().get(position) + "");
+                //点击历史搜索词条，进行搜索
+                SearchActicity.setEdit(mQuickAdapter.getData().get(position) + "");
+
+                mRecyclerView.setVisibility(View.GONE);
+                scrollView.setVisibility(View.VISIBLE);
+
+                mWord = mQuickAdapter.getData().get(position) + "";
+                beginSearchService(mType, mWord);
             }
         });
 
@@ -198,31 +205,8 @@ public class SearchHistoryFragment extends Fragment {
             mRecyclerView.setVisibility(View.GONE);
             scrollView.setVisibility(View.VISIBLE);
             if (!mWord.equals("")) {
-                switch (mType) {
-                    case "0":
-                        searchUser(mWord);
-                        searchNews(mWord);
-                        searchMeeting(mWord);
-                        searchLive(mWord);
-                        searchVideo(mWord);
-                        break;
-                    case "1":
-                        mUserHeaderView.setVisibility(View.GONE);
-                        searchLive(mWord);
-                        break;
-                    case "2":
-                        mUserHeaderView.setVisibility(View.GONE);
-                        searchVideo(mWord);
-                        break;
-                    case "3":
-                        mUserHeaderView.setVisibility(View.GONE);
-                        searchMeeting(mWord);
-                        break;
-                    case "4":
-                        mUserHeaderView.setVisibility(View.GONE);
-                        searchNews(mWord);
-                        break;
-                }
+                //开始搜索
+                beginSearchService(mType, mWord);
             }
         }
 
@@ -352,6 +336,38 @@ public class SearchHistoryFragment extends Fragment {
         mVideoMoreView = (TextView) mVideoHeaderView.findViewById(R.id.more);
     }
 
+    /**
+     * 开始搜索
+     * @param type
+     * @param word
+     */
+    private void beginSearchService(String type, String word) {
+        switch (type) {
+            case "0":
+                searchUser(word);
+                searchNews(word);
+                searchMeeting(word);
+                searchLive(word);
+                searchVideo(word);
+                break;
+            case "1":
+                mUserHeaderView.setVisibility(View.GONE);
+                searchLive(word);
+                break;
+            case "2":
+                mUserHeaderView.setVisibility(View.GONE);
+                searchVideo(word);
+                break;
+            case "3":
+                mUserHeaderView.setVisibility(View.GONE);
+                searchMeeting(word);
+                break;
+            case "4":
+                mUserHeaderView.setVisibility(View.GONE);
+                searchNews(word);
+                break;
+        }
+    }
 
     private void searchMeeting(String word) {
         Map<String, Object> map = new HashMap<>();

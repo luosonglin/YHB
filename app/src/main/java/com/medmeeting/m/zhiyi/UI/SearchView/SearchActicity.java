@@ -8,13 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -27,8 +27,8 @@ import butterknife.OnClick;
  */
 public class SearchActicity extends AppCompatActivity {
 
-    @Bind(R.id.search_edit)
-    EditText searchEdit;
+    private static EditText searchEdit;
+    private static Button searchTv;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -39,6 +39,9 @@ public class SearchActicity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+
+        searchEdit = (EditText) findViewById(R.id.search_edit);
+        searchTv = (Button) findViewById(R.id.search_tv);
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -52,8 +55,6 @@ public class SearchActicity extends AppCompatActivity {
         setUpViewPager(viewPager, "");
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
-
-
     }
 
     private void setUpViewPager(ViewPager viewPager, String word) {
@@ -71,7 +72,6 @@ public class SearchActicity extends AppCompatActivity {
     }
 
 
-
     @OnClick({R.id.back, R.id.search_edit, R.id.search_tv})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -79,17 +79,14 @@ public class SearchActicity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.search_edit:
-//                tabLayout.setVisibility(View.VISIBLE);
-//                viewPager.setVisibility(View.VISIBLE);
 
                 break;
             case R.id.search_tv:
                 Data.getSearchHistory().add(searchEdit.getText().toString().trim());
-//                tabLayout.setVisibility(View.GONE);
-//                viewPager.setVisibility(View.GONE);
 
-                setUpViewPager(viewPager, searchEdit.getText().toString().trim()+"");
+                setUpViewPager(viewPager, searchEdit.getText().toString().trim() + "");
 
+                //隐藏软键盘
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
@@ -99,5 +96,8 @@ public class SearchActicity extends AppCompatActivity {
         }
     }
 
+    public static void setEdit(String word) {
+        searchEdit.setText(word);
+    }
 }
 
