@@ -256,13 +256,16 @@ public class SearchHistoryFragment extends Fragment {
          *相关新闻
          */
         rvNewsList.setVisibility(View.GONE);
-        rvNewsList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
-//        rvNewsList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        if (mType.equals("0")) {
+            rvNewsList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
+        } else {    //非"全部"标签页，RecyclerView的LayoutManager设置为可滚动
+            rvNewsList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        }
         rvNewsList.setHasFixedSize(true);
         mNewsAdapter = new BlogAdapter(null);
         //设置加载动画
@@ -281,13 +284,16 @@ public class SearchHistoryFragment extends Fragment {
          *相关会议
          */
         rvMeetingList.setVisibility(View.GONE);
-        rvMeetingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
-//        rvMeetingList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        if (mType.equals("0")) {
+            rvMeetingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
+        } else {
+            rvMeetingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        }
         rvMeetingList.setHasFixedSize(true);
         mMeetingAdapter = new EventAdapter(R.layout.item_meeting, null);
         rvMeetingList.setAdapter(mMeetingAdapter);
@@ -302,13 +308,16 @@ public class SearchHistoryFragment extends Fragment {
          *相关直播
          */
         rvLiveList.setVisibility(View.GONE);
-        rvLiveList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
-//        rvLiveList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        if (mType.equals("0")) {
+            rvLiveList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
+        } else {
+            rvLiveList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        }
         rvLiveList.setHasFixedSize(true);
         mLiveAdapter = new MyPayLiveAdapter(R.layout.item_video_others, null);
         rvLiveList.setAdapter(mLiveAdapter);
@@ -323,13 +332,16 @@ public class SearchHistoryFragment extends Fragment {
          *相关视频
          */
         rvVideoList.setVisibility(View.GONE);
-        rvVideoList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
-//        rvVideoList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        if (mType.equals("0")) {
+            rvVideoList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
+                @Override
+                public boolean canScrollVertically() {
+                    return false;
+                }
+            });
+        } else {
+            rvVideoList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        }
         rvVideoList.setHasFixedSize(true);
         mVideoAdapter = new MyOrderAdapter(R.layout.item_video_others, null);
         rvVideoList.setAdapter(mVideoAdapter);
@@ -455,7 +467,7 @@ public class SearchHistoryFragment extends Fragment {
     private void searchVideo(String word) {
         VideoListSearchEntity searchEntity = new VideoListSearchEntity();
         searchEntity.setPageNum(1);
-        searchEntity.setPageSize(100);
+        searchEntity.setPageSize(1000);
         searchEntity.setKeyword(word);
         searchEntity.setLabelId(null);
         searchEntity.setRoomId(null);
@@ -492,6 +504,8 @@ public class SearchHistoryFragment extends Fragment {
                     mVideoMoreView.setVisibility(View.GONE);
                     mVideoAdapter.addHeaderView(mVideoHeaderView);
                 }
+
+                Log.e(getActivity().getLocalClassName(), "searchVideo "+ data.getData().size());
 
                 mVideoAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), VideoDetailActivity.class);
