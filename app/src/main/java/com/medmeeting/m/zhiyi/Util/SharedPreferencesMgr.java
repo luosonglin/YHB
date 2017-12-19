@@ -3,6 +3,8 @@ package com.medmeeting.m.zhiyi.Util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Set;
+
 /**
  * SharedPreferences管理类
  */
@@ -54,6 +56,18 @@ public class SharedPreferencesMgr {
         if (sPrefs == null)
             return;
         sPrefs.edit().putString(key, value).commit();
+    }
+
+    //保存集合类
+    public static void setList(String key, Set<String> value) {
+        if (sPrefs == null)
+            return;
+        sPrefs.edit().putStringSet(key, value).commit();
+    }
+    public static Set<String> getList(String key, Set<String> defailtValue) {
+        if (sPrefs == null)
+            return defailtValue;
+        return sPrefs.getStringSet(key, defailtValue);
     }
 
     public static void clearAll() {

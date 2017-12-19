@@ -18,7 +18,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.library.flowlayout.FlowLayoutManager;
-import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BlogAdapter;
@@ -41,17 +40,22 @@ import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
+import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observer;
+
+import static com.medmeeting.m.zhiyi.Util.ConstanceValue.HISTORY_WORD;
 
 /**
  * @author NapoleonRohaha_Songlin
@@ -65,7 +69,6 @@ public class SearchHistoryFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mQuickAdapter;
 
-    private List<String> mHistoryData = new ArrayList<>();
     private static final String TYPE = "type";
     private static final String WORD = "word";
     private String mType;//类型
@@ -140,20 +143,13 @@ public class SearchHistoryFragment extends Fragment {
 
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
+
         //历史数据
-        mHistoryData.addAll(Data.getSearchHistory());
+        Set<String> hashSet = SharedPreferencesMgr.getList(HISTORY_WORD, new HashSet<>());
+        List<String> hashSetList = new ArrayList<>(hashSet);
         //设置适配器
-        mHistoryData.add("会");
-        mHistoryData.add("罗");
-        mHistoryData.add("松林");
-        mHistoryData.add("赵");
-        mHistoryData.add("会议");
-        mHistoryData.add("第");
-//        mHistoryData.add("你大妈");
-//        mHistoryData.add("我草泥马1");
-//        mHistoryData.add("草泥马1啊水淀粉1");
-//        mHistoryData.add("草泥马2阿斯顿发22");
-        mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history, mHistoryData);
+        mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history, hashSetList);
+
         mRecyclerView.setAdapter(mQuickAdapter);
         mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
@@ -175,9 +171,13 @@ public class SearchHistoryFragment extends Fragment {
                 .setTitle("提示")
                 .setMessage("确定要删除历史搜索记录么？")
                 .setPositiveButton("确定", (dialoginterface, i) -> {
-                    Data.clearSearchHistory();
-                    mHistoryData.clear();
-                    mQuickAdapter.setNewData(mHistoryData);
+
+                    //历史数据
+                    hashSet.clear();
+                    SharedPreferencesMgr.setList(HISTORY_WORD, hashSet);
+
+                    hashSetList.clear();
+                    mQuickAdapter.setNewData(hashSetList);
                     ToastUtils.show(getActivity(), "删除成功");
                 })
                 .setNegativeButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())

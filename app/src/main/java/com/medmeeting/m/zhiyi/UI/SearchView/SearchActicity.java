@@ -11,12 +11,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
+import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.medmeeting.m.zhiyi.Util.ConstanceValue.HISTORY_WORD;
 
 /**
  * @author NapoleonRohaha_Songlin
@@ -82,9 +87,15 @@ public class SearchActicity extends AppCompatActivity {
 
                 break;
             case R.id.search_tv:
+                //保存历史搜索词条
+//                Set<String> hashSet = new HashSet<>();
+                Set<String> hashSet = SharedPreferencesMgr.getList(HISTORY_WORD, new HashSet<>());
+                if (!hashSet.contains(searchEdit.getText().toString().trim()))
+                    hashSet.add(searchEdit.getText().toString().trim());
+                SharedPreferencesMgr.setList(HISTORY_WORD, hashSet);
 
-                    Data.addSearchHistory(searchEdit.getText().toString().trim());
 
+                //刷新页面
                 setUpViewPager(viewPager, searchEdit.getText().toString().trim() + "");
 
                 //隐藏软键盘

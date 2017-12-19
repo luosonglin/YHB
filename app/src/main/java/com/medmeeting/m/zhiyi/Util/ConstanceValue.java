@@ -24,6 +24,14 @@ public interface ConstanceValue {
      */
     int MSG_TYPE_CHANGE_THEME = 100;
 
+    /**
+     * 新闻首页标签
+     */
     String TITLE_SELECTED = "explore_title_selected";
     String TITLE_UNSELECTED = "explore_title_unselected";
+
+    /**
+     * 历史搜索词条
+     */
+    String HISTORY_WORD = "history_word";
 }

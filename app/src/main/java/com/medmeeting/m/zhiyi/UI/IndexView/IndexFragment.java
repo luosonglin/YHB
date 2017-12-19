@@ -160,7 +160,6 @@ public class IndexFragment extends Fragment implements OnChannelListener {
                 }
             });
 
-
         } else {
             //之前添加过
             List<LiveLabel> selecteData = mGson.fromJson(selectTitle, new TypeToken<List<LiveLabel>>() {
