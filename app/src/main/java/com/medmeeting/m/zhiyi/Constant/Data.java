@@ -164,8 +164,9 @@ public class Data {
         return searchHistory;
     }
 
-    public static void setSearchHistory(List<String> searchHistory) {
-        Data.searchHistory = searchHistory;
+    public static void addSearchHistory(String searchHistory) {
+        if (!searchHistory.contains(searchHistory))
+            Data.searchHistory.add(searchHistory);
     }
 
     public static void clearSearchHistory() {

@@ -82,7 +82,8 @@ public class SearchActicity extends AppCompatActivity {
 
                 break;
             case R.id.search_tv:
-                Data.getSearchHistory().add(searchEdit.getText().toString().trim());
+
+                    Data.addSearchHistory(searchEdit.getText().toString().trim());
 
                 setUpViewPager(viewPager, searchEdit.getText().toString().trim() + "");
 

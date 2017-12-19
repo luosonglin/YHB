@@ -133,46 +133,32 @@ public class SearchHistoryFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.history_list);
         initSearchResultView();
 
-        Log.e(getActivity().getLocalClassName(), mType + " ／ " + mWord);
         mRecyclerView.stopNestedScroll();
         //设置RecyclerView的显示模式  当前List模式
-        if (mType.equals("0")) {
-            FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
-            mRecyclerView.setLayoutManager(flowLayoutManager);
+        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+        mRecyclerView.setLayoutManager(flowLayoutManager);
 
-        } else {
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
-                @Override
-                public boolean canScrollVertically() {
-                    return false;
-                }
-            });
-        }
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //历史数据
         mHistoryData.addAll(Data.getSearchHistory());
         //设置适配器
-        if (mType.equals("0")) {
-            mHistoryData.add("哇哈哈");
-            mHistoryData.add("啊哈哈哈哈哈哈");
-            mHistoryData.add("草泥马 阿斯顿阿水是");
-            mHistoryData.add("草泥马1");
-            mHistoryData.add("草泥马1333331");
-            mHistoryData.add("你大爷");
-            mHistoryData.add("你大妈");
-            mHistoryData.add("我草泥马1");
-            mHistoryData.add("草泥马1啊水淀粉1");
-            mHistoryData.add("草泥马2阿斯顿发22");
-            mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history, mHistoryData);
-        } else {
-            mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history1, mHistoryData);
-        }
+        mHistoryData.add("会");
+        mHistoryData.add("罗");
+        mHistoryData.add("松林");
+        mHistoryData.add("赵");
+        mHistoryData.add("会议");
+        mHistoryData.add("第");
+//        mHistoryData.add("你大妈");
+//        mHistoryData.add("我草泥马1");
+//        mHistoryData.add("草泥马1啊水淀粉1");
+//        mHistoryData.add("草泥马2阿斯顿发22");
+        mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history, mHistoryData);
         mRecyclerView.setAdapter(mQuickAdapter);
         mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                //点击历史搜索词条，进行搜索
+                //点击历史搜索词条，进行搜
                 SearchActicity.setEdit(mQuickAdapter.getData().get(position) + "");
 
                 mRecyclerView.setVisibility(View.GONE);
@@ -338,6 +324,7 @@ public class SearchHistoryFragment extends Fragment {
 
     /**
      * 开始搜索
+     *
      * @param type
      * @param word
      */
@@ -521,7 +508,7 @@ public class SearchHistoryFragment extends Fragment {
                     mVideoAdapter.addHeaderView(mVideoHeaderView);
                 }
 
-                Log.e(getActivity().getLocalClassName(), "searchVideo "+ data.getData().size());
+                Log.e(getActivity().getLocalClassName(), "searchVideo " + data.getData().size());
 
                 mVideoAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), VideoDetailActivity.class);
