@@ -154,14 +154,8 @@ public class SearchHistoryFragment extends Fragment {
         mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                //点击历史搜索词条，进行搜
+                //点击历史搜索词条，进行搜索
                 SearchActicity.setEdit(mQuickAdapter.getData().get(position) + "");
-
-                mRecyclerView.setVisibility(View.GONE);
-                scrollView.setVisibility(View.VISIBLE);
-
-                mWord = mQuickAdapter.getData().get(position) + "";
-                beginSearchService(mType, mWord);
             }
         });
 

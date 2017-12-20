@@ -110,6 +110,8 @@ public class SearchActicity extends AppCompatActivity {
 
     public static void setEdit(String word) {
         searchEdit.setText(word);
+
+        searchTv.performClick();
     }
 }
 
