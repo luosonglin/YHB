@@ -51,6 +51,7 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
                 Bundle bundle = new Bundle();
                 bundle.putInt("eventId", item.getId());
                 bundle.putString("eventTitle", item.getTitle());
+//                bundle.putString("sourceType", item.getSourceType());
                 bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + item.getBanner());
                 bundle.putString("description", "时间： " + DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02)
                         + " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02)

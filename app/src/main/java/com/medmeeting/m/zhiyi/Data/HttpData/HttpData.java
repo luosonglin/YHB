@@ -40,6 +40,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveProListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
@@ -633,7 +634,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataSelectVideoLive(Observer<HttpResult3<Blog, Object>> observer) {
+    public void HttpDataSelectVideoLive(Observer<HttpResult3<LiveProListEntity, Object>> observer) {
         Observable observable = service_live.selectVideoLive();
         setSubscribe(observable, observer);
     }

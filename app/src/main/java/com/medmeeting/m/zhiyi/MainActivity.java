@@ -70,8 +70,7 @@ public class MainActivity extends AppCompatActivity implements
     TextView tabOrdersTitle;
 
     //知医
-    @Bind(R.id.tab_doctor)
-    View tabMerchandise;
+    private static View tabMerchandise;
     @Bind(R.id.tab_doctor_img)
     ImageView tabMerchandiseImg;
     @Bind(R.id.tab_doctor_title)
@@ -84,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements
     ImageView tabPlusIv;
 
     //圈子
-    @Bind(R.id.tab_community)
-    View tabPurchase;
+    private static View tabPurchase;
     @Bind(R.id.tab_community_img)
     ImageView tabPurchaseImg;
     @Bind(R.id.tab_community_title)
@@ -136,6 +134,9 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         StatusBarCompat.setStatusBarColor(this, Color.LTGRAY, true);
+
+        tabMerchandise = (View) findViewById(R.id.tab_doctor);
+        tabPurchase = (View) findViewById(R.id.tab_community);
 
         ButterKnife.bind(this);
 
@@ -511,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements
 //        });
 //    }
 
-    private void fakerAction() {
+//    private void fakerAction() {
 //        new Thread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -553,5 +554,13 @@ public class MainActivity extends AppCompatActivity implements
 //                }, map);
 //            }
 //        }).start();
+//    }
+
+    public static void trunMeetingView() {
+        tabMerchandise.performClick();
+    }
+
+    public static void trunLiveView() {
+        tabPurchase.performClick();
     }
 }

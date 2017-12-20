@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -37,7 +38,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                     Glide.with(mContext)
                             .load(blog.getImages())
                             .crossFade()
-                            .placeholder(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.news_bg)
                             .into((ImageView) baseViewHolder.getView(R.id.ivRightImg1));
                     baseViewHolder.setVisible(R.id.rlRightImg, true)
                             .setVisible(R.id.viewFill, true);
@@ -51,19 +52,19 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                     Glide.with(mContext)
                             .load(images[0])
                             .crossFade()
-                            .placeholder(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.news_bg)
                             .into((ImageView) baseViewHolder.getView(R.id.ivCenterImg1));
                     Glide.with(mContext)
                             .load(images[1])
                             .crossFade()
-                            .placeholder(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.news_bg)
                             .into((ImageView) baseViewHolder.getView(R.id.ivCenterImg2));
 
                     if (images.length > 2)
                         Glide.with(mContext)
                                 .load(images[2])
                                 .crossFade()
-                                .placeholder(R.mipmap.ic_launcher)
+                                .placeholder(R.mipmap.news_bg)
                                 .into((ImageView) baseViewHolder.getView(R.id.ivCenterImg3));
                 }
                 break;
@@ -79,6 +80,10 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                         .setVisible(R.id.videoRlyt, true);
                 baseViewHolder.setText(R.id.tvDuration1, TimeUtils.getTimeFromSecond(blog.getTimeSecond()));
                 break;
+        }
+
+        if (blog.getNewsStatus().equals("top")) {
+            baseViewHolder.getView(R.id.news_top).setVisibility(View.VISIBLE);
         }
 
         baseViewHolder.setText(R.id.tvTitle, blog.getTitle())

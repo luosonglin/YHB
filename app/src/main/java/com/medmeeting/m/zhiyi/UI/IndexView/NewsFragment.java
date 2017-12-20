@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.medmeeting.m.zhiyi.Base.BaseFragment;
-import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BlogAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.HeaderMeetingAdapter;
@@ -26,6 +26,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveProListEntity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
@@ -128,6 +129,7 @@ public class NewsFragment extends BaseFragment {
             mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
 
             mHeaderLive = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt);
+            mHeaderMoreView = (TextView) mHeaderView.findViewById(R.id.live_more);
             mHeaderLive1 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt1);
             mHeaderLive2 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt2);
             mHeaderLiveView = (TextView) mHeaderView.findViewById(R.id.live_count);
@@ -139,13 +141,15 @@ public class NewsFragment extends BaseFragment {
             mHeaderLiveName22 = (TextView) mHeaderView.findViewById(R.id.live_name22);
             mHeaderLiveStatus1 = (TextView) mHeaderView.findViewById(R.id.status1);
             mHeaderLiveStatus2 = (TextView) mHeaderView.findViewById(R.id.status2);
+            mHeaderLiveStartTime1 = (TextView) mHeaderView.findViewById(R.id.live_start_time1);
+            mHeaderLiveStartTime2 = (TextView) mHeaderView.findViewById(R.id.live_start_time2);
+
 
             mHeaderMeetingView = (TextView) mHeaderView.findViewById(R.id.meeting_count);
             mHeaderRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
 
             getHeaderView();
-        }
-        else
+        } else
             getData();
     }
 
@@ -212,6 +216,7 @@ public class NewsFragment extends BaseFragment {
     private List<String> bannerTitles = new ArrayList<>();
 
     private RelativeLayout mHeaderLive;
+    private TextView mHeaderMoreView;
     private RelativeLayout mHeaderLive1;
     private RelativeLayout mHeaderLive2;
     private TextView mHeaderLiveView;
@@ -223,6 +228,8 @@ public class NewsFragment extends BaseFragment {
     private TextView mHeaderLiveName22;
     private TextView mHeaderLiveStatus1;
     private TextView mHeaderLiveStatus2;
+    private TextView mHeaderLiveStartTime1;
+    private TextView mHeaderLiveStartTime2;
 
     private RecyclerView mHeaderRecyclerView;
     private TextView mHeaderMeetingView;
@@ -246,6 +253,8 @@ public class NewsFragment extends BaseFragment {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
                     return;
                 }
+                bannerImages.clear();
+                bannerTitles.clear();
                 for (AdminEventActive i : data.getData()) {
                     bannerImages.add(i.getBanner());
                     bannerTitles.add(i.getTitle());
@@ -261,35 +270,36 @@ public class NewsFragment extends BaseFragment {
                     Intent intent = null;
                     switch (data.getData().get(position - 1).getType()) {
                         case "active":
-                            intent = new Intent(getActivity(), BrowserActivity.class);
-                            intent.putExtra(Constant.EXTRA_URL, data.getData().get(position - 1).getUrl());
-                            intent.putExtra(Constant.EXTRA_TITLE, data.getData().get(position - 1).getTitle());
+                            BrowserActivity.launch(getActivity(), data.getData().get(position - 1).getUrl(), data.getData().get(position - 1).getTitle());
                             break;
                         case "live":
                             intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
                             intent.putExtra("programId", data.getData().get(position - 1).getId());
+                            startActivity(intent);
                             break;
                         case "video":
                             intent = new Intent(getActivity(), VideoDetailActivity.class);
                             intent.putExtra("videoId", data.getData().get(position - 1).getId());
+                            startActivity(intent);
                             break;
                         case "event":
                             intent = new Intent(getActivity(), MeetingDetailActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putInt("eventId", data.getData().get(position - 1).getId());
                             bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
+                            bundle.putString("sourceType", data.getData().get(position - 1).getSourceType());
                             bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position - 1).getBanner());
                             bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position - 1).getCreateDate(), DateUtils.TYPE_02));
                             intent.putExtras(bundle);
+                            startActivity(intent);
                             break;
                     }
-                    startActivity(intent);
+
                 });
             }
         }, "HOME");
 
-
-        HttpData.getInstance().HttpDataSelectVideoLive(new Observer<HttpResult3<Blog, Object>>() {
+        HttpData.getInstance().HttpDataSelectVideoLive(new Observer<HttpResult3<LiveProListEntity, Object>>() {
             @Override
             public void onCompleted() {
 
@@ -301,11 +311,12 @@ public class NewsFragment extends BaseFragment {
             }
 
             @Override
-            public void onNext(HttpResult3<Blog, Object> data) {
+            public void onNext(HttpResult3<LiveProListEntity, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
                     return;
                 }
+                mHeaderMoreView.setOnClickListener(view -> MainActivity.trunLiveView());
                 switch (data.getData().size()) {
                     case 0:
                         mHeaderLive.setVisibility(View.GONE);
@@ -319,8 +330,21 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLiveView.setText("下午好，今天有一场直播");
                         mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
-                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName());
-                        mHeaderLiveStatus1.setText(data.getData().get(0).getStatus());
+                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " +  data.getData().get(0).getHospital() + " " +data.getData().get(0).getAuthorTitle());
+                        mHeaderLiveStartTime1.setText(DateUtils.formatDate(data.getData().get(0).getStartTime(), DateUtils.TYPE_11));
+
+                        //（ready：准备中，play：直播中，wait：断开中，end：已结束）
+                        if (data.getData().get(0).getLiveStatus().equals("play")) {
+                            mHeaderLiveStatus1.setText("直播中");
+                        } else {
+                            mHeaderLiveStatus1.setText("预告");
+                        }
+                        mHeaderLive1.setOnClickListener(view -> {
+                            Intent intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
+                            intent.putExtra("programId", data.getData().get(0).getId());
+                            startActivity(intent);
+                        });
+
                         break;
                     case 2:
                         mHeaderLive.setVisibility(View.VISIBLE);
@@ -329,12 +353,41 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLiveView.setText("下午好，今天有两场直播");
                         mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
-                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName());
-                        mHeaderLiveStatus1.setText(data.getData().get(0).getStatus());
+                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " +  data.getData().get(0).getHospital() + " "+ data.getData().get(0).getAuthorTitle());
                         mHeaderLiveImage2.setImageResource(R.mipmap.index_alert2);
                         mHeaderLiveName2.setText(data.getData().get(1).getTitle());
-                        mHeaderLiveName22.setText(data.getData().get(1).getAuthorName());
-                        mHeaderLiveStatus2.setText(data.getData().get(1).getStatus());
+                        mHeaderLiveName22.setText(data.getData().get(1).getAuthorName() + " " +  data.getData().get(0).getHospital() + " "+ data.getData().get(1).getAuthorTitle());
+                        mHeaderLiveStartTime1.setText(DateUtils.formatDate(data.getData().get(0).getStartTime(), DateUtils.TYPE_11));
+                        mHeaderLiveStartTime2.setText(DateUtils.formatDate(data.getData().get(1).getStartTime(), DateUtils.TYPE_11));
+
+                        if (data.getData().get(0).getLiveStatus().equals("play")) {
+                            mHeaderLiveStatus1.setText("直播中");
+                            mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
+                        } else {
+                            mHeaderLiveStatus1.setText("预告");
+                            mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
+                        }
+                        if (data.getData().get(1).getLiveStatus().equals("play")) {
+                            mHeaderLiveStatus2.setText("直播中");
+                            mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
+                        } else {
+                            mHeaderLiveStatus2.setText("预告");
+                            mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
+                        }
+
+
+                        mHeaderLive1.setOnClickListener(view -> {
+                            Intent intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
+                            intent.putExtra("programId", data.getData().get(0).getId());
+                            startActivity(intent);
+                        });
+
+
+                        mHeaderLive2.setOnClickListener(view -> {
+                            Intent intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
+                            intent.putExtra("programId", data.getData().get(1).getId());
+                            startActivity(intent);
+                        });
                         break;
                 }
             }
@@ -369,8 +422,24 @@ public class NewsFragment extends BaseFragment {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
                     return;
                 }
-                mHeaderMeetingAdapter.addData(data.getData());
                 mHeaderMeetingView.setText("全部 (" + data.getData().size() + ") >");
+                mHeaderMeetingView.setOnClickListener(view -> MainActivity.trunMeetingView());
+
+                mHeaderMeetingAdapter.addData(data.getData());
+                mHeaderMeetingAdapter.setOnRecyclerViewItemClickListener(new com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("eventId", data.getData().get(position).getId());
+                        bundle.putString("eventTitle", data.getData().get(position).getTitle());
+                        bundle.putString("sourceType", data.getData().get(position).getSourceType());
+                        bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
+                        bundle.putString("description", "");//"时间： " + DateUtils.formatDate(data.getData().get(position).getCreateDate(), DateUtils.TYPE_02));
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
             }
         });
 

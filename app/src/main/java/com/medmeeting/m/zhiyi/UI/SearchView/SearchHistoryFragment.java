@@ -390,6 +390,7 @@ public class SearchHistoryFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("eventId", data.getData().get(position).getId());
+                    bundle.putString("sourceType", data.getData().get(position).getSourceType());
                     bundle.putString("eventTitle", data.getData().get(position).getTitle());
                     bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
                     bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)

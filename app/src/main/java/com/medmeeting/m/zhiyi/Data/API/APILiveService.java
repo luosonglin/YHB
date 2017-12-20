@@ -25,6 +25,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveProListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
@@ -379,7 +380,7 @@ public interface APILiveService {
 
     //GET /v1/app/Home/M/selectVideoLive 首页模块_查看直播列表
     @GET("/v1/app/Home/M/selectVideoLive")
-    Observable<HttpResult3<Blog, Object>> selectVideoLive();
+    Observable<HttpResult3<LiveProListEntity, Object>> selectVideoLive();
 
     //GET /v1/app/Home/D/findGenBlogList 首页模块_首页普通新闻_查看会新闻列表
     @GET("/v1/app/Home/D/findGenBlogList")

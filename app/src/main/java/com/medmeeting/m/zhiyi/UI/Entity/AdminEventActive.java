@@ -19,6 +19,7 @@ public class AdminEventActive {
      * type : active
      * sort : 2
      * pushPlace : HOME
+     * sourceType : admin
      */
 
     private int id;
@@ -30,6 +31,15 @@ public class AdminEventActive {
     private String type;
     private int sort;
     private String pushPlace;
+    private String sourceType;
+
+    public String getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
 
     public int getId() {
         return id;

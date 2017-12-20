@@ -20,8 +20,8 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/meeting_bg"
             tools:ignore="ContentDescription" />
 
     </android.support.v7.widget.CardView>
@@ -39,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="第一届每年生态大会"
-            android:maxLines="1"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="12sp"/>
 

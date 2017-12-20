@@ -139,6 +139,7 @@ public class EventFragment extends Fragment {
                             .setImageLoader(new GlideImageLoader())
                             .start();
                     mBanner.setOnBannerClickListener(position -> {
+
 //                    Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
 //                    Bundle bundle = new Bundle();
 //                    bundle.putString("eventId", bannerDto.getBanners().get(position - 1).getId() + "");
