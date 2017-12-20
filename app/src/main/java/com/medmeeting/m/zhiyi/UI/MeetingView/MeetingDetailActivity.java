@@ -290,10 +290,10 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         switch (getIntent().getStringExtra("sourceType")) {     //主办方创建SPONSOR 微站,  运营端创建ADMIN 新闻,
             case "SPONSOR":
-                URL = Constant.URL_Meeting_Detail + eventId;
-                break;
-            case "ADMIN":
                 URL = Constant.URL_microWebsiteDetail + eventId;
+                break;
+            case "ADMIN": //会议新闻
+                URL = Constant.URL_Meeting_Detail + eventId;
                 break;
         }
         mWebView.loadUrl(URL);

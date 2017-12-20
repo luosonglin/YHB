@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
@@ -182,7 +183,6 @@ public class MeetingEnrolActivity extends AppCompatActivity {
             settings.setPluginState(WebSettings.PluginState.ON_DEMAND);
         }
 
-
         if (userAgent == null) {
             userAgent = WebView.getSettings().getUserAgentString() + "; yihuibao_a Version/" + version;
         }
@@ -271,7 +271,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
     public class JSHook {
         @JavascriptInterface
         public void printWebLog(String str) {
-            Log.e(TAG + " WebView: ", str);
+            Log.e("printWebLog", str);
         }
 
         @JavascriptInterface
@@ -283,9 +283,9 @@ public class MeetingEnrolActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.e(TAG, "getUserIdInWeb userId:" + userId + " eventId:" + eventId + " PAY:" + PAY );
+            Log.e("getUserIdInWeb", Data.getUserToken().substring(7));
 
-            return userId;
+            return Data.getUserToken().substring(7);
         }
 
         @JavascriptInterface
@@ -297,11 +297,11 @@ public class MeetingEnrolActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.e(TAG, "pay() userId:" + userId + " eventId:" + eventId + " PAY:" + info);
+            Log.e(" PAY", info);
 
             type = info.split("/")[1];
             paymentId = info.split("/")[0];
-            Log.e(TAG, "pay() type: " + type + " paymentId: "+paymentId);
+            Log.e(TAG, "type: " + type + " paymentId: "+paymentId);
 
             showAcademicPopupWindow(type, paymentId);
 
