@@ -222,9 +222,6 @@
             android:name=".UI.LiveView.LiveLoginWebActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.LiveView.LiveTicketActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".UI.MineView.ChooseDepartmentActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />

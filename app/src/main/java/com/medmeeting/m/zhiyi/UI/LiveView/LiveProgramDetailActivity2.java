@@ -90,7 +90,7 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 07/11/2017 6:44 PM
- * @describe TODO
+ * @describe 直播节目详情页（普通用户）
  * @email iluosonglin@gmail.com
  * @org Healife
  */
@@ -202,7 +202,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + programId);
+                    UMWeb web = new UMWeb("http://mobile.medmeeting.com/#/live/show/share/" + programId); //http://wap.medmeeting.com/#!/live/room/show/
                     web.setTitle(title);//标题
                     web.setThumb(new UMImage(LiveProgramDetailActivity2.this, photo));  //缩略图
                     web.setDescription(description);//描述

@@ -23,7 +23,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveExtract;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveOrderDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
@@ -317,15 +316,6 @@ public interface APILiveService {
     @GET("/v1/anchor/livePay/{programId}/settlement")
     Observable<HttpResult3<Object, LiveSettlementEntity>> getLiveSettlement(@Path("programId") Integer programId);
 
-
-    //*************************
-    //*************************
-    //*************************
-    //*************************
-    //*************************
-    //POST /v1/anchor/livePay/{programId}/extract 新增 节目门票 提现申请
-    @POST("/v1/anchor/livePay/{programId}/extract")
-    Observable<HttpResult3<Object, LiveExtract>> extract(@Path("programId") Integer programId);
 
     //POST /v1/liveProgram/page 获取直播节目一栏-分页
     @POST("/v1/liveProgram/page")

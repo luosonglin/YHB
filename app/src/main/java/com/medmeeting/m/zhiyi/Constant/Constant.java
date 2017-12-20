@@ -24,13 +24,13 @@ public class Constant {
     public static final String FIRST_OPEN = "first_open";
 
     //会议
-//    public static final String URL_microWebsiteDetail = "http://mobile.medmeeting.com/#/mw/"; //微站
-//    public static final String URL_Meeting_Detail = "http://mobile.medmeeting.com/#/wv/meeting/detail/";
-//    public static final String URL_Meeting_Enrol = "http://mobile.medmeeting.com/#/m/reg/sign/";
+    public static final String URL_microWebsiteDetail = "http://mobile.medmeeting.com/#/mw/"; //微站
+    public static final String URL_Meeting_Detail = "http://mobile.medmeeting.com/#/wv/meeting/detail/";
+    public static final String URL_Meeting_Enrol = "http://mobile.medmeeting.com/#/m/reg/sign/";
 
-    public static final String URL_microWebsiteDetail = "http://192.168.199.146/#/mw/";
-    public static final String URL_Meeting_Detail = "http://192.168.199.146/#/wv/meeting/detail/";
-    public static final String URL_Meeting_Enrol = "http://192.168.199.146/#/m/reg/sign/";
+//    public static final String URL_microWebsiteDetail = "http://192.168.199.146/#/mw/";
+//    public static final String URL_Meeting_Detail = "http://192.168.199.146/#/wv/meeting/detail/";
+//    public static final String URL_Meeting_Enrol = "http://192.168.199.146/#/m/reg/sign/";
 
     //消息
     public static final String URL_Message_Detail = "http://mobile.medmeeting.com/#/wv/message/";

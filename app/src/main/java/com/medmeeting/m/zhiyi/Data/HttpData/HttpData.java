@@ -575,13 +575,6 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-
-    //extract
-    public void HttpDataExtract(Observer<HttpResult3> observer, Integer programId) {
-        Observable observable = service_live.extract(programId);
-        setSubscribe(observable, observer);
-    }
-
     public void HttpDataGetPrograms(Observer<HttpResult3<LiveDto, Object>> observer, LiveSearchDto liveSearchDto) {
         Observable observable = service_live.getProgramLists(liveSearchDto);
         setSubscribe(observable, observer);
@@ -591,7 +584,6 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.getMyPayLive(basePageSearchEntity);
         setSubscribe(observable, observer);
     }
-
 
     /**
      * 新闻

@@ -108,7 +108,56 @@ public class LiveTicketActivity2 extends AppCompatActivity {
                 totalAmount.setText("¥ " + data.getEntity().getTotalAmount() + "元");
                 actualAmount.setText("实际到账金额：    ¥ " + data.getEntity().getActualAmount() + "元");
                 settlementBtn.setOnClickListener(view -> {
-                    HttpData.getInstance().HttpDataExtract(new Observer<HttpResult3>() {
+//                    HttpData.getInstance().HttpDataExtract(new Observer<HttpResult3>() {
+//                        @Override
+//                        public void onCompleted() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            ToastUtils.show(LiveTicketActivity2.this, e.getMessage());
+//                        }
+//
+//                        @Override
+//                        public void onNext(HttpResult3 httpResult3) {
+//                            if (!httpResult3.getStatus().equals("success")) {
+//                                if (httpResult3.getMsg().equals("直播节目尚未结束，不可提现。")) {
+//                                    new AlertDialog.Builder(LiveTicketActivity2.this)
+//                                            .setIcon(R.mipmap.logo)
+//                                            .setTitle("是否关闭该直播")
+//                                            .setMessage("提示: 关闭该直播后才能提现")
+//                                            .setNegativeButton("取消", (dialogInterface, i) -> finish())
+//                                            .setPositiveButton("确认", (dialogInterface, i) -> HttpData.getInstance().HttpDataCloseProgram(new Observer<HttpResult3>() {
+//                                                @Override
+//                                                public void onCompleted() {
+//                                                }
+//
+//                                                @Override
+//                                                public void onError(Throwable e) {
+//                                                }
+//
+//                                                @Override
+//                                                public void onNext(HttpResult3 httpResult3) {
+//                                                    if (!httpResult3.getStatus().equals("success")) {
+//                                                        ToastUtils.show(LiveTicketActivity2.this, httpResult3.getMsg());
+//                                                        return;
+//                                                    }
+//                                                    ToastUtils.show(LiveTicketActivity2.this, "成功关闭该场直播，\n 再次点击可进行提现");
+//                                                }
+//                                            }, programId))
+//                                            .show();
+//                                } else {
+//                                    ToastUtils.show(LiveTicketActivity2.this, httpResult3.getMsg());
+//                                }
+//
+//                                return;
+//                            }
+//                            startActivity(new Intent(LiveTicketActivity2.this, MyWalletActivity.class));
+//                        }
+//                    }, programId);
+
+                    HttpData.getInstance().HttpDataPostLiveSettlement(new Observer<HttpResult3>() {
                         @Override
                         public void onCompleted() {
 

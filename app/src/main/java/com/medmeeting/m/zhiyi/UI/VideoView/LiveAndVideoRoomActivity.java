@@ -152,7 +152,7 @@ public class LiveAndVideoRoomActivity extends AppCompatActivity {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#/person/" + roomId);
+                    UMWeb web = new UMWeb("http://mobile.medmeeting.com/#/live/person/" + roomId); //http://wap.medmeeting.com/#/person/
                     web.setTitle(title);//标题
                     web.setThumb(new UMImage(LiveAndVideoRoomActivity.this, phone));  //缩略图
                     web.setDescription(description);//描述
