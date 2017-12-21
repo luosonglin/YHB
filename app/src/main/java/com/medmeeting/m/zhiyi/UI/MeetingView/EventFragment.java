@@ -15,10 +15,12 @@ import android.view.ViewGroup;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.EventAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
-import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
-import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
@@ -114,7 +116,7 @@ public class EventFragment extends Fragment {
             mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_event_header, null);
             mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
 
-            HttpData.getInstance().HttpDataGetMeetingBanner(new Observer<HttpResult<EventBanner>>() {
+            HttpData.getInstance().HttpDataGetBanners(new Observer<HttpResult3<AdminEventActive, Object>>() {
                 @Override
                 public void onCompleted() {
 
@@ -123,12 +125,17 @@ public class EventFragment extends Fragment {
                 @Override
                 public void onError(Throwable e) {
                     ToastUtils.show(getActivity(), e.getMessage());
-                    Log.e(getActivity().getLocalClassName(), e.getMessage());
                 }
 
                 @Override
-                public void onNext(HttpResult<EventBanner> data) {
-                    for (EventBanner.BannersBean i : data.getData().getBanners()) {
+                public void onNext(HttpResult3<AdminEventActive, Object> data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(getActivity(), data.getMsg());
+                        return;
+                    }
+                    bannerImages.clear();
+                    bannerTitles.clear();
+                    for (AdminEventActive i : data.getData()) {
                         bannerImages.add(i.getBanner());
                         bannerTitles.add(i.getTitle());
                     }
@@ -139,19 +146,41 @@ public class EventFragment extends Fragment {
                             .setImageLoader(new GlideImageLoader())
                             .start();
                     mBanner.setOnBannerClickListener(position -> {
+                        Log.e(getActivity().getLocalClassName(), position + "");
+                        Intent intent = null;
+                        switch (data.getData().get(position - 1).getType()) {
+                            case "active":
+                                BrowserActivity.launch(getActivity(), data.getData().get(position - 1).getUrl(), data.getData().get(position - 1).getTitle());
+                                break;
+                            case "live":
+                                intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
+                                intent.putExtra("programId", data.getData().get(position - 1).getId());
+                                startActivity(intent);
+                                break;
+                            case "video":
+                                intent = new Intent(getActivity(), VideoDetailActivity.class);
+                                intent.putExtra("videoId", data.getData().get(position - 1).getId());
+                                startActivity(intent);
+                                break;
+                            case "event":
+                                intent = new Intent(getActivity(), MeetingDetailActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("eventId", data.getData().get(position - 1).getId());
+                                bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
+                                bundle.putString("sourceType", data.getData().get(position - 1).getSourceType());
+                                bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position - 1).getBanner());
+                                bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position - 1).getCreateDate(), DateUtils.TYPE_02));
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                                break;
+                        }
 
-//                    Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("eventId", bannerDto.getBanners().get(position - 1).getId() + "");
-//                    bundle.putString("eventTitle", bannerDto.getBanners().get(position - 1).getTitle());
-//                    intent.putExtras(bundle);
-//                    startActivity(intent);
                     });
 
                     mAdapter.addHeaderView(mHeaderView);
                     srl.setRefreshing(false);
                 }
-            });
+            }, "EVENT");
         }
 
         HttpData.getInstance().HttpDataGetAllEventList(new Observer<HttpResult3<Event, Object>>() {
