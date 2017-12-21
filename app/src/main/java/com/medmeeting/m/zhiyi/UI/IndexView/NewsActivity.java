@@ -1,9 +1,12 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.BlogCommentAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.NewsLabelAdapter;
@@ -32,6 +36,14 @@ import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.LinkMovementMethodExt;
 import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.MessageSpan;
 import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.TextViewHtmlImageGetter;
 import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import java.util.ArrayList;
@@ -81,6 +93,30 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
 
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+
+            }
+        });
+
         initToolbar();
 
         blogId = getIntent().getIntExtra("blogId", 0);
@@ -100,7 +136,6 @@ public class NewsActivity extends AppCompatActivity {
         getBlogDetailService(blogId);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
         //recyclerview禁止滑动
         mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this) {
             @Override
@@ -191,17 +226,10 @@ public class NewsActivity extends AppCompatActivity {
         mLabels.addAll(Arrays.asList(blogDetail.getLabelName().split(",")));
         mLabelAdapter.setNewData(mLabels);
 
-//        if (!TextUtils.isEmpty(blogDetail.getLabelName())) {
-//            if (blogDetail.getLabelName().contains(",")) {
-//                mLabels.addAll(Arrays.asList(blogDetail.getLabelName().split(",")));
-//            } else {
-//                mLabels.add(blogDetail.getLabelName());
-//            }
-//            mLabelAdapter.setNewData(mLabels);
-//            mLabelRecyclerView.setVisibility(View.VISIBLE);
-//        } else {
-//            mLabelRecyclerView.setVisibility(View.GONE);
-//        }
+
+        //分享
+        initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), blogDetail.getContent());
+
 
         //九图
         if (blogDetail.getImages() == null) {
@@ -297,7 +325,9 @@ public class NewsActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_share:
-                    ToastUtils.show(NewsActivity.this, "share");
+                    ShareBoardConfig config = new ShareBoardConfig();
+                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                    mShareAction.open(config);
                     break;
                 case R.id.action_collect:
                     collectService(true);
@@ -370,5 +400,58 @@ public class NewsActivity extends AppCompatActivity {
         }, userCollect);
     }
 
+    /**
+     * 分享
+     * @param blogId
+     * @param title
+     * @param photo
+     * @param description
+     */
+    public void initShare(final int blogId, final String title, final String photo, final String description) {
+
+        //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{
+                    Manifest.permission.WRITE_APN_SETTINGS};
+            ActivityCompat.requestPermissions(this, mPermissionList, 123);
+        }
+
+        mShareListener = new CustomShareListener(this);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(NewsActivity.this)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
+
+                    UMWeb web = new UMWeb("http://mobile.medmeeting.com/#/new/article/share/" + blogId);
+                    web.setTitle(title);//标题
+                    if (photo != null) {
+                        web.setThumb(new UMImage(NewsActivity.this, photo));  //缩略图
+                    } else {
+                        web.setThumb(new UMImage(NewsActivity.this, R.mipmap.news_bg));
+                    }
+                    web.setDescription(description);//描述
+                    new ShareAction(NewsActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
+                });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    private UMShareListener mShareListener;
+    private ShareAction mShareAction;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //qq微信新浪授权防杀死
+        UMShareAPI.get(this).onSaveInstanceState(outState);
+    }
 }
 
