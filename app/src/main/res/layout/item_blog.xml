@@ -175,7 +175,7 @@
                         <ImageView
                             android:id="@+id/news_top"
                             android:layout_width="wrap_content"
-                            android:layout_height="10dp"
+                            android:layout_height="9dp"
                             android:layout_gravity="center_vertical"
                             android:src="@mipmap/new_top"
                             android:scaleType="fitXY"
@@ -184,7 +184,7 @@
                             android:id="@+id/tvAuthorName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="2dp"
+                            android:layout_marginLeft="4dp"
                             android:drawableLeft="@mipmap/index_news_author_icon"
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="0.0dip"

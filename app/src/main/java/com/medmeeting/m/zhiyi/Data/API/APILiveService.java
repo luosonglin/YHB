@@ -13,6 +13,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
+import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
 import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
@@ -38,6 +39,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.PushUserMessage;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
@@ -473,4 +475,11 @@ public interface APILiveService {
     @DELETE("/v1/app/Home/Q/deletePush")
     Observable<HttpResult3> deletePush(@Query("newsId") Integer newsId);
 
+
+    /**
+     * 会议支付
+     */
+    //POST /v1/events/{eventId}/orders/payType 微站中切换支付方式接口
+    @POST("/v1/events/{eventId}/orders/payType")
+    Observable<HttpResult3<Object, UnifiedOrderResult>> getPayType(@Body EventPrepayOrderRequestVO eventPrepayOrderRequestVO, @Path("eventId") Integer eventId);
 }

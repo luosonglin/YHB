@@ -87,7 +87,7 @@ public class Data {
 
 
     /**
-     * 0:live pay;    1:video pay
+     * 0:live pay;    1:video pay       2:meeting
      */
     public static Integer payType = 0;
 

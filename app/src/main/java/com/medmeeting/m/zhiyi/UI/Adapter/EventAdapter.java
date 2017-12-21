@@ -28,7 +28,7 @@ public class EventAdapter extends BaseQuickAdapter<Event> {
     @Override
     protected void convert(BaseViewHolder helper, final Event item) {
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .load(item.getBanner())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .placeholder(R.mipmap.meeting_bg)
@@ -40,7 +40,7 @@ public class EventAdapter extends BaseQuickAdapter<Event> {
                 .setText(R.id.ha2, "~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
 
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .load(item.getBanner())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .transform(new GlideCircleTransform(mContext))

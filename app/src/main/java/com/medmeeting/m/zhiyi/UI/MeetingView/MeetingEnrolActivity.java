@@ -2,13 +2,14 @@ package com.medmeeting.m.zhiyi.UI.MeetingView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,9 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
@@ -29,8 +28,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,23 +38,18 @@ import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
-import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
+import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,8 +61,8 @@ public class MeetingEnrolActivity extends AppCompatActivity {
     TextView toolbarTitle;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.WebView)
-    BridgeWebView WebView;
+
+    private static BridgeWebView WebView;
     @Bind(R.id.content_meeting_enrol)
     RelativeLayout contentMeetingEnrol;
 
@@ -91,6 +83,8 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_enrol);
         ButterKnife.bind(this);
+
+        WebView = (BridgeWebView) findViewById(R.id.WebView);
 
         initMeetingData();
 
@@ -264,9 +258,15 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
     public String PAY;
     public String type;
+    public String mWebEventId;
+    public String orderId;
+
+
     public String paymentId;
+
 
     public class JSHook {
         @JavascriptInterface
@@ -297,14 +297,18 @@ public class MeetingEnrolActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.e(" PAY", info);
+            Log.e(" PAY", info); //E/ PAY: alipay|378|378_20171221131135754_7
 
-            type = info.split("/")[1];
-            paymentId = info.split("/")[0];
-            Log.e(TAG, "type: " + type + " paymentId: "+paymentId);
 
-            showAcademicPopupWindow(type, paymentId);
+            type = info.split("\\|")[0];
+            mWebEventId = info.split("\\|")[1];
+            orderId = info.split("\\|")[2];
+            Log.e(TAG, "type: " + type + "  event: " + eventId + "  orderId: " + orderId);
 
+            if (type.equals("alipay") || type.equals("wechat"))
+                getPayType(type, Integer.parseInt(mWebEventId), orderId);
+            else
+                Log.e(getLocalClassName(), type + " 线下支付");
         }
 
 
@@ -313,143 +317,13 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * academic筛选之弹出窗
-     */
-    private PopupWindow academicPopupWindow;
+    public void getPayType(String type, Integer eventId, String orderId) {
+        EventPrepayOrderRequestVO eventPrepayOrderRequestVO = new EventPrepayOrderRequestVO();
+        eventPrepayOrderRequestVO.setOrderId(orderId);
+        eventPrepayOrderRequestVO.setPaymentChannel(type);
+        eventPrepayOrderRequestVO.setPlatformType("APP");
 
-    private void showAcademicPopupWindow(String type, final String paymentId) {
-
-        if (AlipayDisplay == null) {
-            Map<String, Object> options = new HashMap<>();
-            options.put("eventId", eventId);
-            options.put("type", type);//register hotel
-            HttpData.getInstance().HttpDataGetPaymentStatus(new Observer<PaymentStatus>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Log.e(TAG, e.getMessage());
-                    ToastUtils.show(MeetingEnrolActivity.this, e.getMessage());
-                }
-
-                @Override
-                public void onNext(PaymentStatus paymentStatus) {
-                    if (paymentStatus.getPayStatus().get(0).isAlipay()) {
-                        AlipayDisplay = true;
-                    } else {
-                        AlipayDisplay = false;
-                    }
-
-                    if (paymentStatus.getPayStatus().get(0).isWechat()) {
-                        WechatDisplay = true;
-                    } else {
-                        WechatDisplay = false;
-                    }
-
-                    if (paymentStatus.getPayStatus().get(0).isLine()) {
-                        OffLineDisplay = true;
-                    } else {
-                        OffLineDisplay = false;
-                    }
-
-                    initPopupwindow();
-                }
-            }, options);
-        }
-
-        initPopupwindow();
-
-    }
-
-    private void initPopupwindow() {
-
-        View academicPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_pay_type_meeting, null);
-        academicPopupWindow = new PopupWindow(academicPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-
-        final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
-        final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.pay_offline);
-
-        a.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPayInfo(v, paymentId, "alipay");
-                academicPopupWindow.dismiss();
-            }
-        });
-
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-//                ToastUtils.show(MeetingEnrolActivity.this, "http://www.medmeeting.com/phoneEvent/confirmPayType?paymentId="+paymentId +"&payType=line");
-//                startActivity(new Intent(MeetingEnrolActivity.this, PayDemoActivity.class));
-                academicPopupWindow.dismiss();
-
-                Map<String, Object> options = new HashMap<>();
-                options.put("paymentId", paymentId);
-                options.put("payType", "line");
-                HttpData.getInstance().HttpDataGetPayInfo(new Observer<HttpResult4>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(HttpResult4 httpResult4) {
-                        if (httpResult4.getStatus().equals("200")) {
-                            WebView.reload();
-                        } else {
-                            ToastUtils.show(MeetingEnrolActivity.this, httpResult4.getReturnMsg());
-                        }
-
-                    }
-                }, options);
-            }
-        });
-
-        if (AlipayDisplay) {
-            a.setVisibility(View.VISIBLE);
-        } else {
-            a.setVisibility(View.GONE);
-        }
-
-        if (OffLineDisplay) b.setVisibility(View.VISIBLE);
-        else b.setVisibility(View.GONE);
-
-        LinearLayout academicPopupParentLayout = (LinearLayout) academicPopupwindowView.findViewById(R.id.popup_parent);
-        academicPopupParentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
-                    academicPopupWindow.dismiss();
-                }
-            }
-        });
-
-        academicPopupWindow.setOutsideTouchable(false);
-        ColorDrawable dw = new ColorDrawable(0x00000000);
-        academicPopupWindow.setBackgroundDrawable(dw);
-        academicPopupWindow.showAtLocation(academicPopupwindowView, Gravity.BOTTOM, 0, 0);
-    }
-
-    //支付金额
-    private float amount;
-
-    //获取支付订单信息
-    private void getPayInfo(final View v, String paymentId, String payType){
-        Map<String, Object> options = new HashMap<>();
-        options.put("paymentId", paymentId);
-        options.put("payType", payType);
-        HttpData.getInstance().HttpDataGetPayInfo(new Observer<HttpResult4>() {
+        HttpData.getInstance().HttpDataGetPayType(new Observer<HttpResult3<Object, UnifiedOrderResult>>() {
             @Override
             public void onCompleted() {
 
@@ -457,19 +331,52 @@ public class MeetingEnrolActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-
+                ToastUtils.show(MeetingEnrolActivity.this, e.getMessage());
             }
 
             @Override
-            public void onNext(HttpResult4 httpResult4) {
-                amount = httpResult4.getAmtOrder();
-                if (httpResult4.getReturnMsg().equals("选择支付方式成功！")) {
-                    pay(v, amount);
+            public void onNext(HttpResult3<Object, UnifiedOrderResult> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(MeetingEnrolActivity.this, data.getMsg());
+                    return;
                 }
+
+                //alipay
+                if (type.equals("alipay")) {
+                    /**
+                     * 检测是否有支付宝软件
+                     */
+                    if (checkAliPayInstalled(MeetingEnrolActivity.this)) {
+                        pay(data.getEntity().getAmount(), data.getEntity().getTradeTitle(), data.getEntity().getTradeTitle(), data.getEntity().getTradeId(), data.getEntity().getAlipayOrderString());
+                    } else {
+                        ToastUtils.show(MeetingEnrolActivity.this, "支付宝APP尚未安装，\n请重新选择其他支付方式");
+                    }
+                } else if (type.equals("wechat")) {
+                    /**
+                     * 检测是否有微信软件
+                     */
+                    if (isWXAppInstalledAndSupported(MeetingEnrolActivity.this, api)) {
+                        Data.setPayType(2);
+                        Data.setTradeId(data.getEntity().getTradeId());
+                        payByWechat(data.getEntity().getRequestPay().getPartnerid(),
+                                data.getEntity().getRequestPay().getPrepayid(),
+                                data.getEntity().getRequestPay().getNoncestr(),
+                                data.getEntity().getRequestPay().getTimeStamp(),
+                                data.getEntity().getRequestPay().getPackageX(),
+                                data.getEntity().getRequestPay().getSign());
+                    } else {
+                        ToastUtils.show(MeetingEnrolActivity.this, "微信APP尚未安装，\n请重新选择其他支付方式");
+                    }
+                }
+
             }
-        }, options);
+        }, eventPrepayOrderRequestVO, eventId);
     }
 
+    /**
+     * 支付宝支付配置
+     * ======================================================================================================================================================
+     */
     // 商户PID
     public static final String PARTNER = "2088311846356487";
     // 商户收款账号
@@ -499,16 +406,15 @@ public class MeetingEnrolActivity extends AppCompatActivity {
                     if (TextUtils.equals(resultStatus, "9000")) {
                         Toast.makeText(MeetingEnrolActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                         WebView.reload();
+
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                         if (TextUtils.equals(resultStatus, "8000")) {
                             Toast.makeText(MeetingEnrolActivity.this, "支付结果确认中", Toast.LENGTH_SHORT).show();
-
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             Toast.makeText(MeetingEnrolActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
-
                         }
                     }
                     break;
@@ -516,58 +422,33 @@ public class MeetingEnrolActivity extends AppCompatActivity {
                 default:
                     break;
             }
-        };
+        }
+
+        ;
     };
 
     /**
      * call alipay sdk pay. 调用SDK支付
-     *
      */
-    public void pay(View v, float amount) {
+    public void pay(float amount, String title, String description, String paymentId, final String payInfo) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialoginterface, int i) {
-                            //
-                            finish();
-                        }
+                    .setPositiveButton("确定", (dialoginterface, i) -> {
+                        finish();
                     }).show();
             return;
         }
-        String orderInfo = getOrderInfo(eventTitle, "该测试商品的详细描述", Float.toString(amount), paymentId);
 
-        /*
-          特别注意，这里的签名逻辑需要放在服务端，切勿将私钥泄露在代码中！
-         */
-        String sign = sign(orderInfo);
-        try {
-            /*
-              仅需对sign 做URL编码
-             */
-            sign = URLEncoder.encode(sign, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        Runnable payRunnable = () -> {
+            // 构造PayTask 对象
+            PayTask alipay = new PayTask(MeetingEnrolActivity.this);
+            // 调用支付接口，获取支付结果
+            String result = alipay.pay(payInfo, true);
 
-        /*
-          完整的符合支付宝参数规范的订单信息
-         */
-        final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
-
-        Runnable payRunnable = new Runnable() {
-
-            @Override
-            public void run() {
-                // 构造PayTask 对象
-                PayTask alipay = new PayTask(MeetingEnrolActivity.this);
-                // 调用支付接口，获取支付结果
-                String result = alipay.pay(payInfo, true);
-
-                Message msg = new Message();
-                msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
+            Message msg = new Message();
+            msg.what = SDK_PAY_FLAG;
+            msg.obj = result;
+            mHandler.sendMessage(msg);
         };
 
         // 必须异步调用
@@ -576,91 +457,61 @@ public class MeetingEnrolActivity extends AppCompatActivity {
     }
 
     /**
-     * create the order info. 创建订单信息
+     * 判断支付宝是否安装
      *
+     * @param context
+     * @return
      */
-    private String getOrderInfo(String subject, String body, String price, String paymentId) {
-
-        // 签约合作者身份ID
-        String orderInfo = "partner=" + "\"" + PARTNER + "\"";
-
-        // 签约卖家支付宝账号
-        orderInfo += "&seller_id=" + "\"" + SELLER + "\"";
-
-        // 商户网站唯一订单号
-//        orderInfo += "&out_trade_no=" + "\"" + getOutTradeNo() + "\"";
-        orderInfo += "&out_trade_no=" + "\"" + paymentId + "\"";
-
-        // 商品名称
-        orderInfo += "&subject=" + "\"" + subject + "\"";
-
-        // 商品详情
-        orderInfo += "&body=" + "\"" + body + "\"";
-
-        // 商品金额
-        orderInfo += "&total_fee=" + "\"" + price + "\"";
-
-        // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + "http://www.medmeeting.com/toAliPay/alipayAppNotify" + "\"";
-
-        // 服务接口名称， 固定值
-        orderInfo += "&service=\"mobile.securitypay.pay\"";
-
-        // 支付类型， 固定值
-        orderInfo += "&payment_type=\"1\"";
-
-        // 参数编码， 固定值
-        orderInfo += "&_input_charset=\"utf-8\"";
-
-        // 设置未付款交易的超时时间
-        // 默认30分钟，一旦超时，该笔交易就会自动被关闭。
-        // 取值范围：1m～15d。
-        // m-分钟，h-小时，d-天，1c-当天（无论交易何时创建，都在0点关闭）。
-        // 该参数数值不接受小数点，如1.5h，可转换为90m。
-        orderInfo += "&it_b_pay=\"30m\"";
-
-        // extern_token为经过快登授权获取到的alipay_open_id,带上此参数用户将使用授权的账户进行支付
-        // orderInfo += "&extern_token=" + "\"" + extern_token + "\"";
-
-        // 支付宝处理完请求后，当前页面跳转到商户指定页面的路径，可空
-        orderInfo += "&return_url=\"m.alipay.com\"";
-
-        return orderInfo;
+    public static boolean checkAliPayInstalled(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
     }
 
     /**
-     * get the out_trade_no for an order. 生成商户订单号，该值在商户端应保持唯一（可自定义格式规范）
-     *
+     * 微信支付配置
+     * ======================================================================================================================================================
      */
-    private String getOutTradeNo() {
-        SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss", Locale.getDefault());
-        Date date = new Date();
-        String key = format.format(date);
+    private IWXAPI api = WXAPIFactory.createWXAPI(this, null);
 
-        Random r = new Random();
-        key = key + r.nextInt();
-        key = key.substring(0, 15);
-        return key;
+    private void payByWechat(final String partnerId, final String prepayId, final String nonceStr, final String timeStamp, final String packageValue, final String sign) {
+        Log.e(TAG, "payByWechat");
+
+        api.registerApp(Constant.WeChat_AppID);
+        this.runOnUiThread(() -> {
+            try {
+                PayReq req = new PayReq();
+                req.appId = "wx7e6722fad8a0975c";
+                req.partnerId = partnerId;
+                req.prepayId = prepayId;
+                req.nonceStr = nonceStr;
+                req.timeStamp = timeStamp;
+                req.packageValue = packageValue;
+                req.sign = sign;
+                req.extData = "";//"app data"; // optional
+                api.sendReq(req);
+            } catch (Exception e) {
+                Log.e("PAY_GET", e.getMessage());
+                Toast.makeText(MeetingEnrolActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    /**
-     * sign the order info. 对订单信息进行签名
-     *
-     * @param content
-     *            待签名订单信息
-     */
-    private String sign(String content) {
-        return com.medmeeting.m.zhiyi.paydemo.SignUtils.sign(content, RSA_PRIVATE);
+    private static boolean isWXAppInstalledAndSupported(Context context, IWXAPI api) {
+        // LogOutput.d(TAG, "isWXAppInstalledAndSupported");
+        boolean sIsWXAppInstalledAndSupported = api.isWXAppInstalled() && api.isWXAppSupportAPI();
+        if (!sIsWXAppInstalledAndSupported) {
+            Log.w(TAG, "~~~~~~~~~~~~~~微信客户端未安装，请确认");
+            ToastUtils.show(context, "微信客户端未安装，请确认");
+        }
+
+        return sIsWXAppInstalledAndSupported;
     }
 
-    /**
-     * get the sign type we use. 获取签名方式
-     *
-     */
-    private String getSignType() {
-        return "sign_type=\"RSA\"";
+    public static void reloadWebView() {
+        WebView.reload();
     }
-
 
 }
 

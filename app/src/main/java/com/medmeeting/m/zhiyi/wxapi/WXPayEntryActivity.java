@@ -12,6 +12,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingEnrolActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -66,7 +67,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         } else if (resp.errCode == 0) {
             ToastUtils.show(this, "宝宝已成功购票Ｏ(≧∇≦)Ｏ");
 
-            if (Data.getPayType() == 1 && !Data.getTradeId().equals("")) {   //video pay
+            //video pay
+            if (Data.getPayType() == 1 && !Data.getTradeId().equals("")) {
                 //通知后端，防止后端接受不到支付成功
                 HttpData.getInstance().HttpDataUpdateLiveOrderStatus(new Observer<HttpResult3<Object, Object>>() {
                     @Override
@@ -85,6 +87,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                     }
                 }, Data.getTradeId());
                 startActivity(new Intent(this, VideoDetailActivity.class).putExtra("videoId", Data.getVideoId()));
+
+            }else if (Data.getPayType() == 2 && !Data.getTradeId().equals("")) {
+                MeetingEnrolActivity.reloadWebView();
             } else {
                 HttpData.getInstance().HttpDataUpdateLiveOrderStatus(new Observer<HttpResult3<Object, Object>>() {
                     @Override

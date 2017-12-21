@@ -25,6 +25,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
+import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
 import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
@@ -59,6 +60,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
 import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
@@ -703,16 +705,18 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.findBlogList(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataSearchMeeting(Observer<HttpResult3<Event, Object>> observer, Map<String, Object> map) {
         Observable observable = service_live.findAllContentEventList(map);
         setSubscribe(observable, observer);
     }
+
     public void HttpDataGetBanners(Observer<HttpResult3<AdminEventActive, Object>> observer, String type) {
         Observable observable = service_live.getHomeBannerList(type);
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataSelectAllPushList(Observer<HttpResult3<PushUserMessage, Object>> observer,  Map<String, Object> map) {
+    public void HttpDataSelectAllPushList(Observer<HttpResult3<PushUserMessage, Object>> observer, Map<String, Object> map) {
         Observable observable = service_live.selectAllPushList(map);
         setSubscribe(observable, observer);
     }
@@ -722,17 +726,16 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-public void HttpDataRegisterSwitch(Observer<HttpResult3<Object, EventRegisterSwitchVO>> observer, Integer eventId) {
+    public void HttpDataRegisterSwitch(Observer<HttpResult3<Object, EventRegisterSwitchVO>> observer, Integer eventId) {
         Observable observable = service_live.registerSwitch(eventId);
         setSubscribe(observable, observer);
-}
+    }
 
 
-
-
-
-
-
+    public void HttpDataGetPayType(Observer<HttpResult3<Object, UnifiedOrderResult>> observer, EventPrepayOrderRequestVO eventPrepayOrderRequestVO, Integer eventId) {
+        Observable observable = service_live.getPayType(eventPrepayOrderRequestVO, eventId);
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 插入观察者
