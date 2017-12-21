@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.library.flowlayout.FlowLayoutManager;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.R;
@@ -127,11 +128,13 @@ public class NewsActivity extends AppCompatActivity {
 //                                                }
 //                                            }
 //        );
-        mLabelRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
+
+        //设置RecyclerView的显示模式  当前List模式
+        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+        mLabelRecyclerView.setLayoutManager(flowLayoutManager);
+//        mLabelRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
         mLabelRecyclerView.setHasFixedSize(true);
         mLabelAdapter = new NewsLabelAdapter(R.layout.item_news_label_tag, null);
-        mLabelAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        mLabelAdapter.openLoadMore(3, true);
         mLabelRecyclerView.setAdapter(mLabelAdapter);
         getBlogDetailService(blogId);
 
@@ -182,19 +185,29 @@ public class NewsActivity extends AppCompatActivity {
                     ToastUtils.show(NewsActivity.this, data.getMsg());
                     return;
                 }
-                initView(data.getEntity());
+                initView(data.getEntity(), Arrays.asList(data.getEntity().getLabelName().split(",")));
                 collectionType = data.getEntity().isCollectionType();
                 invalidateOptionsMenu(); //重新绘制menu
             }
         }, map);
     }
 
-    private void initView(Blog blogDetail) {
+
+    /**
+     * @param blogDetail
+     * @param mLabels    标签提前转成list
+     */
+    private void initView(Blog blogDetail, List<String> mLabels) {
         //刚打开页面的瞬间显示
         title.setText(blogDetail.getTitle());
         //微博内容
-        name.setText("图文/" + blogDetail.getAuthorName());
-        time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
+        time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_06));
+
+        String author = blogDetail.getAuthorOrg();
+        if (blogDetail.getAuthorName() != null) {
+            author +=  " 文/" + blogDetail.getAuthorName();
+        }
+        name.setText(author);
 
         //文章View需要写带html标签的文本
         content.setText(Html.fromHtml(blogDetail.getContent(), new TextViewHtmlImageGetter(getApplicationContext(), content), null));
@@ -219,11 +232,7 @@ public class NewsActivity extends AppCompatActivity {
         };
         content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
 
-
-
-        List<String> mLabels= new ArrayList<>();
-
-        mLabels.addAll(Arrays.asList(blogDetail.getLabelName().split(",")));
+        //标签
         mLabelAdapter.setNewData(mLabels);
 
 
@@ -402,6 +411,7 @@ public class NewsActivity extends AppCompatActivity {
 
     /**
      * 分享
+     *
      * @param blogId
      * @param title
      * @param photo

@@ -288,6 +288,12 @@ public class MeetingDetailActivity extends AppCompatActivity {
         settings.setUserAgentString(userAgent);//设置用户代理
         Log.e(TAG, userAgent);
 
+        //哈哈哈哈哈哈哈
+//        if (getIntent().getStringExtra("sourceType") == null) {
+//            ToastUtils.show(MeetingDetailActivity.this, "该会议没有sourceType字段，找文戈！");
+//            finish();
+//            return;
+//        }
         switch (getIntent().getStringExtra("sourceType")) {     //主办方创建SPONSOR 微站,  运营端创建ADMIN 新闻,
             case "SPONSOR":
                 URL = Constant.URL_microWebsiteDetail + eventId;

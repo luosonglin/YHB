@@ -7,7 +7,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
-import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -35,16 +34,8 @@ public class EventAdapter extends BaseQuickAdapter<Event> {
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.address, item.getAddress() + "")
+                .setText(R.id.address, item.getEventProvince() + item.getEventCity())
                 .setText(R.id.ha1, DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_07))
-                .setText(R.id.ha2, "~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
-
-        Glide.with(mContext)
-                .load(item.getBanner())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .crossFade()
-                .transform(new GlideCircleTransform(mContext))
-                .placeholder(R.mipmap.avator_default)
-                .into((ImageView) helper.getView(R.id.avatar));
+                .setText(R.id.ha2, " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
     }
 }

@@ -40,6 +40,8 @@ public class Event {
      * eventLogo : 5
      * onlineEvent : 5
      * sourceType :主办方创建SPONSOR,运营端创建ADMIN ,
+     * eventProvince
+     * eventCity
      */
 
     private int id;
@@ -72,6 +74,24 @@ public class Event {
     private String eventLogo;
     private String onlineEvent;
     private String sourceType; //主办方创建SPONSOR 微站,  运营端创建ADMIN 新闻
+    private String eventProvince;
+    private String eventCity;
+
+    public String getEventProvince() {
+        return eventProvince;
+    }
+
+    public void setEventProvince(String eventProvince) {
+        this.eventProvince = eventProvince;
+    }
+
+    public String getEventCity() {
+        return eventCity;
+    }
+
+    public void setEventCity(String eventCity) {
+        this.eventCity = eventCity;
+    }
 
     public String getSourceType() {
         return sourceType;

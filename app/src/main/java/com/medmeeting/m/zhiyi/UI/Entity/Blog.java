@@ -108,6 +108,15 @@ public class Blog {//implements Serializable {
     private String authorName;
     private boolean collectionType;
     private int timeSecond;
+    private String authorOrg;
+
+    public String getAuthorOrg() {
+        return authorOrg;
+    }
+
+    public void setAuthorOrg(String authorOrg) {
+        this.authorOrg = authorOrg;
+    }
 
     public int getId() {
         return id;

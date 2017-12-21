@@ -154,18 +154,18 @@ public class EventFragment extends Fragment {
                                 break;
                             case "live":
                                 intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
-                                intent.putExtra("programId", data.getData().get(position - 1).getId());
+                                intent.putExtra("programId", data.getData().get(position - 1).getTypeId());
                                 startActivity(intent);
                                 break;
                             case "video":
                                 intent = new Intent(getActivity(), VideoDetailActivity.class);
-                                intent.putExtra("videoId", data.getData().get(position - 1).getId());
+                                intent.putExtra("videoId", data.getData().get(position - 1).getTypeId());
                                 startActivity(intent);
                                 break;
                             case "event":
                                 intent = new Intent(getActivity(), MeetingDetailActivity.class);
                                 Bundle bundle = new Bundle();
-                                bundle.putInt("eventId", data.getData().get(position - 1).getId());
+                                bundle.putInt("eventId", data.getData().get(position - 1).getTypeId());
                                 bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
                                 bundle.putString("sourceType", data.getData().get(position - 1).getSourceType());
                                 bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position - 1).getBanner());
