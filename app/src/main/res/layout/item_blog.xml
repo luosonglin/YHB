@@ -174,10 +174,10 @@
                         android:orientation="horizontal">
                         <ImageView
                             android:id="@+id/news_top"
-                            android:layout_width="wrap_content"
-                            android:layout_height="9dp"
+                            android:layout_width="24dp"
+                            android:layout_height="10dp"
                             android:layout_gravity="center_vertical"
-                            android:src="@mipmap/new_top"
+                            android:src="@mipmap/index_news_top_icon"
                             android:scaleType="fitXY"
                             android:visibility="gone"/>
                         <TextView

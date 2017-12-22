@@ -402,7 +402,7 @@ public class NewsFragment extends BaseFragment {
         mHeaderRecyclerView.setHasFixedSize(true);
         mHeaderMeetingAdapter = new HeaderMeetingAdapter(R.layout.item_header_meeting, null);
         //设置是否自动加载以及加载个数
-        mHeaderMeetingAdapter.openLoadMore(2, true);
+        mHeaderMeetingAdapter.openLoadMore(3, true);
         //将适配器添加到RecyclerView
         mHeaderRecyclerView.setAdapter(mHeaderMeetingAdapter);
         HttpData.getInstance().HttpDataGetgreatEventList(new Observer<HttpResult3<Event, Object>>() {
