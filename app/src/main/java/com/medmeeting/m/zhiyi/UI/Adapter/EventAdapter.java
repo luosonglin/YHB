@@ -35,7 +35,7 @@ public class EventAdapter extends BaseQuickAdapter<Event> {
 
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.address, item.getEventProvince() + item.getEventCity())
-                .setText(R.id.ha1, DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_07))
-                .setText(R.id.ha2, " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
+                .setText(R.id.ha1, DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02))
+                .setText(R.id.ha2, " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02));
     }
 }

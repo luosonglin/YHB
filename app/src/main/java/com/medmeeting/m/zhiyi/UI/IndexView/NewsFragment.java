@@ -315,6 +315,7 @@ public class NewsFragment extends BaseFragment {
             public void onNext(HttpResult3<LiveProListEntity, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+                    srl.setRefreshing(false);
                     return;
                 }
                 mHeaderMoreView.setOnClickListener(view -> MainActivity.trunLiveView());
@@ -415,6 +416,7 @@ public class NewsFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+                srl.setRefreshing(false);
             }
 
             @Override
@@ -458,6 +460,7 @@ public class NewsFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+                srl.setRefreshing(false);
             }
 
             @Override
