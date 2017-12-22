@@ -40,12 +40,15 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:lines="2"
-                android:text="简介:新婚夜，某妖女看着掀开她盖头的死对头，怒了，“怎么是你？我要拜堂成亲的人明明是唐家大公子！”..." />
+                android:text="我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛我是罗洛"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="7.2dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -55,8 +58,8 @@
 
                     <ImageView
                         android:id="@+id/avatar"
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
+                        android:layout_width="9dp"
+                        android:layout_height="9dp"
                         android:layout_gravity="center_vertical"
                         android:src="@mipmap/item_meeting_address"
                         tools:ignore="ContentDescription" />
@@ -69,7 +72,7 @@
                         android:layout_marginLeft="4dp"
                         android:gravity="top"
                         android:text="上海"
-                        android:textSize="8sp"
+                        android:textSize="9sp"
                         android:ellipsize="marquee"
                         android:singleLine="true"
                         />
@@ -82,8 +85,8 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
+                        android:layout_width="9dp"
+                        android:layout_height="9dp"
                         android:layout_gravity="center_vertical"
                         android:src="@mipmap/item_meeting_time" />
 
@@ -95,7 +98,7 @@
                         android:layout_marginLeft="4dp"
                         android:gravity="top"
                         android:text="12.20"
-                        android:textSize="8sp"/>
+                        android:textSize="9sp"/>
                 </LinearLayout>
 
                 <LinearLayout

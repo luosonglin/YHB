@@ -181,6 +181,7 @@ public class NewsFragment extends BaseFragment {
             public void onNext(HttpResult3<Blog, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity(), data.getMsg());
+                    srl.setRefreshing(false);
                     return;
                 }
                 mAdapter.setNewData(data.getData());
@@ -262,7 +263,7 @@ public class NewsFragment extends BaseFragment {
                 mBanner.setImages(bannerImages)
                         .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                         .setBannerTitles(bannerTitles)
-                        .setBannerAnimation(Transformer.BackgroundToForeground)
+                        .setBannerAnimation(Transformer.Default)
                         .setImageLoader(new GlideImageLoader())
                         .start();
                 mBanner.setOnBannerClickListener(position -> {
@@ -463,6 +464,7 @@ public class NewsFragment extends BaseFragment {
             public void onNext(HttpResult3<Blog, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+                    srl.setRefreshing(false);
                     return;
                 }
                 mAdapter.setNewData(data.getData());

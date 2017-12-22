@@ -84,10 +84,12 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
 
         if (blog.getNewsStatus().equals("top")) {
             baseViewHolder.getView(R.id.news_top).setVisibility(View.VISIBLE);
+        } else {
+            baseViewHolder.getView(R.id.news_top).setVisibility(View.GONE);
         }
 
         baseViewHolder.setText(R.id.tvTitle, blog.getTitle())
-                .setText(R.id.tvAuthorName, " " + blog.getAuthorName())
+                .setText(R.id.tvAuthorName, " " + blog.getAuthorOrg() + " " + blog.getAuthorName())
                 .setText(R.id.tvCommentCount, "评论" + blog.getCommentCount())
                 .setText(R.id.tvTime, " " + DateUtils.formatDate(blog.getCreatedAt(), DateUtils.TYPE_09));
     }

@@ -369,6 +369,8 @@ public class MeetingDetailActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    String info2 = null;
+
     public class JSHook {
         @JavascriptInterface
         public void javaMethod(String p) {
@@ -391,9 +393,22 @@ public class MeetingDetailActivity extends AppCompatActivity {
             }
 
             Log.e(TAG, "getUserIdInWeb" + userId + " " + GETUID + " " + Data.getUserToken().substring(7));
-//            return userId;
             return Data.getUserToken().substring(7);
         }
+
+        @JavascriptInterface
+        public void pay(String info) {  //点击"支付订单"按钮时候调用
+            try {
+                // 解析js传递过来的json串
+                JSONObject mJson = new JSONObject(info);
+                info2 = mJson.optString("EVENT_ID");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e(" EVENT_ID", info2); //E/ PAY: alipay|378|378_20171221131135754_7
+
+        }
+
 
         @JavascriptInterface
         public void printWebLog(String str) {

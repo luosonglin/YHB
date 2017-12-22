@@ -121,13 +121,6 @@ public class NewsActivity extends AppCompatActivity {
         initToolbar();
 
         blogId = getIntent().getIntExtra("blogId", 0);
-//        mLabelRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL) {
-//                                                @Override
-//                                                public boolean canScrollVertically() {
-//                                                    return false;
-//                                                }
-//                                            }
-//        );
 
         //设置RecyclerView的显示模式  当前List模式
         FlowLayoutManager flowLayoutManager = new FlowLayoutManager();

@@ -97,6 +97,8 @@ public class EventFragment extends Fragment {
         mAdapter.openLoadMore(8, true);
         mRecyclerView.setAdapter(mAdapter);
 
+        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_event_header, null);
+        mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
         getMeetingService(eventType);
 
         //下啦刷新
@@ -113,8 +115,7 @@ public class EventFragment extends Fragment {
         if (eventType != 0) {
             map.put("eventType", eventType);
         } else {
-            mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_event_header, null);
-            mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
+
 
             HttpData.getInstance().HttpDataGetBanners(new Observer<HttpResult3<AdminEventActive, Object>>() {
                 @Override
@@ -131,18 +132,19 @@ public class EventFragment extends Fragment {
                 public void onNext(HttpResult3<AdminEventActive, Object> data) {
                     if (!data.getStatus().equals("success")) {
                         ToastUtils.show(getActivity(), data.getMsg());
+                        srl.setRefreshing(false);
                         return;
                     }
                     bannerImages.clear();
                     bannerTitles.clear();
                     for (AdminEventActive i : data.getData()) {
-                        bannerImages.add(i.getBanner());
+                        bannerImages.add(i.getBanner()); //+"?imageMogr2/thumbnail/x160"
                         bannerTitles.add(i.getTitle());
                     }
                     mBanner.setImages(bannerImages)
                             .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                             .setBannerTitles(bannerTitles)
-                            .setBannerAnimation(Transformer.BackgroundToForeground)
+                            .setBannerAnimation(Transformer.Default)
                             .setImageLoader(new GlideImageLoader())
                             .start();
                     mBanner.setOnBannerClickListener(position -> {
