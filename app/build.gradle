@@ -1,3 +1,10 @@
+/**
+ * 每次打包注意
+ * 1、LoginActivity.class的图形验证码API的URL更换成Constant.API_SERVER_LIVE
+ * 2、BaseApplication的异常管理工具Recovery停用
+ * 3、各个API的URl替换成正式服地址
+ */
+
 buildscript {
     repositories {
         mavenCentral()
