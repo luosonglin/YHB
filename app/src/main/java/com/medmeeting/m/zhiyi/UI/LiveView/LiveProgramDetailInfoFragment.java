@@ -194,9 +194,10 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                 Glide.with(getActivity())
                         .load(data.getEntity().getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .transform(new GlideCircleTransform(getActivity()))
                         .crossFade()
                         .into(avatar);
-                time.setText(DateUtils.formatDate(data.getEntity().getCreateTime(), DateUtils.TYPE_04));
+                time.setText(DateUtils.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtils.TYPE_04) +" ~ "+ DateUtils.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtils.TYPE_04));
                 if (data.getEntity().getChargeType().equals("no")) {
                     type.setText("观看：   公开免费");
                 } else {

@@ -608,7 +608,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         setUpViewPager(viewPager, liveProgramDateilsEntity);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(1).select();
+        tabLayout.getTabAt(0).select();
     }
 
     private void setUpViewPager(ViewPager viewPager, LiveProgramDateilsEntity liveProgramDateilsEntity) {
@@ -618,7 +618,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(liveProgramDateilsEntity, liveProgramDateilsEntity.getId()), "详情");
         mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(liveProgramDateilsEntity.getRoomId()), "相关预告");
 
-        viewPager.setOffscreenPageLimit(3);//缓存view 的个数
+        viewPager.setOffscreenPageLimit(2);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);
     }
 
