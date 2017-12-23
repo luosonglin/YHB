@@ -54,10 +54,12 @@ import rx.Observer;
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class NewsFragment extends BaseFragment {
+public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshListener {
 
     RecyclerView recyclerView;
-    SwipeRefreshLayout srl;
+//    SpringView springView;
+    private SwipeRefreshLayout srl;
+
 
     private Integer mLabelId;
     protected List<Blog> mDatas = new ArrayList<>();
@@ -81,11 +83,28 @@ public class NewsFragment extends BaseFragment {
     @Override
     protected void bindViews(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+//        springView = (SpringView) view.findViewById(R.id.springview);
         srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
     }
 
+
     @Override
     protected void processLogic() {
+//        //设置下拉刷新监听
+//        springView.setListener(this);
+//        //设置下拉刷新样式
+//        springView.setType(SpringView.Type.FOLLOW);
+//        springView.setHeader(new DefaultHeader(getActivity()));
+        //下啦刷新
+        srl.setOnRefreshListener(() -> {
+            srl.setRefreshing(false);
+            //如果是推荐页，自动加载header view
+            if (mLabelId == 0)
+                getHeaderView();
+            else
+                getData();
+        });
+
         initCommonRecyclerView(createAdapter(), new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mLabelId = getArguments().getInt(ConstanceValue.DATA);
     }
@@ -105,16 +124,6 @@ public class NewsFragment extends BaseFragment {
 
     @Override
     protected void setListener() {
-        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //如果是推荐页，自动加载header view
-                if (mLabelId == 0)
-                    getHeaderView();
-                else
-                    getData();
-            }
-        });
     }
 
     @Override
@@ -175,12 +184,15 @@ public class NewsFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity(), e.getMessage());
+//                springView.onFinishFreshAndLoad();
+                srl.setRefreshing(false);
             }
 
             @Override
             public void onNext(HttpResult3<Blog, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity(), data.getMsg());
+//                    springView.onFinishFreshAndLoad();
                     srl.setRefreshing(false);
                     return;
                 }
@@ -206,6 +218,7 @@ public class NewsFragment extends BaseFragment {
                         startActivity(intent);
                     }
                 });
+//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
         }, map);
@@ -246,12 +259,16 @@ public class NewsFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+//                springView.onFinishFreshAndLoad();
+                srl.setRefreshing(false);
             }
 
             @Override
             public void onNext(HttpResult3<AdminEventActive, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+//                    springView.onFinishFreshAndLoad();
+                    srl.setRefreshing(false);
                     return;
                 }
                 bannerImages.clear();
@@ -309,12 +326,15 @@ public class NewsFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+//                springView.onFinishFreshAndLoad();
+                srl.setRefreshing(false);
             }
 
             @Override
             public void onNext(HttpResult3<LiveProListEntity, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+//                    springView.onFinishFreshAndLoad();
                     srl.setRefreshing(false);
                     return;
                 }
@@ -332,7 +352,7 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLiveView.setText("下午好，今天有一场直播");
                         mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
-                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " +  data.getData().get(0).getHospital() + " " +data.getData().get(0).getAuthorTitle());
+                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getHospital() + " " + data.getData().get(0).getAuthorTitle());
                         mHeaderLiveStartTime1.setText(DateUtils.formatDate(data.getData().get(0).getStartTime(), DateUtils.TYPE_11));
 
                         //（ready：准备中，play：直播中，wait：断开中，end：已结束）
@@ -355,10 +375,10 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLiveView.setText("下午好，今天有两场直播");
                         mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
-                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " +  data.getData().get(0).getHospital() + " "+ data.getData().get(0).getAuthorTitle());
+                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getHospital() + " " + data.getData().get(0).getAuthorTitle());
                         mHeaderLiveImage2.setImageResource(R.mipmap.index_alert2);
                         mHeaderLiveName2.setText(data.getData().get(1).getTitle());
-                        mHeaderLiveName22.setText(data.getData().get(1).getAuthorName() + " " +  data.getData().get(0).getHospital() + " "+ data.getData().get(1).getAuthorTitle());
+                        mHeaderLiveName22.setText(data.getData().get(1).getAuthorName() + " " + data.getData().get(0).getHospital() + " " + data.getData().get(1).getAuthorTitle());
                         mHeaderLiveStartTime1.setText(DateUtils.formatDate(data.getData().get(0).getStartTime(), DateUtils.TYPE_11));
                         mHeaderLiveStartTime2.setText(DateUtils.formatDate(data.getData().get(1).getStartTime(), DateUtils.TYPE_11));
 
@@ -416,6 +436,7 @@ public class NewsFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
 
@@ -423,6 +444,8 @@ public class NewsFragment extends BaseFragment {
             public void onNext(HttpResult3<Event, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+//                    springView.onFinishFreshAndLoad();
+                    srl.setRefreshing(false);
                     return;
                 }
                 mHeaderMeetingView.setText("全部 (" + data.getData().size() + ") >");
@@ -460,6 +483,7 @@ public class NewsFragment extends BaseFragment {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
+//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
 
@@ -467,6 +491,7 @@ public class NewsFragment extends BaseFragment {
             public void onNext(HttpResult3<Blog, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
+//                    springView.onFinishFreshAndLoad();
                     srl.setRefreshing(false);
                     return;
                 }
@@ -489,9 +514,12 @@ public class NewsFragment extends BaseFragment {
                     }
                     startActivity(intent);
                 });
+
+//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
         }, map);
+
     }
 
     @Override
@@ -499,4 +527,14 @@ public class NewsFragment extends BaseFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+//
+//    @Override
+//    public void onRefresh() {
+//
+//    }
+//
+//    @Override
+//    public void onLoadmore() {
+//
+//    }
 }

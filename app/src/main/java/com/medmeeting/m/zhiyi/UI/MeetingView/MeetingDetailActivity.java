@@ -369,7 +369,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    String info2 = null;
+    String web_event_id = null;
 
     public class JSHook {
         @JavascriptInterface
@@ -401,11 +401,17 @@ public class MeetingDetailActivity extends AppCompatActivity {
             try {
                 // 解析js传递过来的json串
                 JSONObject mJson = new JSONObject(info);
-                info2 = mJson.optString("EVENT_ID");
+                web_event_id = mJson.optString("EVENT_ID");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.e(" EVENT_ID", info2); //E/ PAY: alipay|378|378_20171221131135754_7
+            Log.e(" EVENT_ID", web_event_id); //E/ PAY: alipay|378|378_20171221131135754_7
+
+                Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+                i.putExtra("title", "报名");
+                i.putExtra("eventId", web_event_id);
+                i.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
+                startActivity(i);
 
         }
 

@@ -41,9 +41,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
-import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.snappydb.SnappydbException;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -69,14 +67,10 @@ public class MeetingEnrolActivity extends AppCompatActivity {
     private static final String TAG = MeetingEnrolActivity.class.getSimpleName();
 
     private static String userAgent;
-    private Integer eventId;
-    private String eventTitle;
-    private String userId;
+    private String eventId;
     private String version;
     private String title;
-    private Boolean AlipayDisplay;
-    private Boolean WechatDisplay;
-    private Boolean OffLineDisplay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +80,12 @@ public class MeetingEnrolActivity extends AppCompatActivity {
 
         WebView = (BridgeWebView) findViewById(R.id.WebView);
 
-        initMeetingData();
+        eventId = getIntent().getStringExtra("eventId");
+        Log.e(getLocalClassName(), eventId + "");
 
+        initMeetingData(eventId,
+                getIntent().getStringExtra("title"),
+                getIntent().getStringExtra("eventTitle"));
         initToolbar();
 
         initWebView();
@@ -103,21 +101,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void initMeetingData() {
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-
-        eventId = bundle.getInt("eventId");
-        title = bundle.getString("title");
-        eventTitle = bundle.getString("eventTitle");
-
-        try {
-            userId = DBUtils.get(MeetingEnrolActivity.this, "userId");
-            String openId = DBUtils.get(MeetingEnrolActivity.this, "openId");
-        } catch (SnappydbException e) {
-            e.printStackTrace();
-        }
-
+    private void initMeetingData(String eventId, String title, String eventTitle) {
 
         PackageManager pm = MeetingEnrolActivity.this.getPackageManager();
         PackageInfo pi = null;
@@ -230,14 +214,6 @@ public class MeetingEnrolActivity extends AppCompatActivity {
             }
 
         });
-        /*WebView.registerHandler("CALLAPP", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                Log.i(TAG, "handler = submitFromWeb, data from web = " + data);
-                function.onCallBack(userId);//"submitFromWeb exe, response data from Java" );
-
-            }
-        });*/
     }
 
     /**
