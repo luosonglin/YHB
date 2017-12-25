@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
-import com.medmeeting.m.zhiyi.UI.SearchView.SearchActicity;
+import com.medmeeting.m.zhiyi.UI.SearchView.SearchMeetingActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -118,7 +118,8 @@ public class MeetingFragment2 extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.search_icon:
-                startActivity(new Intent(getActivity(), SearchActicity.class));
+//                startActivity(new Intent(getActivity(), SearchActicity.class));
+                startActivity(new Intent(getActivity(), SearchMeetingActivity.class));
                 break;
         }
     }
