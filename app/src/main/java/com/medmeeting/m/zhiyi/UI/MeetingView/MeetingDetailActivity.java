@@ -96,14 +96,13 @@ public class MeetingDetailActivity extends AppCompatActivity {
         }
 
         initToolbar();
-        initShare(savedInstanceState, getIntent().getExtras().getString("photo"),
-                getIntent().getExtras().getString("description"));
+        initShare(savedInstanceState, getIntent().getExtras().getString("photo"), "");
+//                getIntent().getExtras().getString("description")
 
 
         initMeetingService(eventId);
 
         initWebView();
-
     }
 
     private void initMeetingService(Integer eventId) {

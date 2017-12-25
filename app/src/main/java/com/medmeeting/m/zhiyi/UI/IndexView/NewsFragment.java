@@ -297,7 +297,10 @@ public class NewsFragment extends BaseFragment {
                             bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
                             bundle.putString("sourceType", data.getData().get(position - 1).getSourceType());
                             bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position - 1).getBanner());
-                            bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position - 1).getCreateDate(), DateUtils.TYPE_02));
+//                            bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position - 1).getCreateDate(), DateUtils.TYPE_02));
+//                            bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+//                                    + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+//                                    + " 欢迎参加： " + data.getData().get(position).getTitle());
                             intent.putExtras(bundle);
                             startActivity(intent);
                             break;
@@ -337,7 +340,7 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLive.setVisibility(View.VISIBLE);
                         mHeaderLive1.setVisibility(View.VISIBLE);
                         mHeaderLive2.setVisibility(View.GONE);
-                        mHeaderLiveView.setText("下午好，今天有一场直播");
+                        mHeaderLiveView.setText("您好，今天有一场直播");
                         mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
                         mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getHospital() + " " + data.getData().get(0).getAuthorTitle());
@@ -346,8 +349,10 @@ public class NewsFragment extends BaseFragment {
                         //（ready：准备中，play：直播中，wait：断开中，end：已结束）
                         if (data.getData().get(0).getLiveStatus().equals("play")) {
                             mHeaderLiveStatus1.setText("直播中");
+                            mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
                         } else {
                             mHeaderLiveStatus1.setText("预告");
+                            mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
                         }
                         mHeaderLive1.setOnClickListener(view -> {
                             Intent intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
@@ -360,7 +365,7 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLive.setVisibility(View.VISIBLE);
                         mHeaderLive1.setVisibility(View.VISIBLE);
                         mHeaderLive2.setVisibility(View.VISIBLE);
-                        mHeaderLiveView.setText("下午好，今天有两场直播");
+                        mHeaderLiveView.setText("您好，今天有两场直播");
                         mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
                         mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getHospital() + " " + data.getData().get(0).getAuthorTitle());
@@ -373,16 +378,21 @@ public class NewsFragment extends BaseFragment {
                         if (data.getData().get(0).getLiveStatus().equals("play")) {
                             mHeaderLiveStatus1.setText("直播中");
                             mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
-                        } else {
+                            Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus1直播中");
+                        } else if (data.getData().get(0).getLiveStatus().equals("ready")){
                             mHeaderLiveStatus1.setText("预告");
                             mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
+                            Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus1预告");
                         }
+
                         if (data.getData().get(1).getLiveStatus().equals("play")) {
                             mHeaderLiveStatus2.setText("直播中");
-                            mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
-                        } else {
+                            mHeaderLiveStatus2.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
+                            Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus2直播中");
+                        } else if (data.getData().get(1).getLiveStatus().equals("ready")){
                             mHeaderLiveStatus2.setText("预告");
-                            mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
+                            mHeaderLiveStatus2.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
+                            Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus2预告");
                         }
 
 
@@ -447,7 +457,7 @@ public class NewsFragment extends BaseFragment {
                         bundle.putString("eventTitle", data.getData().get(position).getTitle());
                         bundle.putString("sourceType", data.getData().get(position).getSourceType());
                         bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
-                        bundle.putString("description", "");//"时间： " + DateUtils.formatDate(data.getData().get(position).getCreateDate(), DateUtils.TYPE_02));
+//                        bundle.putString("description", "");//"时间： " + DateUtils.formatDate(data.getData().get(position).getCreateDate(), DateUtils.TYPE_02));
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }

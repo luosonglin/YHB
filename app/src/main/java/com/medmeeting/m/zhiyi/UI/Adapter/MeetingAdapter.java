@@ -53,10 +53,10 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
                 bundle.putString("eventTitle", item.getTitle());
 //                bundle.putString("sourceType", item.getSourceType());
                 bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + item.getBanner());
-                bundle.putString("description", "时间： " + DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02)
-                        + " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02)
-                        + " \n "
-                        + "地点： " + item.getAddress());
+//                bundle.putString("description", "时间： " + DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02)
+//                        + " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02)
+//                        + " \n "
+//                        + "地点： " + item.getAddress());
                 intent.putExtras(bundle);
                 mContext.startActivity(intent);
             }
