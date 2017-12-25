@@ -460,7 +460,11 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
                         UMWeb web = new UMWeb(URL);
                         web.setTitle(getIntent().getExtras().getString("eventTitle"));//标题
-                        web.setThumb(new UMImage(MeetingDetailActivity.this, photo));  //缩略图
+                        if (photo != null) {
+                            web.setThumb(new UMImage(MeetingDetailActivity.this, photo));  //缩略图
+                        } else {
+                            web.setThumb(new UMImage(MeetingDetailActivity.this, R.mipmap.meeting_bg));
+                        }
                         web.setDescription(desc);//描述
                         new ShareAction(MeetingDetailActivity.this)
                                 .withMedia(web)
