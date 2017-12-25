@@ -86,31 +86,6 @@ public class IndexFragment extends Fragment implements OnChannelListener {
         return view;
     }
 
-    private void initView() {
-
-        mFragments = new ArrayList<>();
-        for (int i = 0; i < mSelectedDatas.size(); i++) {
-            NewsFragment fragment = NewsFragment.newInstance(mSelectedDatas.get(i).getId());
-            mFragments.add(fragment);
-        }
-        mTitlePagerAdapter = new ChannelPagerAdapter(getChildFragmentManager(), mFragments, mSelectedDatas);
-        vp.setAdapter(mTitlePagerAdapter);
-        vp.setOffscreenPageLimit(mSelectedDatas.size());
-
-        tab.setTabPaddingLeftAndRight(CommonUtil.dip2px(10), CommonUtil.dip2px(10));
-        tab.setupWithViewPager(vp);
-        tab.post(new Runnable() {
-            @Override
-            public void run() {
-                //设置最小宽度，使其可以在滑动一部分距离
-                ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
-                slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
-            }
-        });
-        //隐藏指示器时候为0
-        tab.setSelectedTabIndicatorHeight(6);//设置当前被选中标签的高度
-    }
-
     /**
      * 获取标题数据
      */
@@ -172,6 +147,33 @@ public class IndexFragment extends Fragment implements OnChannelListener {
             initView();
         }
     }
+
+
+    private void initView() {
+
+        mFragments = new ArrayList<>();
+        for (int i = 0; i < mSelectedDatas.size(); i++) {
+            NewsFragment fragment = NewsFragment.newInstance(mSelectedDatas.get(i).getId());
+            mFragments.add(fragment);
+        }
+        mTitlePagerAdapter = new ChannelPagerAdapter(getChildFragmentManager(), mFragments, mSelectedDatas);
+        vp.setAdapter(mTitlePagerAdapter);
+        vp.setOffscreenPageLimit(mSelectedDatas.size());
+
+        tab.setTabPaddingLeftAndRight(CommonUtil.dip2px(10), CommonUtil.dip2px(10));
+        tab.setupWithViewPager(vp);
+        tab.post(new Runnable() {
+            @Override
+            public void run() {
+                //设置最小宽度，使其可以在滑动一部分距离
+                ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
+                slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
+            }
+        });
+        //隐藏指示器时候为0
+        tab.setSelectedTabIndicatorHeight(6);//设置当前被选中标签的高度
+    }
+
 
     @Override
     public void onAttach(Context context) {
