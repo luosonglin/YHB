@@ -560,7 +560,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(mActivity.get(), platform + " 分享已取消", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity.get(), " 分享已取消", Toast.LENGTH_SHORT).show();
         }
     }
 

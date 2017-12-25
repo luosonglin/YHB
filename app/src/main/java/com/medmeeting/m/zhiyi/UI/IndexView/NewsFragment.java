@@ -54,16 +54,42 @@ import rx.Observer;
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshListener {
+public class NewsFragment extends BaseFragment {
 
     RecyclerView recyclerView;
-//    SpringView springView;
     private SwipeRefreshLayout srl;
 
 
     private Integer mLabelId;
     protected List<Blog> mDatas = new ArrayList<>();
     protected BaseQuickAdapter mAdapter;
+
+    //Header View
+    private View mHeaderView;
+    private Banner mBanner;
+    private List<String> bannerImages = new ArrayList<>();
+    private List<String> bannerTitles = new ArrayList<>();
+
+    private RelativeLayout mHeaderLive;
+    private TextView mHeaderMoreView;
+    private RelativeLayout mHeaderLive1;
+    private RelativeLayout mHeaderLive2;
+    private TextView mHeaderLiveView;
+    private ImageView mHeaderLiveImage1;
+    private ImageView mHeaderLiveImage2;
+    private TextView mHeaderLiveName1;
+    private TextView mHeaderLiveName11;
+    private TextView mHeaderLiveName2;
+    private TextView mHeaderLiveName22;
+    private TextView mHeaderLiveStatus1;
+    private TextView mHeaderLiveStatus2;
+    private TextView mHeaderLiveStartTime1;
+    private TextView mHeaderLiveStartTime2;
+
+    private RecyclerView mHeaderRecyclerView;
+    private TextView mHeaderMeetingView;
+    private HeaderMeetingAdapter mHeaderMeetingAdapter;
+
 
     @Override
     protected View loadViewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -83,18 +109,36 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
     @Override
     protected void bindViews(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-//        springView = (SpringView) view.findViewById(R.id.springview);
         srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+
+        //绑定HeaderView
+        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
+        mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
+
+        mHeaderLive = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt);
+        mHeaderMoreView = (TextView) mHeaderView.findViewById(R.id.live_more);
+        mHeaderLive1 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt1);
+        mHeaderLive2 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt2);
+        mHeaderLiveView = (TextView) mHeaderView.findViewById(R.id.live_count);
+        mHeaderLiveImage1 = (ImageView) mHeaderView.findViewById(R.id.live_image1);
+        mHeaderLiveImage2 = (ImageView) mHeaderView.findViewById(R.id.live_image2);
+        mHeaderLiveName1 = (TextView) mHeaderView.findViewById(R.id.live_name1);
+        mHeaderLiveName11 = (TextView) mHeaderView.findViewById(R.id.live_name11);
+        mHeaderLiveName2 = (TextView) mHeaderView.findViewById(R.id.live_name2);
+        mHeaderLiveName22 = (TextView) mHeaderView.findViewById(R.id.live_name22);
+        mHeaderLiveStatus1 = (TextView) mHeaderView.findViewById(R.id.status1);
+        mHeaderLiveStatus2 = (TextView) mHeaderView.findViewById(R.id.status2);
+        mHeaderLiveStartTime1 = (TextView) mHeaderView.findViewById(R.id.live_start_time1);
+        mHeaderLiveStartTime2 = (TextView) mHeaderView.findViewById(R.id.live_start_time2);
+
+
+        mHeaderMeetingView = (TextView) mHeaderView.findViewById(R.id.meeting_count);
+        mHeaderRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
     }
 
 
     @Override
     protected void processLogic() {
-//        //设置下拉刷新监听
-//        springView.setListener(this);
-//        //设置下拉刷新样式
-//        springView.setType(SpringView.Type.FOLLOW);
-//        springView.setHeader(new DefaultHeader(getActivity()));
         //下啦刷新
         srl.setOnRefreshListener(() -> {
             srl.setRefreshing(false);
@@ -134,32 +178,10 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
 
         //如果是推荐页，自动加载header view
         if (mLabelId == 0) {
-            mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
-            mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
-
-            mHeaderLive = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt);
-            mHeaderMoreView = (TextView) mHeaderView.findViewById(R.id.live_more);
-            mHeaderLive1 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt1);
-            mHeaderLive2 = (RelativeLayout) mHeaderView.findViewById(R.id.live_title_rlyt2);
-            mHeaderLiveView = (TextView) mHeaderView.findViewById(R.id.live_count);
-            mHeaderLiveImage1 = (ImageView) mHeaderView.findViewById(R.id.live_image1);
-            mHeaderLiveImage2 = (ImageView) mHeaderView.findViewById(R.id.live_image2);
-            mHeaderLiveName1 = (TextView) mHeaderView.findViewById(R.id.live_name1);
-            mHeaderLiveName11 = (TextView) mHeaderView.findViewById(R.id.live_name11);
-            mHeaderLiveName2 = (TextView) mHeaderView.findViewById(R.id.live_name2);
-            mHeaderLiveName22 = (TextView) mHeaderView.findViewById(R.id.live_name22);
-            mHeaderLiveStatus1 = (TextView) mHeaderView.findViewById(R.id.status1);
-            mHeaderLiveStatus2 = (TextView) mHeaderView.findViewById(R.id.status2);
-            mHeaderLiveStartTime1 = (TextView) mHeaderView.findViewById(R.id.live_start_time1);
-            mHeaderLiveStartTime2 = (TextView) mHeaderView.findViewById(R.id.live_start_time2);
-
-
-            mHeaderMeetingView = (TextView) mHeaderView.findViewById(R.id.meeting_count);
-            mHeaderRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
-
             getHeaderView();
-        } else
-            getData();
+            return;
+        }
+        getData();
     }
 
     private void getData() {
@@ -184,7 +206,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity(), e.getMessage());
-//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
 
@@ -192,62 +213,33 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             public void onNext(HttpResult3<Blog, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity(), data.getMsg());
-//                    springView.onFinishFreshAndLoad();
                     srl.setRefreshing(false);
                     return;
                 }
                 mAdapter.setNewData(data.getData());
-                mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int i) {
-                        Intent intent = null;
-                        switch (data.getData().get(i).getBlogType()) {
-                            case "1":
-                                intent = new Intent(getActivity(), NewsActivity.class);
-                                intent.putExtra("blogId", data.getData().get(i).getId());
-                                break;
-                            case "2":
-                                intent = new Intent(getActivity(), NewsActivity.class);
-                                intent.putExtra("blogId", data.getData().get(i).getId());
-                                break;
-                            case "3":
-                                intent = new Intent(getActivity(), NewsVideoActivity.class);
-                                intent.putExtra("blogId", data.getData().get(i).getId());
-                                break;
-                        }
-                        startActivity(intent);
+                mAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
+                    Intent intent = null;
+                    switch (data.getData().get(i).getBlogType()) {
+                        case "1":
+                            intent = new Intent(getActivity(), NewsActivity.class);
+                            intent.putExtra("blogId", data.getData().get(i).getId());
+                            break;
+                        case "2":
+                            intent = new Intent(getActivity(), NewsActivity.class);
+                            intent.putExtra("blogId", data.getData().get(i).getId());
+                            break;
+                        case "3":
+                            intent = new Intent(getActivity(), NewsVideoActivity.class);
+                            intent.putExtra("blogId", data.getData().get(i).getId());
+                            break;
                     }
+                    startActivity(intent);
                 });
-//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
         }, map);
     }
 
-    private View mHeaderView;
-    private Banner mBanner;
-    private List<String> bannerImages = new ArrayList<>();
-    private List<String> bannerTitles = new ArrayList<>();
-
-    private RelativeLayout mHeaderLive;
-    private TextView mHeaderMoreView;
-    private RelativeLayout mHeaderLive1;
-    private RelativeLayout mHeaderLive2;
-    private TextView mHeaderLiveView;
-    private ImageView mHeaderLiveImage1;
-    private ImageView mHeaderLiveImage2;
-    private TextView mHeaderLiveName1;
-    private TextView mHeaderLiveName11;
-    private TextView mHeaderLiveName2;
-    private TextView mHeaderLiveName22;
-    private TextView mHeaderLiveStatus1;
-    private TextView mHeaderLiveStatus2;
-    private TextView mHeaderLiveStartTime1;
-    private TextView mHeaderLiveStartTime2;
-
-    private RecyclerView mHeaderRecyclerView;
-    private TextView mHeaderMeetingView;
-    private HeaderMeetingAdapter mHeaderMeetingAdapter;
 
     private void getHeaderView() {
         HttpData.getInstance().HttpDataGetBanners(new Observer<HttpResult3<AdminEventActive, Object>>() {
@@ -259,7 +251,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
-//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
 
@@ -267,7 +258,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             public void onNext(HttpResult3<AdminEventActive, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
-//                    springView.onFinishFreshAndLoad();
                     srl.setRefreshing(false);
                     return;
                 }
@@ -326,7 +316,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
-//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
 
@@ -334,7 +323,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             public void onNext(HttpResult3<LiveProListEntity, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
-//                    springView.onFinishFreshAndLoad();
                     srl.setRefreshing(false);
                     return;
                 }
@@ -436,7 +424,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
-//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
 
@@ -444,7 +431,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             public void onNext(HttpResult3<Event, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
-//                    springView.onFinishFreshAndLoad();
                     srl.setRefreshing(false);
                     return;
                 }
@@ -483,7 +469,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
-//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
 
@@ -491,7 +476,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
             public void onNext(HttpResult3<Blog, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
-//                    springView.onFinishFreshAndLoad();
                     srl.setRefreshing(false);
                     return;
                 }
@@ -515,7 +499,6 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
                     startActivity(intent);
                 });
 
-//                springView.onFinishFreshAndLoad();
                 srl.setRefreshing(false);
             }
         }, map);
@@ -527,14 +510,4 @@ public class NewsFragment extends BaseFragment {//implements SpringView.OnFreshL
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-//
-//    @Override
-//    public void onRefresh() {
-//
-//    }
-//
-//    @Override
-//    public void onLoadmore() {
-//
-//    }
 }
