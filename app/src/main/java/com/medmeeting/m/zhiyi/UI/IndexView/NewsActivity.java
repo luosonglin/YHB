@@ -52,6 +52,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -229,8 +231,12 @@ public class NewsActivity extends AppCompatActivity {
         mLabelAdapter.setNewData(mLabels);
 
 
+        //正则表达式,过滤新闻内容
+        String regEx="<([^>]*)>"; // 过滤所有以<开头以>结尾的标签    JS用"/<[^>]*>/g";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(blogDetail.getContent());
         //分享
-        initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), blogDetail.getContent());
+        initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), m.replaceAll("").trim());
 
 
         //九图
@@ -432,6 +438,7 @@ public class NewsActivity extends AppCompatActivity {
                     } else {
                         web.setThumb(new UMImage(NewsActivity.this, R.mipmap.news_bg));
                     }
+
                     web.setDescription(description);//描述
                     new ShareAction(NewsActivity.this)
                             .withMedia(web)
