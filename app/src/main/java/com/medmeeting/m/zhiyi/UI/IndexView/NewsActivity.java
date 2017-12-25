@@ -197,7 +197,7 @@ public class NewsActivity extends AppCompatActivity {
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_06));
 
         String author = blogDetail.getAuthorOrg();
-        if (blogDetail.getAuthorName() != null) {
+        if (blogDetail.getAuthorName() != null || !blogDetail.getAuthorName().equals("")) {
             author +=  " 文/" + blogDetail.getAuthorName();
         }
         name.setText(author);
