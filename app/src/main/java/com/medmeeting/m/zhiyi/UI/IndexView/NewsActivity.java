@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.IndexView;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -78,9 +80,9 @@ public class NewsActivity extends AppCompatActivity {
     EditText inputEditor;
     @Bind(R.id.input_send)
     Button inputSend;
-    private RecyclerView mRecyclerView;
-    private BaseQuickAdapter mAdapter;
-    private View mFooterView;
+    private RecyclerView mCommandRecyclerView;
+    private BaseQuickAdapter mCommandAdapter;
+    private View mCommandFooterView;
 
     private int blogId;
     private boolean collectionType;
@@ -134,20 +136,9 @@ public class NewsActivity extends AppCompatActivity {
         getBlogDetailService(blogId);
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
-        //recyclerview禁止滑动
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        });
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
-        mRecyclerView.setHasFixedSize(true);
-        mAdapter = new BlogCommentAdapter(R.layout.item_video_command, null);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        mAdapter.openLoadMore(8, true);
-        mRecyclerView.setAdapter(mAdapter);
+        mCommandRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
+        mCommandAdapter = new BlogCommentAdapter(R.layout.item_video_command, null);
+        mCommandFooterView = LayoutInflater.from(NewsActivity.this).inflate(R.layout.item_blog_footer, null);
         getCommentService(blogId);
     }
 
@@ -262,10 +253,25 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     private void getCommentService(int blogId) {
+        //recyclerview禁止滑动
+//        mCommandRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this) {
+//            @Override
+//            public boolean canScrollVertically() {
+//                return false;
+//            }
+//        });
+        //分割线
+//        mCommandRecyclerView.addItemDecoration(new DividerItemDecoration(NewsActivity.this, DividerItemDecoration.VERTICAL));
+        //设置RecyclerView的布局管理器
+        mCommandRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
+        //如果Item高度固定  增加该属性能够提高效率
+        mCommandRecyclerView.setHasFixedSize(true);
+        mCommandRecyclerView.setAdapter(mCommandAdapter);
+
         Map<String, Object> map = new HashMap<>();
         map.put("blogId", blogId);
         map.put("pageNum", 1);
-        map.put("pageSize", 100);
+        map.put("pageSize", 1000);
         HttpData.getInstance().HttpDataGetNewsCommentList(new Observer<HttpResult3<BlogComment, Object>>() {
             @Override
             public void onCompleted() {
@@ -283,15 +289,9 @@ public class NewsActivity extends AppCompatActivity {
                     ToastUtils.show(NewsActivity.this, data.getMsg());
                     return;
                 }
-//                if (mAdapter.getData() != null) {
-//                    mAdapter.setNewData(data.getData());
-//                } else {
-//                    mAdapter.addData(data.getData());
-//                }
-                mAdapter.setNewData(data.getData());
+                mCommandAdapter.setNewData(data.getData());
 
-                mFooterView = LayoutInflater.from(NewsActivity.this).inflate(R.layout.item_blog_footer, null);
-                mAdapter.addFooterView(mFooterView);
+                mCommandAdapter.addFooterView(mCommandFooterView);
             }
         }, map);
     }
@@ -326,6 +326,12 @@ public class NewsActivity extends AppCompatActivity {
                 inputEditor.setText("");
             }
         }, blogComment);
+
+        //隐藏软键盘
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        }
     }
 
 
