@@ -35,7 +35,7 @@ public class SearchActicity extends AppCompatActivity {
     private static EditText searchEdit;
     private static Button searchTv;
 
-    private TabLayout tabLayout;
+    private static TabLayout tabLayout;
     private ViewPager viewPager;
 
 
@@ -112,6 +112,10 @@ public class SearchActicity extends AppCompatActivity {
         searchEdit.setText(word);
 
         searchTv.performClick();
+    }
+
+    public static void setViewPager(int pager) {
+        tabLayout.getTabAt(pager).select();
     }
 }
 

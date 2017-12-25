@@ -38,6 +38,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveAndVideoRoomActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
@@ -378,14 +379,23 @@ public class SearchHistoryFragment extends Fragment {
                 }
                 rvMeetingList.setVisibility(View.VISIBLE);
 
-                mMeetingAdapter.setNewData(data.getData());
-
                 if (mType.equals("0")) {
                     mMeetingTypeView.setText("相关会议");
-                    mMeetingMoreView.setVisibility(View.GONE);
+                    mMeetingMoreView.setVisibility(View.VISIBLE);
+                    mMeetingMoreView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SearchActicity.setViewPager(3);
+                        }
+                    });
                     mMeetingAdapter.addHeaderView(mMeetingHeaderView);
                 }
-
+                if (mType.equals("0") && data.getData().size()>2) {
+                    mMeetingAdapter.add(0, data.getData().get(0));
+                    mMeetingAdapter.add(1, data.getData().get(1));
+                }else {
+                    mMeetingAdapter.setNewData(data.getData());
+                }
                 mMeetingAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
                     Bundle bundle = new Bundle();
@@ -432,12 +442,23 @@ public class SearchHistoryFragment extends Fragment {
                 }
                 rvNewsList.setVisibility(View.VISIBLE);
 
-                mNewsAdapter.setNewData(data.getData());
 
                 if (mType.equals("0")) {
                     mNewsTypeView.setText("相关新闻");
-                    mNewsMoreView.setVisibility(View.GONE);
+                    mNewsMoreView.setVisibility(View.VISIBLE);
+                    mNewsMoreView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SearchActicity.setViewPager(4);
+                        }
+                    });
                     mNewsAdapter.addHeaderView(mNewsHeaderView);
+                }
+                if (mType.equals("0") && data.getData().size()>2) {
+                    mNewsAdapter.add(0, data.getData().get(0));
+                    mNewsAdapter.add(1, data.getData().get(1));
+                }else {
+                    mNewsAdapter.setNewData(data.getData());
                 }
 
                 mNewsAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
@@ -495,15 +516,23 @@ public class SearchHistoryFragment extends Fragment {
                 }
                 rvVideoList.setVisibility(View.VISIBLE);
 
-                mVideoAdapter.setNewData(data.getData());
-
                 if (mType.equals("0")) {
                     mVideoTypeView.setText("相关视频");
-                    mVideoMoreView.setVisibility(View.GONE);
+                    mVideoMoreView.setVisibility(View.VISIBLE);
+                    mVideoMoreView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SearchActicity.setViewPager(2);
+                        }
+                    });
                     mVideoAdapter.addHeaderView(mVideoHeaderView);
                 }
-
-                Log.e(getActivity().getLocalClassName(), "searchVideo " + data.getData().size());
+                if (mType.equals("0") && data.getData().size()>2) {
+                    mVideoAdapter.add(0, data.getData().get(0));
+                    mVideoAdapter.add(1, data.getData().get(1));
+                }else {
+                    mVideoAdapter.setNewData(data.getData());
+                }
 
                 mVideoAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), VideoDetailActivity.class);
@@ -544,12 +573,22 @@ public class SearchHistoryFragment extends Fragment {
                 }
                 rvLiveList.setVisibility(View.VISIBLE);
 
-                mLiveAdapter.setNewData(data.getData());
-
                 if (mType.equals("0")) {
                     mLiveTypeView.setText("相关直播");
-                    mLiveMoreView.setVisibility(View.GONE);
+                    mLiveMoreView.setVisibility(View.VISIBLE);
+                    mLiveMoreView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SearchActicity.setViewPager(1);
+                        }
+                    });
                     mLiveAdapter.addHeaderView(mLiveHeaderView);
+                }
+                if (mType.equals("0") && data.getData().size()>2) {
+                    mLiveAdapter.add(0, data.getData().get(0));
+                    mLiveAdapter.add(1, data.getData().get(1));
+                }else {
+                    mLiveAdapter.setNewData(data.getData());
                 }
 
                 mLiveAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
@@ -594,6 +633,14 @@ public class SearchHistoryFragment extends Fragment {
                 mUserHeaderView.setVisibility(View.VISIBLE);
 
                 mUserAdapter.setNewData(data.getData());
+                mUserAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+                        intent.putExtra("userId", data.getData().get(position).getUserId());
+                        startActivity(intent);
+                    }
+                });
             }
         }, userRedSearchEntity);
     }
