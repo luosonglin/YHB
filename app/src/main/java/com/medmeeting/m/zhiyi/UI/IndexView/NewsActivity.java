@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.library.flowlayout.FlowLayoutManager;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.R;
@@ -124,14 +123,16 @@ public class NewsActivity extends AppCompatActivity {
 
         blogId = getIntent().getIntExtra("blogId", 0);
 
+
         //设置RecyclerView的显示模式  当前List模式
-        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
-        mLabelRecyclerView.setLayoutManager(flowLayoutManager);
-//        mLabelRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
+//        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+//        mLabelRecyclerView.setLayoutManager(flowLayoutManager);
+        mLabelRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this, LinearLayoutManager.HORIZONTAL, false));
         mLabelRecyclerView.setHasFixedSize(true);
         mLabelAdapter = new NewsLabelAdapter(R.layout.item_news_label_tag, null);
         mLabelRecyclerView.setAdapter(mLabelAdapter);
         getBlogDetailService(blogId);
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
         //recyclerview禁止滑动
@@ -141,6 +142,7 @@ public class NewsActivity extends AppCompatActivity {
                 return false;
             }
         });
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(NewsActivity.this));
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new BlogCommentAdapter(R.layout.item_video_command, null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
@@ -228,6 +230,7 @@ public class NewsActivity extends AppCompatActivity {
         content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
 
         //标签
+        Log.e(getLocalClassName(), mLabels.get(0));
         mLabelAdapter.setNewData(mLabels);
 
 
@@ -280,11 +283,12 @@ public class NewsActivity extends AppCompatActivity {
                     ToastUtils.show(NewsActivity.this, data.getMsg());
                     return;
                 }
-                if (mAdapter.getData() != null) {
-                    mAdapter.setNewData(data.getData());
-                } else {
-                    mAdapter.addData(data.getData());
-                }
+//                if (mAdapter.getData() != null) {
+//                    mAdapter.setNewData(data.getData());
+//                } else {
+//                    mAdapter.addData(data.getData());
+//                }
+                mAdapter.setNewData(data.getData());
 
                 mFooterView = LayoutInflater.from(NewsActivity.this).inflate(R.layout.item_blog_footer, null);
                 mAdapter.addFooterView(mFooterView);
