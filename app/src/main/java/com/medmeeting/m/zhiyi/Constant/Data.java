@@ -142,6 +142,10 @@ public class Data {
         Data.session = session;
     }
 
+    public static void clearSession() {
+        Data.session="";
+    }
+
     /**
      *
      */
