@@ -106,7 +106,9 @@
         <activity
             android:name=".UI.LiveView.LiveBuildRoomActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".UI.LiveView.LiveUpdateRoomActivity"
             android:label=""
@@ -114,7 +116,9 @@
         <activity
             android:name=".UI.LiveView.LiveBuildProgramActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".UI.LiveView.LiveUpdateProgramActivity"
             android:label=""
