@@ -152,7 +152,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
-                        Log.e(TAG, "onError"+e.getMessage()+" "+e.getStackTrace());
+                        Log.e(TAG, "onError" + e.getMessage() + " " + e.getStackTrace());
                     }
 
                     @Override
@@ -181,9 +181,23 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             for (String i : photos) {
                 Log.e(TAG, i);
             }
-            showProgress(true);
-            ToastUtils.show(LiveBuildRoomActivity.this, "正在上传封面图片...");
+//            showProgress(true);
+//            ToastUtils.show(LiveBuildRoomActivity.this, "正在上传封面图片...");
             getQiniuToken(photos.get(0));
+
+            Glide.with(LiveBuildRoomActivity.this)
+                    .load(photos.get(0))
+                    .crossFade()
+                    .into(new GlideDrawableImageViewTarget(livePic) {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                            //在这里添加一些图片加载完成的操作
+                            super.onResourceReady(resource, animation);
+//                            showProgress(false);
+                            livePicTipTv.setText("修改直播间封面");
+//                            ToastUtils.show(LiveBuildRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
+                        }
+                    });
         }
     }
 
@@ -244,9 +258,9 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                         (key1, info, res) -> {
                             //res包含hash、key等信息，具体字段取决于上传策略的设置
                             if (info.isOK()) {
-                                Log.i("qiniu", "Upload Success");
+                                Log.e("qiniu", "Upload Success");
                             } else {
-                                Log.i("qiniu", "Upload Fail");
+                                Log.e("qiniu", "Upload Fail");
                                 //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
                             }
                             Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
@@ -255,19 +269,21 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                         }, null);
             }
         }.start();
-        Glide.with(LiveBuildRoomActivity.this)
-                .load("http://ono5ms5i0.bkt.clouddn.com/" + key + "/thumbnail/200x140")
-                .crossFade()
-                .into(new GlideDrawableImageViewTarget(livePic) {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                        //在这里添加一些图片加载完成的操作
-                        super.onResourceReady(resource, animation);
-                        showProgress(false);
-                        livePicTipTv.setText("修改直播间封面");
-                        ToastUtils.show(LiveBuildRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
-                    }
-                });
+
+
+//        Glide.with(LiveBuildRoomActivity.this)
+//                .load("http://ono5ms5i0.bkt.clouddn.com/" + key + "/thumbnail/200x140")
+//                .crossFade()
+//                .into(new GlideDrawableImageViewTarget(livePic) {
+//                    @Override
+//                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+//                        //在这里添加一些图片加载完成的操作
+//                        super.onResourceReady(resource, animation);
+//                        showProgress(false);
+//                        livePicTipTv.setText("修改直播间封面");
+//                        ToastUtils.show(LiveBuildRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
+//                    }
+//                });
     }
 
 

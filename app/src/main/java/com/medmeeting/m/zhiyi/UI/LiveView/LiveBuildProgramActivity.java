@@ -302,9 +302,22 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
             for (String i : photos) {
                 Log.e(TAG, i);
             }
-            showProgress(true);
-            ToastUtils.show(LiveBuildProgramActivity.this, "正在上传封面图片...");
+//            showProgress(true);
+//            ToastUtils.show(LiveBuildProgramActivity.this, "正在上传封面图片...");
             getQiniuToken(photos.get(0));
+
+            Glide.with(LiveBuildProgramActivity.this)
+                    .load(photos.get(0))
+                    .crossFade()
+                    .into(new GlideDrawableImageViewTarget(livePic) {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                            //在这里添加一些图片加载完成的操作
+                            super.onResourceReady(resource, animation);
+//                            showProgress(false);
+                            livePicTipTv.setText("修改直播封面");
+                        }
+                    });
         }
     }
 
@@ -367,20 +380,8 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                                 //res包含hash、key等信息，具体字段取决于上传策略的设置
                                 if (info.isOK()) {
                                     Log.i("qiniu", "Upload Success");
-                                    Glide.with(LiveBuildProgramActivity.this)
-                                            .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
-                                            .crossFade()
-//                                            .placeholder(R.mipmap.live_title_pic)
-                                            .into(new GlideDrawableImageViewTarget(livePic) {
-                                                @Override
-                                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                                                    //在这里添加一些图片加载完成的操作
-                                                    super.onResourceReady(resource, animation);
-                                                    showProgress(false);
-                                                    livePicTipTv.setText("修改直播封面");
-                                                }
-                                            });
-                                    ToastUtils.show(LiveBuildProgramActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
+
+//                                    ToastUtils.show(LiveBuildProgramActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
                                 } else {
                                     Log.i("qiniu", "Upload Fail");
                                     //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
