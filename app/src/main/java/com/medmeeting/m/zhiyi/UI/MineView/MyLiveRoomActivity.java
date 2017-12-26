@@ -136,6 +136,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                         intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());
                         intent.putExtra("labelIds", mList.get(position).getLabelIds());
                         startActivity(intent);
+                        finish();
                     }
                 });
             }
