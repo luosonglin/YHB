@@ -457,7 +457,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
                     @Override
                     public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
 
-                        UMWeb web = new UMWeb(URL);
+                        UMWeb web = new UMWeb(Constant.Share_Meeting_Index + eventId);
                         web.setTitle(getIntent().getExtras().getString("eventTitle"));//标题
                         if (photo != null) {
                             web.setThumb(new UMImage(MeetingDetailActivity.this, photo));  //缩略图

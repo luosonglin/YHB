@@ -271,7 +271,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
                 .setShareboardclickCallback(new ShareBoardlistener() {
                     @Override
                     public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                        UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/" + roomId);
+                        UMWeb web = new UMWeb(Constant.Share_Live_Room + roomId);
                         web.setTitle(title);//标题
 //                        web.setThumb(new UMImage(LiveProgramDetailActivity.this, phone));  //缩略图
                         web.setDescription(description);//描述

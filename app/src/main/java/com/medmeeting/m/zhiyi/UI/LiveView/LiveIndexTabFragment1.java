@@ -23,7 +23,7 @@ import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
-import com.medmeeting.m.zhiyi.UI.VideoView.LiveAndVideoRoomActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -180,7 +180,7 @@ public class LiveIndexTabFragment1 extends Fragment
                         }
                     });
                     mAvatarIv.setOnClickListener(view -> {
-                        Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+                        Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
                         intent.putExtra("userId", firstData.getUserId());
                         startActivity(intent);
                     });

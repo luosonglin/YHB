@@ -23,7 +23,7 @@ public class FinishedEventAdapter extends BaseQuickAdapter<FollowFinishedEvent> 
     @Override
     protected void convert(BaseViewHolder helper, final FollowFinishedEvent item) {
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getEventBanner())
+                .load(item.getEventBanner())
                 .crossFade()
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));

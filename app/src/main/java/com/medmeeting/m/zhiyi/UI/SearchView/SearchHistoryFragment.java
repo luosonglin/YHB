@@ -38,7 +38,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
 import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
-import com.medmeeting.m.zhiyi.UI.VideoView.LiveAndVideoRoomActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -401,7 +401,7 @@ public class SearchHistoryFragment extends Fragment {
                     bundle.putInt("eventId", data.getData().get(position).getId());
                     bundle.putString("sourceType", data.getData().get(position).getSourceType());
                     bundle.putString("eventTitle", data.getData().get(position).getTitle());
-                    bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
+                    bundle.putString("phone", data.getData().get(position).getBanner());
 //                    bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
 //                            + " ~ " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
 //                            + " \n "
@@ -635,7 +635,7 @@ public class SearchHistoryFragment extends Fragment {
                 mUserAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+                        Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
                         intent.putExtra("userId", data.getData().get(position).getUserId());
                         startActivity(intent);
                     }

@@ -27,6 +27,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailOtherFragment;
 import com.umeng.socialize.ShareAction;
@@ -164,7 +165,7 @@ public class LiveDetailActivity extends AppCompatActivity {
                     @Override
                     public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
 
-                        UMWeb web = new UMWeb(" http://mobile.medmeeting.com/#/live/room/" + roomId); //http://wap.medmeeting.com/#!/live/room/
+                        UMWeb web = new UMWeb(Constant.Share_Live_Room + roomId); //http://wap.medmeeting.com/#!/live/room/
                         web.setTitle(title);//标题
                         web.setThumb(new UMImage(LiveDetailActivity.this, phone));  //缩略图
                         web.setDescription(description);//描述

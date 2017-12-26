@@ -18,7 +18,7 @@ public class BannersAdapter extends BaseQuickAdapter<BannerDto.BannersBean> {
     @Override
     protected void convert(BaseViewHolder helper, BannerDto.BannersBean item) {
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .load(item.getBanner())
                 .crossFade()
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.book_info_image_url));

@@ -27,7 +27,7 @@ public class HeaderMeetingAdapter extends BaseQuickAdapter<Event> {
     protected void convert(BaseViewHolder helper, final Event item) {
 
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .load(item.getBanner())
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.mipmap.meeting_bg)

@@ -25,7 +25,7 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
     @Override
     protected void convert(BaseViewHolder helper, final MeetingDto item) {
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .load(item.getBanner())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
 //                .placeholder(R.mipmap.ic_launcher)
@@ -37,7 +37,7 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
                 .setText(R.id.ha2, "~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
 
         Glide.with(mContext)
-                .load("http://www.medmeeting.com/upload/banner/" + item.getBanner())
+                .load(item.getBanner())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .transform(new GlideCircleTransform(mContext))
@@ -52,7 +52,7 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
                 bundle.putInt("eventId", item.getId());
                 bundle.putString("eventTitle", item.getTitle());
 //                bundle.putString("sourceType", item.getSourceType());
-                bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + item.getBanner());
+                bundle.putString("phone", item.getBanner());
 //                bundle.putString("description", "时间： " + DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02)
 //                        + " ~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02)
 //                        + " \n "

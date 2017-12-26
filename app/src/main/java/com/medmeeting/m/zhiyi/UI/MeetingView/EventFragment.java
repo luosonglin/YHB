@@ -169,7 +169,7 @@ public class EventFragment extends Fragment {
                                 bundle.putInt("eventId", data.getData().get(position - 1).getTypeId());
                                 bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
                                 bundle.putString("sourceType", data.getData().get(position - 1).getSourceType());
-                                bundle.putString("phone", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position - 1).getBanner());
+                                bundle.putString("phone", data.getData().get(position - 1).getBanner());
 //                                bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position - 1).getCreateDate(), DateUtils.TYPE_02));
                                 intent.putExtras(bundle);
                                 startActivity(intent);
@@ -211,7 +211,7 @@ public class EventFragment extends Fragment {
                         bundle.putInt("eventId", data.getData().get(position).getId());
                         bundle.putString("sourceType", data.getData().get(position).getSourceType());
                         bundle.putString("eventTitle", data.getData().get(position).getTitle());
-                        bundle.putString("photo", "http://www.medmeeting.com/upload/banner/" + data.getData().get(position).getBanner());
+                        bundle.putString("photo", data.getData().get(position).getBanner());
 //                        bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
 //                                + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
 //                                + " 欢迎参加： " + data.getData().get(position).getTitle());

@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.R;
@@ -441,7 +442,7 @@ public class NewsActivity extends AppCompatActivity {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://mobile.medmeeting.com/#/new/article/share/" + blogId);
+                    UMWeb web = new UMWeb(Constant.Share_News_Article + blogId);
                     web.setTitle(title);//标题
                     if (photo != null) {
                         web.setThumb(new UMImage(NewsActivity.this, photo));  //缩略图

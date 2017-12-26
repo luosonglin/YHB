@@ -111,7 +111,7 @@ public class VideoDetailInfomationFragment extends Fragment {
                         .transform(new GlideCircleTransform(getActivity()))
                         .into(avatar);
                 avatar.setOnClickListener(view -> {
-                    Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+                    Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
                     intent.putExtra("userId", data.getEntity().getUserId());
                     startActivity(intent);
                 });

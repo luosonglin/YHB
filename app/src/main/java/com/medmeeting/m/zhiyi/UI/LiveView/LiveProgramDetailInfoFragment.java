@@ -20,7 +20,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
-import com.medmeeting.m.zhiyi.UI.VideoView.LiveAndVideoRoomActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -111,7 +111,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                 .transform(new GlideCircleTransform(getActivity()))
                 .into(avatar);
         avatar.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+            Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
             intent.putExtra("userId", mLiveProgramDateilsEntity.getRoomUserId());
             startActivity(intent);
         });

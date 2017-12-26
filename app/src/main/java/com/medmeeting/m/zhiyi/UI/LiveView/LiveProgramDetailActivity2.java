@@ -202,7 +202,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://mobile.medmeeting.com/#/live/show/share/" + programId); //http://wap.medmeeting.com/#!/live/room/show/
+                    UMWeb web = new UMWeb(Constant.Share_Live + programId); //http://wap.medmeeting.com/#!/live/room/show/
                     web.setTitle(title);//标题
                     web.setThumb(new UMImage(LiveProgramDetailActivity2.this, photo));  //缩略图
                     web.setDescription(description);//描述

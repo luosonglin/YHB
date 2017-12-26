@@ -151,7 +151,7 @@ public class VideoDetailActivity extends AppCompatActivity {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://mobile.medmeeting.com/#/live/video/share/" + programId); //http://wap.medmeeting.com/#!/video/
+                    UMWeb web = new UMWeb(Constant.Share_Video + programId); //http://wap.medmeeting.com/#!/video/
                     web.setTitle(title);//标题
                     web.setThumb(new UMImage(VideoDetailActivity.this, photo));  //缩略图
                     web.setDescription(description);//描述

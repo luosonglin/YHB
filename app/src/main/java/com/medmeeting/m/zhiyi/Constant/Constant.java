@@ -43,7 +43,27 @@ public class Constant {
     public static final String EXTRA_URL = "url";
     public static final String EXTRA_TITLE = "title";
 
-
     String TITLE_SELECTED = "explore_title_selected";
     String TITLE_UNSELECTED = "explore_title_unselected";
+
+    /**
+     *  分享
+     */
+    //新闻视频分享页面：
+    public static final String Share_News_Video = "http://mobile.medmeeting.com/?#/new/video/shrare/";
+
+    //新闻文章分享页面：
+    public static final String Share_News_Article = "http://mobile.medmeeting.com/?#/new/article/shrare/";
+
+    //红V直播分享页面：
+    public static final String Share_Live_Red_Vip = "http://mobile.medmeeting.com/?#/live/person/";
+    //直播房间分享页面：
+    public static final String Share_Live_Room = "http://mobile.medmeeting.com/?#/live/room/";
+    //直播分享页面：
+    public static final String Share_Live = "http://mobile.medmeeting.com/?#/live/show/share/";
+    //回播分享页面：
+    public static final String Share_Video = "http://mobile.medmeeting.com/?#/live/video/share/";
+
+    //微站首页分享：
+    public static final String Share_Meeting_Index = "http://mobile.medmeeting.com/?#/mw/";
 }
