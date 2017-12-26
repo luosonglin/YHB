@@ -174,7 +174,7 @@ public class NewsActivity extends AppCompatActivity {
                     ToastUtils.show(NewsActivity.this, data.getMsg());
                     return;
                 }
-                initView(data.getEntity(), Arrays.asList(data.getEntity().getLabelName().split(",")));
+                initView(data.getEntity());
                 collectionType = data.getEntity().isCollectionType();
                 invalidateOptionsMenu(); //重新绘制menu
             }
@@ -184,9 +184,8 @@ public class NewsActivity extends AppCompatActivity {
 
     /**
      * @param blogDetail
-     * @param mLabels    标签提前转成list
      */
-    private void initView(Blog blogDetail, List<String> mLabels) {
+    private void initView(Blog blogDetail) {
         //刚打开页面的瞬间显示
         title.setText(blogDetail.getTitle());
         //微博内容
@@ -222,8 +221,14 @@ public class NewsActivity extends AppCompatActivity {
         content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
 
         //标签
-        Log.e(getLocalClassName(), mLabels.get(0));
-        mLabelAdapter.setNewData(mLabels);
+        if (blogDetail.getLabelName() != null) {
+            mLabelRecyclerView.setVisibility(View.VISIBLE);
+            //标签提前转成list
+            Log.e(getLocalClassName(), Arrays.asList(blogDetail.getLabelName().split(",")).get(0));
+            mLabelAdapter.setNewData(Arrays.asList(blogDetail.getLabelName().split(",")));
+        }else {
+            mLabelRecyclerView.setVisibility(View.GONE);
+        }
 
 
         //正则表达式,过滤新闻内容

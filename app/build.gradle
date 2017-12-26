@@ -188,8 +188,8 @@ dependencies {
 //    compile 'com.github.vondear:RxTools:v1.7.3.9'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.0@aar'
     testCompile 'junit:junit:4.12'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     //statusbar 颜色
     compile 'com.githang:status-bar-compat:latest.integration'

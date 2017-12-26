@@ -67,7 +67,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
     private static final String TAG = MeetingEnrolActivity.class.getSimpleName();
 
     private static String userAgent;
-    private String eventId;
+    private int eventId;
     private String version;
     private String title;
 
@@ -80,7 +80,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
 
         WebView = (BridgeWebView) findViewById(R.id.WebView);
 
-        eventId = getIntent().getStringExtra("eventId");
+        eventId = getIntent().getIntExtra("eventId", 0);
         Log.e(getLocalClassName(), eventId + "");
 
         initMeetingData(eventId,
@@ -101,7 +101,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    private void initMeetingData(String eventId, String title, String eventTitle) {
+    private void initMeetingData(int eventId, String title, String eventTitle) {
 
         PackageManager pm = MeetingEnrolActivity.this.getPackageManager();
         PackageInfo pi = null;
