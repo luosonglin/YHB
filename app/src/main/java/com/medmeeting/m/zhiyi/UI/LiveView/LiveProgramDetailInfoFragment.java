@@ -108,6 +108,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                 .load(mLiveProgramDateilsEntity.getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .placeholder(R.mipmap.avator_default)
                 .transform(new GlideCircleTransform(getActivity()))
                 .into(avatar);
         avatar.setOnClickListener(view -> {

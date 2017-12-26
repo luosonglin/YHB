@@ -38,7 +38,7 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .setText(R.id.title, item.getRoomTitle() + "")
                 .setText(R.id.name, item.getTitle())
 //                .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06));
-                .setText(R.id.author, "☆ " + item.getAuthorName() + " | " + item.getAuthorTitle())
+                .setText(R.id.author, " " + item.getAuthorName() + " | " + item.getAuthorTitle())
                 .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06));
 
         if (item.getPrice() == 0) {//item.getChargeType().equals("no")

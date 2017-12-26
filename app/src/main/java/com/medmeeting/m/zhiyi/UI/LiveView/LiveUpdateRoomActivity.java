@@ -271,9 +271,23 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
             for (String i : photos) {
                 Log.e(TAG, i);
             }
-            showProgress(true);
-            ToastUtils.show(LiveUpdateRoomActivity.this, "正在上传封面图片...");
+//            showProgress(true);
+//            ToastUtils.show(LiveUpdateRoomActivity.this, "正在上传封面图片...");
             getQiniuToken(photos.get(0));
+
+            Glide.with(LiveUpdateRoomActivity.this)
+                    .load(photos.get(0))
+                    .crossFade()
+                    .into(new GlideDrawableImageViewTarget(livePic) {
+                        @Override
+                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                            //在这里添加一些图片加载完成的操作
+                            super.onResourceReady(resource, animation);
+//                            showProgress(false);
+                            livePicTipTv.setText("修改直播间封面");
+//                            ToastUtils.show(LiveUpdateRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
+                        }
+                    });
         }
     }
 
@@ -354,19 +368,7 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
                         }, null);
             }
         }.start();
-        Glide.with(LiveUpdateRoomActivity.this)
-                .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
-                .crossFade()
-                .into(new GlideDrawableImageViewTarget(livePic) {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                        //在这里添加一些图片加载完成的操作
-                        super.onResourceReady(resource, animation);
-                        showProgress(false);
-                        livePicTipTv.setText("修改直播间封面");
-                        ToastUtils.show(LiveUpdateRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
-                    }
-                });
+
     }
 
     final List<TagDto> tags = new ArrayList<>();

@@ -50,10 +50,10 @@ public class Constant {
      *  分享
      */
     //新闻视频分享页面：
-    public static final String Share_News_Video = "http://mobile.medmeeting.com/?#/new/video/shrare/";
+    public static final String Share_News_Video = "http://mobile.medmeeting.com/?#/new/video/share/";
 
     //新闻文章分享页面：
-    public static final String Share_News_Article = "http://mobile.medmeeting.com/?#/new/article/shrare/";
+    public static final String Share_News_Article = "http://mobile.medmeeting.com/?#/new/article/share/";
 
     //红V直播分享页面：
     public static final String Share_Live_Red_Vip = "http://mobile.medmeeting.com/?#/live/person/";
