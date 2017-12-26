@@ -460,7 +460,7 @@ public class VideoDetailActivity extends AppCompatActivity {
 
         //为ViewPager设置高度
         ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
+        params.height = this.getWindowManager().getDefaultDisplay().getHeight() + 100 * 1;//800
 
         viewPager.setLayoutParams(params);
 

@@ -446,7 +446,7 @@ public class NewsFragment extends BaseFragment {
                 mHeaderMeetingView.setText("全部 (" + data.getData().size() + ") >");
                 mHeaderMeetingView.setOnClickListener(view -> MainActivity.trunMeetingView());
 
-                mHeaderMeetingAdapter.addData(data.getData());
+                mHeaderMeetingAdapter.setNewData(data.getData());
                 mHeaderMeetingAdapter.setOnRecyclerViewItemClickListener(new com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter.OnRecyclerViewItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {

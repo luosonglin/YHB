@@ -208,7 +208,11 @@ public class NewsVideoActivity extends AppCompatActivity {
 
                     UMWeb web = new UMWeb(Constant.Share_News_Video + programId);
                     web.setTitle(title);//标题
-                    web.setThumb(new UMImage(NewsVideoActivity.this, photo));  //缩略图
+                    if (photo != null) {
+                        web.setThumb(new UMImage(NewsVideoActivity.this, photo));  //缩略图
+                    } else {
+                        web.setThumb(new UMImage(NewsVideoActivity.this, R.mipmap.video_bg));
+                    }
                     web.setDescription(description);//描述
                     new ShareAction(NewsVideoActivity.this)
                             .withMedia(web)
