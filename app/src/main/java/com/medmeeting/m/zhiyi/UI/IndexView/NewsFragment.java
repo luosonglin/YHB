@@ -297,10 +297,9 @@ public class NewsFragment extends BaseFragment {
                             bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
                             bundle.putString("sourceType", data.getData().get(position - 1).getSourceType());
                             bundle.putString("phone", data.getData().get(position - 1).getBanner());
-//                            bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position - 1).getCreateDate(), DateUtils.TYPE_02));
-//                            bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
-//                                    + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
-//                                    + " 欢迎参加： " + data.getData().get(position).getTitle());
+                            bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+                                    + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+                                    + " 欢迎参加： " + data.getData().get(position).getTitle());
                             intent.putExtras(bundle);
                             startActivity(intent);
                             break;
@@ -457,7 +456,9 @@ public class NewsFragment extends BaseFragment {
                         bundle.putString("eventTitle", data.getData().get(position).getTitle());
                         bundle.putString("sourceType", data.getData().get(position).getSourceType());
                         bundle.putString("phone", data.getData().get(position).getBanner());
-//                        bundle.putString("description", "");//"时间： " + DateUtils.formatDate(data.getData().get(position).getCreateDate(), DateUtils.TYPE_02));
+                        bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+                                + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+                                + " 欢迎参加： " + data.getData().get(position).getTitle());
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }

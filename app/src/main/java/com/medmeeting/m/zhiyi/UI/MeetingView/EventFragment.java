@@ -21,6 +21,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -114,8 +115,6 @@ public class EventFragment extends Fragment {
         if (eventType != 0) {
             map.put("eventType", eventType);
         } else {
-
-
             HttpData.getInstance().HttpDataGetBanners(new Observer<HttpResult3<AdminEventActive, Object>>() {
                 @Override
                 public void onCompleted() {
@@ -170,7 +169,9 @@ public class EventFragment extends Fragment {
                                 bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
                                 bundle.putString("sourceType", data.getData().get(position - 1).getSourceType());
                                 bundle.putString("phone", data.getData().get(position - 1).getBanner());
-//                                bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position - 1).getCreateDate(), DateUtils.TYPE_02));
+                                bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+                                        + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+                                        + " 欢迎参加： " + data.getData().get(position).getTitle());
                                 intent.putExtras(bundle);
                                 startActivity(intent);
                                 break;
@@ -212,9 +213,9 @@ public class EventFragment extends Fragment {
                         bundle.putString("sourceType", data.getData().get(position).getSourceType());
                         bundle.putString("eventTitle", data.getData().get(position).getTitle());
                         bundle.putString("photo", data.getData().get(position).getBanner());
-//                        bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
-//                                + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
-//                                + " 欢迎参加： " + data.getData().get(position).getTitle());
+                        bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+                                + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+                                + " 欢迎参加： " + data.getData().get(position).getTitle());
                         intent.putExtras(bundle);
                         getActivity().startActivity(intent);
 

@@ -18,6 +18,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
@@ -104,19 +105,15 @@ public class MyCollectMeetingFragment  extends Fragment
                 }
                 mQuickAdapter.setNewData(data.getData());
                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-//                    Intent i = new Intent(getActivity(), MeetingDetailActivity.class);
-//                    i.putExtra("eventId", data.getData().get(position).getId());
-//                    startActivity(i);
                     Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("eventId", data.getData().get(position).getId());
                     bundle.putString("eventTitle", data.getData().get(position).getTitle());
                     bundle.putString("sourceType", data.getData().get(position).getSourceType());
                     bundle.putString("phone", data.getData().get(position).getBanner());
-//                    bundle.putString("description", "时间： " + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
-//                            + " ~ " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
-//                            + " \n "
-//                            + "地点： " + data.getData().get(position).getAddress());
+                    bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+                            + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+                            + " 欢迎参加： " + data.getData().get(position).getTitle());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 });
