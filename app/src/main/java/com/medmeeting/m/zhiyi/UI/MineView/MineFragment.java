@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,12 +26,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
 
 import butterknife.Bind;
@@ -173,7 +174,7 @@ public class MineFragment extends Fragment {
         if (userId == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         } else {
-            HttpData.getInstance().HttpDataGetMyInfo(new Observer<MyInfoDto>() {
+            HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
                 @Override
                 public void onCompleted() {
 
@@ -181,35 +182,37 @@ public class MineFragment extends Fragment {
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.e(TAG, "onError: " + e.getMessage()
-                            + "\n" + e.getCause()
-                            + "\n" + e.getLocalizedMessage()
-                            + "\n" + e.getStackTrace());
+                    ToastUtils.show(getActivity(), e.getMessage());
                 }
 
                 @Override
-                public void onNext(MyInfoDto item) {
-                    userAvatar = item.getData().getUser().getUserPic();
+                public void onNext(HttpResult3<Object, UserInfoDto> data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(getActivity(), data.getMsg());
+                        showProgress(false);
+                        return;
+                    }
+                    userAvatar = data.getEntity().getUserPic();
                     Glide.with(getActivity())
-                            .load(item.getData().getUser().getUserPic())
+                            .load(userAvatar)
                             .crossFade()
                             .placeholder(R.mipmap.avator_default)
                             .into(headIv);
 
                     try {
-                        DBUtils.put(getActivity(), "authentication", item.getData().getUser().getAuthenStatus() + "");
+                        DBUtils.put(getActivity(), "authentication", data.getEntity().getAuthenStatus() + "");
                     } catch (SnappydbException e) {
                         e.printStackTrace();
                     }
                     //A:已认证'',''B:待审核'',''C:大咖认证'',''''X:未认证'
-                    switch (item.getData().getUser().getAuthenStatus()) {
+                    switch (data.getEntity().getAuthenStatus()) {
                         case "A":
                             identity.setVisibility(View.GONE);
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.specialis_yellow);
-                            nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getDepartment());
-                            titleTv.setText(item.getData().getUser().getTitle() + " ");
+                            nameTv.setText(data.getEntity().getName());
+                            hospitalTv.setText(data.getEntity().getDepartment());
+                            titleTv.setText(data.getEntity().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.GONE);
                             break;
@@ -220,9 +223,9 @@ public class MineFragment extends Fragment {
                             identity.setText(Html.fromHtml(identityHtml));
                             identity.setClickable(false);
                             specialistIv.setVisibility(View.GONE);
-                            nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getDepartment());
-                            titleTv.setText(item.getData().getUser().getTitle() + " ");
+                            nameTv.setText(data.getEntity().getName());
+                            hospitalTv.setText(data.getEntity().getDepartment());
+                            titleTv.setText(data.getEntity().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.GONE);
                             break;
@@ -230,9 +233,9 @@ public class MineFragment extends Fragment {
                             identity.setVisibility(View.GONE);
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.specialist_red);
-                            nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getDepartment());
-                            titleTv.setText(item.getData().getUser().getTitle() + " ");
+                            nameTv.setText(data.getEntity().getName());
+                            hospitalTv.setText(data.getEntity().getDepartment());
+                            titleTv.setText(data.getEntity().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.VISIBLE);
                             break;
@@ -249,7 +252,7 @@ public class MineFragment extends Fragment {
                                 }
                             });
                             specialistIv.setVisibility(View.GONE);
-                            nameTv.setText(item.getData().getUser().getNickName());
+                            nameTv.setText(data.getEntity().getNickName());
                             hospitalTv.setText(" ");
                             titleTv.setText(" ");
 
@@ -259,7 +262,7 @@ public class MineFragment extends Fragment {
                     }
                     showProgress(false);
                 }
-            }, Integer.parseInt(userId));
+            });
         }
 
         // 获取屏幕宽高

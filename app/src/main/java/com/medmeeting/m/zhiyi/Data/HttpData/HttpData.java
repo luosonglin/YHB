@@ -12,11 +12,9 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
-import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
-import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.CollectType;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
@@ -56,8 +54,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
 import com.medmeeting.m.zhiyi.UI.Entity.PushUserMessage;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
-import com.medmeeting.m.zhiyi.UI.Entity.SignUpCodeDto;
-import com.medmeeting.m.zhiyi.UI.Entity.SignUpDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
@@ -137,14 +133,6 @@ public class HttpData extends RetrofitUtils {
 //        setSubscribe(observableCahce,observer);
 //    }
 
-    //get test banner
-    public void HttpDataGetBanner(Observer<BannerDto> observer) {
-        Observable observable = service.getBannerList().map(new HttpResultFunc<BannerDto>());
-        setSubscribe(observable, observer);
-//        Observable observableCache = providers.getBannerList(observable, new DynamicKey("banner测试"), new EvictDynamicKey(false)).map(new HttpResultFuncCcche<BannerDto>());
-//        Log.e(TAG, "HttpDataGetBanner");
-//        setSubscribe(observableCache, observer);
-    }
 
     //update user avatar
     public void HttpDataUpdateAvatar(Observer<MyInfoDto> observer, Map<String, Object> map) {
@@ -152,28 +140,6 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    //get test get phone code
-    public void HttpDataGetPhoneCode(Observer<SignUpCodeDto> observer, String phone) {
-        Observable observable = service.getPhoneCode(phone);
-        setSubscribe(observable, observer);
-    }
-
-    //test login
-    public void HttpDataLogin(Observer<SignUpDto> observer, Map<String, Object> map) {
-        Observable observable = service.LoginByPhoneCode(map);
-        setSubscribe(observable, observer);
-    }
-
-    public void HttpDataLoginByPassword(Observer<SignUpDto> observer, Map<String, Object> map) {
-        Observable observable = service.LoginByPhonePassword(map);
-        setSubscribe(observable, observer);
-    }
-
-    //个人中心
-    public void HttpDataGetMyInfo(Observer<MyInfoDto> observer, Integer userId) {
-        Observable observable = service.getMyInformation(userId);
-        setSubscribe(observable, observer);
-    }
 
     //我的参会 待参会
     public void HttpDataGetMyMeeting(Observer<HttpResult4<MeetingDto>> observer, Map<String, Object> map) {
@@ -191,8 +157,6 @@ public class HttpData extends RetrofitUtils {
     public void HttpDataGetHotMeetings(Observer<HttpResult4<MeetingDto>> observer, Integer pageNum, Integer pageSize) {
         Observable observable = service_meeting.getHotMeetings(pageNum, pageSize);
         setSubscribe(observable, observer);
-//        Observable observableCache = providers.getMeetingList(observable, new DynamicKey("热门会议"), new EvictDynamicKey(false));
-//        setSubscribe(observableCache, observer);
         Log.e(TAG, "HttpDataGetHotMeetings: " + observable);
     }
 
@@ -210,29 +174,11 @@ public class HttpData extends RetrofitUtils {
     }
 
 
-//    public void HttpDataCheckFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
-//        Observable observable = service_meeting.checkFollowEvent(map);
-//        setSubscribe(observable, observer);
-//    }
-
-//    public void HttpDataFollowEvent(Observer<HttpResult4> observer, Map<String, Object> map) {
-//        Observable observable = service_meeting.followEvent(map);
-//        setSubscribe(observable, observer);
-//    }
-
     /**
      * 以下用于会议报名页
      */
     public void HttpDataGetPaymentStatus(Observer<PaymentStatus> observer, Map<String, Object> map) {
         Observable observable = service_meeting.getPaymentStatus(map);
-        setSubscribe(observable, observer);
-    }
-
-    //test get recommending blog list
-    public void HttpDataGetNews(Observer<BlogDto> observer, Integer pageNum, Integer pageSize) {
-        Observable observable = service.getRecommendBlogList(pageNum, pageSize).map(new HttpResultFunc<BlogDto>());
-//        Observable observableCache = providers.getRecommendNews(observable, new DynamicKey("推荐新闻帖子"), new EvictDynamicKey(false));
-//        setSubscribe(observableCache, observer);
         setSubscribe(observable, observer);
     }
 

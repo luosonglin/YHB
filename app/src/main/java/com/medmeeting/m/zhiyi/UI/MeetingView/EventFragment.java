@@ -169,14 +169,13 @@ public class EventFragment extends Fragment {
                                 bundle.putString("eventTitle", data.getData().get(position - 1).getTitle());
                                 bundle.putString("sourceType", data.getData().get(position - 1).getSourceType());
                                 bundle.putString("phone", data.getData().get(position - 1).getBanner());
-                                bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
-                                        + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
-                                        + " 欢迎参加： " + data.getData().get(position).getTitle());
+                                bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position-1).getStartDate(), DateUtils.TYPE_02)
+                                        + " 至 " + DateUtils.formatDate(data.getData().get(position-1).getEndDate(), DateUtils.TYPE_02)
+                                        + " 欢迎参加： " + data.getData().get(position-1).getTitle());
                                 intent.putExtras(bundle);
                                 startActivity(intent);
                                 break;
                         }
-
                     });
 
                     mAdapter.addHeaderView(mHeaderView);

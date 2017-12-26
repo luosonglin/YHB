@@ -398,6 +398,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(LoginActivity.this, e.getMessage());
+                timer.cancel();
             }
 
             @Override
