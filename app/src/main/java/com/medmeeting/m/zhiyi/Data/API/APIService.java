@@ -45,6 +45,4 @@ public interface APIService {
     ///api/v1/android_version/phoneInfo 手机信息
     @POST("/api/v1/android_version/phoneInfo")
     Observable<HttpResult> addNewPhoneInfo(@QueryMap Map<String, Object> options);
-
-
 }

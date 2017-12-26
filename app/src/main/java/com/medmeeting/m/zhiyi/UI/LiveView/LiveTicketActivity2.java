@@ -213,7 +213,7 @@ public class LiveTicketActivity2 extends AppCompatActivity {
                         .setPositiveButton("知道啦", (dialog, which) -> dialog.dismiss())
                         .create()
                         .show());
-                mAdapter.addData(data.getEntity().getPayList());
+                mAdapter.setNewData(data.getEntity().getPayList());
             }
         }, programId);
     }

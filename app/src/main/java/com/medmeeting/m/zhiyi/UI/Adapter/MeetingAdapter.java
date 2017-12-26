@@ -52,7 +52,7 @@ public class MeetingAdapter extends BaseQuickAdapter<MeetingDto> {
                 bundle.putInt("eventId", item.getId());
                 bundle.putString("eventTitle", item.getTitle());
 //                bundle.putString("sourceType", item.getSourceType());
-                bundle.putString("phone", item.getBanner());
+                bundle.putString("photo", item.getBanner());
                 bundle.putString("description", "大会时间：" + DateUtils.formatDate(item.getStartDate(), DateUtils.TYPE_02)
                         + " 至 " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_02)
                         + " 欢迎参加： " + item.getTitle());

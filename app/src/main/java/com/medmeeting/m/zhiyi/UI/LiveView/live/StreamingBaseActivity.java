@@ -1070,10 +1070,10 @@ public class StreamingBaseActivity extends Activity implements
 //                LiveKit.sendMessage(content);
 
                 // 配合ios
-                TextMessage content = TextMessage.obtain("进入了房间，房间号："+roomId);
+                TextMessage content = TextMessage.obtain("进入了房间");//，房间号："+roomId);
                 LiveKit.sendMessage(content);
 
-//                Log.e(TAG + "joinChatRoom: ", content + "" + content.getUserInfo().getName());
+                Log.e(TAG + "joinChatRoom: ", content + "" + content.getUserInfo().getName());
             }
 
             @Override

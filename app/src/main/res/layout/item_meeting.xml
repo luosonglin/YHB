@@ -22,7 +22,7 @@
             android:id="@+id/image"
             android:layout_width="100dp"
             android:layout_height="70dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             android:src="@mipmap/meeting_bg"
             tools:ignore="ContentDescription" />
 

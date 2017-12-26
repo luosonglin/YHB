@@ -12,17 +12,17 @@ public class LiveSettlementEntity {
      * payList : [{"orderId":"100175_20171013111537497_269","programId":100175,"buyerUserId":269,"amount":156,"tradeStatus":"FINISHED","status":null,"createTime":1507864537000,"updateTime":null,"userPic":"https://wx.qlogo.cn/mmopen/GPyw0pGicibl65wQBtRrpLdHxTYx3WAKrQicvLLG36yqtKvb9p6RibylLMSiaPG5xFdeuK7O3bYyF3Yw14bxzWVkSJibfsOGiaWic6nib/0","userName":"观众2222","nickName":"刘云","postion":"外科","company":null,"department":"","mobilePhone":null},{"orderId":"100175_20171013111433512_181","programId":100175,"buyerUserId":181,"amount":100,"tradeStatus":"FINISHED","status":null,"createTime":1507864473000,"updateTime":null,"userPic":"https://q.qlogo.cn/qqapp/1105801178/2DDA378B1615DCFB5814EAB494F5CDFA/100","userName":"观众2221","nickName":"淡定","postion":"胸部肿瘤科","company":null,"department":"","mobilePhone":null}]
      */
 
-    private int totalAmount;
+    private double totalAmount;
     private double feeAmount;
     private double actualAmount;
     private boolean settlementFlag;
     private List<PayListBean> payList;
 
-    public int getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(int totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
@@ -80,18 +80,18 @@ public class LiveSettlementEntity {
         private String orderId;
         private int programId;
         private int buyerUserId;
-        private int amount;
+        private double amount;
         private String tradeStatus;
-        private Object status;
+        private String status;
         private long createTime;
-        private Object updateTime;
+        private long updateTime;
         private String userPic;
         private String userName;
         private String nickName;
         private String postion;
-        private Object company;
+        private String company;
         private String department;
-        private Object mobilePhone;
+        private String mobilePhone;
 
         public String getOrderId() {
             return orderId;
@@ -117,11 +117,11 @@ public class LiveSettlementEntity {
             this.buyerUserId = buyerUserId;
         }
 
-        public int getAmount() {
+        public double getAmount() {
             return amount;
         }
 
-        public void setAmount(int amount) {
+        public void setAmount(double amount) {
             this.amount = amount;
         }
 
@@ -133,11 +133,11 @@ public class LiveSettlementEntity {
             this.tradeStatus = tradeStatus;
         }
 
-        public Object getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(Object status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 
@@ -149,11 +149,11 @@ public class LiveSettlementEntity {
             this.createTime = createTime;
         }
 
-        public Object getUpdateTime() {
+        public long getUpdateTime() {
             return updateTime;
         }
 
-        public void setUpdateTime(Object updateTime) {
+        public void setUpdateTime(long updateTime) {
             this.updateTime = updateTime;
         }
 
@@ -189,11 +189,11 @@ public class LiveSettlementEntity {
             this.postion = postion;
         }
 
-        public Object getCompany() {
+        public String getCompany() {
             return company;
         }
 
-        public void setCompany(Object company) {
+        public void setCompany(String company) {
             this.company = company;
         }
 
@@ -205,11 +205,11 @@ public class LiveSettlementEntity {
             this.department = department;
         }
 
-        public Object getMobilePhone() {
+        public String getMobilePhone() {
             return mobilePhone;
         }
 
-        public void setMobilePhone(Object mobilePhone) {
+        public void setMobilePhone(String mobilePhone) {
             this.mobilePhone = mobilePhone;
         }
     }

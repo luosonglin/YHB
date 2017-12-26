@@ -27,7 +27,7 @@ public class HeaderMeetingAdapter extends BaseQuickAdapter<Event> {
     protected void convert(BaseViewHolder helper, final Event item) {
 
         Glide.with(mContext)
-                .load(item.getBanner())
+                .load(item.getBanner()+"?imageView/1/w/150/h/90")
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.mipmap.meeting_bg)

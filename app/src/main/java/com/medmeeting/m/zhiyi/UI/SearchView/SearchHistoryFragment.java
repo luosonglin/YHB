@@ -402,7 +402,7 @@ public class SearchHistoryFragment extends Fragment {
                     bundle.putInt("eventId", data.getData().get(position).getId());
                     bundle.putString("sourceType", data.getData().get(position).getSourceType());
                     bundle.putString("eventTitle", data.getData().get(position).getTitle());
-                    bundle.putString("phone", data.getData().get(position).getBanner());
+                    bundle.putString("photo", data.getData().get(position).getBanner());
                     bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
                             + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
                             + " 欢迎参加： " + data.getData().get(position).getTitle());
