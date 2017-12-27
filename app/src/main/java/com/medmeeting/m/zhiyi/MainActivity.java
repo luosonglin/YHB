@@ -307,9 +307,9 @@ public class MainActivity extends AppCompatActivity implements
     private void initPopMenu(boolean isProfessor) {
         if (isProfessor) {
             mPopMenu = new PopMenu.Builder().attachToActivity(MainActivity.this)
-                    .addMenuItem(new PopMenuItem("创建直播", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
                     .addMenuItem(new PopMenuItem("大会签到", getResources().getDrawable(R.mipmap.tabbar_compose_idea)))
                     .addMenuItem(new PopMenuItem("交换名片", getResources().getDrawable(R.mipmap.tabbar_compose_photo)))
+                    .addMenuItem(new PopMenuItem("创建直播", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
 //                    .addMenuItem(new PopMenuItem("发病例", getResources().getDrawable(R.mipmap.tabbar_compose_lbs)))
 //                    .addMenuItem(new PopMenuItem("我的钱包", getResources().getDrawable(R.mipmap.tabbar_compose_review)))
 //                    .addMenuItem(new PopMenuItem("发起直播", getResources().getDrawable(R.mipmap.tabbar_compose_more)))
@@ -343,12 +343,9 @@ public class MainActivity extends AppCompatActivity implements
     private void PopMenuItemClick(int position) {
         switch (position) {
             case 0:
-                startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));
-                break;
-            case 1:
                 startActivity(new Intent(MainActivity.this, PlusSignedDetailsActivity.class));
                 break;
-            case 2:
+            case 1:
                 String confirmNumber = "";
                 final String TAG_CARD = "002";
                 try {
@@ -368,6 +365,9 @@ public class MainActivity extends AppCompatActivity implements
                 bundle2.putString("card_type", TAG_CARD);
                 intent2.putExtras(bundle2);
                 startActivity(intent2);
+                break;
+            case 2:
+                startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));
                 break;
         }
     }
