@@ -199,8 +199,6 @@ public class LiveSearchActivity extends AppCompatActivity {
                     liveSearchDto.setRoomNumber(searchEt.getText().toString());// test data 411826
                     liveSearchDto.setLabelIds(labelIds);
                 }
-
-//                present.LoadData(false, liveSearchDto);
                 //请求网络数据
                 HttpData.getInstance().HttpDataGetPrograms(new Observer<HttpResult3<LiveDto, Object>>() {
                     @Override
@@ -230,11 +228,16 @@ public class LiveSearchActivity extends AppCompatActivity {
                     VideoListSearchEntity searchEntity = new VideoListSearchEntity();
                     searchEntity.setPageNum(1);
                     searchEntity.setPageSize(100);
-                    searchEntity.setKeyword(searchEt.getText().toString());
+                    if ("公开".equals(type)) {
+                        searchEntity.setKeyword(searchEt.getText().toString());
+                        searchEntity.setRoomNumber(null);
+                    }else if ("私密".equals(type)) {
+                        searchEntity.setKeyword(null);
+                        searchEntity.setRoomNumber(searchEt.getText().toString());
+                    }
                     searchEntity.setLabelId(labelVideo);
                     searchEntity.setRoomId(null);
                     searchEntity.setProgramId(null);
-                    searchEntity.setRoomNumber(null);
                     searchEntity.setVideoUserId(null);
                     HttpData.getInstance().HttpDataGetVideos(new Observer<HttpResult3<VideoListEntity, Object>>() {
                         @Override
