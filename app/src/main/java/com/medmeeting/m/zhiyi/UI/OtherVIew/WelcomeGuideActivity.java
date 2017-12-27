@@ -34,7 +34,7 @@ public class WelcomeGuideActivity extends Activity implements OnClickListener {
     private Button startBtn;
 
     // 引导页图片资源
-    private static final int[] pics = {R.layout.guide_view_1, R.layout.guide_view_2, R.layout.guide_view_3};
+    private static final int[] pics = {R.layout.guide_view_1, R.layout.guide_view_2, R.layout.guide_view_3, R.layout.guide_view_4};
 
     // 底部小点图片
     private ImageView[] dots;

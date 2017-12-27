@@ -32,6 +32,9 @@ public class Constant {
 //    public static final String URL_Meeting_Detail = "http://192.168.199.147/#/wv/meeting/detail/";
 //    public static final String URL_Meeting_Enrol = "http://192.168.199.147/#/m/reg/sign/";
 
+    //会议订单页：
+    public static final String URL_Meeting_Order = "http://mobile.medmeeting.com/#/wv/meeting/order";
+
     //消息
     public static final String URL_Message_Detail = "http://mobile.medmeeting.com/#/wv/message/";
 
@@ -47,7 +50,7 @@ public class Constant {
     String TITLE_UNSELECTED = "explore_title_unselected";
 
     /**
-     *  分享
+     * 分享
      */
     //新闻视频分享页面：
     public static final String Share_News_Video = "http://mobile.medmeeting.com/?#/new/video/share/";

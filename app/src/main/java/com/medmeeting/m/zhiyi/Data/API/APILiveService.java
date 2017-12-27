@@ -482,4 +482,9 @@ public interface APILiveService {
     //POST /v1/events/{eventId}/orders/payType 微站中切换支付方式接口
     @POST("/v1/events/{eventId}/orders/payType")
     Observable<HttpResult3<Object, UnifiedOrderResult>> getPayType(@Body EventPrepayOrderRequestVO eventPrepayOrderRequestVO, @Path("eventId") Integer eventId);
+
+
+    //GET /v1/website/events/{eventId}/shareInfo App获取会议分享信息
+    @GET("/v1/website/events/{eventId}/shareInfo")
+    Observable<HttpResult3<Object, Event>> getMeetingInfo(@Path("eventId") Integer eventId);
 }

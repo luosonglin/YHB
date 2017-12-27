@@ -64,6 +64,15 @@
             android:scaleType="fitXY"
             android:layout_margin="10dp"
             tools:ignore="ContentDescription" />
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:src="@drawable/dot_selector"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 </RelativeLayout>

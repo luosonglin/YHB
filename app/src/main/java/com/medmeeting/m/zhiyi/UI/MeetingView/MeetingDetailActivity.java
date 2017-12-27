@@ -29,6 +29,7 @@ import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.CollectType;
+import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
@@ -79,6 +80,11 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
     private EventRegisterSwitchVO eventRegisterSwitchVO = null;
 
+    private String eventTitle;
+    private String sourceType;
+    private String photo;
+    private String description;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,16 +103,13 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         initToolbar();
 
-        initShare(savedInstanceState, getIntent().getExtras().getString("photo"), getIntent().getExtras().getString("description"));
+        eventTitle = getIntent().getExtras().getString("eventTitle");
+        sourceType = getIntent().getExtras().getString("eventTitle");
+        photo = getIntent().getExtras().getString("eventTitle");
+        description = getIntent().getExtras().getString("eventTitle");
 
 
-//        initMeetingService(eventId);
-
-        initWebView();
-    }
-
-    private void initMeetingService(Integer eventId) {
-        HttpData.getInstance().HttpDataRegisterSwitch(new Observer<HttpResult3<Object, EventRegisterSwitchVO>>() {
+        HttpData.getInstance().HttpDataGetMeetingInfo(new Observer<HttpResult3<Object, Event>>() {
             @Override
             public void onCompleted() {
 
@@ -118,16 +121,17 @@ public class MeetingDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNext(HttpResult3<Object, EventRegisterSwitchVO> data) {
-                if (!data.getStatus().equals("success")) {
-                    ToastUtils.show(MeetingDetailActivity.this, data.getMsg());
-                    return;
-                }
+            public void onNext(HttpResult3<Object, Event> data) {
+                eventTitle = data.getEntity().getTitle();
+                sourceType = data.getEntity().getSourceType();
+                photo = data.getEntity().getBanner();
+                description = data.getEntity().getEventDesc();
 
-                eventRegisterSwitchVO = data.getEntity();
-                invalidateOptionsMenu(); //重新绘制menu
+                initShare(savedInstanceState, photo, description);
             }
         }, eventId);
+
+        initWebView();
     }
 
     private void initToolbar() {
@@ -406,11 +410,11 @@ public class MeetingDetailActivity extends AppCompatActivity {
             }
             Log.e(" EVENT_ID", web_event_id); //E/ PAY: alipay|378|378_20171221131135754_7
 
-                Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-                i.putExtra("title", "报名");
-                i.putExtra("eventId", Integer.parseInt(web_event_id));
-                i.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
-                startActivity(i);
+            Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+            i.putExtra("title", "报名");
+            i.putExtra("eventId", Integer.parseInt(web_event_id));
+            i.putExtra("eventTitle", eventTitle);
+            startActivity(i);
         }
 
 

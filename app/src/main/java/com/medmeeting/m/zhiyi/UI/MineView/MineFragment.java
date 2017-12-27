@@ -335,7 +335,6 @@ public class MineFragment extends Fragment {
             }
         });
         anim.start();
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -677,11 +677,16 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-
     public void HttpDataGetPayType(Observer<HttpResult3<Object, UnifiedOrderResult>> observer, EventPrepayOrderRequestVO eventPrepayOrderRequestVO, Integer eventId) {
         Observable observable = service_live.getPayType(eventPrepayOrderRequestVO, eventId);
         setSubscribe(observable, observer);
     }
+
+    public void HttpDataGetMeetingInfo(Observer<HttpResult3<Object, Event>> observer, Integer eventId) {
+        Observable observable = service_live.getMeetingInfo(eventId);
+        setSubscribe(observable, observer);
+    }
+
 
     /**
      * 插入观察者
