@@ -70,7 +70,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                 break;
             case "3":
                 Glide.with(mContext)
-                        .load(blog.getImages())
+                        .load(blog.getVideoImages())
                         .crossFade()
                         .placeholder(R.mipmap.video_bg)
                         .into((ImageView) baseViewHolder.getView(R.id.ivRightImg2));

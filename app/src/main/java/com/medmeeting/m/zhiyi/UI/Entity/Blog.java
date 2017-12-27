@@ -80,6 +80,7 @@ public class Blog {//implements Serializable {
      * authorName : general
      * collectionType : false
      *  "timeSecond": 1
+     *  videoImages
      */
 
     private int id;
@@ -109,6 +110,15 @@ public class Blog {//implements Serializable {
     private boolean collectionType;
     private int timeSecond;
     private String authorOrg;
+    private String videoImages;
+
+    public String getVideoImages() {
+        return videoImages;
+    }
+
+    public void setVideoImages(String videoImages) {
+        this.videoImages = videoImages;
+    }
 
     public String getAuthorOrg() {
         return authorOrg;
