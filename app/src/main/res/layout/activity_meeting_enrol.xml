@@ -34,10 +34,6 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/red" />
 
     <include layout="@layout/content_meeting_enrol" />
 

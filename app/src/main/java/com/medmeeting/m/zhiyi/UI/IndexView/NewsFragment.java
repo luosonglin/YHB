@@ -342,7 +342,7 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLiveView.setText("您好，今天有一场直播");
                         mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
-                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getHospital() + " " + data.getData().get(0).getAuthorTitle());
+                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getAuthorTitle());
                         mHeaderLiveStartTime1.setText(DateUtils.formatDate(data.getData().get(0).getStartTime(), DateUtils.TYPE_11));
 
                         //（ready：准备中，play：直播中，wait：断开中，end：已结束）
@@ -367,10 +367,10 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLiveView.setText("您好，今天有两场直播");
                         mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
-                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getHospital() + " " + data.getData().get(0).getAuthorTitle());
+                        mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getAuthorTitle());
                         mHeaderLiveImage2.setImageResource(R.mipmap.index_alert2);
                         mHeaderLiveName2.setText(data.getData().get(1).getTitle());
-                        mHeaderLiveName22.setText(data.getData().get(1).getAuthorName() + " " + data.getData().get(0).getHospital() + " " + data.getData().get(1).getAuthorTitle());
+                        mHeaderLiveName22.setText(data.getData().get(1).getAuthorName() + " " + data.getData().get(1).getAuthorTitle());
                         mHeaderLiveStartTime1.setText(DateUtils.formatDate(data.getData().get(0).getStartTime(), DateUtils.TYPE_11));
                         mHeaderLiveStartTime2.setText(DateUtils.formatDate(data.getData().get(1).getStartTime(), DateUtils.TYPE_11));
 
