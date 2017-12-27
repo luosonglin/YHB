@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -121,15 +120,22 @@ public class MeetingPayOrderActivity  extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        toolbarTitle.setText(title);
-        toolbarTitle.setTextColor(Color.BLACK);
-        toolbarTitle.setFocusable(true);
-
-        toolbar.setTitle("");
-        toolbar.setTitleTextColor(Color.BLACK);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //退出web还是退出activity
+                if (WebView.canGoBack()) {
+                    WebView.goBack(); //goBack()表示返回WebView的上一页面
+                } else {
+//                    onBackPressed();
+                    finish();
+                }
+            }
+        });
     }
 
 

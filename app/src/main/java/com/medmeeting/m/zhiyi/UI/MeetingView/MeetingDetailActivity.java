@@ -128,10 +128,12 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 description = data.getEntity().getEventDesc();
 
                 initShare(savedInstanceState, photo, description);
+
+                initWebView();
             }
         }, eventId);
 
-        initWebView();
+
     }
 
     private void initToolbar() {
@@ -145,7 +147,8 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 if (mWebView.canGoBack()) {
                     mWebView.goBack(); //goBack()表示返回WebView的上一页面
                 } else {
-                    onBackPressed();
+//                    onBackPressed();
+                    finish();
                 }
             }
         });
@@ -297,7 +300,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 //            finish();
 //            return;
 //        }
-        switch (getIntent().getStringExtra("sourceType")) {     //主办方创建SPONSOR 微站,  运营端创建ADMIN 新闻,
+        switch (sourceType) {     //主办方创建SPONSOR 微站,  运营端创建ADMIN 新闻,
             case "SPONSOR":
                 URL = Constant.URL_microWebsiteDetail + eventId;
                 break;
@@ -462,7 +465,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
 //                        UMWeb web = new UMWeb(Constant.Share_Meeting_Index + eventId);
                         UMWeb web = new UMWeb(URL);
-                        web.setTitle(getIntent().getExtras().getString("eventTitle"));//标题
+                        web.setTitle(eventTitle);//标题
                         if (photo != null) {
                             web.setThumb(new UMImage(MeetingDetailActivity.this, photo));  //缩略图
                         } else {

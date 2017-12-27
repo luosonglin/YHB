@@ -48,7 +48,7 @@ public class MyOrderActivity extends AppCompatActivity {
 
         //为ViewPager设置高度
         ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-        params.height = this.getWindowManager().getDefaultDisplay().getHeight();
+        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 49 * 6;
         viewPager.setLayoutParams(params);
 
         setUpViewPager(viewPager);

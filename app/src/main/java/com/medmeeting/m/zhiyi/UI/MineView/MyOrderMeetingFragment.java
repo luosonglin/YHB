@@ -38,7 +38,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingEnrolActivity;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingPayOrderActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -199,33 +199,37 @@ public class MyOrderMeetingFragment extends Fragment {
             return Data.getUserToken().substring(7);
         }
 
+        String eventPay;
+        String eventId;
+
         @JavascriptInterface
         public void pay(String info) {  //点击"支付订单"按钮时候调用
             try {
                 // 解析js传递过来的json串
                 JSONObject mJson = new JSONObject(info);
-                info = mJson.optString("EVENT_PAY");
+//                info = mJson.optString("EVENT_PAY");
 
-                if (mJson.optString("EVENT_PAY") != null && mJson.optString("EVENT") == null) {
+                eventPay = mJson.optString("EVENT_PAY");//点"去支付"
+                eventId = mJson.optString("EVENT");
 
-                    String url = mJson.optString("EVENT_PAY");
-                    Intent i = new Intent(getActivity(), MeetingEnrolActivity.class);
-                    i.putExtra("url", url);
-                    startActivity(i);
-
-                } else if (mJson.optString("EVENT_PAY") == null && mJson.optString("EVENT") != null) {
-                    startActivity(new Intent(getActivity(), MeetingDetailActivity.class)
-                            .putExtra("eventId", Integer.parseInt(mJson.optString("EVENT")))
-                    );
-                }
-
-
+                Log.e(" PAY1", eventPay);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.e(" PAY", info); //E/ PAY: alipay|378|378_20171221131135754_7
+            Log.e(" PAY2", eventPay); //E/ PAY: alipay|378|378_20171221131135754_7
 
-
+            if (eventPay != null && eventId == null) {
+                Log.e(" PAY3", eventPay);
+                Intent i = new Intent(getActivity(), MeetingPayOrderActivity.class);
+                i.putExtra("url", eventPay);
+                startActivity(i);
+            }
+            if (eventId != null && eventPay == null) {
+                Log.e(" PAY4", eventId);
+                startActivity(new Intent(getActivity(), MeetingDetailActivity.class)
+                        .putExtra("eventId", Integer.parseInt(eventId))
+                );
+            }
         }
 
         @JavascriptInterface

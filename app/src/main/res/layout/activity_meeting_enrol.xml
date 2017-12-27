@@ -12,9 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="0dp"
-        android:visibility="gone"
-        >
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -32,10 +30,14 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="个人报名"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/red" />
 
     <include layout="@layout/content_meeting_enrol" />
 
