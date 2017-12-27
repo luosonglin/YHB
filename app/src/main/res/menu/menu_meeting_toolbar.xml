@@ -27,23 +27,23 @@
         app:showAsAction="always"
         android:visible="false"/>
 
-    <item
-        android:id="@+id/action_enroll"
-        android:icon="@mipmap/meeting_enroll"
-        android:orderInCategory="90"
-        android:title="报名"
-        app:showAsAction="always"
-        android:visible="false"
-        />
+    <!--<item-->
+        <!--android:id="@+id/action_enroll"-->
+        <!--android:icon="@mipmap/meeting_enroll"-->
+        <!--android:orderInCategory="90"-->
+        <!--android:title="报名"-->
+        <!--app:showAsAction="always"-->
+        <!--android:visible="false"-->
+        <!--/>-->
 
-    <item
-        android:id="@+id/action_order"
-        android:icon="@mipmap/meeting_order"
-        android:orderInCategory="90"
-        android:title="订单"
-        app:showAsAction="always"
-        android:visible="false"
-        />
+    <!--<item-->
+        <!--android:id="@+id/action_order"-->
+        <!--android:icon="@mipmap/meeting_order"-->
+        <!--android:orderInCategory="90"-->
+        <!--android:title="订单"-->
+        <!--app:showAsAction="always"-->
+        <!--android:visible="false"-->
+        <!--/>-->
 
     <!--<item-->
         <!--android:id="@+id/action_more"-->

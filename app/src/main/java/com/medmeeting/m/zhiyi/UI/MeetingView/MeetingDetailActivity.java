@@ -100,7 +100,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         initShare(savedInstanceState, getIntent().getExtras().getString("photo"), getIntent().getExtras().getString("description"));
 
 
-        initMeetingService(eventId);
+//        initMeetingService(eventId);
 
         initWebView();
     }
@@ -160,24 +160,24 @@ public class MeetingDetailActivity extends AppCompatActivity {
                     case R.id.action_collect_no:
                         collectService(false);
                         break;
-                    case R.id.action_enroll:
-                        if (eventRegisterSwitchVO.isOpenEntrances()) {  // 是否开启报名入口
-                            Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-                            i.putExtra("title", "报名");
-                            i.putExtra("eventId", eventId);
-                            i.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
-                            startActivity(i);
-                        } else {
-                            ToastUtils.show(MeetingDetailActivity.this, "暂未开启报名入口");
-                        }
-                        break;
-                    case R.id.action_order:
-                        Intent i2 = new Intent(MeetingDetailActivity.this, MeetingOrderActivity.class);
-                        i2.putExtra("title", "订单详情");
-                        i2.putExtra("eventId", eventId);
-                        i2.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
-                        startActivity(i2);
-                        break;
+//                    case R.id.action_enroll:
+//                        if (eventRegisterSwitchVO.isOpenEntrances()) {  // 是否开启报名入口
+//                            Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
+//                            i.putExtra("title", "报名");
+//                            i.putExtra("eventId", eventId);
+//                            i.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
+//                            startActivity(i);
+//                        } else {
+//                            ToastUtils.show(MeetingDetailActivity.this, "暂未开启报名入口");
+//                        }
+//                        break;
+//                    case R.id.action_order:
+//                        Intent i2 = new Intent(MeetingDetailActivity.this, MeetingOrderActivity.class);
+//                        i2.putExtra("title", "订单详情");
+//                        i2.putExtra("eventId", eventId);
+//                        i2.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
+//                        startActivity(i2);
+//                        break;
                 }
                 return true;
             }
@@ -229,19 +229,19 @@ public class MeetingDetailActivity extends AppCompatActivity {
             menu.findItem(R.id.action_collect_no).setVisible(true);
         }
 
-        if (eventRegisterSwitchVO != null) {
-            if (eventRegisterSwitchVO.isDisplayEntrances()) {   //是否显示报名按钮
-                menu.findItem(R.id.action_enroll).setVisible(true);
-            } else {
-                menu.findItem(R.id.action_enroll).setVisible(false);
-            }
-
-            if (eventRegisterSwitchVO.isRegisterResult()) { //是否已报名
-                menu.findItem(R.id.action_order).setVisible(true);
-            } else {
-                menu.findItem(R.id.action_order).setVisible(false);
-            }
-        }
+//        if (eventRegisterSwitchVO != null) {
+//            if (eventRegisterSwitchVO.isDisplayEntrances()) {   //是否显示报名按钮
+//                menu.findItem(R.id.action_enroll).setVisible(true);
+//            } else {
+//                menu.findItem(R.id.action_enroll).setVisible(false);
+//            }
+//
+//            if (eventRegisterSwitchVO.isRegisterResult()) { //是否已报名
+//                menu.findItem(R.id.action_order).setVisible(true);
+//            } else {
+//                menu.findItem(R.id.action_order).setVisible(false);
+//            }
+//        }
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -408,10 +408,9 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
                 Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
                 i.putExtra("title", "报名");
-                i.putExtra("eventId", web_event_id);
+                i.putExtra("eventId", Integer.parseInt(web_event_id));
                 i.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
                 startActivity(i);
-
         }
 
 
