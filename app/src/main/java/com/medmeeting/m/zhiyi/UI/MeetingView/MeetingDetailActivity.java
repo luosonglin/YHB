@@ -34,6 +34,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
 import com.umeng.socialize.ShareAction;
@@ -104,9 +105,9 @@ public class MeetingDetailActivity extends AppCompatActivity {
         initToolbar();
 
         eventTitle = getIntent().getExtras().getString("eventTitle");
-        sourceType = getIntent().getExtras().getString("eventTitle");
-        photo = getIntent().getExtras().getString("eventTitle");
-        description = getIntent().getExtras().getString("eventTitle");
+        sourceType = getIntent().getExtras().getString("sourceType");
+        photo = getIntent().getExtras().getString("photo");
+        description = getIntent().getExtras().getString("description");
 
 
         HttpData.getInstance().HttpDataGetMeetingInfo(new Observer<HttpResult3<Object, Event>>() {
@@ -125,8 +126,11 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 eventTitle = data.getEntity().getTitle();
                 sourceType = data.getEntity().getSourceType();
                 photo = data.getEntity().getBanner();
-                description = data.getEntity().getEventDesc();
+                description = "大会时间：" + DateUtils.formatDate(data.getEntity().getStartDate(), DateUtils.TYPE_02)
+                        + " 至 " + DateUtils.formatDate(data.getEntity().getEndDate(), DateUtils.TYPE_02)
+                        + " 欢迎参加： " + data.getEntity().getTitle();
 
+                //分享
                 initShare(savedInstanceState, photo, description);
 
                 initWebView();
@@ -167,24 +171,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
                     case R.id.action_collect_no:
                         collectService(false);
                         break;
-//                    case R.id.action_enroll:
-//                        if (eventRegisterSwitchVO.isOpenEntrances()) {  // 是否开启报名入口
-//                            Intent i = new Intent(MeetingDetailActivity.this, MeetingEnrolActivity.class);
-//                            i.putExtra("title", "报名");
-//                            i.putExtra("eventId", eventId);
-//                            i.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
-//                            startActivity(i);
-//                        } else {
-//                            ToastUtils.show(MeetingDetailActivity.this, "暂未开启报名入口");
-//                        }
-//                        break;
-//                    case R.id.action_order:
-//                        Intent i2 = new Intent(MeetingDetailActivity.this, MeetingOrderActivity.class);
-//                        i2.putExtra("title", "订单详情");
-//                        i2.putExtra("eventId", eventId);
-//                        i2.putExtra("eventTitle", getIntent().getExtras().getString("eventTitle"));
-//                        startActivity(i2);
-//                        break;
                 }
                 return true;
             }
@@ -210,6 +196,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
                     return;
                 }
                 isFollowEvent = data.getEntity().isCollectType();
+                invalidateOptionsMenu();
             }
         }, map);
     }

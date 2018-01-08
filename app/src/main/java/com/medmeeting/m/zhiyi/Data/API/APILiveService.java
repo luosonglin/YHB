@@ -40,6 +40,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
@@ -359,6 +360,10 @@ public interface APILiveService {
 //    //GET /v1/msgs/codes 发送验证码接口
 //    @GET("/v1/msgs/codes")
 //    Observable<HttpResult3>
+
+    //POST /v1/users/app/user/author APP-提交实名认证信息
+    @POST("/v1/users/app/user/author")
+    Observable<HttpResult3> authorization(@Body UserAuthorEntity userAuthorEntity);
 
 
     /**

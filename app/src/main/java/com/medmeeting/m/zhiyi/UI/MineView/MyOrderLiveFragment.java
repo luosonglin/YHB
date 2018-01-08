@@ -124,9 +124,10 @@ public class MyOrderLiveFragment extends Fragment {
                 mAdapter.addHeaderView(mHeaderView);
 
                 List<LiveDto> mLives = new ArrayList<>();
-                if (data.getData().size() > 2) {
+                if (data.getData().size() > 3) {
                     mLives.add(0, data.getData().get(0));
                     mLives.add(1, data.getData().get(1));
+                    mLives.add(2, data.getData().get(2));
                     mMoreView.setVisibility(View.VISIBLE);
                     mMoreView.setOnClickListener(view -> startActivity(new Intent(getActivity(), MyOrderLiveActivity.class)));
                 } else {
@@ -167,9 +168,10 @@ public class MyOrderLiveFragment extends Fragment {
                 mAdapter2.addHeaderView(mHeaderView2);
 
                 List<VideoListEntity> mVideos = new ArrayList<>();
-                if (data.getData().size() > 2) {
+                if (data.getData().size() > 3) {
                     mVideos.add(0, data.getData().get(0));
                     mVideos.add(1, data.getData().get(1));
+                    mVideos.add(2, data.getData().get(2));
                     mMoreView2.setVisibility(View.VISIBLE);
                     mMoreView2.setOnClickListener(view -> startActivity(new Intent(getActivity(), MyOrderVideoActivity.class)));
                 } else {

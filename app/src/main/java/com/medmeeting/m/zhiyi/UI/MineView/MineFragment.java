@@ -96,6 +96,8 @@ public class MineFragment extends Fragment {
     RelativeLayout wodewendang;
     @Bind(R.id.wodefufeizhibo)
     RelativeLayout wodefufeizhibo;
+    @Bind(R.id.wodeluxiang)
+    RelativeLayout wodeluxiang;
 
     private String identityHtml;
     private String userId = null;
@@ -215,6 +217,7 @@ public class MineFragment extends Fragment {
                             titleTv.setText(data.getEntity().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.GONE);
+                            wodeluxiang.setVisibility(View.GONE);
                             break;
                         case "B":
                             identityHtml = "&nbsp;"
@@ -228,6 +231,7 @@ public class MineFragment extends Fragment {
                             titleTv.setText(data.getEntity().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.GONE);
+                            wodeluxiang.setVisibility(View.GONE);
                             break;
                         case "C":
                             identity.setVisibility(View.GONE);
@@ -238,6 +242,7 @@ public class MineFragment extends Fragment {
                             titleTv.setText(data.getEntity().getTitle() + " ");
 
                             wodezhibo.setVisibility(View.VISIBLE);
+                            wodeluxiang.setVisibility(View.VISIBLE);
                             break;
                         default:
                             identityHtml = "&nbsp;"
@@ -258,6 +263,7 @@ public class MineFragment extends Fragment {
 
 
                             wodezhibo.setVisibility(View.GONE);
+                            wodeluxiang.setVisibility(View.GONE);
                             break;
                     }
                     showProgress(false);

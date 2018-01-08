@@ -273,11 +273,11 @@ public class NewsVideoActivity extends AppCompatActivity {
         //刚打开页面的瞬间显示
         titleTv.setText(blogDetail.getTitle());
         //微博内容
-        String author = blogDetail.getAuthorOrg();
-        if (!blogDetail.getAuthorName().equals("")) {
-            author +=  " 文/" + blogDetail.getAuthorName();
-        }
-        name.setText(author);
+//        String author = ;
+//        if (!blogDetail.getAuthorName().equals("")) {
+//            author +=  " 文/" + blogDetail.getAuthorName();
+//        }
+        name.setText(blogDetail.getAuthorOrg());
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
 
         //文章View需要写带html标签的文本

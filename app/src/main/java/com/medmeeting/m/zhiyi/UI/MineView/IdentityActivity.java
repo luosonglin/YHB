@@ -20,9 +20,10 @@ import android.widget.TextView;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.FontHelper;
-import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.StringUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
@@ -67,8 +68,6 @@ public class IdentityActivity extends AppCompatActivity {
     TextView nextStep;
     @Bind(R.id.content_identity)
     RelativeLayout contentIdentity;
-    @Bind(R.id.phone)
-    EditText phone;
 
 
     private static final String TAG = IdentityActivity.class.getSimpleName();
@@ -195,10 +194,6 @@ public class IdentityActivity extends AppCompatActivity {
             ToastUtils.show(IdentityActivity.this, "请重新输入真实姓名");
             return;
         }
-        if (!PhoneUtils.isMobile(phone.getText().toString().trim())) {
-            ToastUtils.show(IdentityActivity.this, "手机号格式不正确,请重新输入");
-            return;
-        }
         if (StringUtils.isEmpty(hospital.getText().toString().trim())) {
             ToastUtils.show(IdentityActivity.this, "请重新输入所在医院名称");
             return;
@@ -212,68 +207,32 @@ public class IdentityActivity extends AppCompatActivity {
             return;
         }
 
-        /*UserService userService = HttpManager.generate(UserService.class, IdentityActivity.this);
-
-        mOptions.put("id", userId);
-        mOptions.put("name", name.getText().toString().trim());
-        mOptions.put("mobilePhone", phone.getText().toString().trim());
-        mOptions.put("hospital", hospital.getText().toString().trim());
-        mOptions.put("department", mDepartmentTv.getText().toString().trim());
-        mOptions.put("title", title.getText().toString().trim());
-
-        Call<DoctorAuthentication> observableUserService = userService.Authentication(mOptions);
-        observableUserService.enqueue(new Callback<DoctorAuthentication>() {
-            @Override
-            public void onResponse(Call<DoctorAuthentication> call, Response<DoctorAuthentication> response) {
-                if (response.body().getCode() != 200) {
-                    ToastUtils.show(IdentityActivity.this, "认证信息有误，请重新提交");
-                    return;
-                }
-                userBean = response.body().getData().getUser();
-                Log.e(TAG, userBean.getId()+" "+userBean.getAuthenStatus());
-                ToastUtils.show(IdentityActivity.this, "您已成功提交认证信息，请等待相关人员审核信息");
-                finish();
-            }
-
-            @Override
-            public void onFailure(Call<DoctorAuthentication> call, Throwable t) {
-                Log.e(TAG, t.getMessage());
-            }
-        });*/
-
-        mOptions.put("id", userId);
-        mOptions.put("name", name.getText().toString().trim());
-        mOptions.put("mobilePhone", phone.getText().toString().trim());
-        mOptions.put("hospital", hospital.getText().toString().trim());
-        mOptions.put("department", mDepartmentTv.getText().toString().trim());
-        mOptions.put("title", title.getText().toString().trim());
-        HttpData.getInstance().HttpDataAuthentication(new Observer<DoctorAuthentication>() {
+        UserAuthorEntity userAuthorEntity = new UserAuthorEntity();
+        userAuthorEntity.setName(name.getText().toString().trim());
+        userAuthorEntity.setTitle(title.getText().toString().trim());
+        userAuthorEntity.setHospital(hospital.getText().toString().trim());
+        userAuthorEntity.setDepartment(mDepartmentTv.getText().toString().trim());
+        HttpData.getInstance().HttpDataAuthorization(new Observer<HttpResult3>() {
             @Override
             public void onCompleted() {
-                Log.e(TAG, "onCompleted");
+
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
+                ToastUtils.show(IdentityActivity.this, e.getMessage());
             }
 
             @Override
-            public void onNext(DoctorAuthentication doctorAuthentication) {
-                if (doctorAuthentication.getCode() != 200) {
-                    ToastUtils.show(IdentityActivity.this, "认证信息有误，请重新提交");
+            public void onNext(HttpResult3 data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(IdentityActivity.this, data.getMsg());
                     return;
                 }
-                userBean = doctorAuthentication.getData().getUser();
-                Log.e(TAG, userBean.getId() + " " + userBean.getAuthenStatus());
                 ToastUtils.show(IdentityActivity.this, "您已成功提交认证信息，请等待相关人员审核信息");
                 finish();
-                Log.e(TAG, "onNext");
             }
-        }, mOptions);
+        }, userAuthorEntity);
     }
 
     /**
