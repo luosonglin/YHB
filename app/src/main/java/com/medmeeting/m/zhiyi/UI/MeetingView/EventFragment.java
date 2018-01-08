@@ -218,7 +218,6 @@ public class EventFragment extends Fragment {
                         intent.putExtras(bundle);
                         getActivity().startActivity(intent);
 
-
                     }
                 });
                 srl.setRefreshing(false);
