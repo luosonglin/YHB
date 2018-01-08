@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.MeetingView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,8 +12,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,6 +24,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -47,6 +51,9 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -177,13 +184,15 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         Log.e(TAG, Constant.URL_Meeting_Enrol + eventId);
 
         WebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
-        WebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onReceivedTitle(android.webkit.WebView view, String title) {
-                Log.d(TAG, "－－－－－－setWebChromeClient ");
-//                CreditActivity.this.onReceivedTitle(view, title);
-            }
-        });
+//        WebView.setWebChromeClient(new WebChromeClient() {
+//            @Override
+//            public void onReceivedTitle(android.webkit.WebView view, String title) {
+//                Log.d(TAG, "－－－－－－setWebChromeClient ");
+////                CreditActivity.this.onReceivedTitle(view, title);
+//            }
+//
+//        });
+        WebView.setWebChromeClient(mWebChromeClient);
         WebView.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -493,6 +502,162 @@ public class MeetingEnrolActivity extends AppCompatActivity {
 
     public static void reloadWebView() {
         WebView.reload();
+    }
+
+
+    /**
+     * 以下为android WebView 无法支持input type=file的解决方法
+     */
+    public static final int INPUT_FILE_REQUEST_CODE = 1;
+    private ValueCallback<Uri> mUploadMessage;
+    private final static int FILECHOOSER_RESULTCODE = 2;
+    private ValueCallback<Uri[]> mFilePathCallback;
+
+    private String mCameraPhotoPath;
+    //在sdcard卡创建缩略图
+    //createImageFileInSdcard
+    @SuppressLint("SdCardPath")
+    private File createImageFile() {
+        //mCameraPhotoPath="/mnt/sdcard/tmp.png";
+        File file=new File(Environment.getExternalStorageDirectory()+"/","tmp.png");
+        mCameraPhotoPath=file.getAbsolutePath();
+        if(!file.exists())
+        {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
+    }
+    private WebChromeClient mWebChromeClient = new WebChromeClient() {
+
+        // android 5.0
+        public boolean onShowFileChooser(
+                WebView webView, ValueCallback<Uri[]> filePathCallback,
+                WebChromeClient.FileChooserParams fileChooserParams) {
+            if (mFilePathCallback != null) {
+                mFilePathCallback.onReceiveValue(null);
+            }
+            mFilePathCallback = filePathCallback;
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                photoFile = createImageFile();
+                takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
+
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(photoFile));
+                } else {
+                    takePictureIntent = null;
+                }
+            }
+
+            Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+            contentSelectionIntent.setType("image/*");
+
+            Intent[] intentArray;
+            if (takePictureIntent != null) {
+                intentArray = new Intent[]{takePictureIntent};
+            } else {
+                intentArray = new Intent[0];
+            }
+
+            Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+            chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+            chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+            startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODE);
+
+            return true;
+        }
+
+        //The undocumented magic method override
+        //Eclipse will swear at you if you try to put @Override here
+        // For Android 3.0+
+        public void openFileChooser(ValueCallback<Uri> uploadMsg) {
+
+            mUploadMessage = uploadMsg;
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            i.addCategory(Intent.CATEGORY_OPENABLE);
+            i.setType("image/*");
+            MeetingEnrolActivity.this.startActivityForResult(Intent.createChooser(i, "Image Chooser"), FILECHOOSER_RESULTCODE);
+
+        }
+
+        // For Android 3.0+
+        public void openFileChooser(ValueCallback uploadMsg, String acceptType) {
+            mUploadMessage = uploadMsg;
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            i.addCategory(Intent.CATEGORY_OPENABLE);
+            i.setType("image/*");
+            MeetingEnrolActivity.this.startActivityForResult(
+                    Intent.createChooser(i, "Image Chooser"),
+                    FILECHOOSER_RESULTCODE);
+        }
+
+        //For Android 4.1
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+            mUploadMessage = uploadMsg;
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            i.addCategory(Intent.CATEGORY_OPENABLE);
+            i.setType("image/*");
+            MeetingEnrolActivity.this.startActivityForResult(Intent.createChooser(i, "Image Chooser"), MeetingEnrolActivity.FILECHOOSER_RESULTCODE);
+
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult");
+
+        if (requestCode == FILECHOOSER_RESULTCODE) {
+            if (null == mUploadMessage) return;
+            Uri result = data == null || resultCode != RESULT_OK ? null
+                    : data.getData();
+            if (result != null) {
+                String imagePath = ImageFilePath.getPath(this, result);
+                if (!TextUtils.isEmpty(imagePath)) {
+                    result = Uri.parse("file:///" + imagePath);
+                }
+            }
+            mUploadMessage.onReceiveValue(result);
+            mUploadMessage = null;
+        } else if (requestCode == INPUT_FILE_REQUEST_CODE && mFilePathCallback != null) {
+            // 5.0的回调
+            Uri[] results = null;
+
+            // Check that the response is a good one
+            if (resultCode == Activity.RESULT_OK) {
+                if (data == null && !TextUtils.isEmpty(data.getDataString())) {
+                    // If there is not data, then we may have taken a photo
+                    if (mCameraPhotoPath != null) {
+                        Log.d("camera_photo_path", mCameraPhotoPath);
+                        results = new Uri[]{Uri.parse(mCameraPhotoPath)};
+                    }
+                } else {
+                    String dataString = data.getDataString();
+                    Log.d("camera_dataString", dataString);
+                    if (dataString != null) {
+                        results = new Uri[]{Uri.parse(dataString)};
+                    }
+                }
+            }
+
+            mFilePathCallback.onReceiveValue(results);
+            mFilePathCallback = null;
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
     }
 
 }
