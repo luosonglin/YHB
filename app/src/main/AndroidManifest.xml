@@ -296,6 +296,7 @@
         <activity android:name=".UI.VideoView.LiveRedVipActivity" />
         <activity android:name=".UI.MineView.MyOrderLiveActivity" />
         <activity android:name=".UI.MineView.MyOrderVideoActivity" />
+        <activity android:name=".UI.MineView.MyMeetingActivity" />
         <activity android:name=".UI.MineView.MyVideoActivity" />
         <activity android:name=".UI.VideoView.VideoUpdateActivity" />
         <activity android:name=".UI.VideoView.VideoInTagActivity" />

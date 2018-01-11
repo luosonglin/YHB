@@ -16,7 +16,6 @@ import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -75,7 +74,7 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
 
 public class VideoDetailActivity extends AppCompatActivity {
 
-    NestedScrollView postDetailNestedScroll;
+    //    NestedScrollView postDetailNestedScroll;
     LandLayoutVideoPlayer detailPlayer;
     RelativeLayout activityDetailPlayer;
 
@@ -97,7 +96,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_detail);
 
-        postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
+//        postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
         detailPlayer = (LandLayoutVideoPlayer) findViewById(R.id.detail_player);
         activityDetailPlayer = (RelativeLayout) findViewById(R.id.activity_detail_player);
 
@@ -131,6 +130,7 @@ public class VideoDetailActivity extends AppCompatActivity {
 
     /**
      * 分享
+     *
      * @param programId
      * @param title
      * @param photo
@@ -459,10 +459,11 @@ public class VideoDetailActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         //为ViewPager设置高度
-        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-        params.height = this.getWindowManager().getDefaultDisplay().getHeight() + 100 * 1;//800
-
-        viewPager.setLayoutParams(params);
+//        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+//        params.height = this.getResources().getDisplayMetrics().heightPixels - 230 - 50;
+//        Log.e(getLocalClassName(), params.height+"  hhhh "+this.getResources().getDisplayMetrics().heightPixels);
+//
+//        viewPager.setLayoutParams(params);
 
         setUpViewPager(viewPager, videoId, roomId, userId);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout

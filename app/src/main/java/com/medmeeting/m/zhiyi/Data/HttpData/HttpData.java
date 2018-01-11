@@ -63,6 +63,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
@@ -693,6 +694,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataGetMyEvents(Observer<HttpResult3<VAppMyEvents, Object>> observer, Integer type) {
+        Observable observable = service_live.getMyEvents(type);
+        setSubscribe(observable, observer);
+    }
 
     /**
      * 插入观察者

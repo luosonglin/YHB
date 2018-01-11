@@ -29,7 +29,6 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -397,7 +396,6 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.wodecanhui:
                 intent = new Intent(getActivity(), MyMeetingActivity.class);
-                intent.putExtra("userId", userId);
                 startActivity(intent);
                 break;
             case R.id.wodeqianbao:

@@ -46,6 +46,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
@@ -445,6 +446,10 @@ public interface APILiveService {
     //GET /v1/eventRegister/events/{eventId}/registerSwitch App获取会议报名开关信息接口
     @GET("/v1/eventRegister/events/{eventId}/registerSwitch")
     Observable<HttpResult3<Object, EventRegisterSwitchVO>> registerSwitch(@Path("eventId") Integer eventId);
+
+//GET /v1/eventRegister/app/myEvents/{type} App获取我的待参会与已结束会议列表
+    @GET("/v1/eventRegister/app/myEvents/{type}")
+    Observable<HttpResult3<VAppMyEvents, Object>> getMyEvents(@Path("type") Integer type);
 
 
     /**
