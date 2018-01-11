@@ -69,6 +69,14 @@ public class BaseApplication extends MultiDexApplication {//Application {
         //极光推送
         JPushInterface.setDebugMode(true);//该接口需在init接口之前调用，避免出现部分日志没打印的情况
         JPushInterface.init(this);
+
+        JPushInterface.setAlias(this, 1, "luosonglin");
+//        JPushInterface.setAlias(this, "luosonglin", new TagAliasCallback() {
+//            @Override
+//            public void gotResult(int i, String s, Set<String> set) {
+//                Log.e("188", "极光推送绑定用户成功" + i + s);
+//            }
+//        });
     }
 
     public static Context getContext() {
