@@ -129,9 +129,6 @@
         <activity
             android:name=".UI.OtherVIew.WelcomeGuideActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" />
-        <activity
-            android:name=".UI.MeetingView.MyMeetingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- umeng -->
         <meta-data

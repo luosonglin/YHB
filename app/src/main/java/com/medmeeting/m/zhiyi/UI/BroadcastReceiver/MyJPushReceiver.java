@@ -12,7 +12,6 @@ import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
-import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -131,7 +130,6 @@ public class MyJPushReceiver extends BroadcastReceiver {
 
             // 在这里可以自己写代码去定义用户点击后的行为
             String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            ToastUtils.show(context, "aaa "+ extra);
 
             JSONObject jsonObject = null;
             try {

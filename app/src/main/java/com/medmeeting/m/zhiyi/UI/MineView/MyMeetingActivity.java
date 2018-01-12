@@ -1,25 +1,16 @@
 package com.medmeeting.m.zhiyi.UI.MineView;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 
-import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.WaitMeetingAdapter;
-import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
-import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
-import rx.Observer;
 
 /**
  * @author NapoleonRohaha_Songlin
@@ -28,83 +19,57 @@ import rx.Observer;
  * @email iluosonglin@gmail.com
  * @org null
  */
-public class MyMeetingActivity extends AppCompatActivity implements  SegmentedGroup.OnCheckedChangeListener{
-    private Toolbar toolbar;
-    private RecyclerView mRecyclerView;
-    private BaseQuickAdapter mAdapter;
+public class MyMeetingActivity extends AppCompatActivity implements SegmentedGroup.OnCheckedChangeListener {
+    private ImageView back;
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_meeting_2);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        back = (ImageView) findViewById(R.id.back);
         initToolbar();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(MyMeetingActivity.this, DividerItemDecoration.VERTICAL));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(MyMeetingActivity.this));
-        mRecyclerView.setHasFixedSize(true);
-        mAdapter = new WaitMeetingAdapter(R.layout.item_meeting, null);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        mAdapter.openLoadMore(8, true);
-        mRecyclerView.setAdapter(mAdapter);
-        getMyPayLiveService(1);
+        SegmentedGroup segmented4 = (SegmentedGroup)findViewById(R.id.segmented2);
+        segmented4.setTintColor(0xFF1b7ce8);
+        segmented4.setOnCheckedChangeListener(this);
+
+        tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        setUpViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void initToolbar() {
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        toolbar.setTitle("");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(view -> {
-                finish();
-
-        });
+        back.setOnClickListener(view -> finish());
     }
 
-    private void getMyPayLiveService(int type) {
-        HttpData.getInstance().HttpDataGetMyEvents(new Observer<HttpResult3<VAppMyEvents, Object>>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                ToastUtils.show(MyMeetingActivity.this, e.getMessage());
-            }
-
-            @Override
-            public void onNext(HttpResult3<VAppMyEvents, Object> data) {
-                if (!data.getStatus().equals("success")) {
-                    ToastUtils.show(MyMeetingActivity.this, data.getMsg());
-                    return;
-                }
-
-                mAdapter.setNewData(data.getData());
-                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    Intent i = new Intent(MyMeetingActivity.this, MeetingDetailActivity.class);
-                    i.putExtra("eventId", data.getData().get(position).getEventId());
-                    startActivity(i);
-                });
-
-            }
-        }, type);
-    }
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
         switch (i) {
             case R.id.button21:
-                getMyPayLiveService(0);
+                tabLayout.getTabAt(0).select();
                 return;
             case R.id.button22:
-                getMyPayLiveService(1);
+                tabLayout.getTabAt(1).select();
                 return;
         }
     }
+
+    private void setUpViewPager(ViewPager viewPager) {
+        //如果是在fragment中使用viewpager, 记得要用getChildFragmentManager, 否则你会发现fragment异常的生命周期.
+        IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(MyMeetingActivity.this.getSupportFragmentManager());//.getSupportFragmentManager());//.getChildFragmentManager()
+
+        mIndexChildAdapter.addFragment(MyMeetingWaitFragment.newInstance(), "待参会");
+        mIndexChildAdapter.addFragment(MyMeetingFinishedFragment.newInstance(), "已结束");
+
+        viewPager.setOffscreenPageLimit(2);//缓存view 的个数
+        viewPager.setAdapter(mIndexChildAdapter);
+    }
 }
-
-
