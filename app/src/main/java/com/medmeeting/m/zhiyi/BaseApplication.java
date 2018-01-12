@@ -1,6 +1,8 @@
 package com.medmeeting.m.zhiyi;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
@@ -77,6 +79,14 @@ public class BaseApplication extends MultiDexApplication {//Application {
 //                Log.e("188", "极光推送绑定用户成功" + i + s);
 //            }
 //        });
+
+
+        //获取剪贴板管理器：
+        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        // 创建普通字符型ClipData
+        ClipData mClipData = ClipData.newPlainText("Label", "快来领取支付宝跨年红包！1月1日起还有机会额外获得专享红包哦！复制此消息，打开最新版支付宝就能领取！Jc5cPd92OP");
+        // 将ClipData内容放到系统剪贴板里。
+        cm.setPrimaryClip(mClipData);
     }
 
     public static Context getContext() {
@@ -170,8 +180,6 @@ public class BaseApplication extends MultiDexApplication {//Application {
      * 应用签名：
      * 2d1f5af844ab43da48e5ec917713e2bc
      */
-
-
 
 
 }
