@@ -142,6 +142,7 @@ public class MyJPushReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
 
+            if (TextUtils.isEmpty(id)) return;
             switch (type) {
                 case "active":
 //                    BrowserActivity.launch(context, data.getData().get(position - 1).getUrl(), title);

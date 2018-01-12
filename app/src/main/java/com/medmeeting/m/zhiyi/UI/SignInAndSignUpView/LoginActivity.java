@@ -67,6 +67,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.jpush.android.api.JPushInterface;
 import rx.Observer;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -685,6 +686,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             e.printStackTrace();
                         }
 
+                        //极光推送 别名设置
+                        JPushInterface.setAlias(LoginActivity.this, 1, mPhone);
+
                         HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
                             @Override
                             public void onCompleted() {
@@ -752,6 +756,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
+
+                        //极光推送 别名设置
+                        JPushInterface.setAlias(LoginActivity.this, 1, mPhone);
 
                         HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
                             @Override
