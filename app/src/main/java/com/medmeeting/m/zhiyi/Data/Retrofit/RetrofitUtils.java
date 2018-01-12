@@ -125,8 +125,8 @@ public abstract class RetrofitUtils {
             //Retrofit2后使用build设计模式
             mRetrofitLive = new Retrofit.Builder()
                     //设置服务器路径
-                    .baseUrl(Constant.API_SERVER_LIVE_TEST + "/")
-//                    .baseUrl(Constant.API_SERVER_LIVE + "/")
+//                    .baseUrl(Constant.API_SERVER_LIVE_TEST + "/")
+                    .baseUrl(Constant.API_SERVER_LIVE + "/")
                     //添加转化库，默认是Gson
                     .addConverterFactory(GsonConverterFactory.create())
                     //添加回调库，采用RxJava

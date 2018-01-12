@@ -69,4 +69,7 @@ public class Constant {
 
     //微站首页分享：
     public static final String Share_Meeting_Index = "http://mobile.medmeeting.com/?#/mw/";
+
+    //新闻正文
+    public static final String URL_BLOG_CONTENT = "http://mobile.medmeeting.com/#/new/article/android/";
 }

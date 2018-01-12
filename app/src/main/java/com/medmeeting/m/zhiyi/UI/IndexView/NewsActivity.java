@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.UI.IndexView;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,11 +19,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.medmeeting.m.zhiyi.BuildConfig;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
@@ -48,6 +60,9 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,6 +96,8 @@ public class NewsActivity extends AppCompatActivity {
     EditText inputEditor;
     @Bind(R.id.input_send)
     Button inputSend;
+    @Bind(R.id.WebView)
+    BridgeWebView mWebView;
     private RecyclerView mCommandRecyclerView;
     private BaseQuickAdapter mCommandAdapter;
     private View mCommandFooterView;
@@ -193,7 +210,7 @@ public class NewsActivity extends AppCompatActivity {
 
         String author = blogDetail.getAuthorOrg();
         if (!blogDetail.getAuthorName().equals("")) {
-            author +=  " 文/" + blogDetail.getAuthorName();
+            author += " 文/" + blogDetail.getAuthorName();
         }
         name.setText(author);
 
@@ -220,19 +237,21 @@ public class NewsActivity extends AppCompatActivity {
         };
         content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
 
+        initWebView();
+
         //标签
         if (blogDetail.getLabelName() != null) {
             mLabelRecyclerView.setVisibility(View.VISIBLE);
             //标签提前转成list
             Log.e(getLocalClassName(), Arrays.asList(blogDetail.getLabelName().split(",")).get(0));
             mLabelAdapter.setNewData(Arrays.asList(blogDetail.getLabelName().split(",")));
-        }else {
+        } else {
             mLabelRecyclerView.setVisibility(View.GONE);
         }
 
 
         //正则表达式,过滤新闻内容
-        String regEx="<([^>]*)>"; // 过滤所有以<开头以>结尾的标签    JS用"/<[^>]*>/g";
+        String regEx = "<([^>]*)>"; // 过滤所有以<开头以>结尾的标签    JS用"/<[^>]*>/g";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(blogDetail.getContent());
         //分享
@@ -479,5 +498,153 @@ public class NewsActivity extends AppCompatActivity {
         //qq微信新浪授权防杀死
         UMShareAPI.get(this).onSaveInstanceState(outState);
     }
+
+
+    private String TAG = NewsActivity.class.getName();
+
+    /**
+     * 初始化WebView配置
+     */
+    private void initWebView() {
+        WebSettings settings = mWebView.getSettings();
+
+        // BindUserInfo settings
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
+        settings.setJavaScriptEnabled(true);    //设置webview支持javascript
+        settings.setLoadsImagesAutomatically(true);    //支持自动加载图片
+        settings.setUseWideViewPort(true);    //设置webview推荐使用的窗口，使html界面自适应屏幕
+        settings.setLoadWithOverviewMode(true); //和setUseWideViewPort(true)一起解决网页自适应问题
+        settings.setSaveFormData(true);    //设置webview保存表单数据
+        settings.setSavePassword(true);    //设置webview保存密码
+        settings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);    //设置中等像素密度，medium=160dpi
+        settings.setSupportZoom(true);    //支持缩放
+
+        // Technical settings
+        settings.setAppCacheEnabled(false);  //是否使用缓存
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setDatabaseEnabled(true);
+        settings.setDomStorageEnabled(true);    //DOM Storage
+
+        settings.setSupportMultipleWindows(true);
+        mWebView.setLongClickable(true);
+        mWebView.setScrollbarFadingEnabled(true);
+        mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        mWebView.setDrawingCacheEnabled(true);
+
+        CookieManager.getInstance().setAcceptCookie(true);
+
+        if (Build.VERSION.SDK_INT > 8) {
+            settings.setPluginState(WebSettings.PluginState.ON_DEMAND);
+        }
+
+        String userAgent = mWebView.getSettings().getUserAgentString() + "; yihuibao_a Version/" + BuildConfig.VERSION_NAME;
+        settings.setUserAgentString(userAgent);//设置用户代理
+
+        //哈哈哈哈哈哈哈
+//        if (getIntent().getStringExtra("sourceType") == null) {
+//            ToastUtils.show(MeetingDetailActivity.this, "该会议没有sourceType字段，找文戈！");
+//            finish();
+//            return;
+//        }
+        String URL = Constant.URL_BLOG_CONTENT + blogId;
+        mWebView.loadUrl(URL);
+        Log.e(NewsActivity.this.getLocalClassName(), URL);
+
+        mWebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onReceivedTitle(android.webkit.WebView view, String title) {
+                Log.d(TAG, "－－－－－－setWebChromeClient ");
+            }
+        });
+        mWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                //返回值是true的时候WebView打开，为false则系统浏览器或第三方浏览器打开。
+                //如果要下载页面中的游戏或者继续点击网页中的链接进入下一个网页的话，重写此方法下，不然就会跳到手机自带的浏览器了，而不继续在你这个webview里面展现了
+//                return super.shouldOverrideUrlLoading(view, url);
+                Log.d(TAG, " url:" + url);
+                view.loadUrl(url);// 当打开新链接时，使用当前的 WebView，不会使用系统其他浏览器
+                return true;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                //想在页面开始加载时有操作，在这添加
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                //想在页面加载结束时有操作，在这添加
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                //想在收到错误信息的时候，执行一些操作，走此方法
+                super.onReceivedError(view, request, error);
+            }
+
+        });
+    }
+
+    public Integer mHeight = 0;
+
+    public class JSHook {
+        @JavascriptInterface
+        public void javaMethod(String p) {
+            Log.e(TAG, "JSHook.JavaMethod() called! + " + p);
+            ToastUtils.show(NewsActivity.this, "JSHook.JavaMethod() called! + " + p);
+        }
+
+        public String height;
+
+        @JavascriptInterface
+        public void getHeight(final String string) {
+            try {
+                // 解析js传递过来的json串
+                JSONObject mJson = new JSONObject(string);
+                height = mJson.optString("height");
+                mHeight = Integer.parseInt(height);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Log.e(NewsActivity.this.getLocalClassName(), height);
+
+            NewsActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //为ViewPager设置高度
+                    ViewGroup.LayoutParams params = mWebView.getLayoutParams();
+
+                    params.height = Integer.parseInt(height);//this.getResources().getDisplayMetrics().heightPixels
+
+                    if (params.height == 4839) params.height = params.height + 4839;
+                    mWebView.setLayoutParams(params);
+
+                    Log.e(NewsActivity.this.getLocalClassName(), "webview "+mWebView.getLayoutParams().height+" ");
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void printWebLog(String str) {
+            Log.e(TAG + " WebView: ", str);
+        }
+
+        public String getInfo() {
+            return "获取手机内的信息！！";
+        }
+    }
+
 }
 
