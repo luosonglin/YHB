@@ -89,6 +89,8 @@ public class NewsActivity extends AppCompatActivity {
     TextView title;
     @Bind(R.id.content)
     TextView content;
+    @Bind(R.id.WebView)
+    BridgeWebView mWebView;
     @Bind(R.id.blog_image)
     weiboGridView blogImage;
 
@@ -96,8 +98,6 @@ public class NewsActivity extends AppCompatActivity {
     EditText inputEditor;
     @Bind(R.id.input_send)
     Button inputSend;
-    @Bind(R.id.WebView)
-    BridgeWebView mWebView;
     private RecyclerView mCommandRecyclerView;
     private BaseQuickAdapter mCommandAdapter;
     private View mCommandFooterView;
@@ -626,9 +626,9 @@ public class NewsActivity extends AppCompatActivity {
                     //为ViewPager设置高度
                     ViewGroup.LayoutParams params = mWebView.getLayoutParams();
 
-                    params.height = Integer.parseInt(height);//this.getResources().getDisplayMetrics().heightPixels
+                    params.height = Integer.parseInt(height) * 3;//this.getResources().getDisplayMetrics().heightPixels
 
-                    if (params.height == 4839) params.height = params.height + 4839;
+//                    if (params.height == 4839) params.height = params.height + 4839;
                     mWebView.setLayoutParams(params);
 
                     Log.e(NewsActivity.this.getLocalClassName(), "webview "+mWebView.getLayoutParams().height+" ");
@@ -647,4 +647,3 @@ public class NewsActivity extends AppCompatActivity {
     }
 
 }
-

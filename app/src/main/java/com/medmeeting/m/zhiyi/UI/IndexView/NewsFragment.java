@@ -340,7 +340,6 @@ public class NewsFragment extends BaseFragment {
                         mHeaderLive1.setVisibility(View.VISIBLE);
                         mHeaderLive2.setVisibility(View.GONE);
                         mHeaderLiveView.setText("您好，今天有一场直播");
-                        mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
                         mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getAuthorTitle());
                         mHeaderLiveStartTime1.setText(DateUtils.formatDate(data.getData().get(0).getStartTime(), DateUtils.TYPE_11));
@@ -349,26 +348,26 @@ public class NewsFragment extends BaseFragment {
                         if (data.getData().get(0).getLiveStatus().equals("play")) {
                             mHeaderLiveStatus1.setText("直播中");
                             mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
+                            mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         } else {
                             mHeaderLiveStatus1.setText("预告");
                             mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
+                            mHeaderLiveImage1.setImageResource(R.mipmap.index_alert2);
                         }
                         mHeaderLive1.setOnClickListener(view -> {
                             Intent intent = new Intent(getActivity(), LiveProgramDetailActivity2.class);
                             intent.putExtra("programId", data.getData().get(0).getId());
                             startActivity(intent);
                         });
-
                         break;
                     case 2:
                         mHeaderLive.setVisibility(View.VISIBLE);
                         mHeaderLive1.setVisibility(View.VISIBLE);
                         mHeaderLive2.setVisibility(View.VISIBLE);
                         mHeaderLiveView.setText("您好，今天有两场直播");
-                        mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                         mHeaderLiveName1.setText(data.getData().get(0).getTitle());
                         mHeaderLiveName11.setText(data.getData().get(0).getAuthorName() + " " + data.getData().get(0).getAuthorTitle());
-                        mHeaderLiveImage2.setImageResource(R.mipmap.index_alert2);
+
                         mHeaderLiveName2.setText(data.getData().get(1).getTitle());
                         mHeaderLiveName22.setText(data.getData().get(1).getAuthorName() + " " + data.getData().get(1).getAuthorTitle());
                         mHeaderLiveStartTime1.setText(DateUtils.formatDate(data.getData().get(0).getStartTime(), DateUtils.TYPE_11));
@@ -377,20 +376,24 @@ public class NewsFragment extends BaseFragment {
                         if (data.getData().get(0).getLiveStatus().equals("play")) {
                             mHeaderLiveStatus1.setText("直播中");
                             mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
+                            mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
                             Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus1直播中");
                         } else if (data.getData().get(0).getLiveStatus().equals("ready")){
                             mHeaderLiveStatus1.setText("预告");
                             mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
+                            mHeaderLiveImage1.setImageResource(R.mipmap.index_alert2);
                             Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus1预告");
                         }
 
                         if (data.getData().get(1).getLiveStatus().equals("play")) {
                             mHeaderLiveStatus2.setText("直播中");
                             mHeaderLiveStatus2.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
+                            mHeaderLiveImage2.setImageResource(R.mipmap.index_alert1);
                             Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus2直播中");
                         } else if (data.getData().get(1).getLiveStatus().equals("ready")){
                             mHeaderLiveStatus2.setText("预告");
                             mHeaderLiveStatus2.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
+                            mHeaderLiveImage2.setImageResource(R.mipmap.index_alert2);
                             Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus2预告");
                         }
 
