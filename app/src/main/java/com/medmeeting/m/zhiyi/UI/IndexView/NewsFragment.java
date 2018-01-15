@@ -59,7 +59,6 @@ public class NewsFragment extends BaseFragment {
     RecyclerView recyclerView;
     private SwipeRefreshLayout srl;
 
-
     private Integer mLabelId;
     protected List<Blog> mDatas = new ArrayList<>();
     protected BaseQuickAdapter mAdapter;
@@ -185,13 +184,6 @@ public class NewsFragment extends BaseFragment {
     }
 
     private void getData() {
-        if (mDatas.size() == 0) {
-
-            //没加载过数据
-//            if (loadingView == null) loadingView = get(R.id.loadingView);
-//            loadingView.setVisibility(View.VISIBLE);
-//            loadingView.showLoading();
-        }
 //        mvpPresenter.getNewsList(mTitleCode);
         Map<String, Object> map = new HashMap<>();
         map.put("pageNum", 1);
@@ -493,6 +485,8 @@ public class NewsFragment extends BaseFragment {
                     srl.setRefreshing(false);
                     return;
                 }
+
+
                 mAdapter.setNewData(data.getData());
                 mAdapter.setOnRecyclerViewItemClickListener((view, i) -> {
                     Intent intent = null;

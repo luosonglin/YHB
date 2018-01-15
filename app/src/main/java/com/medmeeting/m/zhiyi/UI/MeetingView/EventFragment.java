@@ -24,6 +24,7 @@ import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
+import com.medmeeting.m.zhiyi.Widget.LoadingFlashView;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -33,9 +34,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import rx.Observer;
+
+import static java.lang.Thread.sleep;
 
 /**
  * @author NapoleonRohaha_Songlin
@@ -51,6 +56,8 @@ public class EventFragment extends Fragment {
     private SwipeRefreshLayout srl;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
+
+    LoadingFlashView loadingView;
 
     private View mHeaderView;
     private com.youth.banner.Banner mBanner;
@@ -97,6 +104,10 @@ public class EventFragment extends Fragment {
         mAdapter.openLoadMore(8, true);
         mRecyclerView.setAdapter(mAdapter);
 
+        loadingView = (LoadingFlashView) view.findViewById(R.id.loadingView);
+        loadingView.showLoading();
+        mRecyclerView.setVisibility(View.INVISIBLE);
+
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_event_header, null);
         mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
         getMeetingService(eventType);
@@ -106,6 +117,7 @@ public class EventFragment extends Fragment {
             srl.setRefreshing(false);
             getMeetingService(eventType);
         });
+
     }
 
     private void getMeetingService(Integer eventType) {
@@ -221,6 +233,27 @@ public class EventFragment extends Fragment {
                     }
                 });
                 srl.setRefreshing(false);
+
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            sleep(320);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } finally {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loadingView.hideLoading();
+                                    mRecyclerView.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                    }
+                },1102);
             }
         }, map);
 

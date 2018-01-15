@@ -14,11 +14,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--<me.weyye.todaynews.ui.view.LoadingFlashView-->
+            <!--<com.medmeeting.m.zhiyi.Widget.LoadingFlashView-->
                 <!--android:id="@+id/loadingView"-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center"></me.weyye.todaynews.ui.view.LoadingFlashView>-->
+                <!--android:layout_gravity="center"/>-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
