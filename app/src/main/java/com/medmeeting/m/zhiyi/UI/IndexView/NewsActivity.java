@@ -468,8 +468,13 @@ public class NewsActivity extends AppCompatActivity {
 
                     UMWeb web = new UMWeb(Constant.Share_News_Article + blogId);
                     web.setTitle(title);//标题
+
                     if (photo != null) {
-                        web.setThumb(new UMImage(NewsActivity.this, photo));  //缩略图
+                        if (photo.contains(",")) {
+                            web.setThumb(new UMImage(NewsActivity.this, photo.split(",")[0]));  //缩略图
+                        } else {
+                            web.setThumb(new UMImage(NewsActivity.this, photo));  //缩略图
+                        }
                     } else {
                         web.setThumb(new UMImage(NewsActivity.this, R.mipmap.news_bg));
                     }
@@ -631,7 +636,7 @@ public class NewsActivity extends AppCompatActivity {
 //                    if (params.height == 4839) params.height = params.height + 4839;
                     mWebView.setLayoutParams(params);
 
-                    Log.e(NewsActivity.this.getLocalClassName(), "webview "+mWebView.getLayoutParams().height+" ");
+                    Log.e(NewsActivity.this.getLocalClassName(), "webview " + mWebView.getLayoutParams().height + " ");
                 }
             });
         }
