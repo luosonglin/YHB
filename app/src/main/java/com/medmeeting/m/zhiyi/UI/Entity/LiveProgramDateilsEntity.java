@@ -57,8 +57,6 @@ public class LiveProgramDateilsEntity {
     private Object firstOpenTime;
     private Object realEndTime;
     private int onlineCount;
-    private int countRatio;
-    private int countIncrement;
     private String liveStatus;
     private String des;
     private Object status;
@@ -72,6 +70,10 @@ public class LiveProgramDateilsEntity {
     private int payFalg;//是否购票 0:未购票，大于0:已购票 ,
     private boolean collectFlag;
     private int collectCount;
+    private int countRatio; //人数放大比例
+    private int countIncrement; //在线人数-固定增量
+
+
 
     public int getId() {
         return id;

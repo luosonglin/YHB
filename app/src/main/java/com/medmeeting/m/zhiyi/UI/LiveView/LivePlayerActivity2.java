@@ -43,7 +43,7 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 10/11/2017 7:47 AM
- * @describe TODO
+ * @describe 全屏直播的播放器
  * @email iluosonglin@gmail.com
  * @org Healife
  */
@@ -68,6 +68,8 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
     private boolean isPlay;
     private boolean isPause;
     private OrientationUtils orientationUtils;
+    private int countIncrement;
+    private int countRatio;
 
     //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -79,14 +81,17 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
         initChat(programId);
 
         detailPlayer = (LandLayoutLivePlayer) findViewById(R.id.detail_player);
-        initPlayer(getIntent().getStringExtra("url"), "","");
+
+        countIncrement = getIntent().getIntExtra("countIncrement", 0);
+        countRatio = getIntent().getIntExtra("countRatio", 1);
+        initPlayer(getIntent().getStringExtra("url"), "","", countIncrement, countRatio);
 
     }
 
     @Override
     public void recreate() {
         initChat(programId);
-        initPlayer(getIntent().getStringExtra("url"), "","");
+        initPlayer(getIntent().getStringExtra("url"), "","", countIncrement, countRatio);
         super.recreate();
     }
 
@@ -196,7 +201,7 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
     /**
      * **********************以下为播放器**********
      */
-    private void initPlayer(String url, String photo, String title) {
+    private void initPlayer(String url, String photo, String title, int countIncrement, int countRatio) {
         //外部辅助的旋转，帮助全屏
         orientationUtils = new OrientationUtils(this, detailPlayer);
         //初始化不打开外部的旋转
@@ -321,7 +326,7 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
                 LiveKit.getChatRoomSum(programId + "", 500, new RongIMClient.ResultCallback<ChatRoomInfo>() {
                     @Override
                     public void onSuccess(ChatRoomInfo chatRoomInfo) {
-                        sumTv.setText("" + chatRoomInfo.getTotalMemberCount());
+                        sumTv.setText("" + (countIncrement + chatRoomInfo.getTotalMemberCount() * countRatio));
                     }
 
                     @Override

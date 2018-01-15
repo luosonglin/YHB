@@ -266,7 +266,9 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 initFakerPlayer(url, data.getEntity().getCoverPhoto(), data.getEntity().getTitle(),
                         data.getEntity().getChargeType(), data.getEntity().getPrice(),
                         data.getEntity().getPayFalg(), data.getEntity().getRoomUserId(),
-                        data.getEntity().getLiveStatus());
+                        data.getEntity().getLiveStatus(),
+                        data.getEntity().getCountIncrement(),
+                        data.getEntity().getCountRatio());
 
 //                try {
 //                    audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
@@ -293,7 +295,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     }
 
     //liveStatus (string, optional): 直播状态（ready：准备中，play：直播中，wait：断开中，end：已结束） ,
-    private void initFakerPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId, String liveStatus) {
+    private void initFakerPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId, String liveStatus, int countIncrement, int countRatio) {
         Glide.with(LiveProgramDetailActivity2.this)
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -345,7 +347,10 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
                         startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
                                 .putExtra("programId", programId)
-                                .putExtra("url", url));
+                                .putExtra("url", url)
+                                .putExtra("countIncrement", countIncrement)
+                                .putExtra("countRatio", countRatio)
+                        );
 
                     });
                     break;
