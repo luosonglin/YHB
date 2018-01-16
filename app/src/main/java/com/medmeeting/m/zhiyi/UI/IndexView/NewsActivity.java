@@ -47,10 +47,10 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.medmeeting.m.zhiyi.Widget.LoadingFlashView;
 import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.LinkMovementMethodExt;
 import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.MessageSpan;
 import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.TextViewHtmlImageGetter;
-import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -67,7 +67,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -89,10 +88,10 @@ public class NewsActivity extends AppCompatActivity {
     TextView title;
     @Bind(R.id.content)
     TextView content;
+    @Bind(R.id.loadingView)
+    LoadingFlashView loadingView;
     @Bind(R.id.WebView)
     BridgeWebView mWebView;
-    @Bind(R.id.blog_image)
-    weiboGridView blogImage;
 
     @Bind(R.id.input_editor)
     EditText inputEditor;
@@ -237,6 +236,8 @@ public class NewsActivity extends AppCompatActivity {
         };
         content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
 
+        loadingView.showLoading();
+        mWebView.setVisibility(View.GONE);
         initWebView();
 
         //标签
@@ -256,25 +257,6 @@ public class NewsActivity extends AppCompatActivity {
         Matcher m = p.matcher(blogDetail.getContent());
         //分享
         initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), m.replaceAll("").trim());
-
-
-        //九图
-        if (blogDetail.getImages() == null) {
-            blogImage.setVisibility(View.GONE);
-            return;
-        }
-        blogImage.setVisibility(View.VISIBLE);
-
-        String blogImages = blogDetail.getImages();
-        if (blogImages != null) {
-            List<String> images = new ArrayList<>();
-            for (String i : blogImages.split(",")) {
-                images.add(i);
-            }
-            blogImage.render(images);
-        } else {
-            blogImage.setVisibility(View.GONE);
-        }
     }
 
     private void getCommentService(int blogId) {
@@ -628,6 +610,11 @@ public class NewsActivity extends AppCompatActivity {
             NewsActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+//                    ViewGroup.LayoutParams params1 = mWebView.getLayoutParams();
+//                    params1.height = Integer.parseInt(height) * 3;
+//                    frameLayout.setLayoutParams(params1);
+
+
                     //为ViewPager设置高度
                     ViewGroup.LayoutParams params = mWebView.getLayoutParams();
 
@@ -636,10 +623,37 @@ public class NewsActivity extends AppCompatActivity {
 //                    if (params.height == 4839) params.height = params.height + 4839;
                     mWebView.setLayoutParams(params);
 
+
                     Log.e(NewsActivity.this.getLocalClassName(), "webview " + mWebView.getLayoutParams().height + " ");
                 }
             });
         }
+
+        @JavascriptInterface
+        public void isFinished(final String string) {
+            try {
+                // 解析js传递过来的json串
+                JSONObject mJson = new JSONObject(string);
+                if (mJson.optString("isFinished").equals("true")) {
+                    NewsActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingView.hideLoading();
+                            loadingView.setVisibility(View.GONE);
+                            mWebView.setVisibility(View.VISIBLE);
+                            Log.e(NewsActivity.this.getLocalClassName(), "Finished");
+                        }
+                    });
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Log.e(NewsActivity.this.getLocalClassName(), height);
+
+        }
+
 
         @JavascriptInterface
         public void printWebLog(String str) {

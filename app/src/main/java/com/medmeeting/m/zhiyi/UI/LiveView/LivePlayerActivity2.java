@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -76,6 +77,7 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_player2);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         programId = getIntent().getExtras().getInt("programId");
         initChat(programId);
@@ -336,6 +338,8 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
                 mHandler2.postDelayed(this, 2000);
             }
         });
+
+        detailPlayer.getStartButton().performClick();
     }
 
     private Handler mHandler2;

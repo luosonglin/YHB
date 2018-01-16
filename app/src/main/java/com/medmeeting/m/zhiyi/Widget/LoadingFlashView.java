@@ -31,7 +31,6 @@ public class LoadingFlashView  extends FrameLayout {
     private ImageView mLoad1;
     private ImageView mLoad2;
     private ImageView mLoad3;
-    private ImageView mLoad4;
     private AnimatorSet mAnimatorSet;
 
     public LoadingFlashView(Context context) {

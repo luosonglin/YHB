@@ -125,7 +125,9 @@
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.IndexView.NewsActivity" />
+            android:name=".UI.IndexView.NewsActivity"
+            android:windowSoftInputMode="stateHidden"
+            />
         <activity
             android:name=".UI.OtherVIew.WelcomeGuideActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" />
@@ -284,6 +286,7 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".UI.LiveView.LivePlayerActivity2"
             android:screenOrientation="landscape"
+            android:configChanges="orientation"
             />
 
         <activity android:name=".UI.MineView.MyCollectActivity" />

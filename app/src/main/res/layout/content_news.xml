@@ -82,37 +82,33 @@
                 android:text="..."
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
-            <com.github.lzyzsd.jsbridge.BridgeWebView
-                android:id="@+id/WebView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="6dp">
-
-                <com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView
-                    android:id="@+id/blog_image"
-                    android:layout_width="match_parent"
+                <com.medmeeting.m.zhiyi.Widget.LoadingFlashView
+                    android:id="@+id/loadingView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:spacing="4dp" />
-            </LinearLayout>
+                    android:layout_marginTop="200dp"
+                    android:layout_marginBottom="300dp"
+                    android:layout_gravity="center"/>
 
+                <com.github.lzyzsd.jsbridge.BridgeWebView
+                    android:id="@+id/WebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="标签: "
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/label_rv_list"
                     android:layout_width="match_parent"

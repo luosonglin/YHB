@@ -35,7 +35,7 @@ public class MyOrderAdapter extends BaseQuickAdapter<VideoListEntity> {
 
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.sum, "观看 " + item.getPlayCount() + "    收藏 " + item.getCollectCount())
-                .setText(R.id.time, DateUtils.formatDate(item.getCreateTime(), DateUtils.TYPE_08));
+                .setText(R.id.time, DateUtils.formatDate(item.getCreateTime(), DateUtils.TYPE_06));
 
         if (item.getChargeType().equals("no")) {
             helper.getView(R.id.price).setVisibility(View.GONE);
