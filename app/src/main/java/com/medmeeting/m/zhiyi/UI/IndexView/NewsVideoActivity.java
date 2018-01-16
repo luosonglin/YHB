@@ -81,6 +81,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -281,7 +283,16 @@ public class NewsVideoActivity extends AppCompatActivity {
 
                 initPlayer(data.getEntity().getBlog().getVideoUrl(), data.getEntity().getBlog().getImages(), data.getEntity().getBlog().getTitle());
 
-                initShare(data.getEntity().getBlog().getId(), data.getEntity().getBlog().getTitle(), data.getEntity().getBlog().getImages(), data.getEntity().getBlog().getAuthorName());
+                //正则表达式,过滤新闻内容
+                String regEx = "<([^>]*)>"; // 过滤所有以<开头以>结尾的标签    JS用"/<[^>]*>/g";  iOS用"<[^>]*>|\n"
+                Pattern p = Pattern.compile(regEx);
+                Matcher m = p.matcher(data.getEntity().getBlog().getContent());
+
+                Pattern p2 = Pattern.compile("&([a-zA-Z])+;");
+                Matcher m2 = p2.matcher(m.replaceAll("").trim());
+
+                //分享
+                initShare(data.getEntity().getBlog().getId(), data.getEntity().getBlog().getTitle(), data.getEntity().getBlog().getImages(), m2.replaceAll("").trim());
             }
         }, map);
     }
@@ -320,7 +331,7 @@ public class NewsVideoActivity extends AppCompatActivity {
         };
         content.setMovementMethod(LinkMovementMethodExt.getInstance(handler, ImageSpan.class));
 
-        initWebView();
+//        initWebView();
 
         //九图
         if (blogDetail.getImages() == null) {

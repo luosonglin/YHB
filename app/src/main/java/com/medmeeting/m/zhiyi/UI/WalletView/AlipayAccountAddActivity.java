@@ -113,6 +113,9 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
         } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon)) && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
             ToastUtils.show(AlipayAccountAddActivity.this, "请上传身份证正面照");
             return;
+        } else if (code.getText().toString().trim().equals("")) {
+            ToastUtils.show(AlipayAccountAddActivity.this, "请输入手机验证码");
+            return;
         } else {
             EditAlipayReqEntity alipay = new EditAlipayReqEntity();
             alipay.setAccountName(accountName.getText().toString().trim());

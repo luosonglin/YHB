@@ -255,8 +255,12 @@ public class NewsActivity extends AppCompatActivity {
         String regEx = "<([^>]*)>"; // 过滤所有以<开头以>结尾的标签    JS用"/<[^>]*>/g";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(blogDetail.getContent());
+
+        Pattern p2 = Pattern.compile("&([a-zA-Z])+;");
+        Matcher m2 = p2.matcher(m.replaceAll("").trim());
+
         //分享
-        initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), m.replaceAll("").trim());
+        initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), m2.replaceAll("").trim());
     }
 
     private void getCommentService(int blogId) {

@@ -10,7 +10,6 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
-import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -37,14 +36,6 @@ public class WaitMeetingAdapter extends BaseQuickAdapter<VAppMyEvents> {
                 .setText(R.id.address, item.getAddress() + "")
                 .setText(R.id.ha1, DateUtils.formatDate(item.getStateDate(), DateUtils.TYPE_07))
                 .setText(R.id.ha2, "~ " + DateUtils.formatDate(item.getEndDate(), DateUtils.TYPE_07));
-
-        Glide.with(mContext)
-                .load(item.getBanner())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .crossFade()
-                .transform(new GlideCircleTransform(mContext))
-                .placeholder(R.mipmap.avator_default)
-                .into((ImageView) helper.getView(R.id.avatar));
 
         helper.getView(R.id.item_meeting).setOnClickListener(view -> {
             Intent intent = new Intent(mContext, MeetingDetailActivity.class);

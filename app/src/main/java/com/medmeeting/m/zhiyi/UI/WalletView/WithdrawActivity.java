@@ -154,6 +154,35 @@ public class WithdrawActivity extends AppCompatActivity {
             amount.setEnabled(true);
         });
 
+        if (!amount.getText().toString().trim().equals("")) {
+            HttpData.getInstance().HttpDataGetTallage(new Observer<HttpResult3<Object, TallageDto>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    ToastUtils.show(WithdrawActivity.this, e.getMessage());
+                }
+
+                @Override
+                public void onNext(HttpResult3<Object, TallageDto> result) {
+                    if (!result.getStatus().equals("success")) {
+                        ToastUtils.show(WithdrawActivity.this, result.getMsg());
+                        return;
+                    }
+                    Log.e("withdrawType", withdrawType + "");
+                    if (withdrawType.equals("public")) {
+                        actualArrival.setText("实际到账：" + amount.getText().toString().trim() + "元");
+                        tax.setText("扣税： 0元");
+                    } else {
+                        actualArrival.setText("实际到账：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getAmount() + "</font>" + "元"));
+                        tax.setText("扣税：" + Html.fromHtml("<font color='#00BFFF'>" + result.getEntity().getTallages() + "</font>" + "元"));
+                    }
+                }
+            }, Double.parseDouble(amount.getText().toString().trim()));
+        }
     }
 
     /**
@@ -175,34 +204,45 @@ public class WithdrawActivity extends AppCompatActivity {
                 amount.setText(getIntent().getStringExtra("balance"));
                 break;
             case R.id.confirm:
-                extractEntity.setUserId(Data.getUserId());
-                extractEntity.setAmount(Double.parseDouble(amount.getText().toString().trim()));
-                extractEntity.setExtractPassword(extractPassword.getText().toString().trim());
-                HttpData.getInstance().HttpDataWithdraw(new Observer<HttpResult3>() {
-                    @Override
-                    public void onCompleted() {
+                if(amount.getText().toString().trim().equals("")) {
+                    ToastUtils.show(WithdrawActivity.this, "请输入金额");
+                    return;
+                } else if (extractPassword.getText().toString().trim().equals("")) {
+                    ToastUtils.show(WithdrawActivity.this, "请输入金额");
+                    return;
+                } else if (extractType.getText().toString().trim().equals("")) {
+                    ToastUtils.show(WithdrawActivity.this, "请选择收款方式");
+                    return;
+                } else {
+                    extractEntity.setUserId(Data.getUserId());
+                    extractEntity.setAmount(Double.parseDouble(amount.getText().toString().trim()));
+                    extractEntity.setExtractPassword(extractPassword.getText().toString().trim());
+                    HttpData.getInstance().HttpDataWithdraw(new Observer<HttpResult3>() {
+                        @Override
+                        public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(HttpResult3 httpResult3) {
-                        if (!httpResult3.getStatus().equals("success")) {
-                            ToastUtils.show(WithdrawActivity.this, httpResult3.getMsg());
-                            return;
                         }
-                        ToastUtils.show(WithdrawActivity.this, httpResult3.getMsg());
-                        Intent i = new Intent(WithdrawActivity.this, WithdrawStatusActivity.class);
-                        i.putExtra("amount", amount.getText().toString().trim());
-                        startActivity(i);
-                        finish();
-                    }
-                }, extractEntity);
-                break;
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3 httpResult3) {
+                            if (!httpResult3.getStatus().equals("success")) {
+                                ToastUtils.show(WithdrawActivity.this, httpResult3.getMsg());
+                                return;
+                            }
+                            ToastUtils.show(WithdrawActivity.this, httpResult3.getMsg());
+                            Intent i = new Intent(WithdrawActivity.this, WithdrawStatusActivity.class);
+                            i.putExtra("amount", amount.getText().toString().trim());
+                            startActivity(i);
+                            finish();
+                        }
+                    }, extractEntity);
+                    break;
+                }
         }
     }
 
@@ -218,6 +258,7 @@ public class WithdrawActivity extends AppCompatActivity {
 
 
             withdrawType = data.getStringExtra("withdrawType");
+            initView();
         }
 
     }
