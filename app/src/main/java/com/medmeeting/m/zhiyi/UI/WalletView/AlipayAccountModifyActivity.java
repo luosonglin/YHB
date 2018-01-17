@@ -19,7 +19,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
-import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
@@ -92,8 +91,8 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
 
     private void initView() {
         walletAccountDto = (WalletAccountDto) getIntent().getSerializableExtra("walletAccount");
-        name.setText(walletAccountDto.getAccountName());
-        account.setText(walletAccountDto.getAccountNumber());
+        name.setHint(walletAccountDto.getAccountName());
+        account.setHint(walletAccountDto.getAccountNumber());
 
         if (walletAccountDto.getPublicPrivateType().equals("PUBLIC")) {
             identityRlyt.setVisibility(View.GONE);
@@ -101,7 +100,7 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
             accountName0.setText("收款方");
         } else {
             accountName0.setText("姓名");
-            identityNumber.setText(walletAccountDto.getIdentityNumber());
+            identityNumber.setHint(walletAccountDto.getIdentityNumber());
             imageUrl = walletAccountDto.getIdentityImage();
             Glide.with(AlipayAccountModifyActivity.this)
                     .load(imageUrl)
@@ -140,56 +139,72 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
                 } else if (account.getText().toString().trim().equals("")) {
                     ToastUtils.show(AlipayAccountModifyActivity.this, "请输入支付宝账号／手机号码");
                     return;
-                } else if (identityNumber.getText().toString().trim().equals("") && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
-                    ToastUtils.show(AlipayAccountModifyActivity.this, "请输入身份证号");
-                    return;
-                } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon)) && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
-                    ToastUtils.show(AlipayAccountModifyActivity.this, "请上传身份证正面照");
-                    return;
-                } else if (code.getText().toString().trim().equals("")) {
-                    ToastUtils.show(AlipayAccountModifyActivity.this, "请输入手机验证码");
-                    return;
-                } else {
-                    EditAlipayReqEntity alipay = new EditAlipayReqEntity();
-                    alipay.setAccountName(name.getText().toString().trim());
-                    alipay.setAccountNumber(account.getText().toString().trim());
+                }
+                if (!walletAccountDto.getPublicPrivateType().equals("PUBLIC")) {
+                    if (identityNumber.getText() == null || identityNumber.getText().toString().trim().equals("") && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
+                        ToastUtils.show(AlipayAccountModifyActivity.this, "请输入身份证号");
+                        return;
+                    } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon)) && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
+                        ToastUtils.show(AlipayAccountModifyActivity.this, "请上传身份证正面照");
+                        return;
+                    } else if (code.getText().toString().trim().equals("")) {
+                        ToastUtils.show(AlipayAccountModifyActivity.this, "请输入手机验证码");
+                        return;
+                    }
+                }
+
+                EditAlipayReqEntity alipay = new EditAlipayReqEntity();
+                alipay.setAccountName(name.getText().toString().trim());
+                alipay.setAccountNumber(account.getText().toString().trim());
+                if (!walletAccountDto.getPublicPrivateType().equals("PUBLIC")) {
                     alipay.setIdentityNumber(identityNumber.getText().toString().trim());
                     alipay.setIdentityImage(imageUrl + "");
-                    alipay.setVerCode(code.getText().toString().trim());
-                    alipay.setPublicPrivateType(walletAccountDto.getPublicPrivateType());
-
-                    HttpData.getInstance().HttpDataSetAlipay(new Observer<HttpResult3>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ToastUtils.show(AlipayAccountModifyActivity.this, "" + e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(HttpResult3 httpResult3) {
-                            if (!httpResult3.getStatus().equals("success")) {
-                                ToastUtils.show(AlipayAccountModifyActivity.this, httpResult3.getMsg());
-                                return;
-                            }
-                            ToastUtils.show(AlipayAccountModifyActivity.this, "修改成功");
-                            finish();
-                        }
-                    }, alipay);
                 }
+                alipay.setVerCode(code.getText().toString().trim());
+                alipay.setPublicPrivateType(walletAccountDto.getPublicPrivateType());
+
+                HttpData.getInstance().HttpDataSetAlipay(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(AlipayAccountModifyActivity.this, "" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 httpResult3) {
+                        if (!httpResult3.getStatus().equals("success")) {
+                            ToastUtils.show(AlipayAccountModifyActivity.this, httpResult3.getMsg());
+                            return;
+                        }
+                        ToastUtils.show(AlipayAccountModifyActivity.this, "修改成功");
+                        finish();
+                    }
+                }, alipay);
+
                 break;
         }
     }
 
     private void getPhoneCode() {
 
-        if (!PhoneUtils.isMobile(mobilePhone.getText().toString().trim())) {
-            ToastUtils.show(AlipayAccountModifyActivity.this, "手机号格式不正确,请重新输入");
-            return;
-        }
+//        if (walletAccountDto.getPublicPrivateType().equals("PUBLIC")) {
+//            Log.e(getLocalClassName(), " 1 "+name.getText().toString().trim());
+//            if (!PhoneUtils.isMobile(name.getText().toString().trim())) {
+//                ToastUtils.show(AlipayAccountModifyActivity.this, "手机号格式不正确,请重新输入");
+//                return;
+//            }
+//        } else {
+//
+//            Log.e(getLocalClassName(), " 2 "+mobilePhone.getText().toString().trim());
+//            if (!PhoneUtils.isMobile(mobilePhone.getText().toString().trim())) {
+//                ToastUtils.show(AlipayAccountModifyActivity.this, "手机号格式不正确,请重新输入");
+//                return;
+//            }
+//        }
         timer.start();
         HttpData.getInstance().HttpDataGetAuthMessage(new Observer<HttpResult3>() {
             @Override

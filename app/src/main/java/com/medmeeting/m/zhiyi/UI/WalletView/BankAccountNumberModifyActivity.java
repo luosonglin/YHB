@@ -128,7 +128,7 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
             accountName0.setText("账户名称");
         } else {
             accountName0.setText("姓名");
-            identityNumber.setText(walletAccountDto.getIdentityNumber());
+            identityNumber.setHint(walletAccountDto.getIdentityNumber());
             imageUrl = walletAccountDto.getIdentityImage();
             Glide.with(BankAccountNumberModifyActivity.this)
                     .load(imageUrl)
