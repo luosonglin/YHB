@@ -102,6 +102,7 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
             accountName0.setText("姓名");
             identityNumber.setHint(walletAccountDto.getIdentityNumber());
             imageUrl = walletAccountDto.getIdentityImage();
+            Log.e(getLocalClassName(), imageUrl+"");
             Glide.with(AlipayAccountModifyActivity.this)
                     .load(imageUrl)
                     .crossFade()
@@ -141,10 +142,10 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
                     return;
                 }
                 if (!walletAccountDto.getPublicPrivateType().equals("PUBLIC")) {
-                    if (identityNumber.getText() == null || identityNumber.getText().toString().trim().equals("") && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
+                    if (identityNumber.getText() == null || identityNumber.getText().toString().trim().equals("")) {
                         ToastUtils.show(AlipayAccountModifyActivity.this, "请输入身份证号");
                         return;
-                    } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon)) && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
+                    } else if (imageUrl.equals("****")){//(identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon))) {
                         ToastUtils.show(AlipayAccountModifyActivity.this, "请上传身份证正面照");
                         return;
                     } else if (code.getText().toString().trim().equals("")) {

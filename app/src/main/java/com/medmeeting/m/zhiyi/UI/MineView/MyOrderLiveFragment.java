@@ -66,7 +66,12 @@ public class MyOrderLiveFragment extends Fragment {
         //直播订单
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new MyPayLiveAdapter(R.layout.item_video_others, null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
@@ -83,7 +88,12 @@ public class MyOrderLiveFragment extends Fragment {
         //视频订单
         mRecyclerView2 = (RecyclerView) view.findViewById(R.id.rv_list2);
         mRecyclerView2.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        mRecyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        } );
         mRecyclerView2.setHasFixedSize(true);
         mAdapter2 = new MyOrderAdapter(R.layout.item_video_others, null);
         mAdapter2.openLoadAnimation(BaseQuickAdapter.SCALEIN);

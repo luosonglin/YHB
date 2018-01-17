@@ -328,7 +328,7 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
                 LiveKit.getChatRoomSum(programId + "", 500, new RongIMClient.ResultCallback<ChatRoomInfo>() {
                     @Override
                     public void onSuccess(ChatRoomInfo chatRoomInfo) {
-                        sumTv.setText("" + (countIncrement + chatRoomInfo.getTotalMemberCount() * countRatio));
+                        sumTv.setText("  " + (countIncrement + chatRoomInfo.getTotalMemberCount() * countRatio));
                     }
 
                     @Override

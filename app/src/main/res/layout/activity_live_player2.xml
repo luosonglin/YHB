@@ -59,21 +59,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
 
         <TextView
             android:id="@+id/sum"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="28dp"
             android:layout_gravity="center"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:drawableLeft="@mipmap/sum"
             android:layout_margin="10dp"
-            android:gravity="bottom"
             android:layout_marginTop="24dp"
             android:paddingRight="10dp"
-            android:text=""
+            android:text=" "
+            android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 

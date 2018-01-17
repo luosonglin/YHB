@@ -207,28 +207,28 @@ public class MyOrderMeetingFragment extends Fragment {
             try {
                 // 解析js传递过来的json串
                 JSONObject mJson = new JSONObject(info);
-//                info = mJson.optString("EVENT_PAY");
 
                 eventPay = mJson.optString("EVENT_PAY");//点"去支付"
                 eventId = mJson.optString("EVENT");
 
-                Log.e(" PAY1", eventPay);
+                Log.e(" eventPay", eventPay);
+                Log.e(" eventId", eventId + "");
+
+                if (eventId.equals("null")) {
+                    Log.e(" PAY1", eventPay);
+                    Intent i = new Intent(getActivity(), MeetingPayOrderActivity.class);
+                    i.putExtra("url", eventPay);
+                    startActivity(i);
+                } else if (eventPay.equals("null")) {
+                    Log.e(" PAY2", eventId);
+                    startActivity(new Intent(getActivity(), MeetingDetailActivity.class)
+                            .putExtra("eventId", Integer.parseInt(eventId))
+                    );
+                } else {
+                    Log.e(" PAY3", eventPay+ " " +eventId);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
-            Log.e(" PAY2", eventPay); //E/ PAY: alipay|378|378_20171221131135754_7
-
-            if (eventPay != null && eventId == null) {
-                Log.e(" PAY3", eventPay);
-                Intent i = new Intent(getActivity(), MeetingPayOrderActivity.class);
-                i.putExtra("url", eventPay);
-                startActivity(i);
-            }
-            if (eventId != null && eventPay == null) {
-                Log.e(" PAY4", eventId);
-                startActivity(new Intent(getActivity(), MeetingDetailActivity.class)
-                        .putExtra("eventId", Integer.parseInt(eventId))
-                );
             }
         }
 

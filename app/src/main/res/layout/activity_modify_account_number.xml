@@ -259,7 +259,6 @@
                 android:layout_toLeftOf="@+id/get_code_textview"
                 android:background="@null"
                 android:hint="请输入验证码"
-                android:imeActionId="@+id/login"
                 android:imeActionLabel="Sign in"
                 android:imeOptions="actionUnspecified"
                 android:inputType="number"

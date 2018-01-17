@@ -259,6 +259,9 @@ public class NewsActivity extends AppCompatActivity {
         Pattern p2 = Pattern.compile("&([a-zA-Z])+;");
         Matcher m2 = p2.matcher(m.replaceAll("").trim());
 
+        String shareContent = m2.replaceAll("").trim();
+
+        Log.e(getLocalClassName(), shareContent.replaceAll("\\s*", "")+"");
         //分享
         initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), m2.replaceAll("").trim());
     }

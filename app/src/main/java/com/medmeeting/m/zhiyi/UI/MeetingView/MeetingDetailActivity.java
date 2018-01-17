@@ -323,7 +323,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
             ToastUtils.show(MeetingDetailActivity.this, "JSHook.JavaMethod() called! + " + p);
         }
 
-
         public String GETUID;
 
         @JavascriptInterface

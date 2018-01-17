@@ -19,7 +19,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
-import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
+import com.medmeeting.m.zhiyi.UI.IndexView.NewsVideoActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
@@ -114,8 +114,8 @@ public class MyCollectBlogFragment extends Fragment
                             intent.putExtra("blogId", data.getData().get(i).getId());
                             break;
                         case "3":
-                            intent = new Intent(getActivity(), VideoDetailActivity.class);
-                            intent.putExtra("videoId", data.getData().get(i).getId());
+                            intent = new Intent(getActivity(), NewsVideoActivity.class);
+                            intent.putExtra("blogId", data.getData().get(i).getId());
                             break;
                     }
                     startActivity(intent);

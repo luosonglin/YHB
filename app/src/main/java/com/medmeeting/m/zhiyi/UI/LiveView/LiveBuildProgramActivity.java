@@ -105,7 +105,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
     //新增直播间
     private int userId;  //用户ID
     private String vidoTitle = "";  //直播间标题
-    private long expectBeginTime;  //预计开始时间（预约模式为马上直播时，可传null）
+    private long expectBeginTime = System.currentTimeMillis();  //预计开始时间（预约模式为马上直播时，可传null）
     private long expectEndTime;  //预计结束时间
     private String vidoLabel = "";  //直播间标题
     private String chargeType = "no";  //付费方式（免费：yes，收费：no）

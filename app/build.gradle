@@ -96,7 +96,7 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 //这里修改apk文件名
-                def fileName = "yihuibao_test_develop_${defaultConfig.versionCode}-${defaultConfig.versionName}-${releaseTime()}.apk"
+                def fileName = "yihuibao_release_${defaultConfig.versionCode}-${defaultConfig.versionName}-${releaseTime()}.apk"
 //                def fileName = "yihuibao_release_${variant.productFlavors[0].name}-${defaultConfig.versionCode}-${defaultConfig.versionName}-${releaseTime()}.apk"
                 output.outputFile = new File(outputFile.parent, fileName)
             }

@@ -24,7 +24,6 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
         Glide.with(mContext)
                 .load(item.getCoverPhoto())
                 .crossFade()
-                .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06))

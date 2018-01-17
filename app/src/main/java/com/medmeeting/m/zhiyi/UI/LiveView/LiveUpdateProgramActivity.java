@@ -171,7 +171,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
             public void onNext(HttpResult3<Object, LiveDto> data) {
                 Glide.with(LiveUpdateProgramActivity.this)
                         .load(data.getEntity().getCoverPhoto())
-                        .crossFade()
+//                        .crossFade()
                         .transform(new GlideCircleTransform(LiveUpdateProgramActivity.this))
                         .into(new GlideDrawableImageViewTarget(livePic) {
                             @Override

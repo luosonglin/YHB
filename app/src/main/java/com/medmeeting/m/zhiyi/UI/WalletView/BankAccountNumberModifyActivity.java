@@ -172,46 +172,52 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
                 } else if (mobilePhone.getText().toString().trim().equals("")) {
                     ToastUtils.show(BankAccountNumberModifyActivity.this, "请输入手机号");
                     return;
-                } else if (identityNumber.getText().toString().trim().equals("") && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
-                    ToastUtils.show(BankAccountNumberModifyActivity.this, "请输入身份证号");
+                } else if (code.getText().toString().trim().equals("")) {
+                    ToastUtils.show(BankAccountNumberModifyActivity.this, "请输入验证码");
                     return;
-                } else if (identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon)) && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
-                    ToastUtils.show(BankAccountNumberModifyActivity.this, "请上传身份证正面照");
-                    return;
-                } else {
-                    EditBankCardReqEntity bankCard = new EditBankCardReqEntity();
-                    bankCard.setAccountName(accountName.getText().toString().trim());
-                    bankCard.setBankName(bankName.getText().toString().trim());
-                    bankCard.setBankAddress(bankAddress.getText().toString().trim());
-                    bankCard.setAccountNumber(accountNumber.getText().toString().trim());
-                    bankCard.setMobilePhone(mobilePhone.getText().toString().trim());
-                    bankCard.setIdentityNumber(identityNumber.getText().toString().trim());
-                    bankCard.setIdentityImage(imageUrl + "");
-                    bankCard.setVerCode(code.getText().toString().trim());
-                    bankCard.setPublicPrivateType(walletAccountDto.getPublicPrivateType());
-
-                    HttpData.getInstance().HttpDataSetBankCard(new Observer<HttpResult3>() {
-                        @Override
-                        public void onCompleted() {
-
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            ToastUtils.show(BankAccountNumberModifyActivity.this, "" + e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(HttpResult3 httpResult3) {
-                            if (!httpResult3.getStatus().equals("success")) {
-                                ToastUtils.show(BankAccountNumberModifyActivity.this, httpResult3.getMsg());
-                            }
-                            ToastUtils.show(BankAccountNumberModifyActivity.this, "修改成功");
-                            finish();
-                        }
-                    }, bankCard);
-                    break;
                 }
+                if (!walletAccountDto.getPublicPrivateType().equals("PUBLIC")) {
+                    if (identityNumber.getText().toString().trim().equals("") && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
+                        ToastUtils.show(BankAccountNumberModifyActivity.this, "请输入身份证号");
+                        return;
+                    } else if (imageUrl.equals("")){//(identityImage.getDrawable().equals(getResources().getDrawable(R.mipmap.wallet_add_identity_number_icon)) && getIntent().getStringExtra("publicPrivateType").equals("PRIVATE")) {
+                        ToastUtils.show(BankAccountNumberModifyActivity.this, "请上传身份证正面照");
+                        return;
+                    }
+                }
+
+                EditBankCardReqEntity bankCard = new EditBankCardReqEntity();
+                bankCard.setAccountName(accountName.getText().toString().trim());
+                bankCard.setBankName(bankName.getText().toString().trim());
+                bankCard.setBankAddress(bankAddress.getText().toString().trim());
+                bankCard.setAccountNumber(accountNumber.getText().toString().trim());
+                bankCard.setMobilePhone(mobilePhone.getText().toString().trim());
+                bankCard.setIdentityNumber(identityNumber.getText().toString().trim());
+                bankCard.setIdentityImage(imageUrl + "");
+                bankCard.setVerCode(code.getText().toString().trim());
+                bankCard.setPublicPrivateType(walletAccountDto.getPublicPrivateType());
+
+                HttpData.getInstance().HttpDataSetBankCard(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(BankAccountNumberModifyActivity.this, "" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 httpResult3) {
+                        if (!httpResult3.getStatus().equals("success")) {
+                            ToastUtils.show(BankAccountNumberModifyActivity.this, httpResult3.getMsg());
+                        }
+                        ToastUtils.show(BankAccountNumberModifyActivity.this, "修改成功");
+                        finish();
+                    }
+                }, bankCard);
+                break;
         }
     }
 

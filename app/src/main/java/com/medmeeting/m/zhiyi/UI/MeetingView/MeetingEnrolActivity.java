@@ -637,7 +637,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
 
             // Check that the response is a good one
             if (resultCode == Activity.RESULT_OK) {
-                if (data == null && !TextUtils.isEmpty(data.getDataString())) {
+                if (data == null) {    //&& !TextUtils.isEmpty(data.getDataString())
                     // If there is not data, then we may have taken a photo
                     if (mCameraPhotoPath != null) {
                         Log.d("camera_photo_path", mCameraPhotoPath);
