@@ -17,7 +17,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -342,16 +341,17 @@ public class LiveDetailActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         //为ViewPager设置高度
-        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
-        Log.e(TAG, this.getWindowManager().getDefaultDisplay().getHeight() + " " + params.height + " ");
-
-        viewPager.setLayoutParams(params);
-        Log.e(TAG, viewPager.getHeight() + " " + viewPager.getLayoutParams().height);
+//        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+//        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
+//        Log.e(TAG, this.getWindowManager().getDefaultDisplay().getHeight() + " " + params.height + " ");
+//
+//        viewPager.setLayoutParams(params);
+//        Log.e(TAG, viewPager.getHeight() + " " + viewPager.getLayoutParams().height);
 
         setUpViewPager(viewPager, roomId, des);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).select();
     }
 
     private void setUpViewPager(ViewPager viewPager, Integer roomId, String des) {
@@ -359,7 +359,6 @@ public class LiveDetailActivity extends AppCompatActivity {
 
         mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播");
         mIndexChildAdapter.addFragment(VideoDetailOtherFragment.newInstance(roomId), "视频");
-//        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "视频");
         mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "详情");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数

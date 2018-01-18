@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -40,6 +39,7 @@ import com.medmeeting.m.zhiyi.UI.Adapter.IndexChildAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoOrderDto;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -63,7 +63,6 @@ import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.util.Map;
-import java.util.Objects;
 
 import rx.Observer;
 
@@ -198,8 +197,29 @@ public class VideoDetailActivity extends AppCompatActivity {
                     return;
                 }
 
-                initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
-                        data.getEntity().getUserId(), data.getEntity().isPayFlag());
+                if (data.getEntity().getUserId() == Data.getUserId()) {
+                    HttpData.getInstance().HttpDataGetVideo2(new Observer<HttpResult3<Object, VideoInfo>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3<Object, VideoInfo> data) {
+                            initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), 0,
+                                    data.getEntity().getUserId(), true);
+                        }
+                    }, videoId);
+                } else {
+                    initPlayer(data.getEntity().getUrl(), data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
+                            data.getEntity().getUserId(), data.getEntity().isPayFlag());
+                }
+
 
                 initTagsView(data.getEntity().getVideoId(), data.getEntity().getRoomId(), data.getEntity().getUserId());
 
@@ -343,7 +363,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         /**
          * 对比userId chargeType url
          */
-        if (Objects.equals(Data.getUserId(), userId)) {
+        if (Data.getUserId() == userId) {
             detailPlayer.getStartButton().setVisibility(View.VISIBLE);
             detailPlayer.getBuyButton().setVisibility(View.GONE);
         } else {

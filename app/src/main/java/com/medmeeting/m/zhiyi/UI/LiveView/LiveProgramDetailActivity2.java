@@ -18,14 +18,12 @@ import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -96,7 +94,7 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
  */
 public class LiveProgramDetailActivity2 extends AppCompatActivity implements Handler.Callback {
 
-    NestedScrollView postDetailNestedScroll;
+//    NestedScrollView postDetailNestedScroll;
     LandLayoutLivePlayer detailPlayer;
     RelativeLayout activityDetailPlayer;
 
@@ -131,7 +129,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_program_detail2);
 
-        postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
+//        postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
         detailPlayer = (LandLayoutLivePlayer) findViewById(R.id.detail_player);
         activityDetailPlayer = (RelativeLayout) findViewById(R.id.activity_detail_player);
 
@@ -605,11 +603,11 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         //为ViewPager设置高度
-        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-//        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
-        params.height = this.getWindowManager().getDefaultDisplay().getHeight() + 100 * 1;//800
-
-        viewPager.setLayoutParams(params);
+//        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+////        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
+//        params.height = this.getWindowManager().getDefaultDisplay().getHeight() + 100 * 1;//800
+//
+//        viewPager.setLayoutParams(params);
 
         setUpViewPager(viewPager, liveProgramDateilsEntity);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout

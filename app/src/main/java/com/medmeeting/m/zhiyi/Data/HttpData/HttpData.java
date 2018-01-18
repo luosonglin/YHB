@@ -68,6 +68,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
@@ -696,6 +697,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetMyEvents(Observer<HttpResult3<VAppMyEvents, Object>> observer, Integer type) {
         Observable observable = service_live.getMyEvents(type);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetVideo2(Observer<HttpResult3<Object, VideoInfo>> observer, Integer videoId) {
+        Observable observable = service_live.getVideoDetail2(videoId);
         setSubscribe(observable, observer);
     }
 

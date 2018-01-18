@@ -442,5 +442,4 @@ public class MyOrderMeetingFragment extends Fragment {
 
         return sIsWXAppInstalledAndSupported;
     }
-
 }

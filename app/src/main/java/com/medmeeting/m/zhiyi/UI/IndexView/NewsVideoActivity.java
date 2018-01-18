@@ -48,6 +48,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
@@ -131,6 +132,9 @@ public class NewsVideoActivity extends AppCompatActivity {
     @Bind(R.id.video_source_rlyt)
     RelativeLayout videoSourceRlyt;
 
+    @Bind(R.id.collect)
+    ImageView collect;
+
 
     NestedScrollView postDetailNestedScroll;
     LandLayoutVideoPlayer detailPlayer;
@@ -148,6 +152,8 @@ public class NewsVideoActivity extends AppCompatActivity {
     private View mFooterView;
 
     private Integer blogId;
+
+    private boolean isCollect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -305,8 +311,22 @@ public class NewsVideoActivity extends AppCompatActivity {
 //        if (!blogDetail.getAuthorName().equals("")) {
 //            author +=  " 文/" + blogDetail.getAuthorName();
 //        }
-        name.setText(blogDetail.getAuthorOrg());
-        time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
+        name.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_10));
+        time.setText(blogDetail.getReadNum()+"次播放");
+
+        isCollect = blogDetail.isCollectionType();
+        if (isCollect) {
+            Glide.with(NewsVideoActivity.this)
+                    .load(R.mipmap.meeting_collect)
+                    .crossFade()
+                    .into(collect);
+        } else {
+            Glide.with(NewsVideoActivity.this)
+                    .load(R.mipmap.meeting_collect_no)
+                    .crossFade()
+                    .into(collect);
+        }
+
 
         //文章View需要写带html标签的文本
         content.setText(Html.fromHtml(blogDetail.getContent(), new TextViewHtmlImageGetter(getApplicationContext(), content), null));
@@ -404,36 +424,46 @@ public class NewsVideoActivity extends AppCompatActivity {
         }, map);
     }
 
-    @OnClick(R.id.input_send)
-    public void onClick() {
-        if (inputEditor.getText().toString().trim().equals("")) {
-            ToastUtils.show(NewsVideoActivity.this, "不能发空评论");
-            return;
-        }
-        BlogComment blogComment = new BlogComment();
-        blogComment.setBlogId(blogId);
-        blogComment.setContent(inputEditor.getText().toString().trim());
-        HttpData.getInstance().HttpDataInsertComment(new Observer<HttpResult3>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                ToastUtils.show(NewsVideoActivity.this, e.getMessage());
-            }
-
-            @Override
-            public void onNext(HttpResult3 data) {
-                if (!data.getStatus().equals("success")) {
-                    ToastUtils.show(NewsVideoActivity.this, data.getMsg());
+    @OnClick({R.id.input_send, R.id.collect})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.input_send:
+                if (inputEditor.getText().toString().trim().equals("")) {
+                    ToastUtils.show(NewsVideoActivity.this, "不能发空评论");
                     return;
                 }
-                getCommentService(blogId);
-                inputEditor.setText("");
-            }
-        }, blogComment);
+                BlogComment blogComment = new BlogComment();
+                blogComment.setBlogId(blogId);
+                blogComment.setContent(inputEditor.getText().toString().trim());
+                HttpData.getInstance().HttpDataInsertComment(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(NewsVideoActivity.this, e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(NewsVideoActivity.this, data.getMsg());
+                            return;
+                        }
+                        getCommentService(blogId);
+                        inputEditor.setText("");
+                    }
+                }, blogComment);
+                break;
+            case R.id.collect:
+                if (isCollect)
+                    collectService(true);
+                else
+                    collectService(false);
+                break;
+        }
     }
 
     private void initPlayer(String url, String photo, String title) {
@@ -631,8 +661,6 @@ public class NewsVideoActivity extends AppCompatActivity {
     }
 
 
-
-
     private String TAG = NewsActivity.class.getName();
 
     /**
@@ -686,7 +714,7 @@ public class NewsVideoActivity extends AppCompatActivity {
         mWebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
-            public void onReceivedTitle(android.webkit.WebView view, String title) {
+            public void onReceivedTitle(WebView view, String title) {
                 Log.d(TAG, "－－－－－－setWebChromeClient ");
             }
         });
@@ -764,7 +792,7 @@ public class NewsVideoActivity extends AppCompatActivity {
 //                    if (params.height == 4839) params.height = params.height + 4839;
                     mWebView.setLayoutParams(params);
 
-                    Log.e(NewsVideoActivity.this.getLocalClassName(), "webview "+mWebView.getLayoutParams().height+" ");
+                    Log.e(NewsVideoActivity.this.getLocalClassName(), "webview " + mWebView.getLayoutParams().height + " ");
                 }
             });
         }
@@ -777,6 +805,52 @@ public class NewsVideoActivity extends AppCompatActivity {
         public String getInfo() {
             return "获取手机内的信息！！";
         }
+    }
+
+
+    /**
+     * 收藏API
+     *
+     * @param oldCollected
+     */
+    private void collectService(boolean oldCollected) {
+        UserCollect userCollect = new UserCollect();
+        userCollect.setServiceId(blogId);
+        userCollect.setServiceType("BLOG");
+        HttpData.getInstance().HttpDataCollect(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(NewsVideoActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3 httpResult3) {
+                if (!httpResult3.getStatus().equals("success")) {
+                    ToastUtils.show(NewsVideoActivity.this, httpResult3.getMsg());
+                    return;
+                }
+                if (oldCollected) {     //老状态是 已收藏
+                    ToastUtils.show(NewsVideoActivity.this, "取消收藏");
+                    isCollect = false;
+                    Glide.with(NewsVideoActivity.this)
+                            .load(R.mipmap.meeting_collect_no)
+                            .crossFade()
+                            .into(collect);
+                } else {
+                    ToastUtils.show(NewsVideoActivity.this, "收藏成功");
+                    isCollect = true;
+                    Glide.with(NewsVideoActivity.this)
+                            .load(R.mipmap.meeting_collect)
+                            .crossFade()
+                            .into(collect);
+                }
+            }
+        }, userCollect);
     }
 
 }

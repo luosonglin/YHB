@@ -121,6 +121,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                                     public void onNext(HttpResult3 httpResult3) {
                                         if (!httpResult3.getStatus().equals("success")) {
                                             ToastUtils.show(MyLiveRoomActivity.this, httpResult3.getMsg());
+                                            return;
                                         }
                                         adapter.removeItem(position);
                                         dialogInterface.dismiss();

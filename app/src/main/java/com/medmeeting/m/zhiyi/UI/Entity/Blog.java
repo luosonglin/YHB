@@ -111,6 +111,15 @@ public class Blog {//implements Serializable {
     private int timeSecond;
     private String authorOrg;
     private String videoImages;
+    private int readNum;
+
+    public int getReadNum() {
+        return readNum;
+    }
+
+    public void setReadNum(int readNum) {
+        this.readNum = readNum;
+    }
 
     public String getVideoImages() {
         return videoImages;

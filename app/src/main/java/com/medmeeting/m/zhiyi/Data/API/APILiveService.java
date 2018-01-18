@@ -50,6 +50,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.VideoInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfoUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
@@ -129,7 +130,7 @@ public interface APILiveService {
     Observable<HttpResult3<Object, LiveStream>> getLiveStream(@Path("programId") Integer programId);
 
     //获取直播节目详情(观众)
-    @GET("v1/open/program/{programId}")
+    @GET("/v1/open/program/{programId}")
     Observable<HttpResult3<Object, LiveAudienceDetailDto>> getLiveProgramAudienceDetail(@Path("programId") Integer programId);
 
     //直播门票下单
@@ -254,9 +255,13 @@ public interface APILiveService {
     @POST("/v1/open/video/page")
     Observable<HttpResult3<VideoListEntity, Object>> getVideos(@Body VideoListSearchEntity videoListSearchEntity);
 
-    //GET /v1/open/video/details/{videoId} 获取视频详情
+    //GET /v1/open/video/details/{videoId} 获取视频详情（观众）
     @GET("/v1/open/video/details/{videoId}")
     Observable<HttpResult3<Object, VideoDetailsEntity>> getVideoDetail(@Path("videoId") Integer videoId);
+
+    //GET /v1/auchor/video/details/{videoId} 获取视频详情(主播自己的)
+    @GET("/v1/auchor/video/details/{videoId}")
+    Observable<HttpResult3<Object, VideoInfo>> getVideoDetail2(@Path("videoId") Integer videoId);
 
     //POST /v1/open/video/comment/page/{videoId} 获取视频评论一览
     @POST("/v1/open/video/comment/page/{videoId}")

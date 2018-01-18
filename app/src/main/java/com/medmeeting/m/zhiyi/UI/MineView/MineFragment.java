@@ -107,6 +107,7 @@ public class MineFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private String authenStatus="";
 
     // 记录首次按下位置
     private float mFirstPosition = 0;
@@ -200,6 +201,7 @@ public class MineFragment extends Fragment {
                             .placeholder(R.mipmap.avator_default)
                             .into(headIv);
 
+                    authenStatus = data.getEntity().getAuthenStatus();
                     try {
                         DBUtils.put(getActivity(), "authentication", data.getEntity().getAuthenStatus() + "");
                     } catch (SnappydbException e) {
@@ -215,8 +217,6 @@ public class MineFragment extends Fragment {
                             hospitalTv.setText(data.getEntity().getDepartment());
                             titleTv.setText(data.getEntity().getTitle() + " ");
 
-                            wodezhibo.setVisibility(View.GONE);
-                            wodeluxiang.setVisibility(View.GONE);
                             break;
                         case "B":
                             identityHtml = "&nbsp;"
@@ -229,8 +229,6 @@ public class MineFragment extends Fragment {
                             hospitalTv.setText(data.getEntity().getDepartment());
                             titleTv.setText(data.getEntity().getTitle() + " ");
 
-                            wodezhibo.setVisibility(View.GONE);
-                            wodeluxiang.setVisibility(View.GONE);
                             break;
                         case "C":
                             identity.setVisibility(View.GONE);
@@ -240,8 +238,6 @@ public class MineFragment extends Fragment {
                             hospitalTv.setText(data.getEntity().getDepartment());
                             titleTv.setText(data.getEntity().getTitle() + " ");
 
-                            wodezhibo.setVisibility(View.VISIBLE);
-                            wodeluxiang.setVisibility(View.VISIBLE);
                             break;
                         default:
                             identityHtml = "&nbsp;"
@@ -260,9 +256,6 @@ public class MineFragment extends Fragment {
                             hospitalTv.setText(" ");
                             titleTv.setText(" ");
 
-
-                            wodezhibo.setVisibility(View.GONE);
-                            wodeluxiang.setVisibility(View.GONE);
                             break;
                     }
                     showProgress(false);
@@ -402,10 +395,40 @@ public class MineFragment extends Fragment {
                 intent = new Intent(getActivity(), MyWalletActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.wodeluxiang:
-                intent = new Intent(getActivity(), MyVideoActivity.class);
-                startActivity(intent);
+
+            case R.id.wodezhibo:
+                switch (authenStatus) {
+                    case "A":
+                        ToastUtils.show(getActivity(), "认证未完成，请耐心等待");
+                        break;
+                    case "B":
+                        ToastUtils.show(getActivity(), "认证未完成，请耐心等待");
+                        break;
+                    case "C":
+                        startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
+                        break;
+                    case "X":
+                        startActivity(new Intent(getActivity(), IdentityActivity.class));
+                        break;
+                }
                 break;
+            case R.id.wodeluxiang:
+                switch (authenStatus) {
+                    case "A":
+                        ToastUtils.show(getActivity(), "认证未完成，请耐心等待");
+                        break;
+                    case "B":
+                        ToastUtils.show(getActivity(), "认证未完成，请耐心等待");
+                        break;
+                    case "C":
+                        startActivity(new Intent(getActivity(), MyVideoActivity.class));
+                        break;
+                    case "X":
+                        startActivity(new Intent(getActivity(), IdentityActivity.class));
+                        break;
+                }
+                break;
+
             case R.id.wodeshoucang:
                 intent = new Intent(getActivity(), MyCollectActivity.class);
                 startActivity(intent);
@@ -417,9 +440,6 @@ public class MineFragment extends Fragment {
             case R.id.wodexuefen:
                 break;
             case R.id.wodejianli:
-                break;
-            case R.id.wodezhibo:
-                startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
                 break;
             case R.id.wodewendang:
                 break;

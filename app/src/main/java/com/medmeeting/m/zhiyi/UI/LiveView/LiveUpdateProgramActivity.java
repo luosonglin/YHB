@@ -39,7 +39,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
-import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
@@ -172,7 +171,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 Glide.with(LiveUpdateProgramActivity.this)
                         .load(data.getEntity().getCoverPhoto())
 //                        .crossFade()
-                        .transform(new GlideCircleTransform(LiveUpdateProgramActivity.this))
+//                        .transform(new GlideCircleTransform(LiveUpdateProgramActivity.this))
                         .into(new GlideDrawableImageViewTarget(livePic) {
                             @Override
                             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
@@ -183,11 +182,21 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                             }
                         });
 
+                videoPhoto = data.getEntity().getCoverPhoto();
                 theme.setText(data.getEntity().getTitle());
                 name.setText(data.getEntity().getAuthorName());
                 title.setText(data.getEntity().getAuthorTitle());
-                startTime.setText(DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_01));
-                endTime.setText(DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_01));
+                if (DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_01).equals("1970-01-01 08:00:00")) {
+                    startTime.setText(DateUtils.formatDate(System.currentTimeMillis(), DateUtils.TYPE_01));
+                } else {
+                    startTime.setText(DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_01));
+                }
+
+                if (DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_01).equals("1970-01-01 08:00:00")) {
+                    endTime.setText("");
+                } else {
+                    endTime.setText(DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_01));
+                }
                 if (data.getEntity().getChargeType().equals("no")) {
                     free.setBackground(getResources().getDrawable(R.drawable.button_live_free));
                     free.setTextColor(getResources().getColor(R.color.white));

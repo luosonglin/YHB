@@ -256,14 +256,14 @@ public class NewsActivity extends AppCompatActivity {
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(blogDetail.getContent());
 
-        Pattern p2 = Pattern.compile("&([a-zA-Z])+;");
+        Pattern p2 = Pattern.compile("&([a-zA-Z])+;");  //去掉中间有&nbsp;
         Matcher m2 = p2.matcher(m.replaceAll("").trim());
 
         String shareContent = m2.replaceAll("").trim();
 
-        Log.e(getLocalClassName(), shareContent.replaceAll("\\s*", "")+"");
+        Log.e(getLocalClassName(), shareContent.replaceAll("\\s*", "")+"");//去掉中间大段空格
         //分享
-        initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), m2.replaceAll("").trim());
+        initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), shareContent.replaceAll("\\s*", ""));
     }
 
     private void getCommentService(int blogId) {
