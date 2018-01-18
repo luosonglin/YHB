@@ -113,7 +113,8 @@
         <activity
             android:name=".UI.LiveView.LiveUpdateRoomActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan"/>
         <activity
             android:name=".UI.LiveView.LiveBuildProgramActivity"
             android:label=""

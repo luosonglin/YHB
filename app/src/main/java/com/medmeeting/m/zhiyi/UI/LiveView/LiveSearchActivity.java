@@ -112,6 +112,7 @@ public class LiveSearchActivity extends AppCompatActivity {
         initToolbar();
 
         initTagsView();
+
         initLivesView();
 
         initVideoView();
@@ -213,6 +214,12 @@ public class LiveSearchActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(HttpResult3<LiveDto, Object> data) {
+//                        if (data.getData().size() > 4) {
+//                            List<LiveDto> lives = new ArrayList<>()
+//
+//                        } else {
+//
+//                        }
                         mQuickAdapter.setNewData(data.getData());
                         mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                             Intent i = new Intent(LiveSearchActivity.this, LiveProgramDetailActivity2.class);
@@ -231,7 +238,7 @@ public class LiveSearchActivity extends AppCompatActivity {
                     if ("公开".equals(type)) {
                         searchEntity.setKeyword(searchEt.getText().toString());
                         searchEntity.setRoomNumber(null);
-                    }else if ("私密".equals(type)) {
+                    } else if ("私密".equals(type)) {
                         searchEntity.setKeyword(null);
                         searchEntity.setRoomNumber(searchEt.getText().toString());
                     }
