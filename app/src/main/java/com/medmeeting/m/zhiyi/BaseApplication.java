@@ -19,6 +19,7 @@ import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import cn.jpush.android.api.JPushInterface;
 
 //import com.vondear.rxtools.RxUtils;
@@ -80,6 +81,13 @@ public class BaseApplication extends MultiDexApplication {//Application {
 //            }
 //        });
 
+
+        //极光统计
+        JAnalyticsInterface.init(this);
+        //设置调试模式：参数为 true 表示打开调试模式，可看到 sdk 的日志
+        JAnalyticsInterface.setDebugMode(true);
+        //开启crashlog日志上报
+        JAnalyticsInterface.initCrashHandler(this);
 
         //获取剪贴板管理器：
         ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

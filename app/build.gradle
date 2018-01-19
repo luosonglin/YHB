@@ -208,6 +208,9 @@ dependencies {
     compile 'cn.jiguang.sdk:jpush:3.0.9'
     compile 'cn.jiguang.sdk:jcore:1.1.7'
 
+    //极光统计
+    compile 'cn.jiguang.sdk:janalytics:1.1.1'
+
     //推送
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
 }
