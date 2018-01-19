@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import rx.Observer;
 
 /**
@@ -60,6 +61,7 @@ public class NewsFragment extends BaseFragment {
     private SwipeRefreshLayout srl;
 
     private Integer mLabelId;
+    private String mLabelName;
     protected List<Blog> mDatas = new ArrayList<>();
     protected BaseQuickAdapter mAdapter;
 
@@ -97,10 +99,11 @@ public class NewsFragment extends BaseFragment {
         return v;
     }
 
-    public static NewsFragment newInstance(Integer labelId) {
+    public static NewsFragment newInstance(Integer labelId, String labelName) {
         NewsFragment fragment = new NewsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ConstanceValue.DATA, labelId);
+        bundle.putString("LabelName", labelName);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -174,6 +177,9 @@ public class NewsFragment extends BaseFragment {
         super.lazyLoad();
         if (TextUtils.isEmpty(mLabelId + ""))
             mLabelId = getArguments().getInt(ConstanceValue.DATA);
+
+        if (TextUtils.isEmpty(mLabelName+""))
+            mLabelName = getArguments().getString("LabelName");
 
         //如果是推荐页，自动加载header view
         if (mLabelId == 0) {
@@ -517,5 +523,18 @@ public class NewsFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+
+    @Override
+    public void onStart() {
+        JAnalyticsInterface.onPageStart(getActivity(), "新闻列表("+mLabelName+")页");
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        JAnalyticsInterface.onPageEnd(getActivity(), "新闻列表("+mLabelName+")页");
+        super.onStop();
     }
 }

@@ -27,15 +27,16 @@ import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
-import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenuItemListener;
+import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.snappydb.SnappydbException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import io.rong.imlib.RongIMClient;
 import rx.Observer;
 
@@ -562,5 +563,17 @@ public class MainActivity extends AppCompatActivity implements
 
     public static void trunLiveView() {
         tabPurchase.performClick();
+    }
+
+    @Override
+    protected void onStart() {
+        JAnalyticsInterface.onPageStart(this, "主页");//this.getClass().getCanonicalName()
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        JAnalyticsInterface.onPageEnd(this, "主页");
+        super.onStop();
     }
 }

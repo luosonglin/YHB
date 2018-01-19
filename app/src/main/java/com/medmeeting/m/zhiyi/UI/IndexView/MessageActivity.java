@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import rx.Observer;
 
 /**
@@ -138,4 +139,16 @@ public class MessageActivity extends AppCompatActivity {
         }, map);
     }
 
+
+    @Override
+    protected void onStart() {
+        JAnalyticsInterface.onPageStart(this, "系统消息页");
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        JAnalyticsInterface.onPageEnd(this, "系统消息页");
+        super.onStop();
+    }
 }

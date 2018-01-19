@@ -176,4 +176,7 @@ public class ChannelDialogFragment extends DialogFragment implements OnChannelDr
         if (mOnChannelListener != null)
             mOnChannelListener.onMoveToOtherChannel(starPos - 1, endPos - 2 - mAdapter.getMyChannelSize());
     }
+
+
+
 }

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 03/11/2017 1:54 PM
- * @describe TODO
+ * @describe 直播、付费用户adapter
  * @email iluosonglin@gmail.com
  * @org Healife
  */

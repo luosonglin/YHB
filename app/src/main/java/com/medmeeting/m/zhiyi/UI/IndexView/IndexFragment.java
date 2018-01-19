@@ -153,7 +153,7 @@ public class IndexFragment extends Fragment implements OnChannelListener {
 
         mFragments = new ArrayList<>();
         for (int i = 0; i < mSelectedDatas.size(); i++) {
-            NewsFragment fragment = NewsFragment.newInstance(mSelectedDatas.get(i).getId());
+            NewsFragment fragment = NewsFragment.newInstance(mSelectedDatas.get(i).getId(), mSelectedDatas.get(i).getLabelName());
             mFragments.add(fragment);
         }
         mTitlePagerAdapter = new ChannelPagerAdapter(getChildFragmentManager(), mFragments, mSelectedDatas);
@@ -249,7 +249,7 @@ public class IndexFragment extends Fragment implements OnChannelListener {
         //移动到我的频道
         LiveLabel liveLabel = mUnSelectedDatas.remove(starPos);
         mSelectedDatas.add(endPos, liveLabel);
-        mFragments.add(NewsFragment.newInstance(liveLabel.getId()));
+        mFragments.add(NewsFragment.newInstance(liveLabel.getId(), liveLabel.getLabelName()));
     }
 
     @Override

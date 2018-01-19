@@ -21,6 +21,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import rx.Observer;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -62,6 +63,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 //			builder.show();
 //		}
         if (resp.errCode == -2) {
+
+            //购买事件
+            Data.getPurchaseEvent().setPurchaseSuccess(false);
+            JAnalyticsInterface.onEvent(WXPayEntryActivity.this, Data.getPurchaseEvent());
+
             ToastUtils.show(this, "宝宝居然取消付费辣Ծ‸Ծ");
             finish();
         } else if (resp.errCode == 0) {
@@ -114,6 +120,12 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 //*********我的订单页
                 startActivity(new Intent(this, MyPayLiveRoomActivity.class));
             }
+
+
+            //购买事件
+            Data.getPurchaseEvent().setPurchaseSuccess(true);
+            JAnalyticsInterface.onEvent(WXPayEntryActivity.this, Data.getPurchaseEvent());
+
             finish();
         }
     }

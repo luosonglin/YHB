@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.VideoPayUserAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.VideoPayUserAdapter2;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
@@ -82,7 +82,7 @@ public class VideoDetailFareFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new VideoPayUserAdapter(R.layout.item_video_pay_user, null);
+        mAdapter = new VideoPayUserAdapter2(R.layout.item_video_pay_user, null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.openLoadMore(8, true);
         mRecyclerView.setAdapter(mAdapter);

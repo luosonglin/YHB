@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jiguang.analytics.android.api.PurchaseEvent;
+
 /**
  * Created by Administrator on 2016/6/30.
  */
@@ -159,4 +161,17 @@ public class Data {
         Data.inputStream = inputStream;
     }
 
+
+    /**
+     *
+     */
+    public static PurchaseEvent purchaseEvent;
+
+    public static PurchaseEvent getPurchaseEvent() {
+        return purchaseEvent;
+    }
+
+    public static void setPurchaseEvent(PurchaseEvent purchaseEvent) {
+        Data.purchaseEvent = purchaseEvent;
+    }
 }

@@ -29,6 +29,8 @@ import com.medmeeting.m.zhiyi.UI.JS.JSHook;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
+
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 15/12/2017 11:42 AM
@@ -224,6 +226,19 @@ public class MessageDetailActivity extends AppCompatActivity {
             this.finish();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    protected void onStart() {
+        JAnalyticsInterface.onPageStart(this, "系统消息详情页");
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        JAnalyticsInterface.onPageEnd(this, "系统消息详情页");
+        super.onStop();
     }
 }
 

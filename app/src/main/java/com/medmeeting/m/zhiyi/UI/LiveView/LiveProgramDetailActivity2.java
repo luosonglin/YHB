@@ -75,6 +75,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
+import cn.jiguang.analytics.android.api.Currency;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
+import cn.jiguang.analytics.android.api.PurchaseEvent;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
@@ -677,6 +680,12 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     }
 
     /**
+     * jiguang统计、购买对象
+     */
+    PurchaseEvent pEvent;
+
+
+    /**
      * 支付宝
      */
     //支付金额
@@ -714,6 +723,9 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     }
                     tradeId = data.getEntity().getPrepayId();
                     pay(v, data.getEntity().getAmount() + "", data.getEntity().getTradeTitle(), "直播", data.getEntity().getPrepayId(), data.getEntity().getAlipayOrderString());
+
+                    //极光统计  购买对象
+                    pEvent = new PurchaseEvent(programId+"",data.getEntity().getTradeTitle(),data.getEntity().getAmount(),true, Currency.CNY,"live",1);
                 }
             }, liveOrderDto);
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -740,6 +752,10 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                             data.getEntity().getRequestPay().getTimeStamp(),
                             data.getEntity().getRequestPay().getPackageX(),
                             data.getEntity().getRequestPay().getSign());
+
+                    //极光统计  购买对象
+                    pEvent = new PurchaseEvent(programId+"",data.getEntity().getTradeTitle(),data.getEntity().getAmount(),true, Currency.CNY,"live",1);
+                    Data.setPurchaseEvent(pEvent);
                 }
             }, liveOrderDto);
         }
@@ -797,6 +813,12 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
                         Toast.makeText(LiveProgramDetailActivity2.this, "支付成功", Toast.LENGTH_SHORT).show();
                         initView(programId);
+
+
+                        //购买事件
+                        pEvent.setPurchaseSuccess(true);
+                        JAnalyticsInterface.onEvent(LiveProgramDetailActivity2.this, pEvent);
+
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -806,6 +828,10 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             Toast.makeText(LiveProgramDetailActivity2.this, "支付失败", Toast.LENGTH_SHORT).show();
                         }
+
+                        //购买事件
+                        pEvent.setPurchaseSuccess(false);
+                        JAnalyticsInterface.onEvent(LiveProgramDetailActivity2.this, pEvent);
                     }
                     break;
                 }
