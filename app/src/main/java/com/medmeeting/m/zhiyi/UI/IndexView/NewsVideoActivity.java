@@ -88,6 +88,8 @@ import java.util.regex.Pattern;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jiguang.analytics.android.api.BrowseEvent;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import rx.Observer;
 
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_NORMAL;
@@ -152,8 +154,13 @@ public class NewsVideoActivity extends AppCompatActivity {
     private View mFooterView;
 
     private Integer blogId;
+    private String blogTitle;
 
     private boolean isCollect;
+
+    //统计浏览该页面时长
+    private long startTime;
+    private long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,6 +213,8 @@ public class NewsVideoActivity extends AppCompatActivity {
         mAdapter.openLoadMore(8, true);
         mRecyclerView.setAdapter(mAdapter);
         getCommentService(blogId);
+
+        startTime = System.currentTimeMillis();
     }
 
     /**
@@ -305,7 +314,8 @@ public class NewsVideoActivity extends AppCompatActivity {
 
     private void initBlogView(Blog blogDetail) {
         //刚打开页面的瞬间显示
-        titleTv.setText(blogDetail.getTitle());
+        blogTitle = blogDetail.getTitle();
+        titleTv.setText(blogTitle);
         //微博内容
 //        String author = ;
 //        if (!blogDetail.getAuthorName().equals("")) {
@@ -616,6 +626,13 @@ public class NewsVideoActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onResume() {
+        getCurPlay().onVideoResume();
+        super.onResume();
+        isPause = false;
+    }
+
+    @Override
     protected void onPause() {
         getCurPlay().onVideoPause();
         super.onPause();
@@ -623,10 +640,16 @@ public class NewsVideoActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        getCurPlay().onVideoResume();
-        super.onResume();
-        isPause = false;
+    protected void onStop() {
+        endTime = System.currentTimeMillis();
+        Log.e(getLocalClassName(), endTime + " " + startTime);
+        Log.e(getLocalClassName(), (endTime - startTime) + "毫秒");
+
+        //极光统计  浏览事件
+        BrowseEvent bEvent = new BrowseEvent(blogId + "", blogTitle, "news_video", (endTime - startTime)/1000000000);
+        JAnalyticsInterface.onEvent(this, bEvent);
+
+        super.onStop();
     }
 
     @Override

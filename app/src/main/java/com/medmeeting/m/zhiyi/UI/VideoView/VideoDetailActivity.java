@@ -64,6 +64,7 @@ import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.util.Map;
 
+import cn.jiguang.analytics.android.api.BrowseEvent;
 import cn.jiguang.analytics.android.api.Currency;
 import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import cn.jiguang.analytics.android.api.PurchaseEvent;
@@ -90,6 +91,7 @@ public class VideoDetailActivity extends AppCompatActivity {
 
     private static final String TAG = VideoDetailActivity.class.getSimpleName();
     private Integer videoId;
+    private String videoTitle;
 
     private TextView start_status;
 
@@ -97,6 +99,10 @@ public class VideoDetailActivity extends AppCompatActivity {
      * 极光统计、购买对象
      */
     PurchaseEvent pEvent;
+
+    //统计浏览该页面时长
+    private long startTime;
+    private long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +139,8 @@ public class VideoDetailActivity extends AppCompatActivity {
 
         videoId = getIntent().getIntExtra("videoId", 0);
         initView(videoId);
+
+        startTime = System.nanoTime();
     }
 
     /**
@@ -204,6 +212,9 @@ public class VideoDetailActivity extends AppCompatActivity {
                     ToastUtils.show(VideoDetailActivity.this, data.getMsg());
                     return;
                 }
+
+                //视频标题
+                videoTitle = data.getEntity().getTitle();
 
                 if (data.getEntity().getUserId() == Data.getUserId()) {
                     HttpData.getInstance().HttpDataGetVideo2(new Observer<HttpResult3<Object, VideoInfo>>() {
@@ -811,4 +822,15 @@ public class VideoDetailActivity extends AppCompatActivity {
         return sIsWXAppInstalledAndSupported;
     }
 
+
+    @Override
+    protected void onStop() {
+        endTime = System.nanoTime();
+
+        //极光统计  浏览事件
+        BrowseEvent bEvent = new BrowseEvent(videoId + "", videoTitle, "video", (endTime - startTime)/1000000000);
+        JAnalyticsInterface.onEvent(this, bEvent);
+
+        super.onStop();
+    }
 }

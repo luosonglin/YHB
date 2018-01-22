@@ -74,6 +74,8 @@ import java.util.regex.Pattern;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jiguang.analytics.android.api.BrowseEvent;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import rx.Observer;
 
 public class NewsActivity extends AppCompatActivity {
@@ -102,11 +104,16 @@ public class NewsActivity extends AppCompatActivity {
     private View mCommandFooterView;
 
     private int blogId;
+    private String blogTitle;
     private boolean collectionType;
 
     @Bind(R.id.label_rv_list)
     RecyclerView mLabelRecyclerView;
     private BaseQuickAdapter mLabelAdapter;
+
+    //统计浏览该页面时长
+    private long startTime;
+    private long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +164,8 @@ public class NewsActivity extends AppCompatActivity {
         mCommandAdapter = new BlogCommentAdapter(R.layout.item_video_command, null);
         mCommandFooterView = LayoutInflater.from(NewsActivity.this).inflate(R.layout.item_blog_footer, null);
         getCommentService(blogId);
+
+        startTime = System.nanoTime();
     }
 
     @Override
@@ -167,6 +176,19 @@ public class NewsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        endTime = System.nanoTime();
+        Log.e(getLocalClassName(), endTime + " " + startTime);
+        Log.e(getLocalClassName(), (endTime - startTime) + "毫微秒");
+
+        //极光统计  浏览事件
+        BrowseEvent bEvent = new BrowseEvent(blogId + "", blogTitle, "news", (endTime - startTime)/1000000000);
+        JAnalyticsInterface.onEvent(this, bEvent);
+
+        super.onStop();
     }
 
     private void getBlogDetailService(Integer blogId) {
@@ -203,7 +225,8 @@ public class NewsActivity extends AppCompatActivity {
      */
     private void initView(Blog blogDetail) {
         //刚打开页面的瞬间显示
-        title.setText(blogDetail.getTitle());
+        blogTitle = blogDetail.getTitle();
+        title.setText(blogTitle);
         //微博内容
         time.setText(DateUtils.formatDate(blogDetail.getPushDate(), DateUtils.TYPE_06));
 
@@ -261,7 +284,7 @@ public class NewsActivity extends AppCompatActivity {
 
         String shareContent = m2.replaceAll("").trim();
 
-        Log.e(getLocalClassName(), shareContent.replaceAll("\\s*", "")+"");//去掉中间大段空格
+        Log.e(getLocalClassName(), shareContent.replaceAll("\\s*", "") + "");//去掉中间大段空格
         //分享
         initShare(blogDetail.getId(), blogDetail.getTitle(), blogDetail.getImages(), shareContent.replaceAll("\\s*", ""));
     }

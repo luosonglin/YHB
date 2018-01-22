@@ -51,6 +51,8 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.jiguang.analytics.android.api.BrowseEvent;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import rx.Observer;
 
 public class MeetingDetailActivity extends AppCompatActivity {
@@ -69,6 +71,10 @@ public class MeetingDetailActivity extends AppCompatActivity {
     private String sourceType;
     private String photo;
     private String description;
+
+    //统计浏览该页面时长
+    private long startTime;
+    private long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +115,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
             }
         }, eventId);
 
-
+        startTime = System.nanoTime();
     }
 
     private void initToolbar() {
@@ -569,4 +575,22 @@ public class MeetingDetailActivity extends AppCompatActivity {
         }, userCollect);
     }
 
+
+    @Override
+    protected void onStop() {
+        endTime = System.nanoTime();
+//        Log.e(getLocalClassName(), endTime + " " + startTime);
+//        Log.e(getLocalClassName(), (endTime - startTime) + "毫微秒");
+//        Log.e(getLocalClassName(), (endTime - startTime)/1000000000 + "秒");
+//
+//
+//        Log.e(getLocalClassName(), (endTime - startTime)*0.000000001 + "毫微秒");
+
+
+        //极光统计  浏览事件
+        BrowseEvent bEvent = new BrowseEvent(eventId + "", eventTitle, "meeting", (endTime - startTime)/1000000000);
+        JAnalyticsInterface.onEvent(this, bEvent);
+
+        super.onStop();
+    }
 }

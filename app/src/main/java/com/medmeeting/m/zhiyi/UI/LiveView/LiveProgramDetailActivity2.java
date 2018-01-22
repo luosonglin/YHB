@@ -75,6 +75,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
+import cn.jiguang.analytics.android.api.BrowseEvent;
 import cn.jiguang.analytics.android.api.Currency;
 import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import cn.jiguang.analytics.android.api.PurchaseEvent;
@@ -112,6 +113,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     static final String TAG = LiveProgramDetailActivity2.class.getSimpleName();
     private Integer programId;
     private String url;
+    private String programTitle;
 
 
     //以下为直播室互动参数
@@ -126,6 +128,16 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     private ImageView back;
     private ImageView share;
 
+    /**
+     * 极光统计、购买对象
+     */
+    PurchaseEvent pEvent;
+
+    /**
+     * 统计浏览该页面时长
+     */
+    private long startTime;
+    private long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +184,8 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
         programId = getIntent().getIntExtra("programId", 0);
         initView(programId);
+
+        startTime = System.nanoTime();
     }
 
     /**
@@ -263,6 +277,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     return;
                 }
                 url = data.getEntity().getRtmpPlayUrl() + "";
+                programTitle = data.getEntity().getTitle();
 
                 initFakerPlayer(url, data.getEntity().getCoverPhoto(), data.getEntity().getTitle(),
                         data.getEntity().getChargeType(), data.getEntity().getPrice(),
@@ -591,6 +606,13 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 //                Toast.makeText(LivePlayerActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        endTime = System.nanoTime();
+
+        //极光统计  浏览事件
+        BrowseEvent bEvent = new BrowseEvent(programId + "", programTitle, "live", (endTime - startTime)/1000000000);
+        JAnalyticsInterface.onEvent(this, bEvent);
     }
 
 
@@ -678,12 +700,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         academicPopupWindow.setBackgroundDrawable(dw);
         academicPopupWindow.showAtLocation(academicPopupwindowView, Gravity.BOTTOM, 0, 0);
     }
-
-    /**
-     * 极光统计、购买对象
-     */
-    PurchaseEvent pEvent;
-
 
     /**
      * 支付宝
