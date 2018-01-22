@@ -64,6 +64,9 @@ import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import java.util.Map;
 
+import cn.jiguang.analytics.android.api.Currency;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
+import cn.jiguang.analytics.android.api.PurchaseEvent;
 import rx.Observer;
 
 import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_NORMAL;
@@ -89,6 +92,11 @@ public class VideoDetailActivity extends AppCompatActivity {
     private Integer videoId;
 
     private TextView start_status;
+
+    /**
+     * 极光统计、购买对象
+     */
+    PurchaseEvent pEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -597,6 +605,9 @@ public class VideoDetailActivity extends AppCompatActivity {
                     Data.setPayType(0);
                     Data.setTradeId(tradeId);
                     pay(v, data.getEntity().getAmount() + "", data.getEntity().getTradeTitle(), "视频", data.getEntity().getPrepayId(), data.getEntity().getAlipayOrderString());
+
+                    //极光统计  购买对象
+                    pEvent = new PurchaseEvent(videoId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "video", 1);
                 }
             }, videoOrderDto);
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -628,6 +639,10 @@ public class VideoDetailActivity extends AppCompatActivity {
                             data.getEntity().getRequestPay().getPackageX(),
                             data.getEntity().getRequestPay().getSign());
                     //payByWechat(final String partnerId, final String prepayId, final String nonceStr, final String timeStamp, final String packageValue, final String sign) {
+
+                    //极光统计  购买对象
+                    pEvent = new PurchaseEvent(videoId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "video", 1);
+                    Data.setPurchaseEvent(pEvent);
                 }
             }, videoOrderDto);
         }
@@ -684,6 +699,11 @@ public class VideoDetailActivity extends AppCompatActivity {
 
                         Toast.makeText(VideoDetailActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                         initView(videoId);
+
+                        //购买事件
+                        pEvent.setPurchaseSuccess(true);
+                        JAnalyticsInterface.onEvent(VideoDetailActivity.this, pEvent);
+
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -694,6 +714,10 @@ public class VideoDetailActivity extends AppCompatActivity {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             Toast.makeText(VideoDetailActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
                         }
+
+                        //购买事件
+                        pEvent.setPurchaseSuccess(false);
+                        JAnalyticsInterface.onEvent(VideoDetailActivity.this, pEvent);
                     }
                     break;
                 }

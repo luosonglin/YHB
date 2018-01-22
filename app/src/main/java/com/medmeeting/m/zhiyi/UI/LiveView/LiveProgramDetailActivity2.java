@@ -680,7 +680,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     }
 
     /**
-     * jiguang统计、购买对象
+     * 极光统计、购买对象
      */
     PurchaseEvent pEvent;
 
@@ -813,7 +813,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
                         Toast.makeText(LiveProgramDetailActivity2.this, "支付成功", Toast.LENGTH_SHORT).show();
                         initView(programId);
-
 
                         //购买事件
                         pEvent.setPurchaseSuccess(true);
