@@ -221,6 +221,8 @@ public class IndexFragment extends Fragment implements OnChannelListener {
                     //保存选中和未选中的channel
                     SharedPreferencesMgr.setString(ConstanceValue.TITLE_SELECTED, mGson.toJson(mSelectedDatas));
                     SharedPreferencesMgr.setString(ConstanceValue.TITLE_UNSELECTED, mGson.toJson(mUnSelectedDatas));
+
+                    initView();
                 });
                 mTitlePagerAdapter.notifyDataSetChanged();
                 break;
