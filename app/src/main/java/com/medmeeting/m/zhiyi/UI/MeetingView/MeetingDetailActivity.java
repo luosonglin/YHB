@@ -588,7 +588,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
 
         //极光统计  浏览事件
-        BrowseEvent bEvent = new BrowseEvent(eventId + "", eventTitle, "meeting", (endTime - startTime)/1000000000);
+        BrowseEvent bEvent = new BrowseEvent(eventId + "", eventTitle, "会议", (endTime - startTime)/1000000000);
         JAnalyticsInterface.onEvent(this, bEvent);
 
         super.onStop();

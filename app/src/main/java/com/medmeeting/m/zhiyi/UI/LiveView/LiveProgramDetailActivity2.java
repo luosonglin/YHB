@@ -565,6 +565,15 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     }
 
     @Override
+    protected void onStart() {
+        //511675
+        programId = getIntent().getIntExtra("programId", 0);
+        initView(programId);
+
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
         getCurPlay().onVideoResume();
 
@@ -611,7 +620,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         endTime = System.nanoTime();
 
         //极光统计  浏览事件
-        BrowseEvent bEvent = new BrowseEvent(programId + "", programTitle, "live", (endTime - startTime)/1000000000);
+        BrowseEvent bEvent = new BrowseEvent(programId + "", programTitle, "直播", (endTime - startTime)/1000000000);
         JAnalyticsInterface.onEvent(this, bEvent);
     }
 
@@ -741,7 +750,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     pay(v, data.getEntity().getAmount() + "", data.getEntity().getTradeTitle(), "直播", data.getEntity().getPrepayId(), data.getEntity().getAlipayOrderString());
 
                     //极光统计  购买对象
-                    pEvent = new PurchaseEvent(programId+"",data.getEntity().getTradeTitle(),data.getEntity().getAmount(),true, Currency.CNY,"live",1);
+                    pEvent = new PurchaseEvent(programId+"",data.getEntity().getTradeTitle(),data.getEntity().getAmount(),true, Currency.CNY,"直播",1);
                 }
             }, liveOrderDto);
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -770,7 +779,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                             data.getEntity().getRequestPay().getSign());
 
                     //极光统计  购买对象
-                    pEvent = new PurchaseEvent(programId+"",data.getEntity().getTradeTitle(),data.getEntity().getAmount(),true, Currency.CNY,"live",1);
+                    pEvent = new PurchaseEvent(programId+"",data.getEntity().getTradeTitle(),data.getEntity().getAmount(),true, Currency.CNY,"直播",1);
                     Data.setPurchaseEvent(pEvent);
                 }
             }, liveOrderDto);

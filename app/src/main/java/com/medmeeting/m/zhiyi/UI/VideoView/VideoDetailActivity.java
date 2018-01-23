@@ -618,7 +618,7 @@ public class VideoDetailActivity extends AppCompatActivity {
                     pay(v, data.getEntity().getAmount() + "", data.getEntity().getTradeTitle(), "视频", data.getEntity().getPrepayId(), data.getEntity().getAlipayOrderString());
 
                     //极光统计  购买对象
-                    pEvent = new PurchaseEvent(videoId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "video", 1);
+                    pEvent = new PurchaseEvent(videoId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "视频", 1);
                 }
             }, videoOrderDto);
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -652,7 +652,7 @@ public class VideoDetailActivity extends AppCompatActivity {
                     //payByWechat(final String partnerId, final String prepayId, final String nonceStr, final String timeStamp, final String packageValue, final String sign) {
 
                     //极光统计  购买对象
-                    pEvent = new PurchaseEvent(videoId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "video", 1);
+                    pEvent = new PurchaseEvent(videoId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "视频", 1);
                     Data.setPurchaseEvent(pEvent);
                 }
             }, videoOrderDto);
@@ -828,7 +828,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         endTime = System.nanoTime();
 
         //极光统计  浏览事件
-        BrowseEvent bEvent = new BrowseEvent(videoId + "", videoTitle, "video", (endTime - startTime)/1000000000);
+        BrowseEvent bEvent = new BrowseEvent(videoId + "", videoTitle, "视频", (endTime - startTime)/1000000000);
         JAnalyticsInterface.onEvent(this, bEvent);
 
         super.onStop();
