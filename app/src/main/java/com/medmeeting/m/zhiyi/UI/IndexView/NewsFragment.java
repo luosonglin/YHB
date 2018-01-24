@@ -133,7 +133,6 @@ public class NewsFragment extends BaseFragment {
         mHeaderLiveStartTime1 = (TextView) mHeaderView.findViewById(R.id.live_start_time1);
         mHeaderLiveStartTime2 = (TextView) mHeaderView.findViewById(R.id.live_start_time2);
 
-
         mHeaderMeetingView = (TextView) mHeaderView.findViewById(R.id.meeting_count);
         mHeaderRecyclerView = (RecyclerView) mHeaderView.findViewById(R.id.rv_list);
     }

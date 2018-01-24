@@ -42,7 +42,7 @@ android {
         manifestPlaceholders = [
                 JPUSH_PKGNAME: applicationId,
                 JPUSH_APPKEY : "00501140a92d1ac4d8b1dca0", //JPush上注册的包名对应的appkey.
-                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+                JPUSH_CHANNEL: "release", //暂时填写默认值即可.
         ]
 
         //开启multi-dexing支持
@@ -81,7 +81,7 @@ android {
     }
     lintOptions {
         checkReleaseBuilds false
-        abortOnError false
+//        abortOnError false
     }
     productFlavors {
         develop {}
@@ -196,7 +196,6 @@ dependencies {
 
     //多功能的视频播放器
     compile 'com.shuyu:GSYVideoPlayer:2.1.0'
-
 
     //多种Item布局展示
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:v1.8.5'

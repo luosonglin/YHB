@@ -7,7 +7,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="140dp"
         android:background="@drawable/live_item_shape"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="@android:color/white"

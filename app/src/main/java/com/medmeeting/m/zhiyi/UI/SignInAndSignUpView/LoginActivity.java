@@ -48,6 +48,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -124,6 +125,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mGetCodeView.setText("获取验证码");
         }
     };
+
+    //登陆协议
+    private TextView mAgreementTv;
 
     /**
      * print some tag in log.
@@ -226,6 +230,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mCodeView.setInputType(InputType.TYPE_CLASS_NUMBER);
             mTxRlyt.setVisibility(View.VISIBLE);
             return;
+        });
+
+        mAgreementTv = (TextView) findViewById(R.id.agreement_tv);
+        mAgreementTv.setOnClickListener(view -> {
+            BrowserActivity.launch(LoginActivity.this, "http://webview.medmeeting.com/#/page/user-protocol", "《登录协议》");
         });
     }
 

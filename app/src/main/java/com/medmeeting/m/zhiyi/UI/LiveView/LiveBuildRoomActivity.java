@@ -36,6 +36,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.MineView.MyLiveRoomActivity;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
@@ -105,9 +106,12 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     private void initView() {
     }
 
-    @OnClick({R.id.live_pic_tip, R.id.classify, R.id.buildllyt})
+    @OnClick({R.id.agreement_llyt, R.id.live_pic_tip, R.id.classify, R.id.buildllyt})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.agreement_llyt:
+                BrowserActivity.launch(LiveBuildRoomActivity.this, "http://webview.medmeeting.com/#/page/live-protocol", "《直播协议》");
+                break;
             case R.id.live_pic_tip:
                 PhotoPicker.builder()
                         .setShowCamera(true)

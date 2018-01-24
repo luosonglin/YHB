@@ -185,6 +185,7 @@ public class NewsActivity extends AppCompatActivity {
         Log.e(getLocalClassName(), (endTime - startTime) + "毫微秒");
 
         //极光统计  浏览事件
+        blogId = getIntent().getIntExtra("blogId", 0);
         BrowseEvent bEvent = new BrowseEvent(blogId + "", blogTitle, "新闻", (endTime - startTime)/1000000000);
         JAnalyticsInterface.onEvent(this, bEvent);
 
