@@ -32,7 +32,7 @@ public class Data {
 
 
     public static List<MainDateDto> getData() {
-        List<MainDateDto> data = new ArrayList<MainDateDto>();
+        List<MainDateDto> data = new ArrayList<>();
         for (int i = 0; i < MAIN_TITLE.length; i++) {
             data.add(new MainDateDto(MAIN_TITLE[i], MAIN_INFO[i], MAIN_IMAGE_URL[i]));
         }

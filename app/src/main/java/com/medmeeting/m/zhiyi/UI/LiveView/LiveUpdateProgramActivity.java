@@ -146,12 +146,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("修改直播节目");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -249,21 +244,15 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setIcon(getResources().getDrawable(R.mipmap.logo))
                         .setMessage("选择您想要直播的时间")
-                        .setNegativeButton("马上直播", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                expectType = "liveNow";
-                                startTime.setText("现在直播");
-                                endTime.setText("");
-                                expectBeginTime = System.currentTimeMillis();
-                            }
+                        .setNegativeButton("马上直播", (dialogInterface, i) -> {
+                            expectType = "liveNow";
+                            startTime.setText("现在直播");
+                            endTime.setText("");
+                            expectBeginTime = System.currentTimeMillis();
                         })
-                        .setPositiveButton("预约时间", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                expectType = "expect";
-                                showDateTimePopupwindow("START");
-                            }
+                        .setPositiveButton("预约时间", (dialogInterface, i) -> {
+                            expectType = "expect";
+                            showDateTimePopupwindow("START");
                         })
                         .show()
                         .setCanceledOnTouchOutside(true);
@@ -294,24 +283,21 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                         .setIcon(R.mipmap.logo)
                         .setMessage("填写金额")
                         .setView(et)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String amount = et.getText().toString();
-                                if (amount.equals("")) {
-                                    Toast.makeText(getApplicationContext(), "金额不能为空，请重新设定" + amount, Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-
-                                Log.e(TAG, "eee1 " + amount + amount.matches(regEx));
-                                if (Float.parseFloat(amount) == 0) {
-                                    ToastUtils.show(LiveUpdateProgramActivity.this, "金额不能为0，请重新设定");
-                                    return;
-                                }
-                                chargeAmount.setText("费用： " + amount + "元");
-                                chargeType = "yes";
-                                price = amount;
+                        .setPositiveButton("确定", (dialogInterface, i) -> {
+                            String amount = et.getText().toString();
+                            if (amount.equals("")) {
+                                Toast.makeText(getApplicationContext(), "金额不能为空，请重新设定" + amount, Toast.LENGTH_LONG).show();
+                                return;
                             }
+
+                            Log.e(TAG, "eee1 " + amount + amount.matches(regEx));
+                            if (Float.parseFloat(amount) == 0) {
+                                ToastUtils.show(LiveUpdateProgramActivity.this, "金额不能为0，请重新设定");
+                                return;
+                            }
+                            chargeAmount.setText("费用： " + amount + "元");
+                            chargeType = "yes";
+                            price = amount;
                         })
                         .setNegativeButton("取消", null)
                         .show();
@@ -484,22 +470,19 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 // 重用uploadManager。一般地，只需要创建一个uploadManager对象
                 UploadManager uploadManager = new UploadManager(config);
                 uploadManager.put(data, key, token,
-                        new UpCompletionHandler() {
-                            @Override
-                            public void complete(String key, ResponseInfo info, JSONObject res) {
-                                //res包含hash、key等信息，具体字段取决于上传策略的设置
-                                if (info.isOK()) {
-                                    Log.i("qiniu", "Upload Success");
+                        (key1, info, res) -> {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                Log.i("qiniu", "Upload Success");
 
 //                                    ToastUtils.show(LiveUpdateProgramActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
-                                } else {
-                                    Log.i("qiniu", "Upload Fail");
-                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                                }
-                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-
-                                videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key;
+                            } else {
+                                Log.i("qiniu", "Upload Fail");
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
                             }
+                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
+
+                            videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
                         }, null);
             }
         }.start();
@@ -541,13 +524,10 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         month = c.get(Calendar.MONTH) + 1;  //Calendar.getInstance().get(Calendar.MONTH) 月份少1，因为Calendar api月份是从0开始计数的
         day = c.get(Calendar.DAY_OF_MONTH);
         Log.e(TAG, "begin " + year + "-" + month + "-" + day);
-        datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                year = i;
-                month = i1 + 1;
-                day = i2;
-            }
+        datePicker.init(year, month, day, (datePicker1, i, i1, i2) -> {
+            year = i;
+            month = i1 + 1;
+            day = i2;
         });
 
         //以下为版本兼容
@@ -562,91 +542,77 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         }
         Log.e(TAG, "hour " + hour + " minute " + minute);
 
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-                hour = i;
-                minute = i1;
-            }
+        timePicker.setOnTimeChangedListener((timePicker1, i, i1) -> {
+            hour = i;
+            minute = i1;
         });
 
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        confirm.setOnClickListener(v -> {
 
-                if ("START".equals(sign)) {
+            if ("START".equals(sign)) {
 
-                    startDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+                startDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
 
-                    //判断开始时间是否早于当前时间
-                    try {
-                        mStartDate = mSimpleDateFormat.parse(startDateTime + ":" + 59);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    currentDate = Calendar.getInstance().getTime();
-                    Log.e(TAG, "START " + startDateTime);
-                    Log.e(TAG, " " + mStartDate);
-                    Log.e(TAG, "  >>> " + currentDate);
+                //判断开始时间是否早于当前时间
+                try {
+                    mStartDate = mSimpleDateFormat.parse(startDateTime + ":" + 59);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                currentDate = Calendar.getInstance().getTime();
+                Log.e(TAG, "START " + startDateTime);
+                Log.e(TAG, " " + mStartDate);
+                Log.e(TAG, "  >>> " + currentDate);
 
-                    if (mStartDate.before(currentDate)) {
-                        ToastUtils.show(LiveUpdateProgramActivity.this, "开始时间不能在当前时间之前，请重新设置");
+                if (mStartDate.before(currentDate)) {
+                    ToastUtils.show(LiveUpdateProgramActivity.this, "开始时间不能在当前时间之前，请重新设置");
+                    return;
+                }
+                mLiveSettingPopupWindow.dismiss();
+                startTime.setText(startDateTime);
+//                    expectBeginTime = DateUtils.stringToLong(startDateTime, DateUtils.TYPE_01);
+                expectBeginTime = DateUtils.dateToLong(mStartDate);
+
+            } else if ("END".equals(sign)) {
+
+                if (!expectType.equals("liveNow")) {
+                    if (mStartDate == null) {
+                        ToastUtils.show(LiveUpdateProgramActivity.this, "请先设置开始时间，再设置结束时间");
+                        mLiveSettingPopupWindow.dismiss();
                         return;
                     }
-                    mLiveSettingPopupWindow.dismiss();
-                    startTime.setText(startDateTime);
-//                    expectBeginTime = DateUtils.stringToLong(startDateTime, DateUtils.TYPE_01);
-                    expectBeginTime = DateUtils.dateToLong(mStartDate);
-
-                } else if ("END".equals(sign)) {
-
-                    if (!expectType.equals("liveNow")) {
-                        if (mStartDate == null) {
-                            ToastUtils.show(LiveUpdateProgramActivity.this, "请先设置开始时间，再设置结束时间");
-                            mLiveSettingPopupWindow.dismiss();
-                            return;
-                        }
-                    }
-                    endDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
-
-                    //判断结束时间是否早于开始时间
-                    try {
-                        mEndDate = mSimpleDateFormat.parse(endDateTime + ":" + 59);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    Log.e(TAG, "END " + endDateTime);
-                    Log.e(TAG, "END " + mStartDate);
-                    Log.e(TAG, "END " + "  >>> " + mEndDate);
-
-                    if (!expectType.equals("liveNow")) {
-                        if (mStartDate.after(mEndDate)) {
-                            ToastUtils.show(LiveUpdateProgramActivity.this, "结束时间应该晚于开始时间，请重新设置");
-                            return;
-                        }
-                    }
-                    mLiveSettingPopupWindow.dismiss();
-                    endTime.setText(endDateTime);
-//                    expectEndTime = DateUtils.stringToLong(endDateTime, DateUtils.TYPE_01);
-                    expectEndTime = DateUtils.dateToLong(mEndDate);
                 }
-            }
-        });
+                endDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                //判断结束时间是否早于开始时间
+                try {
+                    mEndDate = mSimpleDateFormat.parse(endDateTime + ":" + 59);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e(TAG, "END " + endDateTime);
+                Log.e(TAG, "END " + mStartDate);
+                Log.e(TAG, "END " + "  >>> " + mEndDate);
+
+                if (!expectType.equals("liveNow")) {
+                    if (mStartDate.after(mEndDate)) {
+                        ToastUtils.show(LiveUpdateProgramActivity.this, "结束时间应该晚于开始时间，请重新设置");
+                        return;
+                    }
+                }
                 mLiveSettingPopupWindow.dismiss();
+                endTime.setText(endDateTime);
+//                    expectEndTime = DateUtils.stringToLong(endDateTime, DateUtils.TYPE_01);
+                expectEndTime = DateUtils.dateToLong(mEndDate);
             }
         });
 
-        popupDateTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mLiveSettingPopupWindow != null && mLiveSettingPopupWindow.isShowing()) {
-                    mLiveSettingPopupWindow.dismiss();
-                }
+        back.setOnClickListener(view -> mLiveSettingPopupWindow.dismiss());
+
+        popupDateTime.setOnClickListener(v -> {
+            if (mLiveSettingPopupWindow != null && mLiveSettingPopupWindow.isShowing()) {
+                mLiveSettingPopupWindow.dismiss();
             }
         });
 

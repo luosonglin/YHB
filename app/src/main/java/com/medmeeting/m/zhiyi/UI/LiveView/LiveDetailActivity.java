@@ -161,20 +161,17 @@ public class LiveDetailActivity extends AppCompatActivity {
         /*增加自定义按钮的分享面板*/
         mShareAction = new ShareAction(LiveDetailActivity.this)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                        UMWeb web = new UMWeb(Constant.Share_Live_Room + roomId); //http://wap.medmeeting.com/#!/live/room/
-                        web.setTitle(title);//标题
-                        web.setThumb(new UMImage(LiveDetailActivity.this, phone));  //缩略图
-                        web.setDescription(description);//描述
-                        new ShareAction(LiveDetailActivity.this)
-                                .withMedia(web)
-                                .setPlatform(share_media)
-                                .setCallback(mShareListener)
-                                .share();
-                    }
+                    UMWeb web = new UMWeb(Constant.Share_Live_Room + roomId); //http://wap.medmeeting.com/#!/live/room/
+                    web.setTitle(title);//标题
+                    web.setThumb(new UMImage(LiveDetailActivity.this, phone));  //缩略图
+                    web.setDescription(description);//描述
+                    new ShareAction(LiveDetailActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
                 });
     }
     @Override
@@ -276,40 +273,36 @@ public class LiveDetailActivity extends AppCompatActivity {
         imageView.setLayoutParams(lp);
 
         // 监听滚动事件
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                ViewGroup.LayoutParams lp = imageView
-                        .getLayoutParams();
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        // 手指离开后恢复图片
-                        mScaling = false;
-                        replyImage();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (!mScaling) {
-                            if (scrollView.getScrollY() == 0) {
-                                mFirstPosition = event.getY();// 滚动到顶部时记录位置，否则正常返回
-                            } else {
-                                break;
-                            }
-                        }
-                        int distance = (int) ((event.getY() - mFirstPosition) * 0.6); // 滚动距离乘以一个系数
-                        if (distance < 0) { // 当前位置比记录位置要小，正常返回
+        scrollView.setOnTouchListener((v, event) -> {
+            ViewGroup.LayoutParams lp1 = imageView
+                    .getLayoutParams();
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    // 手指离开后恢复图片
+                    mScaling = false;
+                    replyImage();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (!mScaling) {
+                        if (scrollView.getScrollY() == 0) {
+                            mFirstPosition = event.getY();// 滚动到顶部时记录位置，否则正常返回
+                        } else {
                             break;
                         }
+                    }
+                    int distance = (int) ((event.getY() - mFirstPosition) * 0.6); // 滚动距离乘以一个系数
+                    if (distance < 0) { // 当前位置比记录位置要小，正常返回
+                        break;
+                    }
 
-                        // 处理放大
-                        mScaling = true;
-                        lp.width = metric.widthPixels + distance;
-                        lp.height = (metric.widthPixels + distance) * 9 / 16;
-                        imageView.setLayoutParams(lp);
-                        return true; // 返回true表示已经完成触摸事件，不再处理
-                }
-                return false;
+                    // 处理放大
+                    mScaling = true;
+                    lp1.width = metric.widthPixels + distance;
+                    lp1.height = (metric.widthPixels + distance) * 9 / 16;
+                    imageView.setLayoutParams(lp1);
+                    return true; // 返回true表示已经完成触摸事件，不再处理
             }
+            return false;
         });
     }
 
@@ -326,14 +319,11 @@ public class LiveDetailActivity extends AppCompatActivity {
         ValueAnimator anim = ObjectAnimator.ofFloat(0.0F, 1.0F)
                 .setDuration(200);
 
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float cVal = (Float) animation.getAnimatedValue();
-                lp.width = (int) (w - (w - newW) * cVal);
-                lp.height = (int) (h - (h - newH) * cVal);
-                imageView.setLayoutParams(lp);
-            }
+        anim.addUpdateListener(animation -> {
+            float cVal = (Float) animation.getAnimatedValue();
+            lp.width = (int) (w - (w - newW) * cVal);
+            lp.height = (int) (h - (h - newH) * cVal);
+            imageView.setLayoutParams(lp);
         });
         anim.start();
     }

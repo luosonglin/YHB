@@ -277,18 +277,12 @@ public class MyOrderMeetingFragment extends Fragment {
 
                 //alipay
                 if (type.equals("alipay")) {
-                    /**
-                     * 检测是否有支付宝软件
-                     */
                     if (checkAliPayInstalled(getActivity())) {
                         pay(data.getEntity().getAmount(), data.getEntity().getTradeTitle(), data.getEntity().getTradeTitle(), data.getEntity().getTradeId(), data.getEntity().getAlipayOrderString());
                     } else {
                         ToastUtils.show(getActivity(), "支付宝APP尚未安装，\n请重新选择其他支付方式");
                     }
                 } else if (type.equals("wechat")) {
-                    /**
-                     * 检测是否有微信软件
-                     */
                     if (isWXAppInstalledAndSupported(getActivity(), api)) {
                         Data.setPayType(2);
                         Data.setTradeId(data.getEntity().getTradeId());
@@ -366,9 +360,7 @@ public class MyOrderMeetingFragment extends Fragment {
     public void pay(float amount, String title, String description, String paymentId, final String payInfo) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
             new AlertDialog.Builder(getActivity()).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", (dialoginterface, i) -> {
-                        getActivity().finish();
-                    }).show();
+                    .setPositiveButton("确定", (dialoginterface, i) -> getActivity().finish()).show();
             return;
         }
 

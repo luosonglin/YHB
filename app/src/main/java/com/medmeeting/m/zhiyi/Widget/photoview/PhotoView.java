@@ -934,12 +934,7 @@ public class PhotoView extends android.support.v7.widget.AppCompatImageView {
                 final float cy = clipY;
                 final ClipCalculate c = info.mScaleType == ScaleType.FIT_START ? new START() : info.mScaleType == ScaleType.FIT_END ? new END() : new OTHER();
 
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mTranslate.withClip(1, 1, -1 + cx, -1 + cy, ANIMA_DURING / 2, c);
-                    }
-                }, ANIMA_DURING / 2);
+                postDelayed(() -> mTranslate.withClip(1, 1, -1 + cx, -1 + cy, ANIMA_DURING / 2, c), ANIMA_DURING / 2);
             }
 
             mCompleteCallBack = completeCallBack;

@@ -30,7 +30,6 @@ import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.RotateLayout;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView;
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.InputPanel;
 import com.qiniu.android.dns.DnsManager;
 import com.qiniu.android.dns.IResolver;
 import com.qiniu.android.dns.NetworkInfo;
@@ -147,20 +146,17 @@ public class StreamingBaseActivity extends Activity implements
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_START_STREAMING:
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // disable the shutter button before startStreaming
-                            setShutterButtonEnabled(false);
-                            boolean res = mMediaStreamingManager.startStreaming();
-                            mShutterButtonPressed = true;
-                            Log.i(TAG, "res:" + res);
-                            if (!res) {
-                                mShutterButtonPressed = false;
-                                setShutterButtonEnabled(true);
-                            }
-                            setShutterButtonPressed(mShutterButtonPressed);
+                    new Thread(() -> {
+                        // disable the shutter button before startStreaming
+                        setShutterButtonEnabled(false);
+                        boolean res = mMediaStreamingManager.startStreaming();
+                        mShutterButtonPressed = true;
+                        Log.i(TAG, "res:" + res);
+                        if (!res) {
+                            mShutterButtonPressed = false;
+                            setShutterButtonEnabled(true);
                         }
+                        setShutterButtonPressed(mShutterButtonPressed);
                     }).start();
                     break;
                 case MSG_STOP_STREAMING:
@@ -310,67 +306,44 @@ public class StreamingBaseActivity extends Activity implements
         chatListView.setAdapter(chatListAdapter);
         bottomPanel = (BottomPanelFragment2) getFragmentManager().findFragmentById(R.id.bottom_bar);
         btnDan = (ImageView) bottomPanel.getView().findViewById(R.id.dan_btn);
-        btnDan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (chatListView.getVisibility() == View.VISIBLE) {
-                    chatListView.setVisibility(View.GONE);
-                    btnDan.setImageResource(R.mipmap.icon_dan_close);
-                } else {
-                    chatListView.setVisibility(View.VISIBLE);
-                    btnDan.setImageResource(R.mipmap.icon_dan);
-                }
+        btnDan.setOnClickListener(view -> {
+            if (chatListView.getVisibility() == View.VISIBLE) {
+                chatListView.setVisibility(View.GONE);
+                btnDan.setImageResource(R.mipmap.icon_dan_close);
+            } else {
+                chatListView.setVisibility(View.VISIBLE);
+                btnDan.setImageResource(R.mipmap.icon_dan);
             }
         });
         btnCameraSwitch = (ImageView) bottomPanel.getView().findViewById(R.id.camera_switch_btn);
-        btnCameraSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacks(mSwitcher);
-                mHandler.postDelayed(mSwitcher, 100);
-            }
+        btnCameraSwitch.setOnClickListener(view -> {
+            mHandler.removeCallbacks(mSwitcher);
+            mHandler.postDelayed(mSwitcher, 100);
         });
         btnTorch = (ImageView) bottomPanel.getView().findViewById(R.id.torch_btn);
-        btnTorch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!mIsTorchOn) {
-                            mIsTorchOn = true;
-                            mMediaStreamingManager.turnLightOn();
-                        } else {
-                            mIsTorchOn = false;
-                            mMediaStreamingManager.turnLightOff();
-                        }
-                        setTorchEnabled(mIsTorchOn);
-                    }
-                }).start();
+        btnTorch.setOnClickListener(view -> new Thread(() -> {
+            if (!mIsTorchOn) {
+                mIsTorchOn = true;
+                mMediaStreamingManager.turnLightOn();
+            } else {
+                mIsTorchOn = false;
+                mMediaStreamingManager.turnLightOff();
             }
-        });
+            setTorchEnabled(mIsTorchOn);
+        }).start());
         btnEncodingOrientationSwitcher = (ImageView) bottomPanel.getView().findViewById(R.id.orientation_btn);
-        btnEncodingOrientationSwitcher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacks(mEncodingOrientationSwitcher);
-                mHandler.post(mEncodingOrientationSwitcher);
-            }
+        btnEncodingOrientationSwitcher.setOnClickListener(view -> {
+            mHandler.removeCallbacks(mEncodingOrientationSwitcher);
+            mHandler.post(mEncodingOrientationSwitcher);
         });
         btnCaptureFrame = (ImageView) bottomPanel.getView().findViewById(R.id.capture_btn);
-        btnCaptureFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacks(mScreenShooter);
-                mHandler.postDelayed(mScreenShooter, 100);
-            }
+        btnCaptureFrame.setOnClickListener(view -> {
+            mHandler.removeCallbacks(mScreenShooter);
+            mHandler.postDelayed(mScreenShooter, 100);
         });
-        bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
-            @Override
-            public void onSendClick(String text) {
-                final TextMessage content = TextMessage.obtain(text);
-                LiveKit.sendMessage(content);
-            }
+        bottomPanel.setInputPanelListener(text -> {
+            final TextMessage content = TextMessage.obtain(text);
+            LiveKit.sendMessage(content);
         });
 
         Log.e(TAG, "programId" + programId);
@@ -421,23 +394,17 @@ public class StreamingBaseActivity extends Activity implements
     }
 
     protected void setShutterButtonPressed(final boolean pressed) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mShutterButtonPressed = pressed;
-                mShutterButton.setPressed(pressed);
-            }
+        runOnUiThread(() -> {
+            mShutterButtonPressed = pressed;
+            mShutterButton.setPressed(pressed);
         });
     }
 
     protected void setShutterButtonEnabled(final boolean enable) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mShutterButton.setFocusable(enable);
-                mShutterButton.setClickable(enable);
-                mShutterButton.setEnabled(enable);
-            }
+        runOnUiThread(() -> {
+            mShutterButton.setFocusable(enable);
+            mShutterButton.setClickable(enable);
+            mShutterButton.setEnabled(enable);
         });
     }
 
@@ -560,25 +527,17 @@ public class StreamingBaseActivity extends Activity implements
 
     @Override
     public void notifyStreamStatusChanged(final StreamingProfile.StreamStatus streamStatus) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatView.setText("bitrate:" + streamStatus.totalAVBitrate / 1024 + " kbps"
-                        + "\naudio:" + streamStatus.audioFps + " fps"
-                        + "\nvideo:" + streamStatus.videoFps + " fps");
-            }
-        });
+        runOnUiThread(() -> mStatView.setText("bitrate:" + streamStatus.totalAVBitrate / 1024 + " kbps"
+                + "\naudio:" + streamStatus.audioFps + " fps"
+                + "\nvideo:" + streamStatus.videoFps + " fps"));
     }
 
     private void setTorchEnabled(final boolean enabled) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+        runOnUiThread(() -> {
 //                String flashlight = enabled ? getString(R.string.flash_light_off) : getString(R.string.flash_light_on);
 //                mTorchBtn.setText("");
 //                mTorchBtn.setBackgroundResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
-                btnTorch.setImageResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
-            }
+            btnTorch.setImageResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
         });
     }
 
@@ -648,40 +607,29 @@ public class StreamingBaseActivity extends Activity implements
                 }
                 Log.i(TAG, "camera switched");
                 final int currentCamId = (Integer) extra;
-                this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateCameraSwitcherButtonText(currentCamId);
-                    }
-                });
+                this.runOnUiThread(() -> updateCameraSwitcherButtonText(currentCamId));
                 break;
             case TORCH_INFO:
                 if (extra != null) {
                     final boolean isSupportedTorch = (Boolean) extra;
                     Log.i(TAG, "isSupportedTorch=" + isSupportedTorch);
-                    this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isSupportedTorch) {
+                    this.runOnUiThread(() -> {
+                        if (isSupportedTorch) {
 //                                mTorchBtn.setVisibility(View.VISIBLE);
-                                btnTorch.setVisibility(View.VISIBLE);
-                            } else {
+                            btnTorch.setVisibility(View.VISIBLE);
+                        } else {
 //                                mTorchBtn.setVisibility(View.GONE);
-                                btnTorch.setVisibility(View.GONE);
-                            }
+                            btnTorch.setVisibility(View.GONE);
                         }
                     });
                 }
                 break;
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mLogTextView != null) {
-                    mLogTextView.setText(mLogContent);
-                }
-                mStatusTextView.setText(mStatusMsgContent);
+        runOnUiThread(() -> {
+            if (mLogTextView != null) {
+                mLogTextView.setText(mLogContent);
             }
+            mStatusTextView.setText(mStatusMsgContent);
         });
     }
 
@@ -704,14 +652,11 @@ public class StreamingBaseActivity extends Activity implements
         mStatView = (TextView) findViewById(R.id.stream_status);
 
         mLogoutBtn = (Button) findViewById(R.id.logout_btn);
-        mLogoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(StreamingBaseActivity.this)
-                        .setIcon(R.mipmap.logo)
-                        .setTitle("")
-                        .setMessage("确定退出直播？")
-                        .setNegativeButton("确定", (dialogInterface, i) -> finish())
+        mLogoutBtn.setOnClickListener(view -> new AlertDialog.Builder(StreamingBaseActivity.this)
+                .setIcon(R.mipmap.logo)
+                .setTitle("")
+                .setMessage("确定退出直播？")
+                .setNegativeButton("确定", (dialogInterface, i) -> finish())
 //                        .setPositiveButton("彻底关闭", new DialogInterface.OnClickListener() {
 //                            @Override
 //                            public void onClick(DialogInterface dialogInterface, int i) {
@@ -738,10 +683,8 @@ public class StreamingBaseActivity extends Activity implements
 //                                }, programId);
 //                            }
 //                        })
-                        .setNeutralButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())
-                        .show();
-            }
-        });
+                .setNeutralButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())
+                .show());
 
 
 //        mFaceBeautyBtn.setOnClickListener(new View.OnClickListener() {
@@ -775,33 +718,24 @@ public class StreamingBaseActivity extends Activity implements
 //            }
 //        });
 
-        previewMirrorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mHandler.hasMessages(MSG_PREVIEW_MIRROR)) {
-                    mHandler.sendEmptyMessage(MSG_PREVIEW_MIRROR);
-                }
+        previewMirrorBtn.setOnClickListener(v -> {
+            if (!mHandler.hasMessages(MSG_PREVIEW_MIRROR)) {
+                mHandler.sendEmptyMessage(MSG_PREVIEW_MIRROR);
             }
         });
 
-        encodingMirrorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mHandler.hasMessages(MSG_ENCODING_MIRROR)) {
-                    mHandler.sendEmptyMessage(MSG_ENCODING_MIRROR);
-                }
+        encodingMirrorBtn.setOnClickListener(v -> {
+            if (!mHandler.hasMessages(MSG_ENCODING_MIRROR)) {
+                mHandler.sendEmptyMessage(MSG_ENCODING_MIRROR);
             }
         });
 
         //底部圆形按钮
-        mShutterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mShutterButtonPressed) {
-                    stopStreaming();
-                } else {
-                    startStreaming();
-                }
+        mShutterButton.setOnClickListener(view -> {
+            if (mShutterButtonPressed) {
+                stopStreaming();
+            } else {
+                startStreaming();
             }
         });
 
@@ -936,12 +870,7 @@ public class StreamingBaseActivity extends Activity implements
             }
 
             final String info = "截图保存在: " + Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(mContext, info, Toast.LENGTH_LONG).show();
-                }
-            });
+            runOnUiThread(() -> Toast.makeText(mContext, info, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -1016,18 +945,15 @@ public class StreamingBaseActivity extends Activity implements
                         return;
                     }
                     bitmap = bmp;
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                saveToSDCard(fileName, bitmap);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } finally {
-                                if (bitmap != null) {
-                                    bitmap.recycle();
-                                    bitmap = null;
-                                }
+                    new Thread(() -> {
+                        try {
+                            saveToSDCard(fileName, bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (bitmap != null) {
+                                bitmap.recycle();
+                                bitmap = null;
                             }
                         }
                     }).start();

@@ -340,13 +340,10 @@ public class VideoDetailActivity extends AppCompatActivity {
                             super.onClickStartIcon(url, objects);
                         }
                     })
-                    .setLockClickListener(new LockClickListener() {
-                        @Override
-                        public void onClick(View view, boolean lock) {
-                            if (orientationUtils != null) {
-                                //配合下方的onConfigurationChanged
-                                orientationUtils.setEnable(!lock);
-                            }
+                    .setLockClickListener((view, lock) -> {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
                         }
                     })
                     .build(detailPlayer);
@@ -379,9 +376,6 @@ public class VideoDetailActivity extends AppCompatActivity {
             });
         }
 
-        /**
-         * 对比userId chargeType url
-         */
         if (Data.getUserId() == userId) {
             detailPlayer.getStartButton().setVisibility(View.VISIBLE);
             detailPlayer.getBuyButton().setVisibility(View.GONE);
@@ -402,13 +396,10 @@ public class VideoDetailActivity extends AppCompatActivity {
         detailPlayer.getTitleTextView().setText("           ");
         detailPlayer.getBackButton().setVisibility(View.VISIBLE);
         detailPlayer.getBackButton().setOnClickListener(view -> finish());
-        detailPlayer.getShareButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
-            }
+        detailPlayer.getShareButton().setOnClickListener(view -> {
+            ShareBoardConfig config = new ShareBoardConfig();
+            config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+            mShareAction.open(config);
         });
 
         if (detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING
@@ -538,9 +529,6 @@ public class VideoDetailActivity extends AppCompatActivity {
         final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
         final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.wechat);
 
-        /**
-         * 支付宝
-         */
         a.setOnClickListener(v -> {
             if (checkAliPayInstalled(VideoDetailActivity.this)) {
                 getPayInfo(v, "ALIPAY", "APP", videoId);
@@ -550,11 +538,7 @@ public class VideoDetailActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * 微信
-         */
         b.setOnClickListener(v -> {
-            /** 检测是否有微信软件 */
             if (isWXAppInstalledAndSupported(VideoDetailActivity.this, api)) {
                 getPayInfo(v, "WXPAY", "APP", videoId);
                 academicPopupWindow.dismiss();
@@ -745,9 +729,7 @@ public class VideoDetailActivity extends AppCompatActivity {
     public void pay(View v, String amount, String title, String description, String paymentId, final String payInfo) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", (dialoginterface, i) -> {
-                        finish();
-                    }).show();
+                    .setPositiveButton("确定", (dialoginterface, i) -> finish()).show();
             return;
         }
 

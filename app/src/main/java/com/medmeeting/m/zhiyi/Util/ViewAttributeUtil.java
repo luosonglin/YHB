@@ -34,7 +34,7 @@ public class ViewAttributeUtil {
 
 
     public static int getValue(String value) {
-        return Integer.valueOf(value.substring(1, value.length())).intValue();
+        return Integer.valueOf(value.substring(1, value.length()));
     }
 
     public static int getBackgroundAttibute(AttributeSet attr) {

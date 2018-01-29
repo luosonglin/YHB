@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.Widget.colortrackview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -171,6 +172,7 @@ public class ColorTrackView extends View {
 
     private boolean debug = false;
 
+    @SuppressLint("WrongConstant")
     private void drawText_h(Canvas canvas, int color, int startX, int endX) {
         mPaint.setColor(color);
         if (debug) {
@@ -186,6 +188,7 @@ public class ColorTrackView extends View {
         canvas.restore();
     }
 
+    @SuppressLint("WrongConstant")
     private void drawText_v(Canvas canvas, int color, int startY, int endY) {
         mPaint.setColor(color);
         if (debug) {

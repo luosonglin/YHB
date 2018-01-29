@@ -166,13 +166,10 @@ public class IndexFragment extends Fragment implements OnChannelListener {
 
         tab.setTabPaddingLeftAndRight(CommonUtil.dip2px(10), CommonUtil.dip2px(10));
         tab.setupWithViewPager(vp);
-        tab.post(new Runnable() {
-            @Override
-            public void run() {
-                //设置最小宽度，使其可以在滑动一部分距离
-                ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
-                slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
-            }
+        tab.post(() -> {
+            //设置最小宽度，使其可以在滑动一部分距离
+            ViewGroup slidingTabStrip = (ViewGroup) tab.getChildAt(0);
+            slidingTabStrip.setMinimumWidth(slidingTabStrip.getMeasuredWidth() + iconCategory.getMeasuredWidth());
         });
         //隐藏指示器时候为0
         tab.setSelectedTabIndicatorHeight(6);//设置当前被选中标签的高度

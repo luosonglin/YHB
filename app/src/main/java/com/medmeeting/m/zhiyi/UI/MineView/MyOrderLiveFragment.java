@@ -145,10 +145,8 @@ public class MyOrderLiveFragment extends Fragment {
                     mMoreView.setVisibility(View.GONE);
                 }
                 mAdapter.addData(mLives);
-                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    startActivity(new Intent(getActivity(), LiveProgramDetailActivity2.class)
-                            .putExtra("programId", data.getData().get(position).getId()));
-                });
+                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> startActivity(new Intent(getActivity(), LiveProgramDetailActivity2.class)
+                        .putExtra("programId", data.getData().get(position).getId())));
             }
         }, searchEntity);
 

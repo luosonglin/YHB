@@ -402,24 +402,22 @@ public class MeetingDetailActivity extends AppCompatActivity {
         /*增加自定义按钮的分享面板*/
         mShareAction = new ShareAction(MeetingDetailActivity.this)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
 
 //                        UMWeb web = new UMWeb(Constant.Share_Meeting_Index + eventId);
-                        UMWeb web = new UMWeb(URL);
-                        web.setTitle(eventTitle);//标题
-                        if (photo != null) {
-                            web.setThumb(new UMImage(MeetingDetailActivity.this, photo));  //缩略图
-                        } else {
-                            web.setThumb(new UMImage(MeetingDetailActivity.this, R.mipmap.meeting_bg));
-                        }
-                        web.setDescription(desc);//描述
-                        new ShareAction(MeetingDetailActivity.this)
-                                .withMedia(web)
-                                .setPlatform(share_media)
-                                .setCallback(mShareListener)
-                                .share();
+                    UMWeb web = new UMWeb(URL);
+                    web.setTitle(eventTitle);//标题
+                    if (photo != null) {
+                        web.setThumb(new UMImage(MeetingDetailActivity.this, photo));  //缩略图
+                    } else {
+                        web.setThumb(new UMImage(MeetingDetailActivity.this, R.mipmap.meeting_bg));
+                    }
+                    web.setDescription(desc);//描述
+                    new ShareAction(MeetingDetailActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
 
 //                        new ShareAction(MeetingDetailActivity.this)
 //                                .withTitle(eventTitle)
@@ -433,7 +431,6 @@ public class MeetingDetailActivity extends AppCompatActivity {
 //                                .setPlatform(share_media)
 //                                .setCallback(mShareListener)
 //                                .share();
-                    }
                 });
     }
 

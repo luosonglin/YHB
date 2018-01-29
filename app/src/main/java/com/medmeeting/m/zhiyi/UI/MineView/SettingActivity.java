@@ -98,12 +98,7 @@ public class SettingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -163,7 +158,6 @@ public class SettingActivity extends AppCompatActivity {
                     updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
                         switch (view12.getId()) {
                             case R.id.dialog_sure:
-                                /**调用系统自带的浏览器去下载最新apk*/
                                 Intent intent = new Intent();
                                 intent.setAction("android.intent.action.VIEW");
                                 Uri content_url = Uri.parse(url);
@@ -336,49 +330,46 @@ public class SettingActivity extends AppCompatActivity {
         new Thread() {
             public void run() {
                 uploadManager.put(data, key, token,
-                        new UpCompletionHandler() {
-                            @Override
-                            public void complete(String key, ResponseInfo info, JSONObject res) {
-                                //res包含hash、key等信息，具体字段取决于上传策略的设置
-                                if (info.isOK()) {
-                                    Log.i("qiniu", "Upload Success");
-                                    Glide.with(SettingActivity.this)
-                                            .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
-                                            .crossFade()
-                                            .into(avatarIv);
-                                    showProgress(false);
-                                    Map<String, Object> maps = new HashMap<>();
-                                    try {
-                                        maps.put("userId", DBUtils.get(SettingActivity.this, "userId"));
-                                    } catch (SnappydbException e) {
-                                        e.printStackTrace();
-                                    }
-                                    maps.put("avatar", "http://ono5ms5i0.bkt.clouddn.com/" + key);
-                                    HttpData.getInstance().HttpDataUpdateAvatar(new Observer<MyInfoDto>() {
-                                        @Override
-                                        public void onCompleted() {
-
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-
-                                        }
-
-                                        @Override
-                                        public void onNext(MyInfoDto myInfoDto) {
-                                            if (myInfoDto.getCode() == 200) {
-                                                ToastUtils.show(SettingActivity.this, "修改成功");
-                                            }
-                                        }
-                                    }, maps);
-                                } else {
-                                    Log.i("qiniu", "Upload Fail");
-                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                        (key1, info, res) -> {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                Log.i("qiniu", "Upload Success");
+                                Glide.with(SettingActivity.this)
+                                        .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
+                                        .crossFade()
+                                        .into(avatarIv);
+                                showProgress(false);
+                                Map<String, Object> maps = new HashMap<>();
+                                try {
+                                    maps.put("userId", DBUtils.get(SettingActivity.this, "userId"));
+                                } catch (SnappydbException e) {
+                                    e.printStackTrace();
                                 }
-                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
+                                maps.put("avatar", "http://ono5ms5i0.bkt.clouddn.com/" + key1);
+                                HttpData.getInstance().HttpDataUpdateAvatar(new Observer<MyInfoDto>() {
+                                    @Override
+                                    public void onCompleted() {
 
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(MyInfoDto myInfoDto) {
+                                        if (myInfoDto.getCode() == 200) {
+                                            ToastUtils.show(SettingActivity.this, "修改成功");
+                                        }
+                                    }
+                                }, maps);
+                            } else {
+                                Log.i("qiniu", "Upload Fail");
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
                             }
+                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
+
                         }, null);
             }
         }.start();

@@ -149,12 +149,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
 
         mBackgroundImageView = (ImageView) findViewById(R.id.login_background_image);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Animation animation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.login_background_translate_anim);
-                mBackgroundImageView.startAnimation(animation);
-            }
+        new Handler().postDelayed(() -> {
+            Animation animation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.login_background_translate_anim);
+            mBackgroundImageView.startAnimation(animation);
         }, 1000);
 
         // Set up the login form.
@@ -176,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mCodeView = (EditText) findViewById(R.id.code);
         mCodeView.setOnEditorActionListener((textView, id, keyEvent) -> {
-            if (id == R.id.login || id == EditorInfo.IME_NULL) {
+            if (id == R.id.login_code || id == EditorInfo.IME_NULL) {
                 attemptLogin();
                 return true;
             } else if (!isCode) {
@@ -187,30 +184,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         mGetCodeView = (TextView) findViewById(R.id.get_code_textview);
-        mGetCodeView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getPhoneCode();
-            }
-        });
+        mGetCodeView.setOnClickListener(view -> getPhoneCode());
 
         Button mPhoneSignInButton = (Button) findViewById(R.id.phone_sign_in_button);
-        mPhoneSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        mPhoneSignInButton.setOnClickListener(view -> attemptLogin());
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
         mForgetPasswordView = (TextView) findViewById(R.id.forget_password_textview);
-        mForgetPasswordView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        mForgetPasswordView.setOnClickListener(view -> {
 //                startActivity(new Intent(LoginActivity.this, ForgetPasswordActivity.class));
-            }
         });
 
         mTurnPasswordView = (TextView) findViewById(R.id.turn_password);
@@ -233,9 +217,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         mAgreementTv = (TextView) findViewById(R.id.agreement_tv);
-        mAgreementTv.setOnClickListener(view -> {
-            BrowserActivity.launch(LoginActivity.this, "http://webview.medmeeting.com/#/page/user-protocol", "《登录协议》");
-        });
+        mAgreementTv.setOnClickListener(view -> BrowserActivity.launch(LoginActivity.this, "http://webview.medmeeting.com/#/page/user-protocol", "《登录协议》"));
     }
 
     public static void getTxCodeView() {
@@ -444,13 +426,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
             Snackbar.make(mPhoneView, "Contacts permissions are needed for providing email completions.", Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
+                    .setAction(android.R.string.ok, v -> requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS));
         } else {
             requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
         }

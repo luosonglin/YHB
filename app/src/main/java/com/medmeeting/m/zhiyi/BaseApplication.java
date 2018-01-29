@@ -29,9 +29,9 @@ public class BaseApplication extends MultiDexApplication {//Application {
     private static final String TAG = "BaseApplication";
     private static Context context;
     //记录当前栈里所有activity
-    private List<Activity> activities = new ArrayList<Activity>();
+    private List<Activity> activities = new ArrayList<>();
     //记录需要一次性关闭的页面
-    private List<Activity> activitys = new ArrayList<Activity>();
+    private List<Activity> activitys = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -184,10 +184,6 @@ public class BaseApplication extends MultiDexApplication {//Application {
         PlatformConfig.setSinaWeibo("188948618", "416592ff15fdad47403ad89e894d5fd4", "http://sns.whalecloud.com");
         PlatformConfig.setAlipay("2015111700822536");
     }
-    /**
-     * 应用签名：
-     * 2d1f5af844ab43da48e5ec917713e2bc
-     */
 
 
 }

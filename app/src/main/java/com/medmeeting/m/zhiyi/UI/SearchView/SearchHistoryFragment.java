@@ -155,12 +155,9 @@ public class SearchHistoryFragment extends Fragment {
         mQuickAdapter = new SearchHistoryAdapter(R.layout.item_history, hashSetList);
 
         mRecyclerView.setAdapter(mQuickAdapter);
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                //点击历史搜索词条，进行搜索
-                SearchActicity.setEdit(mQuickAdapter.getData().get(position) + "");
-            }
+        mQuickAdapter.setOnRecyclerViewItemClickListener((view12, position) -> {
+            //点击历史搜索词条，进行搜索
+            SearchActicity.setEdit(mQuickAdapter.getData().get(position) + "");
         });
 
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_search_history_header, null);
@@ -205,9 +202,6 @@ public class SearchHistoryFragment extends Fragment {
 
 
     private void initSearchResultView() {
-        /**
-         *相关用户
-         */
         rvUserList.setVisibility(View.GONE);
         rvUserList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false) {
             @Override
@@ -220,9 +214,6 @@ public class SearchHistoryFragment extends Fragment {
         rvUserList.setAdapter(mUserAdapter);
 
 
-        /**
-         *相关新闻
-         */
         rvNewsList.setVisibility(View.GONE);
         if (mType.equals("0")) {
             rvNewsList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
@@ -248,9 +239,6 @@ public class SearchHistoryFragment extends Fragment {
         mNewsMoreView = (TextView) mNewsHeaderView.findViewById(R.id.more);
 
 
-        /**
-         *相关会议
-         */
         rvMeetingList.setVisibility(View.GONE);
         if (mType.equals("0")) {
             rvMeetingList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
@@ -272,9 +260,6 @@ public class SearchHistoryFragment extends Fragment {
         mMeetingMoreView = (TextView) mMeetingHeaderView.findViewById(R.id.more);
 
 
-        /**
-         *相关直播
-         */
         rvLiveList.setVisibility(View.GONE);
         if (mType.equals("0")) {
             rvLiveList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
@@ -296,9 +281,6 @@ public class SearchHistoryFragment extends Fragment {
         mLiveMoreView = (TextView) mLiveHeaderView.findViewById(R.id.more);
 
 
-        /**
-         *相关视频
-         */
         rvVideoList.setVisibility(View.GONE);
         if (mType.equals("0")) {
             rvVideoList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
@@ -385,12 +367,7 @@ public class SearchHistoryFragment extends Fragment {
                 if (mType.equals("0")) {
                     mMeetingTypeView.setText("相关会议");
                     mMeetingMoreView.setVisibility(View.VISIBLE);
-                    mMeetingMoreView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SearchActicity.setViewPager(3);
-                        }
-                    });
+                    mMeetingMoreView.setOnClickListener(view -> SearchActicity.setViewPager(3));
                     mMeetingAdapter.addHeaderView(mMeetingHeaderView);
                 }
                 if (mType.equals("0") && data.getData().size()>2) {
@@ -448,12 +425,7 @@ public class SearchHistoryFragment extends Fragment {
                 if (mType.equals("0")) {
                     mNewsTypeView.setText("相关新闻");
                     mNewsMoreView.setVisibility(View.VISIBLE);
-                    mNewsMoreView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SearchActicity.setViewPager(4);
-                        }
-                    });
+                    mNewsMoreView.setOnClickListener(view -> SearchActicity.setViewPager(4));
                     mNewsAdapter.addHeaderView(mNewsHeaderView);
                 }
                 if (mType.equals("0") && data.getData().size()>2) {
@@ -521,12 +493,7 @@ public class SearchHistoryFragment extends Fragment {
                 if (mType.equals("0")) {
                     mVideoTypeView.setText("相关视频");
                     mVideoMoreView.setVisibility(View.VISIBLE);
-                    mVideoMoreView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SearchActicity.setViewPager(2);
-                        }
-                    });
+                    mVideoMoreView.setOnClickListener(view -> SearchActicity.setViewPager(2));
                     mVideoAdapter.addHeaderView(mVideoHeaderView);
                 }
                 if (mType.equals("0") && data.getData().size()>2) {
@@ -578,12 +545,7 @@ public class SearchHistoryFragment extends Fragment {
                 if (mType.equals("0")) {
                     mLiveTypeView.setText("相关直播");
                     mLiveMoreView.setVisibility(View.VISIBLE);
-                    mLiveMoreView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            SearchActicity.setViewPager(1);
-                        }
-                    });
+                    mLiveMoreView.setOnClickListener(view -> SearchActicity.setViewPager(1));
                     mLiveAdapter.addHeaderView(mLiveHeaderView);
                 }
                 if (mType.equals("0") && data.getData().size()>2) {
@@ -635,13 +597,10 @@ public class SearchHistoryFragment extends Fragment {
                 mUserHeaderView.setVisibility(View.VISIBLE);
 
                 mUserAdapter.setNewData(data.getData());
-                mUserAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
-                        intent.putExtra("userId", data.getData().get(position).getUserId());
-                        startActivity(intent);
-                    }
+                mUserAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
+                    intent.putExtra("userId", data.getData().get(position).getUserId());
+                    startActivity(intent);
                 });
             }
         }, userRedSearchEntity);

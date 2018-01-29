@@ -108,45 +108,30 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
         btnGift = (ImageView) bottomPanel.getView().findViewById(R.id.btn_gift);
         btnHeart = (ImageView) bottomPanel.getView().findViewById(R.id.btn_heart);
         heartLayout = (HeartLayout) findViewById(R.id.heart_layout);
-        btnDan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (chatListView.getVisibility() == View.VISIBLE) {
-                    chatListView.setVisibility(View.GONE);
-                    btnDan.setImageResource(R.mipmap.icon_dan_close);
-                } else if (chatListView.getVisibility() == View.GONE) {
-                    chatListView.setVisibility(View.VISIBLE);
-                    btnDan.setImageResource(R.mipmap.icon_dan);
-                }
+        btnDan.setOnClickListener(view -> {
+            if (chatListView.getVisibility() == View.VISIBLE) {
+                chatListView.setVisibility(View.GONE);
+                btnDan.setImageResource(R.mipmap.icon_dan_close);
+            } else if (chatListView.getVisibility() == View.GONE) {
+                chatListView.setVisibility(View.VISIBLE);
+                btnDan.setImageResource(R.mipmap.icon_dan);
             }
         });
-        btnGift.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GiftMessage msg = new GiftMessage("2", "送您一个礼物");
-                LiveKit.sendMessage(msg);
-            }
+        btnGift.setOnClickListener(view -> {
+            GiftMessage msg = new GiftMessage("2", "送您一个礼物");
+            LiveKit.sendMessage(msg);
         });
-        btnHeart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                heartLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-                        heartLayout.addHeart(rgb);
-                    }
-                });
-                GiftMessage msg = new GiftMessage("1", "点赞了");
-                LiveKit.sendMessage(msg);
-            }
+        btnHeart.setOnClickListener(view -> {
+            heartLayout.post(() -> {
+                int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+                heartLayout.addHeart(rgb);
+            });
+            GiftMessage msg = new GiftMessage("1", "点赞了");
+            LiveKit.sendMessage(msg);
         });
-        bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
-            @Override
-            public void onSendClick(String text) {
-                final TextMessage content = TextMessage.obtain(text);
-                LiveKit.sendMessage(content);
-            }
+        bottomPanel.setInputPanelListener(text -> {
+            final TextMessage content = TextMessage.obtain(text);
+            LiveKit.sendMessage(content);
         });
 
 
@@ -267,13 +252,10 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
                             super.onClickStartIcon(url, objects);
                         }
                     })
-                    .setLockClickListener(new LockClickListener() {
-                        @Override
-                        public void onClick(View view, boolean lock) {
-                            if (orientationUtils != null) {
-                                //配合下方的onConfigurationChanged
-                                orientationUtils.setEnable(!lock);
-                            }
+                    .setLockClickListener((view, lock) -> {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
                         }
                     })
                     .build(detailPlayer);

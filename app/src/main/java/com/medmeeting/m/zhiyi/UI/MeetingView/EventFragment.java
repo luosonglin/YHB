@@ -218,23 +218,20 @@ public class EventFragment extends Fragment {
                     return;
                 }
                 mAdapter.setNewData(data.getData());
-                mAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
+                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
 
-                        Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("eventId", data.getData().get(position).getId());
-                        bundle.putString("sourceType", data.getData().get(position).getSourceType());
-                        bundle.putString("eventTitle", data.getData().get(position).getTitle());
-                        bundle.putString("photo", data.getData().get(position).getBanner());
-                        bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
-                                + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
-                                + " 欢迎参加： " + data.getData().get(position).getTitle());
-                        intent.putExtras(bundle);
-                        getActivity().startActivity(intent);
+                    Intent intent = new Intent(getActivity(), MeetingDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("eventId", data.getData().get(position).getId());
+                    bundle.putString("sourceType", data.getData().get(position).getSourceType());
+                    bundle.putString("eventTitle", data.getData().get(position).getTitle());
+                    bundle.putString("photo", data.getData().get(position).getBanner());
+                    bundle.putString("description", "大会时间：" + DateUtils.formatDate(data.getData().get(position).getStartDate(), DateUtils.TYPE_02)
+                            + " 至 " + DateUtils.formatDate(data.getData().get(position).getEndDate(), DateUtils.TYPE_02)
+                            + " 欢迎参加： " + data.getData().get(position).getTitle());
+                    intent.putExtras(bundle);
+                    getActivity().startActivity(intent);
 
-                    }
                 });
                 srl.setRefreshing(false);
 
@@ -248,12 +245,9 @@ public class EventFragment extends Fragment {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         } finally {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    loadingView.hideLoading();
-                                    mRecyclerView.setVisibility(View.VISIBLE);
-                                }
+                            getActivity().runOnUiThread(() -> {
+                                loadingView.hideLoading();
+                                mRecyclerView.setVisibility(View.VISIBLE);
                             });
                         }
                     }

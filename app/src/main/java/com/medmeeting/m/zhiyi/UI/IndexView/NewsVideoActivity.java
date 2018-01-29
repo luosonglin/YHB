@@ -539,13 +539,10 @@ public class NewsVideoActivity extends AppCompatActivity {
                             super.onClickStartIcon(url, objects);
                         }
                     })
-                    .setLockClickListener(new LockClickListener() {
-                        @Override
-                        public void onClick(View view, boolean lock) {
-                            if (orientationUtils != null) {
-                                //配合下方的onConfigurationChanged
-                                orientationUtils.setEnable(!lock);
-                            }
+                    .setLockClickListener((view, lock) -> {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
                         }
                     })
                     .build(detailPlayer);
@@ -804,19 +801,16 @@ public class NewsVideoActivity extends AppCompatActivity {
 
             Log.e(NewsVideoActivity.this.getLocalClassName(), height);
 
-            NewsVideoActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //为ViewPager设置高度
-                    ViewGroup.LayoutParams params = mWebView.getLayoutParams();
+            NewsVideoActivity.this.runOnUiThread(() -> {
+                //为ViewPager设置高度
+                ViewGroup.LayoutParams params = mWebView.getLayoutParams();
 
-                    params.height = Integer.parseInt(height) * 3;//this.getResources().getDisplayMetrics().heightPixels
+                params.height = Integer.parseInt(height) * 3;//this.getResources().getDisplayMetrics().heightPixels
 
 //                    if (params.height == 4839) params.height = params.height + 4839;
-                    mWebView.setLayoutParams(params);
+                mWebView.setLayoutParams(params);
 
-                    Log.e(NewsVideoActivity.this.getLocalClassName(), "webview " + mWebView.getLayoutParams().height + " ");
-                }
+                Log.e(NewsVideoActivity.this.getLocalClassName(), "webview " + mWebView.getLayoutParams().height + " ");
             });
         }
 

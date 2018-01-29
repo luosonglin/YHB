@@ -163,14 +163,11 @@ public class PopMenu {
             PopSubView subView = new PopSubView(mActivity);
             PopMenuItem menuItem = mMenuItems.get(i);
             subView.setPopMenuItem(menuItem);
-            subView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mPopMenuItemListener != null) {
-                        mPopMenuItemListener.onItemClick(PopMenu.this, position);
-                    }
-                    hide();
+            subView.setOnClickListener(v -> {
+                if (mPopMenuItemListener != null) {
+                    mPopMenuItemListener.onItemClick(PopMenu.this, position);
                 }
+                hide();
             });
 
             GridLayout.LayoutParams lp = new GridLayout.LayoutParams();
@@ -192,12 +189,7 @@ public class PopMenu {
         mCloseIv = new ImageView(mActivity);
         mCloseIv.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         mCloseIv.setImageResource(R.mipmap.tab_plus_g);
-        mCloseIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hide();
-            }
-        });
+        mCloseIv.setOnClickListener(v -> hide());
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
         layoutParams.bottomMargin = dp2px(mActivity, 8);

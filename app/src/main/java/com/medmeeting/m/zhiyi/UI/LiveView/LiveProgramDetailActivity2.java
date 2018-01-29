@@ -53,7 +53,6 @@ import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutLivePlayer;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
-import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -455,13 +454,10 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                             super.onClickStartIcon(url, objects);
                         }
                     })
-                    .setLockClickListener(new LockClickListener() {
-                        @Override
-                        public void onClick(View view, boolean lock) {
-                            if (orientationUtils != null) {
-                                //配合下方的onConfigurationChanged
-                                orientationUtils.setEnable(!lock);
-                            }
+                    .setLockClickListener((view, lock) -> {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
                         }
                     })
                     .build(detailPlayer);
@@ -492,9 +488,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
             });
         }
         Log.e("initPlayer(2", url);
-        /**
-         * 对比userId chargeType url
-         */
         Log.e("aaaaa", Data.getUserId() + " " + userId + " " + chargeType + " " + payFlag);
         if (Objects.equals(Data.getUserId(), userId)) {
             detailPlayer.getStartButton().setVisibility(View.VISIBLE);
@@ -672,9 +665,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
         final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.wechat);
 
-        /**
-         * 支付宝
-         */
         a.setOnClickListener(v -> {
             if (checkAliPayInstalled(LiveProgramDetailActivity2.this)) {
                 getPayInfo(v, "ALIPAY", "APP", videoId);
@@ -684,11 +674,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
             }
         });
 
-        /**
-         * 微信
-         */
         b.setOnClickListener(v -> {
-            /** 检测是否有微信软件 */
             if (isWXAppInstalledAndSupported(LiveProgramDetailActivity2.this, api)) {
                 getPayInfo(v, "WXPAY", "APP", videoId);
                 academicPopupWindow.dismiss();
@@ -871,9 +857,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     public void pay(View v, String amount, String title, String description, String paymentId, final String payInfo) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", (dialoginterface, i) -> {
-                        finish();
-                    }).show();
+                    .setPositiveButton("确定", (dialoginterface, i) -> finish()).show();
             return;
         }
 

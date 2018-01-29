@@ -105,28 +105,26 @@ public class MessageActivity extends AppCompatActivity {
                                 .setTitle("")
                                 .setMessage("确认删除？")
                                 .setNegativeButton("算了", (dialogInterface, i) -> dialogInterface.dismiss())
-                                .setPositiveButton("确认", (dialogInterface, i) -> {
-                                    HttpData.getInstance().HttpDataDeletePush(new Observer<HttpResult3>() {
-                                        @Override
-                                        public void onCompleted() {
+                                .setPositiveButton("确认", (dialogInterface, i) -> HttpData.getInstance().HttpDataDeletePush(new Observer<HttpResult3>() {
+                                    @Override
+                                    public void onCompleted() {
 
-                                        }
+                                    }
 
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            ToastUtils.show(MessageActivity.this, e.getMessage());
-                                        }
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        ToastUtils.show(MessageActivity.this, e.getMessage());
+                                    }
 
-                                        @Override
-                                        public void onNext(HttpResult3 httpResult3) {
-                                            if (!httpResult3.getStatus().equals("success")) {
-                                                ToastUtils.show(MessageActivity.this, httpResult3.getMsg());
-                                                return;
-                                            }
-                                            adapter.removeItem(position);
+                                    @Override
+                                    public void onNext(HttpResult3 httpResult3) {
+                                        if (!httpResult3.getStatus().equals("success")) {
+                                            ToastUtils.show(MessageActivity.this, httpResult3.getMsg());
+                                            return;
                                         }
-                                    }, data.getData().get(position).getMessageId());
-                                })
+                                        adapter.removeItem(position);
+                                    }
+                                }, data.getData().get(position).getMessageId()))
                                 .show();
                     }
 

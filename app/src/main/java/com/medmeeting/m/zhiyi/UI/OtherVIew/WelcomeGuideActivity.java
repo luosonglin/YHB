@@ -47,7 +47,7 @@ public class WelcomeGuideActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_guide);
 
-        views = new ArrayList<View>();
+        views = new ArrayList<>();
 
         // 初始化引导页视图列表
         for (int i = 0; i < pics.length; i++) {

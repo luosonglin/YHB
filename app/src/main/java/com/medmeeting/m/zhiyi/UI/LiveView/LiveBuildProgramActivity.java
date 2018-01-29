@@ -135,12 +135,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("新建直播节目");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -375,22 +370,19 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                 // 重用uploadManager。一般地，只需要创建一个uploadManager对象
                 UploadManager uploadManager = new UploadManager(config);
                 uploadManager.put(data, key, token,
-                        new UpCompletionHandler() {
-                            @Override
-                            public void complete(String key, ResponseInfo info, JSONObject res) {
-                                //res包含hash、key等信息，具体字段取决于上传策略的设置
-                                if (info.isOK()) {
-                                    Log.i("qiniu", "Upload Success");
+                        (key1, info, res) -> {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                Log.i("qiniu", "Upload Success");
 
 //                                    ToastUtils.show(LiveBuildProgramActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
-                                } else {
-                                    Log.i("qiniu", "Upload Fail");
-                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                                }
-                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-
-                                videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key;
+                            } else {
+                                Log.i("qiniu", "Upload Fail");
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
                             }
+                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
+
+                            videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
                         }, null);
             }
         }.start();

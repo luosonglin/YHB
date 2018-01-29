@@ -165,26 +165,20 @@ public class LiveSearchActivity extends AppCompatActivity {
                 window.showAsDropDown(typeTv, 0, 20);
 
                 RelativeLayout relativeLayout = (RelativeLayout) popupView.findViewById(R.id.public_rlyt);
-                relativeLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        typeTv.setText("公开 ▼");
-                        window.dismiss();
-                        type = "公开";
-                        searchEt.setHint("请输入直播间、直播、描述信息");
-                        tagsSwipeRefreshLyt.setVisibility(View.VISIBLE);
-                    }
+                relativeLayout.setOnClickListener(view12 -> {
+                    typeTv.setText("公开 ▼");
+                    window.dismiss();
+                    type = "公开";
+                    searchEt.setHint("请输入直播间、直播、描述信息");
+                    tagsSwipeRefreshLyt.setVisibility(View.VISIBLE);
                 });
                 RelativeLayout relativeLayout2 = (RelativeLayout) popupView.findViewById(R.id.private_rlyt);
-                relativeLayout2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        typeTv.setText("私密 ▼");
-                        window.dismiss();
-                        type = "私密";
-                        searchEt.setHint("请输入房间号ID");
-                        tagsSwipeRefreshLyt.setVisibility(View.GONE);
-                    }
+                relativeLayout2.setOnClickListener(view1 -> {
+                    typeTv.setText("私密 ▼");
+                    window.dismiss();
+                    type = "私密";
+                    searchEt.setHint("请输入房间号ID");
+                    tagsSwipeRefreshLyt.setVisibility(View.GONE);
                 });
                 break;
             case R.id.search_tv:

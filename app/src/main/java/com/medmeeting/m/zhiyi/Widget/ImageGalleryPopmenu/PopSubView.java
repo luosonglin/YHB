@@ -47,20 +47,16 @@ public class PopSubView extends LinearLayout {
         tvLp.topMargin = 10;
         addView(textView, tvLp);
 
-        setOnTouchListener(new OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        scaleViewAnimation(PopSubView.this, factor);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        scaleViewAnimation(PopSubView.this, 1);
-                        break;
-                }
-                return false;
+        setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    scaleViewAnimation(PopSubView.this, factor);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    scaleViewAnimation(PopSubView.this, 1);
+                    break;
             }
+            return false;
         });
     }
 

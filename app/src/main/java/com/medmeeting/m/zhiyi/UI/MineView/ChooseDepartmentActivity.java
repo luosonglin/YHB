@@ -118,12 +118,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
 
         initView();
         loadData();
@@ -190,12 +185,9 @@ public class ChooseDepartmentActivity extends AppCompatActivity
             }
         });
         levelOneSwipeRefreshLyt.setColorSchemeResources(R.color.colorAccent);
-        levelOneSwipeRefreshLyt.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                levelOneSwipeRefreshLyt.setRefreshing(false);
-                loadData();
-            }
+        levelOneSwipeRefreshLyt.setOnRefreshListener(() -> {
+            levelOneSwipeRefreshLyt.setRefreshing(false);
+            loadData();
         });
     }
 
@@ -234,12 +226,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
             }
         });
         levelTwoSwipeRefreshLyt.setColorSchemeResources(R.color.colorAccent);
-        levelTwoSwipeRefreshLyt.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                levelTwoSwipeRefreshLyt.setRefreshing(false);
-            }
-        });
+        levelTwoSwipeRefreshLyt.setOnRefreshListener(() -> levelTwoSwipeRefreshLyt.setRefreshing(false));
     }
 
     private void loadSecondData(String[] data) {

@@ -638,25 +638,22 @@ public class NewsActivity extends AppCompatActivity {
 
             Log.e(NewsActivity.this.getLocalClassName(), height);
 
-            NewsActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+            NewsActivity.this.runOnUiThread(() -> {
 //                    ViewGroup.LayoutParams params1 = mWebView.getLayoutParams();
 //                    params1.height = Integer.parseInt(height) * 3;
 //                    frameLayout.setLayoutParams(params1);
 
 
-                    //为ViewPager设置高度
-                    ViewGroup.LayoutParams params = mWebView.getLayoutParams();
+                //为ViewPager设置高度
+                ViewGroup.LayoutParams params = mWebView.getLayoutParams();
 
-                    params.height = Integer.parseInt(height) * 3;//this.getResources().getDisplayMetrics().heightPixels
+                params.height = Integer.parseInt(height) * 3;//this.getResources().getDisplayMetrics().heightPixels
 
 //                    if (params.height == 4839) params.height = params.height + 4839;
-                    mWebView.setLayoutParams(params);
+                mWebView.setLayoutParams(params);
 
 
-                    Log.e(NewsActivity.this.getLocalClassName(), "webview " + mWebView.getLayoutParams().height + " ");
-                }
+                Log.e(NewsActivity.this.getLocalClassName(), "webview " + mWebView.getLayoutParams().height + " ");
             });
         }
 
@@ -666,14 +663,11 @@ public class NewsActivity extends AppCompatActivity {
                 // 解析js传递过来的json串
                 JSONObject mJson = new JSONObject(string);
                 if (mJson.optString("isFinished").equals("true")) {
-                    NewsActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingView.hideLoading();
-                            loadingView.setVisibility(View.GONE);
-                            mWebView.setVisibility(View.VISIBLE);
-                            Log.e(NewsActivity.this.getLocalClassName(), "Finished");
-                        }
+                    NewsActivity.this.runOnUiThread(() -> {
+                        loadingView.hideLoading();
+                        loadingView.setVisibility(View.GONE);
+                        mWebView.setVisibility(View.VISIBLE);
+                        Log.e(NewsActivity.this.getLocalClassName(), "Finished");
                     });
                 }
 

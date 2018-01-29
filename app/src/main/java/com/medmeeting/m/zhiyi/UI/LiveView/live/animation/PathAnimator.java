@@ -46,12 +46,7 @@ public class PathAnimator extends AbstractPathAnimator {
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation animation) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        parent.removeView(child);
-                    }
-                });
+                mHandler.post(() -> parent.removeView(child));
                 mCounter.decrementAndGet();
             }
 

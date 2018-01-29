@@ -82,10 +82,8 @@ public class MyOrderLiveActivity extends AppCompatActivity {
                 }
 
                 mAdapter.addData(data.getData());
-                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    startActivity(new Intent(MyOrderLiveActivity.this, LiveProgramDetailActivity2.class)
-                            .putExtra("programId", data.getData().get(position).getId()));
-                });
+                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> startActivity(new Intent(MyOrderLiveActivity.this, LiveProgramDetailActivity2.class)
+                        .putExtra("programId", data.getData().get(position).getId())));
             }
         }, searchEntity);
     }

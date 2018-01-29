@@ -58,31 +58,12 @@ public class MyJPushReceiver extends BroadcastReceiver {
             System.out.println("收到了自定义消息@@消息extra是:" + extra);
 
 /*
-            /*//**************解析推送过来的json数据并存放到集合中 begin******************
-            Map<String, Object> map = new HashMap<>();
-            JSONObject jsonObject;
-            try {
-                jsonObject = new JSONObject(extra);
-                String type = jsonObject.getString("id");
-                map.put("id", type);
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            map.put("content", content);
-            //获取接收到推送时的系统时间
-            Calendar rightNow = Calendar.getInstance();
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-            String date = fmt.format(rightNow.getTime());
-            map.put("date", date);*/
+            /*/
 //            MyApp.data.add(map);//需要保存
             //**************解析推送过来的json数据并存放到集合中 end******************
 
 
-            /**
-             * 自定义通知
-             */
-//            PugNotification.with(context)
+            //            PugNotification.with(context)
 //                    .load()
 //                    .title("医会宝")
 //                    .message(content)
@@ -187,31 +168,36 @@ public class MyJPushReceiver extends BroadcastReceiver {
     private static String printBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();
         for (String key : bundle.keySet()) {
-            if (key.equals(JPushInterface.EXTRA_NOTIFICATION_ID)) {
-                sb.append("\nkey:" + key + ", value:" + bundle.getInt(key));
-            } else if (key.equals(JPushInterface.EXTRA_CONNECTION_CHANGE)) {
-                sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
-            } else if (key.equals(JPushInterface.EXTRA_EXTRA)) {
-                if (TextUtils.isEmpty(bundle.getString(JPushInterface.EXTRA_EXTRA))) {
-                    Log.i(TAG, "This message has no Extra data");
-                    continue;
-                }
-
-                try {
-                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-                    Iterator<String> it = json.keys();
-
-                    while (it.hasNext()) {
-                        String myKey = it.next().toString();
-                        sb.append("\nkey:" + key + ", value: [" +
-                                myKey + " - " + json.optString(myKey) + "]");
+            switch (key) {
+                case JPushInterface.EXTRA_NOTIFICATION_ID:
+                    sb.append("\nkey:" + key + ", value:" + bundle.getInt(key));
+                    break;
+                case JPushInterface.EXTRA_CONNECTION_CHANGE:
+                    sb.append("\nkey:" + key + ", value:" + bundle.getBoolean(key));
+                    break;
+                case JPushInterface.EXTRA_EXTRA:
+                    if (TextUtils.isEmpty(bundle.getString(JPushInterface.EXTRA_EXTRA))) {
+                        Log.i(TAG, "This message has no Extra data");
+                        continue;
                     }
-                } catch (JSONException e) {
-                    Log.e(TAG, "Get message extra JSON error!");
-                }
 
-            } else {
-                sb.append("\nkey:" + key + ", value:" + bundle.getString(key));
+                    try {
+                        JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                        Iterator<String> it = json.keys();
+
+                        while (it.hasNext()) {
+                            String myKey = it.next().toString();
+                            sb.append("\nkey:" + key + ", value: [" +
+                                    myKey + " - " + json.optString(myKey) + "]");
+                        }
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Get message extra JSON error!");
+                    }
+
+                    break;
+                default:
+                    sb.append("\nkey:" + key + ", value:" + bundle.getString(key));
+                    break;
             }
         }
         return sb.toString();

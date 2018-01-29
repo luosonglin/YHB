@@ -93,22 +93,19 @@ public class EmojiBoard extends LinearLayout {
                 list.add(R.mipmap.input_emoji_delete);
                 adapter.setResList(list);
                 gridView.setAdapter(adapter);
-                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (listener != null) {
-                            String code = "";
-                            if (position == ROW * COLUMN - 1) {
-                                code = "/DEL";
-                            } else {
-                                int pos = viewPager.getCurrentItem() * (ROW * COLUMN - 1) + position;
-                                char[] chars = Character.toChars(EmojiManager.getCode(pos));
-                                for (int i = 0; i < chars.length; i++) {
-                                    code += Character.toString(chars[i]);
-                                }
+                gridView.setOnItemClickListener((parent, view, position, id) -> {
+                    if (listener != null) {
+                        String code = "";
+                        if (position == ROW * COLUMN - 1) {
+                            code = "/DEL";
+                        } else {
+                            int pos = viewPager.getCurrentItem() * (ROW * COLUMN - 1) + position;
+                            char[] chars = Character.toChars(EmojiManager.getCode(pos));
+                            for (char aChar : chars) {
+                                code += Character.toString(aChar);
                             }
-                            listener.onClick(code);
                         }
+                        listener.onClick(code);
                     }
                 });
                 viewContainer.add(gridView);

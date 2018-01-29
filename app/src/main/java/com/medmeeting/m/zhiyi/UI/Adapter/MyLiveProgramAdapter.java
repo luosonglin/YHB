@@ -58,19 +58,16 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
             helper.getView(R.id.lock).setVisibility(View.GONE);
         }
 
-        helper.getView(R.id.item_news_cv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, LiveProgramDetailAuthorActivity.class);
-                intent.putExtra("userPic", item.getUserPic());
-                intent.putExtra("authorTitle", item.getAuthorTitle());
-                intent.putExtra("authorName", item.getAuthorName());
-                intent.putExtra("programId", item.getId());
-                intent.putExtra("roomId", item.getRoomId());
-                intent.putExtra("coverPhoto", item.getCoverPhoto());
-                intent.putExtra("title", item.getTitle());
-                mContext.startActivity(intent);
-            }
+        helper.getView(R.id.item_news_cv).setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, LiveProgramDetailAuthorActivity.class);
+            intent.putExtra("userPic", item.getUserPic());
+            intent.putExtra("authorTitle", item.getAuthorTitle());
+            intent.putExtra("authorName", item.getAuthorName());
+            intent.putExtra("programId", item.getId());
+            intent.putExtra("roomId", item.getRoomId());
+            intent.putExtra("coverPhoto", item.getCoverPhoto());
+            intent.putExtra("title", item.getTitle());
+            mContext.startActivity(intent);
         });
     }
 }

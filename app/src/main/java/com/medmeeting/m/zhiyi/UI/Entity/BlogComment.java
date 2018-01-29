@@ -102,14 +102,4 @@ public class BlogComment {
         this.userPic = userPic;
     }
 
-
-    /**
-     * 添加评论只需
-     * {
-     "blogId": 22,
-     "content": " 乌鸦坐飞机，松哥撩妹子"
-     }
-     */
-
-
 }

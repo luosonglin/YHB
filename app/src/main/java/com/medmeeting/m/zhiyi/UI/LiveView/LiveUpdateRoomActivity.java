@@ -350,22 +350,19 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
                 // 重用uploadManager。一般地，只需要创建一个uploadManager对象
                 UploadManager uploadManager = new UploadManager(config);
                 uploadManager.put(data, key, token,
-                        new UpCompletionHandler() {
-                            @Override
-                            public void complete(String key, ResponseInfo info, JSONObject res) {
-                                //res包含hash、key等信息，具体字段取决于上传策略的设置
-                                if (info.isOK()) {
-                                    Log.i("qiniu", "Upload Success");
+                        (key1, info, res) -> {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                Log.i("qiniu", "Upload Success");
 
 
-                                } else {
-                                    Log.i("qiniu", "Upload Fail");
-                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                                }
-                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-
-                                videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key;
+                            } else {
+                                Log.i("qiniu", "Upload Fail");
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
                             }
+                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
+
+                            videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
                         }, null);
             }
         }.start();
@@ -430,30 +427,22 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
         window.showAsDropDown(buildllyt, 0, 20);
 
         ImageView cancelIv = (ImageView) popupView.findViewById(R.id.cancel);
-        cancelIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                window.dismiss();
-            }
-        });
+        cancelIv.setOnClickListener(view -> window.dismiss());
 
         tags_confirm.clear();
         videoLabelIds = "";
-        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                TagDto tagDto = (TagDto) adapter.getItem(position);
-                switch (view.getId()) {
-                    case R.id.name:
-                        if (!tags_confirm.contains(tagDto)) {
-                            tags_confirm.add(tagDto);
-                            view.setBackgroundResource(R.drawable.textview_all_blue);
-                        } else {
-                            tags_confirm.remove(tagDto);
-                            view.setBackgroundResource(R.drawable.textview_radius_grey);
-                        }
-                        break;
-                }
+        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener((adapter, view, position) -> {
+            TagDto tagDto = (TagDto) adapter.getItem(position);
+            switch (view.getId()) {
+                case R.id.name:
+                    if (!tags_confirm.contains(tagDto)) {
+                        tags_confirm.add(tagDto);
+                        view.setBackgroundResource(R.drawable.textview_all_blue);
+                    } else {
+                        tags_confirm.remove(tagDto);
+                        view.setBackgroundResource(R.drawable.textview_radius_grey);
+                    }
+                    break;
             }
         });
 

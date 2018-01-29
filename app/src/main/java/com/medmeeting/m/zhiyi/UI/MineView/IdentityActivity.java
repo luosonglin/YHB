@@ -83,12 +83,7 @@ public class IdentityActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
 
         initFont();
 
@@ -139,12 +134,9 @@ public class IdentityActivity extends AppCompatActivity {
 
 
         LinearLayout academicPopupParentLayout = (LinearLayout) view.findViewById(R.id.popup_parent);
-        academicPopupParentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (popupwindow != null && popupwindow.isShowing()) {
-                    popupwindow.dismiss();
-                }
+        academicPopupParentLayout.setOnClickListener(v -> {
+            if (popupwindow != null && popupwindow.isShowing()) {
+                popupwindow.dismiss();
             }
         });
 
@@ -248,12 +240,9 @@ public class IdentityActivity extends AppCompatActivity {
         academicPopupWindow = new PopupWindow(academicPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
 
         final TextView academicConfirmTv = (TextView) academicPopupwindowView.findViewById(R.id.academic_confirm);
-        academicConfirmTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                academicPopupWindow.dismiss();
-                title.setText(mChooseAcademic);
-            }
+        academicConfirmTv.setOnClickListener(v -> {
+            academicPopupWindow.dismiss();
+            title.setText(mChooseAcademic);
         });
 
         NumberPicker academicPicker = (NumberPicker) academicPopupwindowView.findViewById(R.id.academic_picker);
@@ -288,28 +277,22 @@ public class IdentityActivity extends AppCompatActivity {
         academicPicker.setFocusable(true);
         academicPicker.setFocusableInTouchMode(true);
 
-        academicPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
-            @Override
-            public void onScrollStateChange(NumberPicker numberPicker, int scrollState) {
-                if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
-                    if (numberPicker.getValue() > academic.length) {
-                        mChooseAcademic = academic[academic.length];
-                    } else {
-                        mChooseAcademic = academic[numberPicker.getValue()];
-                    }
-                    Log.d("mChooseAcademic", mChooseAcademic);
+        academicPicker.setOnScrollListener((numberPicker, scrollState) -> {
+            if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (numberPicker.getValue() > academic.length) {
+                    mChooseAcademic = academic[academic.length];
+                } else {
+                    mChooseAcademic = academic[numberPicker.getValue()];
                 }
-                academicDisplayTv.setText(mChooseAcademic);
+                Log.d("mChooseAcademic", mChooseAcademic);
             }
+            academicDisplayTv.setText(mChooseAcademic);
         });
 
         LinearLayout academicPopupParentLayout = (LinearLayout) academicPopupwindowView.findViewById(R.id.popup_parent);
-        academicPopupParentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
-                    academicPopupWindow.dismiss();
-                }
+        academicPopupParentLayout.setOnClickListener(v -> {
+            if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
+                academicPopupWindow.dismiss();
             }
         });
 

@@ -143,12 +143,7 @@ public class LiveFragment extends Fragment
         });
 
         searchLiveBtn = (ImageView) view.findViewById(R.id.search_live_btn);
-        searchLiveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(), LiveSearchActivity.class));
-            }
-        });
+        searchLiveBtn.setOnClickListener(view1 -> startActivity(new Intent(getActivity(), LiveSearchActivity.class)));
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         springView = (SpringView) view.findViewById(R.id.springview);
@@ -234,13 +229,10 @@ public class LiveFragment extends Fragment
     @Override
     public void showLoadFailMsg() {
         //设置加载错误页显示
-        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageIndex = 1;
+        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, v -> {
+            PageIndex = 1;
 //                present.LoadData("1",PageIndex,false);
-                present.LoadData(false, liveSearchDto2);
-            }
+            present.LoadData(false, liveSearchDto2);
         });
     }
 

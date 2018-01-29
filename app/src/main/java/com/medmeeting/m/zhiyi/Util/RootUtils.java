@@ -17,9 +17,9 @@ public class RootUtils {
         final String kSuSearchPaths[] = { "/system/bin/", "/system/xbin/",
                 "/system/sbin/", "/sbin/", "/vendor/bin/" };
         try {
-            for (int i = 0; i < kSuSearchPaths.length; i++) {
-                f = new File(kSuSearchPaths[i] + "su");
-                if (f != null && f.exists()&&f.canExecute()) {
+            for (String kSuSearchPath : kSuSearchPaths) {
+                f = new File(kSuSearchPath + "su");
+                if (f != null && f.exists() && f.canExecute()) {
                     return true;
                 }
             }

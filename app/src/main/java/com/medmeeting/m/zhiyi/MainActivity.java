@@ -313,12 +313,7 @@ public class MainActivity extends AppCompatActivity implements
 //                    .addMenuItem(new PopMenuItem("发病例", getResources().getDrawable(R.mipmap.tabbar_compose_lbs)))
 //                    .addMenuItem(new PopMenuItem("我的钱包", getResources().getDrawable(R.mipmap.tabbar_compose_review)))
 //                    .addMenuItem(new PopMenuItem("发起直播", getResources().getDrawable(R.mipmap.tabbar_compose_more)))
-                    .setOnItemClickListener(new PopMenuItemListener() {
-                        @Override
-                        public void onItemClick(PopMenu popMenu, int position) {
-                            PopMenuItemClick(position);
-                        }
-                    })
+                    .setOnItemClickListener((popMenu, position) -> PopMenuItemClick(position))
                     .build();
         } else {
             mPopMenu = new PopMenu.Builder().attachToActivity(MainActivity.this)
@@ -327,12 +322,7 @@ public class MainActivity extends AppCompatActivity implements
 //                    .addMenuItem(new PopMenuItem("发帖子", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
 //                    .addMenuItem(new PopMenuItem("发病例", getResources().getDrawable(R.mipmap.tabbar_compose_lbs)))
 //                    .addMenuItem(new PopMenuItem("我的钱包", getResources().getDrawable(R.mipmap.tabbar_compose_review)))
-                    .setOnItemClickListener(new PopMenuItemListener() {
-                        @Override
-                        public void onItemClick(PopMenu popMenu, int position) {
-                            PopMenuItemClick(position);
-                        }
-                    })
+                    .setOnItemClickListener((popMenu, position) -> PopMenuItemClick(position))
                     .build();
         }
     }

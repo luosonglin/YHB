@@ -130,16 +130,13 @@ public class MeetingPayOrderActivity  extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //退出web还是退出activity
-                if (WebView.canGoBack()) {
-                    WebView.goBack(); //goBack()表示返回WebView的上一页面
-                } else {
+        toolbar.setNavigationOnClickListener(view -> {
+            //退出web还是退出activity
+            if (WebView.canGoBack()) {
+                WebView.goBack(); //goBack()表示返回WebView的上一页面
+            } else {
 //                    onBackPressed();
-                    finish();
-                }
+                finish();
             }
         });
     }
@@ -339,18 +336,12 @@ public class MeetingPayOrderActivity  extends AppCompatActivity {
 
                 //alipay
                 if (type.equals("alipay")) {
-                    /**
-                     * 检测是否有支付宝软件
-                     */
                     if (checkAliPayInstalled(MeetingPayOrderActivity.this)) {
                         pay(data.getEntity().getAmount(), data.getEntity().getTradeTitle(), data.getEntity().getTradeTitle(), data.getEntity().getTradeId(), data.getEntity().getAlipayOrderString());
                     } else {
                         ToastUtils.show(MeetingPayOrderActivity.this, "支付宝APP尚未安装，\n请重新选择其他支付方式");
                     }
                 } else if (type.equals("wechat")) {
-                    /**
-                     * 检测是否有微信软件
-                     */
                     if (isWXAppInstalledAndSupported(MeetingPayOrderActivity.this, api)) {
                         Data.setPayType(2);
                         Data.setTradeId(data.getEntity().getTradeId());
@@ -428,9 +419,7 @@ public class MeetingPayOrderActivity  extends AppCompatActivity {
     public void pay(float amount, String title, String description, String paymentId, final String payInfo) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", (dialoginterface, i) -> {
-                        finish();
-                    }).show();
+                    .setPositiveButton("确定", (dialoginterface, i) -> finish()).show();
             return;
         }
 

@@ -357,47 +357,41 @@ public class WalletWebActivity  extends AppCompatActivity {
         final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
         final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.pay_offline);
 
-        a.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPayInfo(v, paymentId, "alipay");
-                academicPopupWindow.dismiss();
-            }
+        a.setOnClickListener(v -> {
+            getPayInfo(v, paymentId, "alipay");
+            academicPopupWindow.dismiss();
         });
 
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        b.setOnClickListener(v -> {
 
 //                ToastUtils.show(WalletWebActivity.this, "http://www.medmeeting.com/phoneEvent/confirmPayType?paymentId="+paymentId +"&payType=line");
 //                startActivity(new Intent(WalletWebActivity.this, PayDemoActivity.class));
-                academicPopupWindow.dismiss();
+            academicPopupWindow.dismiss();
 
-                Map<String, Object> options = new HashMap<>();
-                options.put("paymentId", paymentId);
-                options.put("payType", "line");
-                HttpData.getInstance().HttpDataGetPayInfo(new Observer<HttpResult4>() {
-                    @Override
-                    public void onCompleted() {
+            Map<String, Object> options = new HashMap<>();
+            options.put("paymentId", paymentId);
+            options.put("payType", "line");
+            HttpData.getInstance().HttpDataGetPayInfo(new Observer<HttpResult4>() {
+                @Override
+                public void onCompleted() {
 
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult4 httpResult4) {
+                    if (httpResult4.getStatus().equals("200")) {
+                        WebView.reload();
+                    } else {
+                        ToastUtils.show(WalletWebActivity.this, httpResult4.getReturnMsg());
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(HttpResult4 httpResult4) {
-                        if (httpResult4.getStatus().equals("200")) {
-                            WebView.reload();
-                        } else {
-                            ToastUtils.show(WalletWebActivity.this, httpResult4.getReturnMsg());
-                        }
-
-                    }
-                }, options);
-            }
+                }
+            }, options);
         });
 
         if (AlipayDisplay) {
@@ -410,12 +404,9 @@ public class WalletWebActivity  extends AppCompatActivity {
         else b.setVisibility(View.GONE);
 
         LinearLayout academicPopupParentLayout = (LinearLayout) academicPopupwindowView.findViewById(R.id.popup_parent);
-        academicPopupParentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
-                    academicPopupWindow.dismiss();
-                }
+        academicPopupParentLayout.setOnClickListener(v -> {
+            if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
+                academicPopupWindow.dismiss();
             }
         });
 
@@ -510,11 +501,9 @@ public class WalletWebActivity  extends AppCompatActivity {
     public void pay(View v, float amount) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialoginterface, int i) {
-                            //
-                            finish();
-                        }
+                    .setPositiveButton("确定", (dialoginterface, i) -> {
+                        //
+                        finish();
                     }).show();
             return;
         }
@@ -538,20 +527,16 @@ public class WalletWebActivity  extends AppCompatActivity {
          */
         final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
 
-        Runnable payRunnable = new Runnable() {
+        Runnable payRunnable = () -> {
+            // 构造PayTask 对象
+            PayTask alipay = new PayTask(WalletWebActivity.this);
+            // 调用支付接口，获取支付结果
+            String result = alipay.pay(payInfo, true);
 
-            @Override
-            public void run() {
-                // 构造PayTask 对象
-                PayTask alipay = new PayTask(WalletWebActivity.this);
-                // 调用支付接口，获取支付结果
-                String result = alipay.pay(payInfo, true);
-
-                Message msg = new Message();
-                msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
+            Message msg = new Message();
+            msg.what = SDK_PAY_FLAG;
+            msg.obj = result;
+            mHandler.sendMessage(msg);
         };
 
         // 必须异步调用

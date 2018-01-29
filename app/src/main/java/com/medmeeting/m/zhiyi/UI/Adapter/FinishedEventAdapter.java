@@ -32,16 +32,13 @@ public class FinishedEventAdapter extends BaseQuickAdapter<FollowFinishedEvent> 
                 .setText(R.id.address, item.getEventAddress()+"")
                 .setText(R.id.ha1, DateUtils.formatDate(item.getEventStartTime(), DateUtils.TYPE_07));
 
-        helper.getView(R.id.item_meeting).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, MeetingDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("eventId", item.getEventId());
-                bundle.putString("eventTitle", item.getEventName());
-                intent.putExtras(bundle);
-                mContext.startActivity(intent);
-            }
+        helper.getView(R.id.item_meeting).setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, MeetingDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("eventId", item.getEventId());
+            bundle.putString("eventTitle", item.getEventName());
+            intent.putExtras(bundle);
+            mContext.startActivity(intent);
         });
     }
 }

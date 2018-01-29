@@ -528,20 +528,15 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     }
 
     void showToast(final String msg) {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(LiveProgramDetailAuthorActivity.this, msg, Toast.LENGTH_LONG).show();
-            }
-        });
+        this.runOnUiThread(() -> Toast.makeText(LiveProgramDetailAuthorActivity.this, msg, Toast.LENGTH_LONG).show());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private boolean checkPermission() {
         boolean ret = true;
 
-        List<String> permissionsNeeded = new ArrayList<String>();
-        final List<String> permissionsList = new ArrayList<String>();
+        List<String> permissionsNeeded = new ArrayList<>();
+        final List<String> permissionsList = new ArrayList<>();
         if (!addPermission(permissionsList, Manifest.permission.CAMERA)) {
             permissionsNeeded.add("CAMERA");
         }
@@ -561,13 +556,8 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             // Check for Rationale Option
             if (!shouldShowRequestPermissionRationale(permissionsList.get(0))) {
                 showMessageOKCancel(message,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
-                                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-                            }
-                        });
+                        (dialog, which) -> requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                                REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS));
             } else {
                 requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
                         REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);

@@ -50,12 +50,7 @@ public class ImageGalleryActivity extends AppCompatActivity {
 
     private void initGalleryViewPager() {
         PhotoViewAdapter pagerAdapter = new PhotoViewAdapter(this, imgUrls);
-        pagerAdapter.setOnItemChangeListener(new PhotoViewAdapter.OnItemChangeListener() {
-            @Override
-            public void onItemChange(int currentPosition) {
-                Log.e("eee", currentPosition+"");
-            }
-        });
+        pagerAdapter.setOnItemChangeListener(currentPosition -> Log.e("eee", currentPosition+""));
         mViewPager = (ViewPager)findViewById(R.id.viewer);
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(pagerAdapter);

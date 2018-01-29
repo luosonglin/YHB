@@ -81,7 +81,7 @@ android {
     }
     lintOptions {
         checkReleaseBuilds false
-//        abortOnError false
+        abortOnError false
     }
     productFlavors {
         develop {}
@@ -133,13 +133,7 @@ dependencies {
     compile files('libs/weiboSDKCore_3.1.4.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_shareboard.jar')
-//    compile project(':videoplayer')
     compile files('libs/alipaySdk-20170309.jar')
-    //    compile files('libs/libammsdk.jar')
-
-    //图片选择器
-
-    //七牛云储存
 
     //七牛直播 推流
     compile files('libs/pldroid-media-streaming-2.1.3.jar')
@@ -184,13 +178,14 @@ dependencies {
     compile 'com.qiniu.pili:pili-android-qos:0.8.+'
     compile 'com.qiniu:happy-dns:0.2.13'
     compile 'com.android.support:multidex:1.0.2'
+    androidTestCompile 'com.android.support:multidex:1.0.2'
 
     //工具类集合
 //    compile 'com.github.vondear:RxTools:v1.7.3.9'
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.0@aar'
     testCompile 'junit:junit:4.12'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
+//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.2'
+//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.2'
 
     //statusbar 颜色
     compile 'com.githang:status-bar-compat:0.7'

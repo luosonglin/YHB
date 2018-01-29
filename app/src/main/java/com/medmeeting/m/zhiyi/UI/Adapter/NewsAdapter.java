@@ -47,16 +47,13 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
                 .placeholder(R.mipmap.avator_default)
                 .into((ImageView) helper.getView(R.id.avatar));
 
-        helper.getView(R.id.item_news_cv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, NewsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("blogId", item.getId()+"");
-                bundle.putSerializable("blog", item);
-                intent.putExtras(bundle);
-                mContext.startActivity(intent);
-            }
+        helper.getView(R.id.item_news_cv).setOnClickListener(view -> {
+            Intent intent = new Intent(mContext, NewsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("blogId", item.getId()+"");
+            bundle.putSerializable("blog", item);
+            intent.putExtras(bundle);
+            mContext.startActivity(intent);
         });
     }
 }

@@ -49,12 +49,9 @@ public class InputPanel extends LinearLayout {
         //去掉emoji
         emojiBtn.setVisibility(GONE);
 
-        textEditor.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                inputBar.setSelected(hasFocus);
-                emojiBtn.setSelected(emojiBoard.getVisibility() == VISIBLE);
-            }
+        textEditor.setOnFocusChangeListener((v, hasFocus) -> {
+            inputBar.setSelected(hasFocus);
+            emojiBtn.setSelected(emojiBoard.getVisibility() == VISIBLE);
         });
         textEditor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -78,33 +75,24 @@ public class InputPanel extends LinearLayout {
             }
         });
 
-        emojiBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                emojiBoard.setVisibility(emojiBoard.getVisibility() == VISIBLE ? GONE : VISIBLE);
-                emojiBtn.setSelected(emojiBoard.getVisibility() == VISIBLE);
-            }
+        emojiBtn.setOnClickListener(v -> {
+            emojiBoard.setVisibility(emojiBoard.getVisibility() == VISIBLE ? GONE : VISIBLE);
+            emojiBtn.setSelected(emojiBoard.getVisibility() == VISIBLE);
         });
 
-        sendBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onSendClick(textEditor.getText().toString());
-                    hideKeyboard();
-                }
-                textEditor.getText().clear();
+        sendBtn.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onSendClick(textEditor.getText().toString());
+                hideKeyboard();
             }
+            textEditor.getText().clear();
         });
 
-        emojiBoard.setItemClickListener(new EmojiBoard.OnEmojiItemClickListener() {
-            @Override
-            public void onClick(String code) {
-                if (code.equals("/DEL")) {
-                    textEditor.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-                } else {
-                    textEditor.getText().insert(textEditor.getSelectionStart(), code);
-                }
+        emojiBoard.setItemClickListener(code -> {
+            if (code.equals("/DEL")) {
+                textEditor.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+            } else {
+                textEditor.getText().insert(textEditor.getSelectionStart(), code);
             }
         });
     }

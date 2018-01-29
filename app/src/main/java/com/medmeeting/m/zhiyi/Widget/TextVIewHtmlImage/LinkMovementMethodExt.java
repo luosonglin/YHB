@@ -63,9 +63,6 @@ public class LinkMovementMethodExt extends LinkMovementMethod {
                 Layout layout = widget.getLayout();
                 int line = layout.getLineForVertical(y2);
                 int off = layout.getOffsetForHorizontal(line, x2);
-                /**
-                 * get you interest span
-                 */
                 Object[] spans = buffer.getSpans(off, off, spanClass);
                 if (spans.length != 0) {
 

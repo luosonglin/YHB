@@ -12,7 +12,7 @@ import java.util.Vector;
 
 public class MTagHandler implements Html.TagHandler {
     private int mListItemCount = 0;
-    private Vector<String> mListParents = new Vector<String>();
+    private Vector<String> mListParents = new Vector<>();
 
     @Override
     public void handleTag(final boolean opening, final String tag, Editable output, final XMLReader xmlReader) {

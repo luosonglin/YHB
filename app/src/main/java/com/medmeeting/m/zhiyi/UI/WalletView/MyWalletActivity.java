@@ -137,32 +137,24 @@ public class MyWalletActivity extends AppCompatActivity {
         toolbar.setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.live_point));
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = null;
-                switch (item.getItemId()) {
-                    case R.id.action_setting_apply:
-                        intent = new Intent(MyWalletActivity.this, SettingWithdrawActivity.class);
-                        break;
-                    case R.id.action_setting_pay:
-                        if (password == null) {
-                            intent = new Intent(MyWalletActivity.this, WalletPasswordFirstSettingActivity.class);
-                        } else {
-                            intent = new Intent(MyWalletActivity.this, WalletPasswordActivity.class);
-                        }
-                        break;
-                }
-                startActivity(intent);
-                return true;
+        toolbar.setOnMenuItemClickListener(item -> {
+            Intent intent = null;
+            switch (item.getItemId()) {
+                case R.id.action_setting_apply:
+                    intent = new Intent(MyWalletActivity.this, SettingWithdrawActivity.class);
+                    break;
+                case R.id.action_setting_pay:
+                    if (password == null) {
+                        intent = new Intent(MyWalletActivity.this, WalletPasswordFirstSettingActivity.class);
+                    } else {
+                        intent = new Intent(MyWalletActivity.this, WalletPasswordActivity.class);
+                    }
+                    break;
             }
+            startActivity(intent);
+            return true;
         });
     }
 
