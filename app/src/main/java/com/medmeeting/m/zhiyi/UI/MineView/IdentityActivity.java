@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
@@ -42,31 +42,31 @@ import rx.Observer;
 //身份认证页面
 public class IdentityActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.name_tip)
+    @BindView(R.id.name_tip)
     TextView nameTip;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     EditText name;
-    @Bind(R.id.name_wrap)
+    @BindView(R.id.name_wrap)
     RelativeLayout nameWrap;
-    @Bind(R.id.hospital)
+    @BindView(R.id.hospital)
     EditText hospital;
-    @Bind(R.id.department)
+    @BindView(R.id.department)
     TextView mDepartmentTv;
-    @Bind(R.id.department_tip)
+    @BindView(R.id.department_tip)
     TextView departmentTip;
-    @Bind(R.id.department_rlyt)
+    @BindView(R.id.department_rlyt)
     RelativeLayout departmentRlyt;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.title_tip)
+    @BindView(R.id.title_tip)
     TextView titleTip;
-    @Bind(R.id.title_wrap)
+    @BindView(R.id.title_wrap)
     RelativeLayout titleWrap;
-    @Bind(R.id.next_step)
+    @BindView(R.id.next_step)
     TextView nextStep;
-    @Bind(R.id.content_identity)
+    @BindView(R.id.content_identity)
     RelativeLayout contentIdentity;
 
 

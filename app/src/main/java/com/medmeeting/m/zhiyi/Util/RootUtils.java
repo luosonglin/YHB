@@ -6,15 +6,11 @@ import java.util.List;
 
 public class RootUtils {
     public static boolean isRootSystem() {
-        if(isRootSystem1()||isRootSystem2()){
-            //TODO 可加其他判断 如是否装了权限管理的apk，大多数root 权限 申请需要app配合，也有不需要的，这个需要改su源码。因为管理su权限的app太多，无法列举所有的app，特别是国外的，暂时不做判断是否有root权限管理app
-            //多数只要su可执行就是root成功了，但是成功后用户如果删掉了权限管理的app，就会造成第三方app无法申请root权限，此时是用户删root权限管理app造成的。
-            //市场上常用的的权限管理app的包名   com.qihoo.permmgr  com.noshufou.android.su  eu.chainfire.supersu   com.kingroot.kinguser  com.kingouser.com  com.koushikdutta.superuser
-            //com.dianxinos.superuser  com.lbe.security.shuame com.geohot.towelroot 。。。。。。
-            return true;
-        }else{
-            return false;
-        }
+        //TODO 可加其他判断 如是否装了权限管理的apk，大多数root 权限 申请需要app配合，也有不需要的，这个需要改su源码。因为管理su权限的app太多，无法列举所有的app，特别是国外的，暂时不做判断是否有root权限管理app
+//多数只要su可执行就是root成功了，但是成功后用户如果删掉了权限管理的app，就会造成第三方app无法申请root权限，此时是用户删root权限管理app造成的。
+//市场上常用的的权限管理app的包名   com.qihoo.permmgr  com.noshufou.android.su  eu.chainfire.supersu   com.kingroot.kinguser  com.kingouser.com  com.koushikdutta.superuser
+//com.dianxinos.superuser  com.lbe.security.shuame com.geohot.towelroot 。。。。。。
+        return isRootSystem1() || isRootSystem2();
     }
     private static boolean isRootSystem1() {
         File f = null;

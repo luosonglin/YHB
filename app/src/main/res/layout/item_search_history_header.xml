@@ -23,6 +23,6 @@
         android:layout_centerVertical="true"
         android:src="@mipmap/history_delete"
         android:padding="12dp"
-        />
+        android:contentDescription="TODO" />
 
 </RelativeLayout>

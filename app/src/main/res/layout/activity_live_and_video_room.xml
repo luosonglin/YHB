@@ -50,7 +50,8 @@
                             android:layout_width="65dp"
                             android:layout_height="65dp"
                             android:layout_gravity="center"
-                            android:scaleType="fitXY"/>
+                            android:scaleType="fitXY"
+                            android:contentDescription="TODO" />
                         <TextView
                             android:id="@+id/title"
                             android:layout_width="match_parent"

@@ -130,9 +130,9 @@
                     android:layout_marginTop="2dp"
                     android:ellipsize="marquee"
                     android:gravity="right"
-                    android:lines="1"
                     android:text="haha"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:singleLine="true" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -151,11 +151,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:ellipsize="marquee"
-                android:lines="1"
                 android:paddingLeft="2dp"
                 android:text="简介"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:singleLine="true" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -168,11 +168,11 @@
                     android:layout_alignParentLeft="true"
                     android:layout_gravity="left"
                     android:ellipsize="marquee"
-                    android:lines="1"
                     android:paddingLeft="2dp"
                     android:layout_toLeftOf="@+id/time"
                     android:text=""
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    android:singleLine="true" />
 
                 <TextView
                     android:id="@+id/time"
@@ -181,10 +181,10 @@
                     android:layout_alignParentRight="true"
                     android:layout_gravity="left"
                     android:ellipsize="marquee"
-                    android:lines="1"
                     android:paddingLeft="2dp"
                     android:text="2017-04-08"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    android:singleLine="true" />
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

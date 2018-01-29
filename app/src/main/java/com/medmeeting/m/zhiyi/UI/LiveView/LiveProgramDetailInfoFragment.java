@@ -26,33 +26,36 @@ import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.Observer;
 
 public class LiveProgramDetailInfoFragment extends Fragment {
 
 
-    @Bind(R.id.avatar)
+    @BindView(R.id.avatar)
     ImageView avatar;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.author_name)
+    @BindView(R.id.author_name)
     TextView authorName;
-    @Bind(R.id.like)
+    @BindView(R.id.like)
     RxShineButton like;
-    @Bind(R.id.time)
+    @BindView(R.id.time)
     TextView time;
-    @Bind(R.id.collect)
+    @BindView(R.id.collect)
     TextView collect;
-    @Bind(R.id.type)
+    @BindView(R.id.type)
     TextView type;
-    @Bind(R.id.des)
+    @BindView(R.id.des)
     TextView des;
     private String TAG = LiveProgramDetailInfoFragment.class.getSimpleName();
 
     private static LiveProgramDateilsEntity mLiveProgramDateilsEntity;
     private static Integer mProgramId;
+
+    Unbinder unbinder;
 
     public LiveProgramDetailInfoFragment() {
         // Required empty public constructor
@@ -75,6 +78,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_live_program_detail_info, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         like.init(getActivity());
 
@@ -236,6 +240,6 @@ public class LiveProgramDetailInfoFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 }

@@ -737,7 +737,6 @@ public class VideoDetailActivity extends AppCompatActivity {
             }
         }
 
-        ;
     };
 
     /**

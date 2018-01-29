@@ -10,7 +10,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="fitXY"
-        android:src="@mipmap/avator_default" />
+        android:src="@mipmap/avator_default"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/name"

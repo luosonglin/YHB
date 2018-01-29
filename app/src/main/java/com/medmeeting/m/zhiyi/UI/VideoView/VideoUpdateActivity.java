@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.UI.VideoView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
@@ -44,7 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
@@ -58,29 +59,29 @@ import rx.Observer;
  * @org Healife
  */
 public class VideoUpdateActivity extends AppCompatActivity {
-    @Bind(R.id.buildllyt)
+    @BindView(R.id.buildllyt)
     LinearLayout buildllyt;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.live_pic)
+    @BindView(R.id.live_pic)
     ImageView livePic;
-    @Bind(R.id.live_pic_tip_tv)
+    @BindView(R.id.live_pic_tip_tv)
     TextView livePicTipTv;
-    @Bind(R.id.live_pic_tip)
+    @BindView(R.id.live_pic_tip)
     LinearLayout livePicTip;
-    @Bind(R.id.theme)
+    @BindView(R.id.theme)
     EditText theme;
-    @Bind(R.id.free)
+    @BindView(R.id.free)
     Button free;
-    @Bind(R.id.charge)
+    @BindView(R.id.charge)
     Button charge;
-    @Bind(R.id.charge_amount)
+    @BindView(R.id.charge_amount)
     TextView chargeAmount;
-    @Bind(R.id.introduction)
+    @BindView(R.id.introduction)
     EditText introduction;
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     View mProgressView;
 
     private Integer videoId;
@@ -292,7 +293,7 @@ public class VideoUpdateActivity extends AppCompatActivity {
                 qiniuToken = q.getData().getUploadToken();
 
                 // 设置图片名字
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                 qiniuKey = "android_live_" + sdf.format(new Date());
                 int i = new Random().nextInt(1000) + 1;
                 upload(file, qiniuKey + i, qiniuToken);

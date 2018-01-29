@@ -22,24 +22,24 @@ import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class MyWalletActivity extends AppCompatActivity {
     private static final String TAG = MyWalletActivity.class.getSimpleName();
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.balance)
+    @BindView(R.id.balance)
     TextView balanceTv;
-    @Bind(R.id.apply_btn)
+    @BindView(R.id.apply_btn)
     Button applyBtn;
-    @Bind(R.id.trade_detail_btn)
+    @BindView(R.id.trade_detail_btn)
     Button tradeDetailBtn;
-    @Bind(R.id.agreement)
+    @BindView(R.id.agreement)
     Button radioBtn;
-    @Bind(R.id.agreement_llyt)
+    @BindView(R.id.agreement_llyt)
     LinearLayout agreementLlyt;
 
     private Handler mHandler2;

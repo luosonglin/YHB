@@ -20,7 +20,7 @@
             android:src="@mipmap/message"
             android:padding="10dp"
             android:layout_alignParentLeft="true"
-            />
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/location"
@@ -40,7 +40,7 @@
             android:src="@mipmap/search_icon"
             android:padding="10dp"
             android:layout_alignParentRight="true"
-            />
+            android:contentDescription="TODO" />
 
     </RelativeLayout>
 
@@ -64,7 +64,8 @@
             android:layout_marginTop="6.0dip"
             android:layout_toLeftOf="@+id/line"
             android:src="@drawable/ic_new_category_tip_dark"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="TODO" />
 
         <com.medmeeting.m.zhiyi.Widget.colortrackview.ColorTrackTabLayout
             android:id="@+id/tab"
@@ -96,7 +97,8 @@
             android:background="@color/white"
             android:padding="8dp"
             android:scaleType="centerInside"
-            android:src="@drawable/add_channel" />
+            android:src="@drawable/add_channel"
+            android:contentDescription="TODO" />
         <!--android:background="@mipmap/shadow_add_titlebar_new"-->
     </RelativeLayout>
 

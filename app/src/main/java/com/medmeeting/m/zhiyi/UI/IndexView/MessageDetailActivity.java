@@ -27,7 +27,7 @@ import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.JS.JSHook;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 
@@ -41,13 +41,13 @@ import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 
 public class MessageDetailActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.WebView)
+    @BindView(R.id.WebView)
     BridgeWebView WebView;
-    @Bind(R.id.content_meeting_enrol)
+    @BindView(R.id.content_meeting_enrol)
     RelativeLayout contentMeetingEnrol;
 
     private static final String TAG = MessageDetailActivity.class.getSimpleName();
@@ -116,7 +116,7 @@ public class MessageDetailActivity extends AppCompatActivity {
     private void initWebView() {
         WebSettings settings = WebView.getSettings();
 
-        // BindUserInfo settings
+        // BindViewUserInfo settings
         settings.setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
         settings.setJavaScriptEnabled(true);    //设置webview支持javascript
         settings.setLoadsImagesAutomatically(true);    //支持自动加载图片

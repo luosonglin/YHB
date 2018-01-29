@@ -24,7 +24,8 @@
             android:background="@color/white"
             android:elevation="2dp"
             android:backgroundTint="@color/white"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            tools:targetApi="lollipop">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -231,7 +232,8 @@
             android:layout_height="80dp"
             android:layout_gravity="center_vertical"
             android:scaleType="fitXY"
-            android:src="@mipmap/wallet_add_identity_number_icon" />
+            android:src="@mipmap/wallet_add_identity_number_icon"
+            android:contentDescription="TODO" />
     </LinearLayout>
 
     <LinearLayout

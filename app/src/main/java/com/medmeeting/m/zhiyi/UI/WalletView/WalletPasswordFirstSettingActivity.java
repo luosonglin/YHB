@@ -13,24 +13,24 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class WalletPasswordFirstSettingActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.pwd)
+    @BindView(R.id.pwd)
     EditText pwd;
-    @Bind(R.id.pwd2)
+    @BindView(R.id.pwd2)
     EditText pwd2;
-    @Bind(R.id.code)
+    @BindView(R.id.code)
     EditText code;
-    @Bind(R.id.get_code_tv)
+    @BindView(R.id.get_code_tv)
     TextView getCodeTv;
-    @Bind(R.id.next_btn)
+    @BindView(R.id.next_btn)
     TextView nextBtn;
 
     @Override

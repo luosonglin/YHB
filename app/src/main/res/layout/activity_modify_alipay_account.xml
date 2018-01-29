@@ -167,7 +167,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:src="@mipmap/wallet_add_identity_number_icon" />
+            android:src="@mipmap/wallet_add_identity_number_icon"
+            android:contentDescription="TODO" />
     </LinearLayout>
 
     <LinearLayout

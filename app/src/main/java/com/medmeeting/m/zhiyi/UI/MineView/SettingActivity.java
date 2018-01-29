@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.UI.MineView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -50,7 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.iwf.photopicker.PhotoPicker;
 import rx.Observer;
@@ -71,7 +72,7 @@ public class SettingActivity extends AppCompatActivity {
     protected static Uri tempUri;
     private static final int CROP_SMALL_PICTURE = 2;
 
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     View mProgressView;
 
     private UpdataDialog updataDialog;
@@ -222,7 +223,6 @@ public class SettingActivity extends AppCompatActivity {
             }
         }
 
-        ;
     };
 
     protected void dialog() {
@@ -307,7 +307,7 @@ public class SettingActivity extends AppCompatActivity {
                 qiniuToken = q.getData().getUploadToken();
 
                 // 设置图片名字
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                 qiniuKey = "android_live_" + sdf.format(new Date());
 
                 int i = new Random().nextInt(1000) + 1;

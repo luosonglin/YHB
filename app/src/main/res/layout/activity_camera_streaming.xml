@@ -33,7 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:labelFor="@+id/haha"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="LabelFor" />
 
     <Button
         android:id="@+id/logout_btn"

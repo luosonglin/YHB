@@ -30,9 +30,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:ellipsize="marquee"
-                android:lines="1"
                 android:text="***"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/time"

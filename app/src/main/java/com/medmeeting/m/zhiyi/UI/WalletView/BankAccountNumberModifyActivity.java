@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.WalletView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -30,7 +31,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
@@ -38,33 +39,33 @@ import rx.Observer;
 
 public class BankAccountNumberModifyActivity extends AppCompatActivity {
     private static final String TAG = BankAccountNumberModifyActivity.class.getSimpleName();
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.accountName)
+    @BindView(R.id.accountName)
     EditText accountName;
-    @Bind(R.id.bankName)
+    @BindView(R.id.bankName)
     TextView bankName;
-    @Bind(R.id.bankAddress)
+    @BindView(R.id.bankAddress)
     EditText bankAddress;
-    @Bind(R.id.accountNumber)
+    @BindView(R.id.accountNumber)
     EditText accountNumber;
-    @Bind(R.id.mobilePhone)
+    @BindView(R.id.mobilePhone)
     EditText mobilePhone;
-    @Bind(R.id.identityNumber)
+    @BindView(R.id.identityNumber)
     EditText identityNumber;
-    @Bind(R.id.identityImage)
+    @BindView(R.id.identityImage)
     ImageView identityImage;
-    @Bind(R.id.code)
+    @BindView(R.id.code)
     EditText code;
-    @Bind(R.id.get_code_textview)
+    @BindView(R.id.get_code_textview)
     TextView mGetCodeView;
-    @Bind(R.id.confirm)
+    @BindView(R.id.confirm)
     TextView confirm;
-    @Bind(R.id.identity_rlyt)
+    @BindView(R.id.identity_rlyt)
     LinearLayout identityRlyt;
-    @Bind(R.id.identity_image_lyt)
+    @BindView(R.id.identity_image_lyt)
     LinearLayout identityImageLyt;
-    @Bind(R.id.accountName0)
+    @BindView(R.id.accountName0)
     TextView accountName0;
 
     private WalletAccountDto walletAccountDto = null;
@@ -297,7 +298,7 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
                 qiniuToken = q.getData().getUploadToken();
 
                 // 设置图片名字
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                 qiniuKey = "android_live_" + sdf.format(new Date());
 
                 int i = new Random().nextInt(1000) + 1;

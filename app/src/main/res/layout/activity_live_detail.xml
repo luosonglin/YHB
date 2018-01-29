@@ -79,7 +79,8 @@
             android:layout_height="49dp"
             android:layout_alignParentTop="true"
             android:background="@color/white"
-            android:elevation="2dp">
+            android:elevation="2dp"
+            tools:targetApi="lollipop">
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
@@ -94,7 +95,8 @@
                 app:tabIndicatorHeight="2dp"
                 app:tabSelectedTextColor="@color/skyblue"
                 app:tabTextAppearance="@style/TabIndexText"
-                app:tabTextColor="@color/gray" />
+                app:tabTextColor="@color/gray"
+                tools:targetApi="lollipop" />
         </RelativeLayout>
         <View
             android:layout_width="match_parent"

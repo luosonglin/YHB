@@ -24,7 +24,8 @@
                 android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@mipmap/back" />
+                android:src="@mipmap/back"
+                android:contentDescription="TODO" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -47,7 +48,8 @@
                     android:layout_marginRight="4dp"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:src="@mipmap/search_icon" />
+                    android:src="@mipmap/search_icon"
+                    android:contentDescription="TODO" />
 
                 <EditText
                     android:id="@+id/search_edit"

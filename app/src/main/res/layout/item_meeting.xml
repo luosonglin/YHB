@@ -88,7 +88,8 @@
                         android:layout_width="9dp"
                         android:layout_height="9dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@mipmap/item_meeting_time" />
+                        android:src="@mipmap/item_meeting_time"
+                        android:contentDescription="TODO" />
 
                     <TextView
                         android:id="@+id/ha1"

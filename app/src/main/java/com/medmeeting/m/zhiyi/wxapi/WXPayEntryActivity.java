@@ -50,7 +50,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onReq(BaseReq req) {
     }
 
-    @SuppressLint("LongLogTag")
+    @SuppressLint({"LongLogTag", "StringFormatInvalid"})
     @Override
     public void onResp(BaseResp resp) {
         Log.d(TAG, "onPayFinish, errCode = " + resp.errCode

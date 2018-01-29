@@ -20,7 +20,7 @@ import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 
@@ -33,19 +33,19 @@ import rx.Observer;
  */
 public class LiveTicketActivity2 extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.settlementBtn)
+    @BindView(R.id.settlementBtn)
     TextView settlementBtn;
-    @Bind(R.id.totalAmount)
+    @BindView(R.id.totalAmount)
     TextView totalAmount;
-    @Bind(R.id.actualAmount)
+    @BindView(R.id.actualAmount)
     TextView actualAmount;
-    @Bind(R.id.detail)
+    @BindView(R.id.detail)
     TextView detailTv;
-    @Bind(R.id.rv_list)
+    @BindView(R.id.rv_list)
     RecyclerView mRecyclerView;
 
     private Integer programId;

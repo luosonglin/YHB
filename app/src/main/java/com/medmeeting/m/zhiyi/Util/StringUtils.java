@@ -14,7 +14,7 @@ public class StringUtils {
     }
 
     public static String convertObjectToString(Object o) {
-        return o != null?(o instanceof String?((String)o).toString():(o instanceof Integer?"" + ((Integer)o).intValue():(o instanceof Long?"" + ((Long)o).longValue():(o instanceof Double?"" + ((Double)o).doubleValue():(o instanceof Float?"" + ((Float)o).floatValue():(o instanceof Short?"" + ((Short)o).shortValue():(o instanceof Byte?"" + ((Byte)o).byteValue():(o instanceof Boolean?((Boolean)o).toString():(o instanceof Character?((Character)o).toString():o.toString()))))))))):"";
+        return o != null?(o instanceof String? o.toString():(o instanceof Integer?"" + ((Integer)o).intValue():(o instanceof Long?"" + ((Long)o).longValue():(o instanceof Double?"" + ((Double)o).doubleValue():(o instanceof Float?"" + ((Float)o).floatValue():(o instanceof Short?"" + ((Short)o).shortValue():(o instanceof Byte?"" + ((Byte)o).byteValue():(o instanceof Boolean? o.toString():(o instanceof Character? o.toString():o.toString()))))))))):"";
     }
 
     public static int hashCode(String value) {

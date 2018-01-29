@@ -42,37 +42,37 @@ import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class LiveSearchActivity extends AppCompatActivity {
 
-    //    @Bind(R.id.toolbar_title)
+    //    @BindView(R.id.toolbar_title)
 //    TextView toolbarTitleTv;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.search_edit)
+    @BindView(R.id.search_edit)
     EditText searchEt;
 
-    @Bind(R.id.search_tag_llyt)
+    @BindView(R.id.search_tag_llyt)
     LinearLayout searchTagLlyt;
-    @Bind(R.id.search_tag_text)
+    @BindView(R.id.search_tag_text)
     TextView searchTagTv;
-    @Bind(R.id.search_tag_delete)
+    @BindView(R.id.search_tag_delete)
     ImageView searchTagIv;
 
-    @Bind(R.id.tags_recyclerView)
+    @BindView(R.id.tags_recyclerView)
     RecyclerView tagsRecyclerView;
-    @Bind(R.id.tags_swipe_refresh_lyt)
+    @BindView(R.id.tags_swipe_refresh_lyt)
     SwipeRefreshLayout tagsSwipeRefreshLyt;
 
     private static final String TAG = LiveSearchActivity.class.getSimpleName();
-    @Bind(R.id.type)
+    @BindView(R.id.type)
     TextView typeTv;
-    @Bind(R.id.search_tv)
+    @BindView(R.id.search_tv)
     TextView searchTv;
 
     private String classify = "";

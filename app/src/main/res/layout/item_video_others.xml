@@ -29,7 +29,8 @@
                 android:layout_width="140dp"
                 android:layout_height="80dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/live_background"/>
+                android:src="@mipmap/live_background"
+                android:contentDescription="TODO" />
 
             <RelativeLayout
                 android:layout_width="130dp"
@@ -96,10 +97,10 @@
                     android:layout_alignParentLeft="true"
                     android:layout_gravity="left"
                     android:ellipsize="marquee"
-                    android:lines="1"
                     android:paddingLeft="2dp"
                     android:text="观看 100    收藏 1000"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:singleLine="true" />
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
@@ -107,10 +108,10 @@
                     android:layout_alignParentRight="true"
                     android:layout_gravity="left"
                     android:ellipsize="marquee"
-                    android:lines="1"
                     android:paddingLeft="2dp"
                     android:text="2017-04-08"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:singleLine="true" />
             </RelativeLayout>
         </LinearLayout>
     </RelativeLayout>

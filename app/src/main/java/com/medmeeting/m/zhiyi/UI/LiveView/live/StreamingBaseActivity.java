@@ -644,7 +644,7 @@ public class StreamingBaseActivity extends Activity implements
             case CAMERA_SWITCHED:
 //                mShutterButtonPressed = false;
                 if (extra != null) {
-                    Log.i(TAG, "current camera id:" + (Integer) extra);
+                    Log.i(TAG, "current camera id:" + extra);
                 }
                 Log.i(TAG, "camera switched");
                 final int currentCamId = (Integer) extra;

@@ -319,7 +319,7 @@ public class LiveRedVipActivity extends AppCompatActivity {
         scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+                ViewGroup.LayoutParams lp = imageView
                         .getLayoutParams();
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
@@ -354,7 +354,7 @@ public class LiveRedVipActivity extends AppCompatActivity {
 
     // 回弹动画 (使用了属性动画)
     public void replyImage() {
-        final ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+        final ViewGroup.LayoutParams lp = imageView
                 .getLayoutParams();
         final float w = imageView.getLayoutParams().width;// 图片当前宽度
         final float h = imageView.getLayoutParams().height;// 图片当前高度

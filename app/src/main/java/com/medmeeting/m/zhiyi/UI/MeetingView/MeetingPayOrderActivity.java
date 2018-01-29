@@ -54,7 +54,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 
@@ -67,13 +67,13 @@ import rx.Observer;
  */
 public class MeetingPayOrderActivity  extends AppCompatActivity {
 
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     private static BridgeWebView WebView;
-    @Bind(R.id.content_meeting_enrol)
+    @BindView(R.id.content_meeting_enrol)
     RelativeLayout contentMeetingEnrol;
 
     private static final String TAG = MeetingPayOrderActivity.class.getSimpleName();
@@ -151,7 +151,7 @@ public class MeetingPayOrderActivity  extends AppCompatActivity {
     private void initWebView() {
         WebSettings settings = WebView.getSettings();
 
-        // BindUserInfo settings
+        // BindViewUserInfo settings
         settings.setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
         settings.setJavaScriptEnabled(true);    //设置webview支持javascript
         settings.setLoadsImagesAutomatically(true);    //支持自动加载图片
@@ -420,7 +420,6 @@ public class MeetingPayOrderActivity  extends AppCompatActivity {
             }
         }
 
-        ;
     };
 
     /**

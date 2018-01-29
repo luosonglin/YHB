@@ -85,7 +85,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jiguang.analytics.android.api.BrowseEvent;
@@ -106,35 +106,35 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
  */
 public class NewsVideoActivity extends AppCompatActivity {
 
-    @Bind(R.id.titleTv)
+    @BindView(R.id.titleTv)
     TextView titleTv;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     TextView name;
-    @Bind(R.id.time)
+    @BindView(R.id.time)
     TextView time;
-    @Bind(R.id.content)
+    @BindView(R.id.content)
     TextView content;
-    @Bind(R.id.WebView)
+    @BindView(R.id.WebView)
     BridgeWebView mWebView;
-    @Bind(R.id.blog_image)
+    @BindView(R.id.blog_image)
     weiboGridView blogImage;
-    @Bind(R.id.rv_list)
+    @BindView(R.id.rv_list)
     RecyclerView rvList;
 
-    @Bind(R.id.video_image)
+    @BindView(R.id.video_image)
     ImageView videoImage;
-    @Bind(R.id.video_name)
+    @BindView(R.id.video_name)
     TextView videoName;
-    @Bind(R.id.video_sum)
+    @BindView(R.id.video_sum)
     TextView videoSum;
-    @Bind(R.id.video_time)
+    @BindView(R.id.video_time)
     TextView videoTime;
-    @Bind(R.id.video_source_llyt)
+    @BindView(R.id.video_source_llyt)
     LinearLayout videoSourceLlyt;
-    @Bind(R.id.video_source_rlyt)
+    @BindView(R.id.video_source_rlyt)
     RelativeLayout videoSourceRlyt;
 
-    @Bind(R.id.collect)
+    @BindView(R.id.collect)
     ImageView collect;
 
 
@@ -145,9 +145,9 @@ public class NewsVideoActivity extends AppCompatActivity {
     private boolean isPause;
     private OrientationUtils orientationUtils;
 
-    @Bind(R.id.input_editor)
+    @BindView(R.id.input_editor)
     EditText inputEditor;
-    @Bind(R.id.input_send)
+    @BindView(R.id.input_send)
     Button inputSend;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
@@ -328,12 +328,10 @@ public class NewsVideoActivity extends AppCompatActivity {
         if (isCollect) {
             Glide.with(NewsVideoActivity.this)
                     .load(R.mipmap.meeting_collect)
-                    .crossFade()
                     .into(collect);
         } else {
             Glide.with(NewsVideoActivity.this)
                     .load(R.mipmap.meeting_collect_no)
-                    .crossFade()
                     .into(collect);
         }
 
@@ -385,8 +383,10 @@ public class NewsVideoActivity extends AppCompatActivity {
     private void initSourceVideoView(VideoDetailsEntity videoDetailsEntity) {
         Glide.with(NewsVideoActivity.this)
                 .load(videoDetailsEntity.getCoverPhoto())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .crossFade()
+//                .crossFade()
                 .placeholder(R.mipmap.ic_launcher)
                 .into(videoImage);
         videoName.setText(videoDetailsEntity.getTitle());
@@ -692,7 +692,7 @@ public class NewsVideoActivity extends AppCompatActivity {
     private void initWebView() {
         WebSettings settings = mWebView.getSettings();
 
-        // BindUserInfo settings
+        // BindViewUserInfo settings
         settings.setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
         settings.setJavaScriptEnabled(true);    //设置webview支持javascript
         settings.setLoadsImagesAutomatically(true);    //支持自动加载图片

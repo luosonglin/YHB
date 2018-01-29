@@ -64,14 +64,14 @@
                         android:layout_gravity="center"
                         android:ellipsize="marquee"
                         android:gravity="center"
-                        android:lines="1"
                         android:shadowColor="#ff000000"
                         android:shadowDx="5"
                         android:shadowDy="5"
                         android:shadowRadius="10"
                         android:text="万怡直播"
                         android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:singleLine="true" />
 
                     <View
                         android:layout_width="60dp"

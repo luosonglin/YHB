@@ -22,7 +22,7 @@ public class PhotoViewAdapter extends PagerAdapter {
 	public int getCount() {
 		return imgUrls.size();
 	}
-	
+
 	@Override
 	public void setPrimaryItem(ViewGroup container, int position, Object object) {
 		super.setPrimaryItem(container, position, object);
@@ -55,8 +55,8 @@ public class PhotoViewAdapter extends PagerAdapter {
 	public void setOnItemChangeListener(OnItemChangeListener listener) {
 		mOnItemChangeListener = listener;
 	}
-	
-	public static interface OnItemChangeListener {
-		public void onItemChange(int currentPosition);
+
+	public interface OnItemChangeListener {
+		void onItemChange(int currentPosition);
 	}
 }

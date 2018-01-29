@@ -39,7 +39,8 @@
         android:layout_height="24dp"
         android:layout_marginLeft="6dp"
         android:layout_marginTop="6dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
     <moe.codeest.enviews.ENDownloadView
         android:id="@+id/loading"
@@ -58,7 +59,8 @@
         android:paddingTop="10dp"
         android:scaleType="centerInside"
         android:src="@drawable/video_small_close"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:id="@+id/lock_screen"
@@ -69,7 +71,8 @@
         android:layout_marginRight="50dp"
         android:scaleType="centerInside"
         android:src="@drawable/unlock"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
     <LinearLayout
         android:id="@+id/layout_top"
@@ -88,7 +91,8 @@
             android:layout_height="48dp"
             android:paddingLeft="10dp"
             android:scaleType="centerInside"
-            android:src="@drawable/video_back" />
+            android:src="@drawable/video_back"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/title"
@@ -107,7 +111,8 @@
             android:paddingRight="10dp"
             android:scaleType="centerInside"
             android:src="@mipmap/video_share_land"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="TODO" />
     </LinearLayout>
 
     <RelativeLayout

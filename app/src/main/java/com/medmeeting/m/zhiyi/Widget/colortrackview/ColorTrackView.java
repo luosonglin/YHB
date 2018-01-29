@@ -21,7 +21,7 @@ public class ColorTrackView extends View {
     private int mTextStartY;
 
     public enum Direction {
-        LEFT, RIGHT, TOP, BOTTOM;
+        LEFT, RIGHT, TOP, BOTTOM
     }
 
     private int mDirection = DIRECTION_LEFT;

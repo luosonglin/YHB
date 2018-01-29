@@ -25,7 +25,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="230dp"
                     android:layout_marginTop="24dp"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitXY"
+                    android:contentDescription="TODO" />
 
                 <ImageView
                     android:id="@+id/back"
@@ -33,7 +34,8 @@
                     android:layout_height="34dp"
                     android:layout_marginTop="24dp"
                     android:layout_marginLeft="20dp"
-                    android:src="@mipmap/back_grey"/>
+                    android:src="@mipmap/back_grey"
+                    android:contentDescription="TODO" />
 
                 <ImageView
                     android:id="@+id/share"
@@ -42,7 +44,8 @@
                     android:layout_marginTop="24dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="20dp"
-                    android:src="@mipmap/share_grey"/>
+                    android:src="@mipmap/share_grey"
+                    android:contentDescription="TODO" />
 
                 <TextView
                     android:id="@+id/buy"

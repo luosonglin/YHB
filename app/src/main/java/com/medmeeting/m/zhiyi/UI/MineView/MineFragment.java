@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -35,9 +36,10 @@ import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import rx.Observer;
 
 /**
@@ -54,55 +56,51 @@ public class MineFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @Bind(R.id.scrollView)
+    @BindView(R.id.scrollView)
     ScrollView scrollView;
-    @Bind(R.id.img)
+    @BindView(R.id.img)
     ImageView imageView;
-    @Bind(R.id.setting)
+    @BindView(R.id.setting)
     ImageView setting;
-    @Bind(R.id.identity)
+    @BindView(R.id.identity)
     TextView identity;
-    @Bind(R.id.head_ic)
+    @BindView(R.id.head_ic)
     ImageView headIv;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     TextView nameTv;
-    @Bind(R.id.title)
-    TextView titleTv;
-    @Bind(R.id.hospital)
-    TextView hospitalTv;
-    @Bind(R.id.doctor_llyt)
+    @BindView(R.id.doctor_llyt)
     LinearLayout doctorLlyt;
-    @Bind(R.id.user_flyt)
+    @BindView(R.id.user_flyt)
     RelativeLayout userLlyt;
-    @Bind(R.id.specialist)
+    @BindView(R.id.specialist)
     ImageView specialistIv;
 
     private static final String TAG = MineFragment.class.getSimpleName();
 
-    @Bind(R.id.wodecanhui)
+    @BindView(R.id.wodecanhui)
     RelativeLayout wodecanhui;
-    @Bind(R.id.wodeqianbao)
+    @BindView(R.id.wodeqianbao)
     RelativeLayout wodeqianbao;
-    @Bind(R.id.wodeshoucang)
+    @BindView(R.id.wodeshoucang)
     RelativeLayout wodeshoucang;
-    @Bind(R.id.wodexuefen)
+    @BindView(R.id.wodexuefen)
     RelativeLayout wodexuefen;
-    @Bind(R.id.wodejianli)
+    @BindView(R.id.wodejianli)
     RelativeLayout wodejianli;
-    @Bind(R.id.wodezhibo)
+    @BindView(R.id.wodezhibo)
     RelativeLayout wodezhibo;
-    @Bind(R.id.wodewendang)
+    @BindView(R.id.wodewendang)
     RelativeLayout wodewendang;
-    @Bind(R.id.wodefufeizhibo)
+    @BindView(R.id.wodefufeizhibo)
     RelativeLayout wodefufeizhibo;
-    @Bind(R.id.wodeluxiang)
+    @BindView(R.id.wodeluxiang)
     RelativeLayout wodeluxiang;
 
     private String identityHtml;
     private String userId = null;
     private String userAvatar;
 
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     View mProgressView;
 
     private OnFragmentInteractionListener mListener;
@@ -115,6 +113,8 @@ public class MineFragment extends Fragment {
     private Boolean mScaling = false;
 
     private DisplayMetrics metric;
+
+    Unbinder unbinder;
 
     public MineFragment() {
         // Required empty public constructor
@@ -162,6 +162,7 @@ public class MineFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         initView();
 
@@ -169,6 +170,7 @@ public class MineFragment extends Fragment {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
 
         showProgress(true);
@@ -212,10 +214,8 @@ public class MineFragment extends Fragment {
                         case "A":
                             identity.setVisibility(View.GONE);
                             specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.specialis_yellow);
+                            specialistIv.setImageResource(R.mipmap.yellow_v);
                             nameTv.setText(data.getEntity().getName());
-                            hospitalTv.setText(data.getEntity().getDepartment());
-                            titleTv.setText(data.getEntity().getTitle() + " ");
 
                             break;
                         case "B":
@@ -226,17 +226,13 @@ public class MineFragment extends Fragment {
                             identity.setClickable(false);
                             specialistIv.setVisibility(View.GONE);
                             nameTv.setText(data.getEntity().getName());
-                            hospitalTv.setText(data.getEntity().getDepartment());
-                            titleTv.setText(data.getEntity().getTitle() + " ");
 
                             break;
                         case "C":
                             identity.setVisibility(View.GONE);
                             specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.specialist_red);
+                            specialistIv.setImageResource(R.mipmap.red_v);
                             nameTv.setText(data.getEntity().getName());
-                            hospitalTv.setText(data.getEntity().getDepartment());
-                            titleTv.setText(data.getEntity().getTitle() + " ");
 
                             break;
                         default:
@@ -253,8 +249,6 @@ public class MineFragment extends Fragment {
                             });
                             specialistIv.setVisibility(View.GONE);
                             nameTv.setText(data.getEntity().getNickName());
-                            hospitalTv.setText(" ");
-                            titleTv.setText(" ");
 
                             break;
                     }
@@ -275,9 +269,10 @@ public class MineFragment extends Fragment {
 
         // 监听滚动事件
         scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+                ViewGroup.LayoutParams lp = imageView
                         .getLayoutParams();
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
@@ -312,7 +307,7 @@ public class MineFragment extends Fragment {
 
     // 回弹动画 (使用了属性动画)
     public void replyImage() {
-        final ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+        final ViewGroup.LayoutParams lp = imageView
                 .getLayoutParams();
         final float w = imageView.getLayoutParams().width;// 图片当前宽度
         final float h = imageView.getLayoutParams().height;// 图片当前高度
@@ -373,16 +368,20 @@ public class MineFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
-    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeluxiang, R.id.wodeshoucang, R.id.wodedingdan, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
+    @OnClick({R.id.setting, R.id.modify_userinfo, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeluxiang, R.id.wodeshoucang, R.id.wodedingdan, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
             case R.id.setting:
                 intent = new Intent(getActivity(), SettingActivity.class);
                 intent.putExtra("avatar", userAvatar);
+                startActivity(intent);
+                break;
+            case R.id.modify_userinfo:
+                intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
                 break;
             case R.id.user_flyt:

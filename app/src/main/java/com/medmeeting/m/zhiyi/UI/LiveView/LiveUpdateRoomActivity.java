@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -53,7 +54,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
@@ -61,21 +62,21 @@ import rx.Observer;
 
 public class LiveUpdateRoomActivity extends AppCompatActivity {
 
-    @Bind(R.id.live_pic)
+    @BindView(R.id.live_pic)
     ImageView livePic;
-    @Bind(R.id.live_pic_tip_tv)
+    @BindView(R.id.live_pic_tip_tv)
     TextView livePicTipTv;
-    @Bind(R.id.live_pic_tip)
+    @BindView(R.id.live_pic_tip)
     LinearLayout livePicTip;
-    @Bind(R.id.theme)
+    @BindView(R.id.theme)
     EditText theme;
-    @Bind(R.id.classify_tv)
+    @BindView(R.id.classify_tv)
     TextView classifyTv;
-    @Bind(R.id.classify)
+    @BindView(R.id.classify)
     LinearLayout classify;
-    @Bind(R.id.introduction)
+    @BindView(R.id.introduction)
     EditText introduction;
-    @Bind(R.id.buildllyt)
+    @BindView(R.id.buildllyt)
     LinearLayout buildllyt;
     private Toolbar toolbar;
     private static final String TAG = LiveUpdateRoomActivity.class.getSimpleName();
@@ -92,7 +93,7 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
     private long createTime;
     private long updateTime;
 
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     View mProgressView;
 
     @Override
@@ -320,7 +321,7 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
                 qiniuToken = q.getData().getUploadToken();
 
                 // 设置图片名字
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
                 qiniuKey = "android_live_" + sdf.format(new Date());
 
                 int i = new Random().nextInt(1000) + 1;

@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -47,6 +48,7 @@ public class PopSubView extends LinearLayout {
         addView(textView, tvLp);
 
         setOnTouchListener(new OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {

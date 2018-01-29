@@ -152,7 +152,8 @@
                             android:layout_width="140dp"
                             android:layout_height="80dp"
                             android:scaleType="fitXY"
-                            android:src="@mipmap/live_background" />
+                            android:src="@mipmap/live_background"
+                            android:contentDescription="TODO" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -313,7 +314,8 @@
                 android:layout_height="20dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:contentDescription="TODO" />
         </LinearLayout>
     </LinearLayout>
 

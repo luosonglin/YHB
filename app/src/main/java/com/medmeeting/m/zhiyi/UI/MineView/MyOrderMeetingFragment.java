@@ -358,7 +358,6 @@ public class MyOrderMeetingFragment extends Fragment {
             }
         }
 
-        ;
     };
 
     /**

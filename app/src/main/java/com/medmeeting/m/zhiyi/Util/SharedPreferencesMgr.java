@@ -14,7 +14,7 @@ public class SharedPreferencesMgr {
     private static SharedPreferences sPrefs;
 
     private SharedPreferencesMgr(Context context, String fileName) {
-        this.context = context;
+        SharedPreferencesMgr.context = context;
         sPrefs = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         //7.0后
 //        代码调用，存放在data/data/包名/xxx

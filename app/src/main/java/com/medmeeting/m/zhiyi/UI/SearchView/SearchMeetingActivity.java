@@ -41,7 +41,6 @@ public class SearchMeetingActivity extends AppCompatActivity {
     private Button searchTv;
 
     private RecyclerView rvMeetingList;
-    ;
     private BaseQuickAdapter mMeetingAdapter;
 
 

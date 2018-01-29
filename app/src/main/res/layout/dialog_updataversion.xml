@@ -14,7 +14,8 @@
         android:layout_gravity="right"
         android:layout_marginTop="30dp"
         android:padding="16dp"
-        android:src="@mipmap/popupwindow_delete"/>
+        android:src="@mipmap/popupwindow_delete"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/updataversion_title"
@@ -53,7 +54,8 @@
         android:layout_height="30dp"
         android:background="@drawable/updataversionbut_bg"
         android:clickable="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:focusable="true">
 
         <TextView
             android:layout_width="0dp"

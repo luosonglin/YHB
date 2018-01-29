@@ -9,17 +9,17 @@ import android.widget.RelativeLayout;
 
 import com.medmeeting.m.zhiyi.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class WalletPasswordActivity extends AppCompatActivity {
     private static final String TAG = WalletPasswordActivity.class.getSimpleName();
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.modify)
+    @BindView(R.id.modify)
     RelativeLayout modify;
-    @Bind(R.id.forget)
+    @BindView(R.id.forget)
     RelativeLayout forget;
 
     @Override

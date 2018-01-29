@@ -88,7 +88,8 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     card_view:cardBackgroundColor="@android:color/white"
                     card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="14dp">
+                    card_view:cardElevation="14dp"
+                    android:focusable="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -170,7 +171,8 @@
                                 android:layout_marginRight="8dp"
                                 android:background="@drawable/textview_radius_blue"
                                 android:gravity="center"
-                                android:scaleType="fitXY"/>
+                                android:scaleType="fitXY"
+                                android:contentDescription="TODO" />
                         </RelativeLayout>
 
                         <View
@@ -252,7 +254,8 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     card_view:cardBackgroundColor="@android:color/white"
                     card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="4dp">
+                    card_view:cardElevation="4dp"
+                    android:focusable="true">
 
                     <Button
                         android:id="@+id/phone_sign_in_button"

@@ -56,7 +56,8 @@
                         android:layout_height="90dp"
                         android:layout_weight="1"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/right_arrow_icon" />
+                        android:src="@drawable/right_arrow_icon"
+                        android:contentDescription="TODO" />
 
                     <ImageView
                         android:id="@+id/ivCenterImg2"
@@ -66,7 +67,8 @@
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/right_arrow_icon" />
+                        android:src="@drawable/right_arrow_icon"
+                        android:contentDescription="TODO" />
 
                     <ImageView
                         android:id="@+id/ivCenterImg3"
@@ -74,7 +76,8 @@
                         android:layout_height="90dp"
                         android:layout_weight="1"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/right_arrow_icon" />
+                        android:src="@drawable/right_arrow_icon"
+                        android:contentDescription="TODO" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -88,7 +91,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_new_category_tip_dark" />
+                        android:src="@drawable/ic_new_category_tip_dark"
+                        android:contentDescription="TODO" />
 
                     <LinearLayout
                         android:id="@+id/llImgCount"
@@ -126,14 +130,16 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/ic_new_category_tip_dark" />
+                        android:src="@drawable/ic_new_category_tip_dark"
+                        android:contentDescription="TODO" />
 
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerInParent="true"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/index_news_live_start" />
+                        android:src="@mipmap/index_news_live_start"
+                        android:contentDescription="TODO" />
 
                     <LinearLayout
                         android:id="@+id/llVideo1"
@@ -179,7 +185,8 @@
                             android:layout_gravity="center_vertical"
                             android:src="@mipmap/index_news_top_icon"
                             android:scaleType="fitXY"
-                            android:visibility="gone"/>
+                            android:visibility="gone"
+                            android:contentDescription="TODO" />
                         <TextView
                             android:id="@+id/tvAuthorName"
                             android:layout_width="wrap_content"
@@ -235,7 +242,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_new_category_tip_dark" />
+                    android:src="@drawable/ic_new_category_tip_dark"
+                    android:contentDescription="TODO" />
 
                 <LinearLayout
                     android:id="@+id/llVideo"

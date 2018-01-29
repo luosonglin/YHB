@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -36,7 +36,7 @@ import static com.medmeeting.m.zhiyi.UI.Entity.Channel.TYPE_MY_CHANNEL;
 public class ChannelDialogFragment extends DialogFragment implements OnChannelDragListener {
     private List<LiveLabel> mDatas = new ArrayList<>();
     private ChannelAdapter mAdapter;
-    @Bind(R.id.recyclerView)
+    @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private ItemTouchHelper mHelper;
 

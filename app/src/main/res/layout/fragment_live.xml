@@ -40,7 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:padding="16dp"
-            android:src="@mipmap/search_icon" />
+            android:src="@mipmap/search_icon"
+            android:contentDescription="TODO" />
     </RelativeLayout>
 
     <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->

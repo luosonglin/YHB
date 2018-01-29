@@ -21,7 +21,6 @@ import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
@@ -151,6 +150,5 @@ public class VideoDetailFareFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

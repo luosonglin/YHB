@@ -71,7 +71,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jiguang.analytics.android.api.BrowseEvent;
@@ -80,24 +80,24 @@ import rx.Observer;
 
 public class NewsActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     TextView name;
-    @Bind(R.id.time)
+    @BindView(R.id.time)
     TextView time;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.content)
+    @BindView(R.id.content)
     TextView content;
-    @Bind(R.id.loadingView)
+    @BindView(R.id.loadingView)
     LoadingFlashView loadingView;
-    @Bind(R.id.WebView)
+    @BindView(R.id.WebView)
     BridgeWebView mWebView;
 
-    @Bind(R.id.input_editor)
+    @BindView(R.id.input_editor)
     EditText inputEditor;
-    @Bind(R.id.input_send)
+    @BindView(R.id.input_send)
     Button inputSend;
     private RecyclerView mCommandRecyclerView;
     private BaseQuickAdapter mCommandAdapter;
@@ -107,7 +107,7 @@ public class NewsActivity extends AppCompatActivity {
     private String blogTitle;
     private boolean collectionType;
 
-    @Bind(R.id.label_rv_list)
+    @BindView(R.id.label_rv_list)
     RecyclerView mLabelRecyclerView;
     private BaseQuickAdapter mLabelAdapter;
 
@@ -526,7 +526,7 @@ public class NewsActivity extends AppCompatActivity {
     private void initWebView() {
         WebSettings settings = mWebView.getSettings();
 
-        // BindUserInfo settings
+        // BindViewUserInfo settings
         settings.setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
         settings.setJavaScriptEnabled(true);    //设置webview支持javascript
         settings.setLoadsImagesAutomatically(true);    //支持自动加载图片

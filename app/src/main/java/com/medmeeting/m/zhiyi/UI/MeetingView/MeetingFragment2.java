@@ -17,6 +17,7 @@ import com.medmeeting.m.zhiyi.UI.SearchView.SearchMeetingActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * @author NapoleonRohaha_Songlin
@@ -29,6 +30,7 @@ public class MeetingFragment2 extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    Unbinder unbinder;
 
     private MeetingFragment2.OnFragmentInteractionListener mListener;
 
@@ -50,6 +52,7 @@ public class MeetingFragment2 extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meeting2, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
@@ -111,7 +114,7 @@ public class MeetingFragment2 extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @OnClick({R.id.search_icon})

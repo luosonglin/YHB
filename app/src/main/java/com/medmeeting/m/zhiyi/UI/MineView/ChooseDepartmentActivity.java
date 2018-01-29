@@ -25,24 +25,24 @@ import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChooseDepartmentActivity extends AppCompatActivity
         implements DepartmentLevelOneAdapter.OnRecyclerViewItemClickListener, DepartmentLevelTwoAdapter.OnRecyclerViewItemClickListener {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.level_one_recycler_view)
+    @BindView(R.id.level_one_recycler_view)
     RecyclerView levelOneRecyclerView;
-    @Bind(R.id.level_one_swipe_refresh_lyt)
+    @BindView(R.id.level_one_swipe_refresh_lyt)
     SwipeRefreshLayout levelOneSwipeRefreshLyt;
 
-    @Bind(R.id.level_two_recycler_view)
+    @BindView(R.id.level_two_recycler_view)
     RecyclerView levelTwoRecyclerView;
-    @Bind(R.id.level_two_swipe_refresh_lyt)
+    @BindView(R.id.level_two_swipe_refresh_lyt)
     SwipeRefreshLayout levelTwoSwipeRefreshLyt;
-    @Bind(R.id.content_choose_department)
+    @BindView(R.id.content_choose_department)
     RelativeLayout contentChooseDepartment;
 
     private DepartmentLevelOneAdapter departmentLevelOneAdapter;

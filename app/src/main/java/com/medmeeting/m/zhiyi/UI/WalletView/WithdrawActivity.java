@@ -24,29 +24,29 @@ import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class WithdrawActivity extends AppCompatActivity {
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.extractType)
+    @BindView(R.id.extractType)
     TextView extractType;
-    @Bind(R.id.extract_type_rlyt)
+    @BindView(R.id.extract_type_rlyt)
     RelativeLayout extractTypeRlyt;
-    @Bind(R.id.amount)
+    @BindView(R.id.amount)
     EditText amount;
-    @Bind(R.id.all_extract_action)
+    @BindView(R.id.all_extract_action)
     TextView allExtractAction;
-    @Bind(R.id.actual_arrival)
+    @BindView(R.id.actual_arrival)
     TextView actualArrival;
-    @Bind(R.id.tax)
+    @BindView(R.id.tax)
     TextView tax;
-    @Bind(R.id.extractPassword)
+    @BindView(R.id.extractPassword)
     EditText extractPassword;
-    @Bind(R.id.confirm)
+    @BindView(R.id.confirm)
     Button confirm;
 
     private ExtractEntity extractEntity = new ExtractEntity();

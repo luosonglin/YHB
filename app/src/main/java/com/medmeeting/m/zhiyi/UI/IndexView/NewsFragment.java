@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import rx.Observer;
 
@@ -91,11 +92,13 @@ public class NewsFragment extends BaseFragment {
     private TextView mHeaderMeetingView;
     private HeaderMeetingAdapter mHeaderMeetingAdapter;
 
+Unbinder unbinder;
 
     @Override
     protected View loadViewLayout(LayoutInflater inflater, ViewGroup container) {
         View v = inflater.inflate(R.layout.fragment_news, null);
         ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         return v;
     }
 
@@ -521,7 +524,7 @@ public class NewsFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
 

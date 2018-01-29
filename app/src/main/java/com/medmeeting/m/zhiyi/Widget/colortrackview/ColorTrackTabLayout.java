@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.Widget.colortrackview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -52,7 +53,7 @@ public class ColorTrackTabLayout extends TabLayout{
     public ColorTrackTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, android.support.design.R.styleable.TabLayout,
+            @SuppressLint("CustomViewStyleable") TypedArray a = context.obtainStyledAttributes(attrs, android.support.design.R.styleable.TabLayout,
                     defStyleAttr, android.support.design.R.style.Widget_Design_TabLayout);
             //自定义属性的background
             mAttr_background = ViewAttributeUtil.getBackgroundAttibute(attrs);
@@ -64,7 +65,7 @@ public class ColorTrackTabLayout extends TabLayout{
                         android.support.design.R.style.TextAppearance_Design_Tab);
 
                 // Text colors/sizes come from the text appearance first
-                final TypedArray ta = context.obtainStyledAttributes(tabTextAppearance,
+                @SuppressLint("CustomViewStyleable") final TypedArray ta = context.obtainStyledAttributes(tabTextAppearance,
                         android.support.v7.appcompat.R.styleable.TextAppearance);
                 try {
                     //Tab字体大小

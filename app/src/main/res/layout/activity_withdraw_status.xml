@@ -46,7 +46,8 @@
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/withdraw_success" />
+            android:src="@mipmap/withdraw_success"
+            android:contentDescription="TODO" />
         <TextView
             android:id="@+id/a2"
             android:layout_width="wrap_content"
@@ -77,7 +78,8 @@
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="22dp"
-        card_view:cardElevation="2dp">
+        card_view:cardElevation="2dp"
+        android:focusable="true">
 
         <Button
             android:id="@+id/confirm"

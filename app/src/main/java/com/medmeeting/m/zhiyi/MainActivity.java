@@ -33,7 +33,7 @@ import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenuItemListener;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.snappydb.SnappydbException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.jiguang.analytics.android.api.JAnalyticsInterface;
@@ -63,45 +63,44 @@ public class MainActivity extends AppCompatActivity implements
     private ImageView updateDeletIv;
 
     //首页
-    @Bind(R.id.tab_index)
+    @BindView(R.id.tab_index)
     View tabOrders;
-    @Bind(R.id.tab_index_img)
+    @BindView(R.id.tab_index_img)
     ImageView tabOrdersImg;
-    @Bind(R.id.tab_index_title)
+    @BindView(R.id.tab_index_title)
     TextView tabOrdersTitle;
 
     //知医
     private static View tabMerchandise;
-    @Bind(R.id.tab_doctor_img)
+    @BindView(R.id.tab_doctor_img)
     ImageView tabMerchandiseImg;
-    @Bind(R.id.tab_doctor_title)
+    @BindView(R.id.tab_doctor_title)
     TextView tabMerchandiseTitle;
 
     //加号
-    @Bind(R.id.tab_plus)
+    @BindView(R.id.tab_plus)
     View tabPlus;
-    @Bind(R.id.tab_plus_img)
+    @BindView(R.id.tab_plus_img)
     ImageView tabPlusIv;
 
     //圈子
     private static View tabPurchase;
-    @Bind(R.id.tab_community_img)
+    @BindView(R.id.tab_community_img)
     ImageView tabPurchaseImg;
-    @Bind(R.id.tab_community_title)
+    @BindView(R.id.tab_community_title)
     TextView tabPurchaseTitle;
 
     //个人
-    @Bind(R.id.tab_mine)
+    @BindView(R.id.tab_mine)
     View tabSelf;
-    @Bind(R.id.tab_mine_img)
+    @BindView(R.id.tab_mine_img)
     ImageView tabSelfImg;
-    @Bind(R.id.tab_mine_title)
+    @BindView(R.id.tab_mine_title)
     TextView tabSelfTitle;
 
     private FragmentManager fragmentManager;
     private IndexFragment mIndexFragment;
     private MeetingFragment2 mMeetingFragment;
-    //    private CommunityFragment mLiveIndexFragment;
     private LiveIndexFragment mLiveIndexFragment;
     private MineFragment mMineFragment;
 
@@ -136,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         StatusBarCompat.setStatusBarColor(this, Color.LTGRAY, true);
 
-        tabMerchandise = (View) findViewById(R.id.tab_doctor);
-        tabPurchase = (View) findViewById(R.id.tab_community);
+        tabMerchandise = findViewById(R.id.tab_doctor);
+        tabPurchase = findViewById(R.id.tab_community);
 
         ButterKnife.bind(this);
 

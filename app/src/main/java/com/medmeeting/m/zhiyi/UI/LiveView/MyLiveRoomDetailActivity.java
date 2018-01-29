@@ -27,6 +27,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.umeng.socialize.shareboard.SnsPlatform;
@@ -132,18 +133,15 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
                 .into(backgroundIv);
 
         //分享
-        findViewById(R.id.invitation_letter).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initShare(getIntent().getExtras().getInt("roomId"),
-                        getIntent().getExtras().getString("title"),
-                        getIntent().getExtras().getString("coverPhote"),
-                        "欢迎观看" + getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
+        findViewById(R.id.invitation_letter).setOnClickListener(view -> {
+            initShare(getIntent().getExtras().getInt("roomId"),
+                    getIntent().getExtras().getString("title"),
+                    getIntent().getExtras().getString("coverPhoto"),
+                    "欢迎观看" + getIntent().getExtras().getString("title"));
 
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
-            }
+            ShareBoardConfig config = new ShareBoardConfig();
+            config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+            mShareAction.open(config);
         });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
@@ -263,7 +261,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
     }
 
-    public void initShare(final int roomId, final String title, final String phone, final String description) {
+    public void initShare(final int roomId, final String title, final String photo, final String description) {
         mShareListener = new MyLiveRoomDetailActivity.CustomShareListener(this);
         /*增加自定义按钮的分享面板*/
         mShareAction = new ShareAction(MyLiveRoomDetailActivity.this)
@@ -273,7 +271,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
                     public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
                         UMWeb web = new UMWeb(Constant.Share_Live_Room + roomId);
                         web.setTitle(title);//标题
-//                        web.setThumb(new UMImage(LiveProgramDetailActivity.this, phone));  //缩略图
+                        web.setThumb(new UMImage(MyLiveRoomDetailActivity.this, photo));  //缩略图
                         web.setDescription(description);//描述
                         new ShareAction(MyLiveRoomDetailActivity.this)
                                 .withMedia(web)

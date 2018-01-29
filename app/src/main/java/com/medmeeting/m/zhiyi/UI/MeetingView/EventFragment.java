@@ -38,6 +38,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.Observer;
 
 import static java.lang.Thread.sleep;
@@ -64,6 +65,8 @@ public class EventFragment extends Fragment {
     private List<String> bannerImages = new ArrayList<>();
     private List<String> bannerTitles = new ArrayList<>();
 
+    Unbinder unbinder;
+
     public static EventFragment newInstance(Integer eventType) {
         EventFragment fragment = new EventFragment();
         Bundle args = new Bundle();
@@ -88,6 +91,7 @@ public class EventFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -265,6 +269,6 @@ public class EventFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 }

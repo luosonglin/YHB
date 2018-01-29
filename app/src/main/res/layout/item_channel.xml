@@ -15,7 +15,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:src="@drawable/bg_channel_shape" />
+            android:src="@drawable/bg_channel_shape"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/tvChannel"
@@ -34,5 +35,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/add_channels_close_small"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:contentDescription="TODO" />
 </RelativeLayout>

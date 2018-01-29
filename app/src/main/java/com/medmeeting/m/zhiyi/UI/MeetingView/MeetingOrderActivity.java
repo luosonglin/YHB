@@ -57,7 +57,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 
@@ -70,13 +70,13 @@ import rx.Observer;
  */
 public class MeetingOrderActivity  extends AppCompatActivity {
 
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitle;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.WebView)
+    @BindView(R.id.WebView)
     BridgeWebView WebView;
-    @Bind(R.id.content_meeting_enrol)
+    @BindView(R.id.content_meeting_enrol)
     RelativeLayout contentMeetingEnrol;
 
     private static final String TAG = MeetingOrderActivity.class.getSimpleName();
@@ -179,7 +179,7 @@ public class MeetingOrderActivity  extends AppCompatActivity {
 
         WebSettings settings = WebView.getSettings();
 
-        // BindUserInfo settings
+        // BindViewUserInfo settings
         settings.setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
         settings.setJavaScriptEnabled(true);    //设置webview支持javascript
         settings.setLoadsImagesAutomatically(true);    //支持自动加载图片
@@ -393,23 +393,11 @@ public class MeetingOrderActivity  extends AppCompatActivity {
 
                 @Override
                 public void onNext(PaymentStatus paymentStatus) {
-                    if (paymentStatus.getPayStatus().get(0).isAlipay()) {
-                        AlipayDisplay = true;
-                    } else {
-                        AlipayDisplay = false;
-                    }
+                    AlipayDisplay = paymentStatus.getPayStatus().get(0).isAlipay();
 
-                    if (paymentStatus.getPayStatus().get(0).isWechat()) {
-                        WechatDisplay = true;
-                    } else {
-                        WechatDisplay = false;
-                    }
+                    WechatDisplay = paymentStatus.getPayStatus().get(0).isWechat();
 
-                    if (paymentStatus.getPayStatus().get(0).isLine()) {
-                        OffLineDisplay = true;
-                    } else {
-                        OffLineDisplay = false;
-                    }
+                    OffLineDisplay = paymentStatus.getPayStatus().get(0).isLine();
 
                     initPopupwindow();
                 }
@@ -571,7 +559,7 @@ public class MeetingOrderActivity  extends AppCompatActivity {
                 default:
                     break;
             }
-        };
+        }
     };
 
     /**

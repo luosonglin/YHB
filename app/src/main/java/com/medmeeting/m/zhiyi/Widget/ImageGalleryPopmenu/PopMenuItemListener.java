@@ -10,5 +10,5 @@ public interface PopMenuItemListener {
      * @param popMenu
      * @param position
      */
-    public void onItemClick(PopMenu popMenu, int position);
+    void onItemClick(PopMenu popMenu, int position);
 }

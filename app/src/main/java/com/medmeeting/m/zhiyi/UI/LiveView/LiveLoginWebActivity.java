@@ -15,22 +15,22 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveLoginWebDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class LiveLoginWebActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar_title)
+    @BindView(R.id.toolbar_title)
     TextView toolbarTitleTv;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.content_live_login_web)
+    @BindView(R.id.content_live_login_web)
     LinearLayout contentLiveLoginWeb;
-    @Bind(R.id.live_login_web_confirm)
+    @BindView(R.id.live_login_web_confirm)
     Button liveLoginWebConfirm;
-    @Bind(R.id.live_login_web_cancel)
+    @BindView(R.id.live_login_web_cancel)
     Button liveLoginWebCancel;
 
     private String QRCode;

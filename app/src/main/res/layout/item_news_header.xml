@@ -90,7 +90,8 @@
                 android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
-                android:src="@mipmap/index_alert1" />
+                android:src="@mipmap/index_alert1"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/live_start_time1"
@@ -181,7 +182,8 @@
                 android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
-                android:src="@mipmap/index_alert2" />
+                android:src="@mipmap/index_alert2"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/live_start_time2"

@@ -33,9 +33,10 @@ import com.medmeeting.m.zhiyi.Widget.colortrackview.ColorTrackTabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import rx.Observer;
 
 import static com.medmeeting.m.zhiyi.Util.ConstanceValue.TITLE_SELECTED;
@@ -44,15 +45,15 @@ import static com.medmeeting.m.zhiyi.Util.ConstanceValue.TITLE_UNSELECTED;
 public class IndexFragment extends Fragment implements OnChannelListener {
 
     private static final String TAG = IndexFragment.class.getSimpleName();
-    @Bind(R.id.location)
+    @BindView(R.id.location)
     TextView location;
-    @Bind(R.id.new_category_tip)
+    @BindView(R.id.new_category_tip)
     ImageView newCategoryTip;
-    @Bind(R.id.tab)
+    @BindView(R.id.tab)
     ColorTrackTabLayout tab;
-    @Bind(R.id.icon_category)
+    @BindView(R.id.icon_category)
     ImageView iconCategory;
-    @Bind(R.id.vp)
+    @BindView(R.id.vp)
     ViewPager vp;
     private ChannelPagerAdapter mTitlePagerAdapter;
 
@@ -61,6 +62,8 @@ public class IndexFragment extends Fragment implements OnChannelListener {
     private List<BaseFragment> mFragments;
     private Gson mGson = new Gson();
     private OnFragmentInteractionListener mListener;
+
+    Unbinder unbinder;
 
     public IndexFragment() {
     }
@@ -80,6 +83,7 @@ public class IndexFragment extends Fragment implements OnChannelListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_index, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         getTitleData();
 
@@ -195,7 +199,7 @@ public class IndexFragment extends Fragment implements OnChannelListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @OnClick({R.id.search_icon, R.id.icon_category, R.id.message_icon})

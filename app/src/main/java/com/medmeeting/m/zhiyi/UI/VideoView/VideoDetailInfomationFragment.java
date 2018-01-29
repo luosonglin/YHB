@@ -22,9 +22,10 @@ import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import rx.Observer;
 
 /**
@@ -37,22 +38,24 @@ import rx.Observer;
 public class VideoDetailInfomationFragment extends Fragment {
 
     private static Integer videoId;
-    @Bind(R.id.avatar)
+    @BindView(R.id.avatar)
     ImageView avatar;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.author_name)
+    @BindView(R.id.author_name)
     TextView authorName;
-    @Bind(R.id.like)
+    @BindView(R.id.like)
     RxShineButton like;
-    @Bind(R.id.time)
+    @BindView(R.id.time)
     TextView time;
-    @Bind(R.id.type)
+    @BindView(R.id.type)
     TextView type;
-    @Bind(R.id.sum)
+    @BindView(R.id.sum)
     TextView sum;
-    @Bind(R.id.des)
+    @BindView(R.id.des)
     TextView des;
+
+    Unbinder unbinder;
 
     public static VideoDetailInfomationFragment newInstance(Integer classifys1) {
         VideoDetailInfomationFragment fragment = new VideoDetailInfomationFragment();
@@ -78,6 +81,7 @@ public class VideoDetailInfomationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_detail_information, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
 
         like.init(getActivity());
@@ -185,7 +189,7 @@ public class VideoDetailInfomationFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @OnClick({R.id.avatar})

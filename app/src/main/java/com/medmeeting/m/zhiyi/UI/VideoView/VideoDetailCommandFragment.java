@@ -22,9 +22,10 @@ import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import rx.Observer;
 
 /**
@@ -37,12 +38,13 @@ import rx.Observer;
 public class VideoDetailCommandFragment extends Fragment {
 
     private static Integer videoId;
-    @Bind(R.id.input_editor)
+    @BindView(R.id.input_editor)
     EditText inputEditor;
-    @Bind(R.id.input_send)
+    @BindView(R.id.input_send)
     Button inputSend;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
+    Unbinder unbinder;
 
     public static VideoDetailCommandFragment newInstance(Integer classifys1) {
         VideoDetailCommandFragment fragment = new VideoDetailCommandFragment();
@@ -69,6 +71,7 @@ public class VideoDetailCommandFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video_detail_command, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -119,7 +122,7 @@ public class VideoDetailCommandFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @OnClick(R.id.input_send)

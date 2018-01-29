@@ -9,21 +9,21 @@ import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class WithdrawStatusActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.a)
+    @BindView(R.id.a)
     ImageView a;
-    @Bind(R.id.a2)
+    @BindView(R.id.a2)
     TextView a2;
-    @Bind(R.id.a3)
+    @BindView(R.id.a3)
     TextView a3;
-    @Bind(R.id.confirm)
+    @BindView(R.id.confirm)
     Button confirm;
 
     @Override

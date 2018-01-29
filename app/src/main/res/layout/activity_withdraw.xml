@@ -22,7 +22,8 @@
             android:layout_height="50dp"
             android:background="@color/white"
             android:elevation="2dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            tools:targetApi="lollipop">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -216,7 +217,8 @@
                 android:inputType="numberPassword"
                 android:minWidth="120dp"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:ignore="LabelFor" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -240,7 +242,8 @@
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="22dp"
-        card_view:cardElevation="2dp">
+        card_view:cardElevation="2dp"
+        android:focusable="true">
 
         <Button
             android:id="@+id/confirm"

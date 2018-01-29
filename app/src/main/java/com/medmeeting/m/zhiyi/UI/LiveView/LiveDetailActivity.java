@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -247,6 +248,7 @@ public class LiveDetailActivity extends AppCompatActivity {
         mShareAction.close();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView(String coverPhone, String title, String userName) {
         titleTv = (TextView) findViewById(R.id.title);
         userNameTv = (TextView) findViewById(R.id.userName);
@@ -275,9 +277,10 @@ public class LiveDetailActivity extends AppCompatActivity {
 
         // 监听滚动事件
         scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+                ViewGroup.LayoutParams lp = imageView
                         .getLayoutParams();
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
@@ -312,7 +315,7 @@ public class LiveDetailActivity extends AppCompatActivity {
 
     // 回弹动画 (使用了属性动画)
     public void replyImage() {
-        final ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+        final ViewGroup.LayoutParams lp = imageView
                 .getLayoutParams();
         final float w = imageView.getLayoutParams().width;// 图片当前宽度
         final float h = imageView.getLayoutParams().height;// 图片当前高度

@@ -52,8 +52,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.Observer;
 
 import static com.medmeeting.m.zhiyi.Util.ConstanceValue.HISTORY_WORD;
@@ -80,24 +81,24 @@ public class SearchHistoryFragment extends Fragment {
     private ImageView mHeaderDeleteView;
 
 
-    @Bind(R.id.scroll_view)
+    @BindView(R.id.scroll_view)
     ScrollView scrollView;
     //搜索得出的数据Adapter
-    @Bind(R.id.header_view_llyt)
+    @BindView(R.id.header_view_llyt)
     LinearLayout mUserHeaderView;
-    @Bind(R.id.rv_list_user)
+    @BindView(R.id.rv_list_user)
     RecyclerView rvUserList;
     private BaseQuickAdapter mUserAdapter;
-    @Bind(R.id.rv_list_news)
+    @BindView(R.id.rv_list_news)
     RecyclerView rvNewsList;
     private com.chad.library.adapter.base.BaseQuickAdapter mNewsAdapter;
-    @Bind(R.id.rv_list_meeting)
+    @BindView(R.id.rv_list_meeting)
     RecyclerView rvMeetingList;
     private BaseQuickAdapter mMeetingAdapter;
-    @Bind(R.id.rv_list_live)
+    @BindView(R.id.rv_list_live)
     RecyclerView rvLiveList;
     private BaseQuickAdapter mLiveAdapter;
-    @Bind(R.id.rv_list_video)
+    @BindView(R.id.rv_list_video)
     RecyclerView rvVideoList;
     private BaseQuickAdapter mVideoAdapter;
 
@@ -105,6 +106,7 @@ public class SearchHistoryFragment extends Fragment {
     TextView mNewsTypeView, mMeetingTypeView, mLiveTypeView, mVideoTypeView;
     TextView mNewsMoreView, mMeetingMoreView, mLiveMoreView, mVideoMoreView;
 
+    Unbinder unbinder;
 
     public static SearchHistoryFragment newInstance(String type, String word) {
         SearchHistoryFragment fragment = new SearchHistoryFragment();
@@ -133,6 +135,7 @@ public class SearchHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_history, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.history_list);
         initSearchResultView();
@@ -197,7 +200,7 @@ public class SearchHistoryFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
 

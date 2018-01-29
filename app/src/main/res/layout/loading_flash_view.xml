@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:scaleType="fitXY"
-        android:src="@drawable/load_text_1"/>
+        android:src="@drawable/load_text_1"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:id="@+id/load2"
@@ -19,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:scaleType="fitXY"
-        android:src="@drawable/load_text_2"/>
+        android:src="@drawable/load_text_2"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:id="@+id/load3"
@@ -27,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:scaleType="fitXY"
-        android:src="@drawable/load_text_3"/>
+        android:src="@drawable/load_text_3"
+        android:contentDescription="TODO" />
 
 </LinearLayout>

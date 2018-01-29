@@ -339,7 +339,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
             View view = mRecyclerView.getChildAt(i);
             ImageView imgEdit = (ImageView) view.findViewById(R.id.ivDelete);
             if (imgEdit != null) {
-                boolean isVis = imgEdit.getTag() == null ? false : (boolean) imgEdit.getTag();
+                boolean isVis = imgEdit.getTag() != null && (boolean) imgEdit.getTag();
                 imgEdit.setVisibility(isVis && isEdit ? View.VISIBLE : View.INVISIBLE);
             }
         }

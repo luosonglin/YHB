@@ -94,17 +94,6 @@
             android:name=".UI.LiveView.MyLiveRoomDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.LiveView.LiveProgramDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="wx7e6722fad8a0975c" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".UI.LiveView.LiveBuildRoomActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar"
@@ -181,12 +170,6 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- 播放器 -->
-        <activity
-            android:name=".UI.LiveView.LivePlayerActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppThemeFullscreen" />
 
         <receiver android:name=".wxapi.AppRegister">
             <intent-filter>
@@ -286,10 +269,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
+
+
+        <!-- 播放器 -->
         <activity android:name=".UI.LiveView.LivePlayerActivity2"
             android:screenOrientation="landscape"
-            android:configChanges="orientation"
-            />
+            android:configChanges="orientation" />
 
         <activity android:name=".UI.MineView.MyCollectActivity" />
         <activity android:name=".UI.MineView.MyOrderActivity" />

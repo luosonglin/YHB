@@ -29,9 +29,9 @@
                 android:layout_gravity="center"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:maxLines="1"
                 android:ellipsize="marquee"
-                android:text=""/>
+                android:text=""
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/add"
@@ -84,10 +84,10 @@
                 android:shadowDy="5"
                 android:shadowRadius="10"
                 android:text="血管新闻联播"
-                android:maxLines="1"
                 android:ellipsize="marquee"
                 android:textColor="@color/white"
-                android:textSize="22sp" />
+                android:textSize="22sp"
+                android:singleLine="true" />
 
             <View
                 android:layout_width="60dp"

@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
-public class PhotoView extends ImageView {
+public class PhotoView extends android.support.v7.widget.AppCompatImageView {
 
     private final static int ANIMA_DURING = 300;
     private final static float MAX_SCALE = 2.5f;
@@ -624,17 +624,13 @@ public class PhotoView extends ImageView {
         if (mImgRect.width() <= mWidgetRect.width()) return false;
         if (direction < 0 && Math.round(mImgRect.left) - direction >= mWidgetRect.left)
             return false;
-        if (direction > 0 && Math.round(mImgRect.right) - direction <= mWidgetRect.right)
-            return false;
-        return true;
+        return !(direction > 0 && Math.round(mImgRect.right) - direction <= mWidgetRect.right);
     }
 
     public boolean canScrollVerticallySelf(float direction) {
         if (mImgRect.height() <= mWidgetRect.height()) return false;
         if (direction < 0 && Math.round(mImgRect.top) - direction >= mWidgetRect.top) return false;
-        if (direction > 0 && Math.round(mImgRect.bottom) - direction <= mWidgetRect.bottom)
-            return false;
-        return true;
+        return !(direction > 0 && Math.round(mImgRect.bottom) - direction <= mWidgetRect.bottom);
     }
 
     @Override
