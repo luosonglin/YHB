@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:text="提示：生成回看可能会有延迟，请耐心等待"
                 android:textSize="12sp"
                 android:textColor="@color/deepskyblue"/>

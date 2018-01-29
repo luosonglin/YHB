@@ -31,7 +31,7 @@ public class SpUtils {
                 spFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = activityPreferences.edit();
         editor.putString(strKey, strData);
-        editor.commit();
+        editor.apply();
     }
 
     public static Boolean getBoolean(Context context, String strKey) {
@@ -56,7 +56,7 @@ public class SpUtils {
                 spFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = activityPreferences.edit();
         editor.putBoolean(strKey, strData);
-        editor.commit();
+        editor.apply();
     }
 
     public static int getInt(Context context, String strKey) {
@@ -78,7 +78,7 @@ public class SpUtils {
                 spFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = activityPreferences.edit();
         editor.putInt(strKey, strData);
-        editor.commit();
+        editor.apply();
     }
 
     public static long getLong(Context context, String strKey) {
@@ -100,6 +100,6 @@ public class SpUtils {
                 spFileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = activityPreferences.edit();
         editor.putLong(strKey, strData);
-        editor.commit();
+        editor.apply();
     }
 }

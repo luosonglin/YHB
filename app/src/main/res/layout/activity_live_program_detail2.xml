@@ -33,7 +33,7 @@
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:layout_marginTop="24dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:src="@mipmap/back_grey"
                     android:contentDescription="TODO" />
 
@@ -42,8 +42,8 @@
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:layout_marginTop="24dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
                     android:src="@mipmap/share_grey"
                     android:contentDescription="TODO" />
 

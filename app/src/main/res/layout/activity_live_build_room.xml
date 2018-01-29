@@ -60,7 +60,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -133,7 +133,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:text="直播间主题"
                                 android:textColor="#666666" />
 
@@ -153,13 +153,13 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:background="#EBEBEB" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:background="#EBEBEB" />
 
                         <LinearLayout
@@ -173,7 +173,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:layout_weight="1"
                                 android:text="直播间分类"
                                 android:textColor="#666666" />
@@ -183,7 +183,7 @@
                                 android:layout_width="150dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginRight="40dp"
+                                android:layout_marginEnd="40dp"
                                 android:layout_weight="3"
                                 android:maxLines="1"
                                 android:text="选择"
@@ -202,7 +202,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:background="#EBEBEB" />
 
                         <LinearLayout
@@ -215,7 +215,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:text="直播间介绍"
                                 android:textColor="#666666" />
 

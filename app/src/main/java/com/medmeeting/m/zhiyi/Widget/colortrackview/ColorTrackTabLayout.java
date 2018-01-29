@@ -50,6 +50,7 @@ public class ColorTrackTabLayout extends TabLayout{
         this(context, attrs, 0);
     }
 
+    @SuppressLint("PrivateResource")
     public ColorTrackTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         if (attrs != null) {
@@ -61,7 +62,7 @@ public class ColorTrackTabLayout extends TabLayout{
             mAttr_textColor = ViewAttributeUtil.getAttributeValue(attrs, "http://schemas.android.com/apk/res-auto", "tabTextColor");
 
             try {
-                int tabTextAppearance = a.getResourceId(android.support.design.R.styleable.TabLayout_tabTextAppearance,
+                @SuppressLint("PrivateResource") int tabTextAppearance = a.getResourceId(android.support.design.R.styleable.TabLayout_tabTextAppearance,
                         android.support.design.R.style.TextAppearance_Design_Tab);
 
                 // Text colors/sizes come from the text appearance first

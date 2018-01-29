@@ -35,7 +35,7 @@ public class SharedPreferencesMgr {
     }
 
     public static void setInt(String key, int value) {
-        sPrefs.edit().putInt(key, value).commit();
+        sPrefs.edit().putInt(key, value).apply();
     }
 
     public static boolean getBoolean(String key, boolean defaultValue) {
@@ -43,7 +43,7 @@ public class SharedPreferencesMgr {
     }
 
     public static void setBoolean(String key, boolean value) {
-        sPrefs.edit().putBoolean(key, value).commit();
+        sPrefs.edit().putBoolean(key, value).apply();
     }
 
     public static String getString(String key, String defaultValue) {
@@ -55,14 +55,14 @@ public class SharedPreferencesMgr {
     public static void setString(String key, String value) {
         if (sPrefs == null)
             return;
-        sPrefs.edit().putString(key, value).commit();
+        sPrefs.edit().putString(key, value).apply();
     }
 
     //保存集合类
     public static void setList(String key, Set<String> value) {
         if (sPrefs == null)
             return;
-        sPrefs.edit().putStringSet(key, value).commit();
+        sPrefs.edit().putStringSet(key, value).apply();
     }
     public static Set<String> getList(String key, Set<String> defailtValue) {
         if (sPrefs == null)
@@ -73,6 +73,6 @@ public class SharedPreferencesMgr {
     public static void clearAll() {
         if (sPrefs == null)
             return;
-        sPrefs.edit().clear().commit();
+        sPrefs.edit().clear().apply();
     }
 }

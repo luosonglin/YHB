@@ -114,7 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="节目主题"
                             android:textColor="#666666" />
 
@@ -134,7 +134,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -149,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="  主讲人  "
                             android:textColor="#666666" />
 
@@ -169,7 +169,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -184,7 +184,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="    职称    "
                             android:textColor="#666666" />
 
@@ -204,7 +204,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -218,7 +218,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:layout_weight="1"
                             android:text="开始时间"
                             android:textColor="#666666" />
@@ -228,7 +228,7 @@
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginRight="40dp"
+                            android:layout_marginEnd="40dp"
                             android:layout_weight="3"
                             android:hint="设置开始时间"
                             android:maxLines="1"
@@ -247,7 +247,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -261,7 +261,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:layout_weight="1"
                             android:text="结束时间"
                             android:textColor="#666666" />
@@ -271,7 +271,7 @@
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginRight="40dp"
+                            android:layout_marginEnd="40dp"
                             android:layout_weight="3"
                             android:hint="设置结束时间"
                             android:maxLines="1"
@@ -290,7 +290,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -303,7 +303,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="收费模式"
                             android:textColor="#666666" />
 
@@ -317,7 +317,7 @@
                                 android:id="@+id/free"
                                 android:layout_width="60dp"
                                 android:layout_height="20dp"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:background="@drawable/button_live_free"
                                 android:text="免费"
                                 android:textColor="@color/white"
@@ -327,7 +327,7 @@
                                 android:id="@+id/charge"
                                 android:layout_width="60dp"
                                 android:layout_height="20dp"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:background="@drawable/button_live_gray"
                                 android:text="收费"
                                 android:textColor="@color/black"
@@ -337,7 +337,7 @@
                                 android:id="@+id/charge_amount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:maxLines="1"
                                 android:text=""
                                 android:textSize="10sp"
@@ -348,7 +348,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -361,7 +361,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="隐私设置"
                             android:textColor="#666666" />
 
@@ -376,7 +376,7 @@
                                 style="?android:attr/buttonBarButtonStyle"
                                 android:layout_width="60dp"
                                 android:layout_height="20dp"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:background="@drawable/button_live_free"
                                 android:text="公开"
                                 android:textColor="@color/white"
@@ -387,7 +387,7 @@
                                 style="?android:buttonBarButtonStyle"
                                 android:layout_width="60dp"
                                 android:layout_height="20dp"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:background="@drawable/button_live_gray"
                                 android:text="不公开"
                                 android:textColor="@color/black"
@@ -398,7 +398,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -411,7 +411,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="节目介绍"
                             android:textColor="#666666" />
                     </LinearLayout>

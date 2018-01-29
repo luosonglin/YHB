@@ -49,7 +49,7 @@
                         android:id="@+id/doctor_llyt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:orientation="horizontal">
 
                         <TextView
@@ -57,7 +57,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="6dp"
+                            android:layout_marginStart="6dp"
                             android:text="中新网"
                             android:textColor="@color/grey"
                             android:textSize="10sp" />
@@ -67,7 +67,7 @@
                         android:id="@+id/time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:text="11/28"
                         android:textSize="10sp" />
                 </RelativeLayout>
@@ -118,7 +118,7 @@
                             android:id="@+id/line5"
                             android:layout_width="1.5dp"
                             android:layout_height="14dp"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:layout_marginBottom="8dp"
                             android:layout_marginLeft="18dp"
@@ -129,7 +129,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_toRightOf="@+id/line5"
+                            android:layout_toEndOf="@+id/line5"
                             android:gravity="center_vertical"
                             android:text="视频来源"
                             android:textColor="@color/black"
@@ -158,9 +158,9 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
-                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
                             android:layout_marginTop="4dp"
-                            android:layout_toRightOf="@+id/video_image">
+                            android:layout_toEndOf="@+id/video_image">
 
                             <TextView
                                 android:id="@+id/video_name"
@@ -184,11 +184,11 @@
                                     android:id="@+id/video_sum"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true"
                                     android:layout_gravity="left"
                                     android:ellipsize="marquee"
                                     android:singleLine="true"
-                                    android:paddingLeft="2dp"
+                                    android:paddingStart="2dp"
                                     android:text="观看 100    收藏 1000"
                                     android:textSize="12sp" />
 
@@ -196,11 +196,11 @@
                                     android:id="@+id/video_time"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentEnd="true"
                                     android:layout_gravity="left"
                                     android:ellipsize="marquee"
                                     android:singleLine="true"
-                                    android:paddingLeft="2dp"
+                                    android:paddingStart="2dp"
                                     android:text="2017-04-08"
                                     android:textSize="12sp" />
                             </RelativeLayout>
@@ -217,7 +217,7 @@
                         android:id="@+id/line4"
                         android:layout_width="1.5dp"
                         android:layout_height="14dp"
-                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_marginBottom="8dp"
                         android:layout_marginLeft="18dp"
@@ -228,7 +228,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/line4"
+                        android:layout_toEndOf="@+id/line4"
                         android:gravity="center_vertical"
                         android:text="最新评论"
                         android:textColor="@color/black"
@@ -282,12 +282,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/input_emoji_btn"
+                    android:layout_toStartOf="@+id/input_emoji_btn"
                     android:background="@drawable/edittext_delete_line"
                     android:hint="我来说几句"
                     android:labelFor="@id/input_editor"
                     android:maxLines="4"
-                    android:paddingLeft="12dp"
+                    android:paddingStart="12dp"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -298,7 +298,7 @@
                 android:layout_width="60dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:background="@color/cornflowerblue"
                 android:enabled="true"
                 android:gravity="center"

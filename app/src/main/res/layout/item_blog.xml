@@ -33,7 +33,7 @@
                     android:maxLines="2"
                     android:text="景海鹏陈冬踏上回家之路asdasdasdasdasd"
                     android:textColor="@color/black"
-                    android:textSize="15dp" />
+                    android:textSize="15sp" />
 
                 <View
                     android:id="@+id/viewFill"
@@ -198,7 +198,7 @@
                             android:maxLines="1"
                             android:text="  中新网移动版"
                             android:textColor="@color/grey"
-                            android:textSize="10dp" />
+                            android:textSize="10sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -216,7 +216,7 @@
                             android:drawableLeft="@mipmap/index_news_time_icon"
                             android:text="  5分钟前"
                             android:textColor="@color/grey"
-                            android:textSize="10dp" />
+                            android:textSize="10sp" />
 
                         <TextView
                             android:id="@+id/tvCommentCount"
@@ -225,7 +225,7 @@
                             android:layout_marginLeft="5dp"
                             android:text="评论"
                             android:textColor="@color/grey"
-                            android:textSize="10dp" />
+                            android:textSize="10sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>

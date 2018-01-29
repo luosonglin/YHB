@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="28dp"
+                android:layout_marginStart="28dp"
                 android:text="公司账号"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -73,7 +73,7 @@
                     android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/account_number_icon"
                     tools:ignore="ContentDescription" />
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:text="银行卡"
                     android:textColor="@color/black" />
 
@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:gravity="center"
                     android:text="未添加"
                     android:textColor="@color/grey"
@@ -101,9 +101,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:src="@mipmap/live_turn_left"
                 android:contentDescription="TODO" />
         </RelativeLayout>
@@ -125,7 +125,7 @@
                     android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/alipay_icon"
                     tools:ignore="ContentDescription" />
@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:text="支付宝"
                     android:textColor="@color/black" />
 
@@ -143,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:gravity="center"
                     android:text="未添加"
                     android:textColor="@color/grey"
@@ -153,9 +153,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:src="@mipmap/live_turn_left"
                 android:contentDescription="TODO" />
         </RelativeLayout>
@@ -181,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="28dp"
+                android:layout_marginStart="28dp"
                 android:text="个人账号"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
@@ -204,7 +204,7 @@
                     android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/account_number_icon"
                     tools:ignore="ContentDescription" />
@@ -213,7 +213,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:text="银行卡"
                     android:textColor="@color/black" />
 
@@ -222,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:gravity="center"
                     android:text="未添加"
                     android:textColor="@color/grey"
@@ -232,9 +232,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:src="@mipmap/live_turn_left"
                 android:contentDescription="TODO" />
         </RelativeLayout>
@@ -256,7 +256,7 @@
                     android:layout_width="40dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:src="@mipmap/alipay_icon"
                     tools:ignore="ContentDescription" />
 
@@ -264,7 +264,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:text="支付宝"
                     android:textColor="@color/black" />
 
@@ -273,7 +273,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:gravity="center"
                     android:text="未添加"
                     android:textColor="@color/grey"
@@ -283,9 +283,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:src="@mipmap/live_turn_left"
                 android:contentDescription="TODO" />
         </RelativeLayout>
