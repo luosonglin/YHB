@@ -120,7 +120,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
             intent.putExtra("userId", mLiveProgramDateilsEntity.getRoomUserId());
             startActivity(intent);
         });
-        time.setText(DateUtils.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtils.TYPE_04) +" ~ "+ DateUtils.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtils.TYPE_04));
+        time.setText(DateUtils.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtils.TYPE_05) +" ~ "+ DateUtils.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtils.TYPE_05));
         collect.setText("收藏：" + mLiveProgramDateilsEntity.getCollectCount());
         if (mLiveProgramDateilsEntity.getChargeType().equals("no")) {
             type.setText("观看：   公开免费");
