@@ -320,7 +320,7 @@
             android:name=".UI.IdentityView.ActivateActivity"
             android:label="@string/title_activity_activate"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustResize" />
     </application>
 
 </manifest>
