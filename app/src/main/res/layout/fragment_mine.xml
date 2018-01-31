@@ -9,12 +9,13 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:scrollbars="none">
         <!--android:scrollbars= none 隐藏滚动条-->
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -65,7 +66,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-130dp">
+                android:layout_marginTop="-140dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -188,8 +189,9 @@
 
                 <RelativeLayout
                     android:id="@+id/user_flyt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/head_ic"
@@ -245,6 +247,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的参会"
+                            android:textSize="13sp"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -275,6 +278,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的直播"
+                            android:textSize="13sp"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -305,6 +309,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的视频"
+                            android:textSize="13sp"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -341,6 +346,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的收藏"
+                            android:textSize="13sp"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -371,6 +377,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的订单"
+                            android:textSize="13sp"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -401,6 +408,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的钱包"
+                            android:textSize="13sp"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -438,6 +446,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的付费直播"
+                            android:textSize="13sp"
                             android:textColor="@color/black" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -471,6 +480,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:text="我的简历"
+                        android:textSize="13sp"
                         android:textColor="@color/black" />
                 </LinearLayout>
             </RelativeLayout>
@@ -504,6 +514,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:text="我的文档"
+                        android:textSize="13sp"
                         android:textColor="@color/black" />
                 </LinearLayout>
             </RelativeLayout>
@@ -536,6 +547,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:text="我的学分"
+                        android:textSize="13sp"
                         android:textColor="@color/black" />
                 </LinearLayout>
             </RelativeLayout>

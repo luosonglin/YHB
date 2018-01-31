@@ -29,6 +29,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
@@ -369,7 +370,7 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.modify_userinfo:
-                intent = new Intent(getActivity(), SettingActivity.class);
+                intent = new Intent(getActivity(), ActivateActivity.class);
                 startActivity(intent);
                 break;
             case R.id.user_flyt:
