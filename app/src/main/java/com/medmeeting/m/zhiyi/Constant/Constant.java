@@ -39,7 +39,8 @@ public class Constant {
     public static final String URL_Message_Detail = "http://mobile.medmeeting.com/#/wv/message/";
 
     //微信appID
-    public static final String WeChat_AppID = "wx7e6722fad8a0975c";
+//    public static final String WeChat_AppID = "wx7e6722fad8a0975c";
+    public static final String WeChat_AppID = "wx3c3cd65767f5a563";
 
     //web browser界面传递数据
     public static final String EXTRA_DATA = "extra_data";

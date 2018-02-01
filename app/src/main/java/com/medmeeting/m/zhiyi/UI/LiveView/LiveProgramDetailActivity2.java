@@ -904,7 +904,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         this.runOnUiThread(() -> {
             try {
                 PayReq req = new PayReq();
-                req.appId = "wx7e6722fad8a0975c";
+                req.appId = Constant.WeChat_AppID;
                 req.partnerId = partnerId;
                 req.prepayId = prepayId;
                 req.nonceStr = nonceStr;

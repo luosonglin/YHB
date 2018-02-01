@@ -461,7 +461,7 @@ public class MeetingEnrolActivity extends AppCompatActivity {
         this.runOnUiThread(() -> {
             try {
                 PayReq req = new PayReq();
-                req.appId = "wx7e6722fad8a0975c";
+                req.appId = Constant.WeChat_AppID;
                 req.partnerId = partnerId;
                 req.prepayId = prepayId;
                 req.nonceStr = nonceStr;

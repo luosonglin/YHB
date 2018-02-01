@@ -45,7 +45,6 @@ import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
-import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -776,7 +775,7 @@ public class VideoDetailActivity extends AppCompatActivity {
         this.runOnUiThread(() -> {
             try {
                 PayReq req = new PayReq();
-                req.appId = "wx7e6722fad8a0975c";
+                req.appId = Constant.WeChat_AppID;
                 req.partnerId = partnerId;
                 req.prepayId = prepayId;
                 req.nonceStr = nonceStr;
