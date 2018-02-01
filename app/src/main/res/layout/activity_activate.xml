@@ -311,7 +311,7 @@
                                 android:textSize="14dp" />
 
                             <EditText
-                                android:id="@+id/title1"
+                                android:id="@+id/position1"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
@@ -429,7 +429,7 @@
                                 android:textSize="14dp" />
 
                             <EditText
-                                android:id="@+id/title2"
+                                android:id="@+id/position2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
@@ -465,7 +465,7 @@
                                 android:textSize="14dp" />
 
                             <EditText
-                                android:id="@+id/title22"
+                                android:id="@+id/title2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
@@ -510,7 +510,7 @@
                                 android:textSize="14dp" />
 
                             <EditText
-                                android:id="@+id/company"
+                                android:id="@+id/company3"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
@@ -583,7 +583,7 @@
                                 android:textSize="14dp" />
 
                             <EditText
-                                android:id="@+id/title3"
+                                android:id="@+id/position3"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
@@ -856,7 +856,7 @@
                                 android:textSize="14dp" />
 
                             <EditText
-                                android:id="@+id/title5"
+                                android:id="@+id/position5"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
@@ -886,6 +886,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/activate_save"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"

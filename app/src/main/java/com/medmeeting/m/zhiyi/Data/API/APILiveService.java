@@ -40,8 +40,10 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAddActivationEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
@@ -502,4 +504,16 @@ public interface APILiveService {
     //GET /v1/website/events/{eventId}/shareInfo App获取会议分享信息
     @GET("/v1/website/events/{eventId}/shareInfo")
     Observable<HttpResult3<Object, Event>> getMeetingInfo(@Path("eventId") Integer eventId);
+
+    /**
+     * 用户模块
+     */
+//    POST /v1/users/activation/add 用户激活-提交激活身份信息
+    @POST("/v1/users/activation/add")
+    Observable<HttpResult3> activate(@Body UserAddActivationEntity userAddActivationEntity);
+
+    //GET /v1/open/user/identity/authentication 用户身份-获取认证身份列
+    @GET("/v1/open/user/identity/authentication")
+    Observable<HttpResult3<UserIdentity, Object>> getAuthenticationTypes();
+
 }

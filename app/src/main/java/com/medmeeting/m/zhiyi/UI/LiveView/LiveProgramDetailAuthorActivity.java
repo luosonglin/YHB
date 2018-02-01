@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.zxing.activity.CaptureActivity;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -307,7 +308,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + programId);
+                    UMWeb web = new UMWeb(Constant.Share_Live +programId);//"http://wap.medmeeting.com/#!/live/room/show/" +
                     web.setTitle(title);//标题
 //                        web.setThumb(new UMImage(LiveProgramDetailAuthorActivity.this, photo));  //缩略图
                     web.setDescription(description);//描述

@@ -321,6 +321,11 @@
             android:label="@string/title_activity_activate"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".UI.IdentityView.ActivatedActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.IdentityView.AuthorizeActivity"></activity>
     </application>
 
 </manifest>

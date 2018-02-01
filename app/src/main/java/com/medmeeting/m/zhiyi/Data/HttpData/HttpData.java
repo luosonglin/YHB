@@ -57,8 +57,10 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAddActivationEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
@@ -702,6 +704,16 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetVideo2(Observer<HttpResult3<Object, VideoInfo>> observer, Integer videoId) {
         Observable observable = service_live.getVideoDetail2(videoId);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataActivate(Observer<HttpResult3> observer, UserAddActivationEntity userAddActivationEntity) {
+        Observable observable = service_live.activate(userAddActivationEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetAuthorizationTypes(Observer<HttpResult3<UserIdentity, Object>> observer) {
+        Observable observable = service_live.getAuthenticationTypes();
         setSubscribe(observable, observer);
     }
 
