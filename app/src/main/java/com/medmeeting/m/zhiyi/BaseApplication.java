@@ -177,14 +177,13 @@ public class BaseApplication extends MultiDexApplication {//Application {
 
     //各个平台的配置，建议放在全局Application或者程序入口
     {
-        PlatformConfig.setWeixin(Constant.WeChat_AppID, "390b7bcd6e6e4f82441cebcdebccb223");
+        PlatformConfig.setWeixin(Constant.WeChat_AppID, Constant.WeChat_AppSecret);//"390b7bcd6e6e4f82441cebcdebccb223"
 //        PlatformConfig.setWeixin("wx5b882abda749656d", "411f579410f6b81b875b2c2fbaa533f0");
 //        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setQQZone("1105918131", "uNzl6dleoc80UQle");
         PlatformConfig.setSinaWeibo("188948618", "416592ff15fdad47403ad89e894d5fd4", "http://sns.whalecloud.com");
         PlatformConfig.setAlipay("2015111700822536");
     }
-
 
 }
 

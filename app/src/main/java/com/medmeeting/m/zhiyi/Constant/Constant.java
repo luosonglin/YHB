@@ -44,6 +44,8 @@ public class Constant {
     //appID
 //    public static final String WeChat_AppID = "wx7e6722fad8a0975c";
     public static final String WeChat_AppID = "wx3c3cd65767f5a563";
+    //app secret
+    public static final String WeChat_AppSecret = "ec0e6a8b17dc37681fd49161c4d69350";
 
     /**
      * 支付宝

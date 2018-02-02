@@ -48,6 +48,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onReq(BaseReq req) {
+        Log.d(getLocalClassName(), "onReq");
     }
 
     @SuppressLint({"LongLogTag", "StringFormatInvalid"})

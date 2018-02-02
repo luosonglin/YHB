@@ -907,7 +907,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 api.sendReq(req);
             } catch (Exception e) {
                 Log.e("PAY_GET", e.getMessage());
-                Toast.makeText(LiveProgramDetailActivity2.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LiveProgramDetailActivity2.this, "网络错误 " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
