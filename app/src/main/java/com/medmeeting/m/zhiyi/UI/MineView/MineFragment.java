@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -28,10 +27,12 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizeActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.UserInfoView.UpdateUserInfoActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -63,8 +64,6 @@ public class MineFragment extends Fragment {
     ImageView imageView;
     @BindView(R.id.setting)
     ImageView setting;
-    @BindView(R.id.identity)
-    TextView identity;
     @BindView(R.id.head_ic)
     ImageView headIv;
     @BindView(R.id.name)
@@ -96,6 +95,10 @@ public class MineFragment extends Fragment {
     RelativeLayout wodefufeizhibo;
     @BindView(R.id.wodeluxiang)
     RelativeLayout wodeluxiang;
+    @BindView(R.id.activate)
+    TextView activate;
+    @BindView(R.id.authorize)
+    TextView authorize;
 
     private String identityHtml;
     private String userId = null;
@@ -106,7 +109,7 @@ public class MineFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private String authenStatus="";
+    private String authenStatus = "";
 
     // 记录首次按下位置
     private float mFirstPosition = 0;
@@ -179,7 +182,7 @@ public class MineFragment extends Fragment {
         if (userId == null) {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         } else {
-            HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
+            HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
                 @Override
                 public void onCompleted() {
 
@@ -191,7 +194,7 @@ public class MineFragment extends Fragment {
                 }
 
                 @Override
-                public void onNext(HttpResult3<Object, UserInfoDto> data) {
+                public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
                     if (!data.getStatus().equals("success")) {
                         ToastUtils.show(getActivity(), data.getMsg());
                         showProgress(false);
@@ -203,6 +206,7 @@ public class MineFragment extends Fragment {
                             .crossFade()
                             .placeholder(R.mipmap.avator_default)
                             .into(headIv);
+                    nameTv.setText(data.getEntity().getName());
 
                     authenStatus = data.getEntity().getAuthenStatus();
                     try {
@@ -213,41 +217,34 @@ public class MineFragment extends Fragment {
                     //A:已认证'',''B:待审核'',''C:大咖认证'',''''X:未认证'
                     switch (data.getEntity().getAuthenStatus()) {
                         case "A":
-                            identity.setVisibility(View.GONE);
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.yellow_v);
-                            nameTv.setText(data.getEntity().getName());
-
                             break;
                         case "B":
-                            identityHtml = "&nbsp;"
-                                    + "<font size=\"10\" color=\"#000000\"> 您已实名认证，请静候相关人员核实 </font>"
-                                    + "<font size=\"38\" color=\"#32A2F8\">" + "</font>";
-                            identity.setText(Html.fromHtml(identityHtml));
-                            identity.setClickable(false);
                             specialistIv.setVisibility(View.GONE);
-                            nameTv.setText(data.getEntity().getName());
-
                             break;
                         case "C":
-                            identity.setVisibility(View.GONE);
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.red_v);
-                            nameTv.setText(data.getEntity().getName());
-
                             break;
                         default:
-                            identityHtml = "&nbsp;"
-                                    + "<font size=\"10\" color=\"#000000\"> 你还没有实名认证，点击前往认证 </font>"
-                                    + "<font size=\"38\" color=\"#32A2F8\">" + " >>" + "</font>";
-                            identity.setVisibility(View.VISIBLE);
-                            identity.setText(Html.fromHtml(identityHtml));
-                            identity.setOnClickListener(view -> startActivity(new Intent(getActivity(), IdentityActivity.class)));
                             specialistIv.setVisibility(View.GONE);
-                            nameTv.setText(data.getEntity().getNickName());
-
                             break;
                     }
+                    switch (data.getEntity().getTocPortStatus()) {
+                        case "wait_activation":
+                            activate.setText("待激活");
+                            break;
+                        case "done_activation":
+                            activate.setText("已激活");
+                            break;
+                        case "done_authen":
+                            activate.setText("已认证");
+                            break;
+                    }
+
+
+
                     showProgress(false);
                 }
             });
@@ -360,7 +357,7 @@ public class MineFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.setting, R.id.modify_userinfo, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeluxiang, R.id.wodeshoucang, R.id.wodedingdan, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
+    @OnClick({R.id.setting, R.id.modify_userinfo, R.id.authorize, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodeluxiang, R.id.wodeshoucang, R.id.wodedingdan, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
@@ -370,8 +367,24 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.modify_userinfo:
-                intent = new Intent(getActivity(), ActivateActivity.class);
+                intent = new Intent(getActivity(), UpdateUserInfoActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.authorize:
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        intent = new Intent(getActivity(), ActivateActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "已激活":     //跳认证页
+                        intent = new Intent(getActivity(), AuthorizeActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "已认证":     //跳认证状态页
+                        intent = new Intent(getActivity(), AuthorizeActivity.class);
+                        startActivity(intent);
+                        break;
+                }
                 break;
             case R.id.user_flyt:
                 break;
@@ -383,7 +396,6 @@ public class MineFragment extends Fragment {
                 intent = new Intent(getActivity(), MyWalletActivity.class);
                 startActivity(intent);
                 break;
-
             case R.id.wodezhibo:
                 switch (authenStatus) {
                     case "A":

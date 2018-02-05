@@ -43,6 +43,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddActivationEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
@@ -515,5 +516,10 @@ public interface APILiveService {
     //GET /v1/open/user/identity/authentication 用户身份-获取认证身份列
     @GET("/v1/open/user/identity/authentication")
     Observable<HttpResult3<UserIdentity, Object>> getAuthenticationTypes();
+
+    //GET /v1/users/app/info APP-获取个人信息
+    @GET("/v1/users/app/info")
+    Observable<HttpResult3<Object, UserGetInfoEntity>> getUserInfo2();
+
 
 }

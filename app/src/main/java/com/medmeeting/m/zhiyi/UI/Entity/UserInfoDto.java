@@ -32,6 +32,11 @@ public class UserInfoDto {
      * userPic : http://ono5ms5i0.bkt.clouddn.com/android_live_20170823171306787308
      * vailStatus : 5
      * zipCode : 251115
+     * <p>
+     * tobPortStatus
+     * tocPortStatus
+     * entranceDate
+     * diploma
      */
 
     private String address;
@@ -63,6 +68,71 @@ public class UserInfoDto {
     private String userPic;
     private int vailStatus;
     private String zipCode;
+
+    private String diploma;
+    private String entranceDate;
+    private String tobPortStatus;
+    private String tocPortStatus;
+    private String des;
+    private String postion;
+    private String company;
+
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getPosition() {
+        return postion;
+    }
+
+    public void setPosition(String position) {
+        this.postion = position;
+    }
+
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
+
+    public String getDiploma() {
+        return diploma;
+    }
+
+    public void setDiploma(String diploma) {
+        this.diploma = diploma;
+    }
+
+    public String getEntranceDate() {
+        return entranceDate;
+    }
+
+    public void setEntranceDate(String entranceDate) {
+        this.entranceDate = entranceDate;
+    }
+
+    public String getTobPortStatus() {
+        return tobPortStatus;
+    }
+
+    public void setTobPortStatus(String tobPortStatus) {
+        this.tobPortStatus = tobPortStatus;
+    }
+
+    public String getTocPortStatus() {
+        return tocPortStatus;
+    }
+
+    public void setTocPortStatus(String tocPortStatus) {
+        this.tocPortStatus = tocPortStatus;
+    }
 
     public String getAddress() {
         return address;

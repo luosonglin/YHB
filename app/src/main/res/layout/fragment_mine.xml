@@ -47,20 +47,6 @@
                         android:contentDescription="TODO"
                         android:src="@mipmap/my_setting_icon" />
                 </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/identity"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="50dp"
-                    android:background="#a0e1c99d"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:paddingRight="0dp"
-                    android:text="你还没有实名认证，点击前往认证 >>"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    android:visibility="invisible" />
             </FrameLayout>
 
             <FrameLayout
@@ -112,6 +98,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/activate"
                                 android:layout_width="40dp"
                                 android:layout_height="18dp"
                                 android:background="@mipmap/identity_bg2"
@@ -124,7 +111,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/line"
+                            android:id="@+id/authorize"
                             android:layout_width="60dp"
                             android:layout_height="18dp"
                             android:layout_gravity="center_horizontal"
