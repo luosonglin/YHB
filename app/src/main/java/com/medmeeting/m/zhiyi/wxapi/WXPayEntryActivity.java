@@ -54,15 +54,19 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     @SuppressLint({"LongLogTag", "StringFormatInvalid"})
     @Override
     public void onResp(BaseResp resp) {
-        Log.d(TAG, "onPayFinish, errCode = " + resp.errCode
+        Log.e(TAG, "onPayFinish, errCode = " + resp.errCode
                 + "\n" + getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode + " " + resp.errStr)));
 
 //		if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
 //			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//			builder.setTitle(R.string.app_tip);
-//			builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode + " " + resp.errStr)));
+//			builder.setTitle("支付");
+//			builder.setMessage(getString(R.string.pay_result_callback_msg, String.valueOf(resp.errCode
+//                    + "\n " + resp.errStr
+//                    + "\n " + resp.transaction
+//                    + "\n "+ resp.openId)));
 //			builder.show();
 //		}
+
         if (resp.errCode == -2) {
 
             //购买事件

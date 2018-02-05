@@ -97,7 +97,7 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
  */
 public class LiveProgramDetailActivity2 extends AppCompatActivity implements Handler.Callback {
 
-//    NestedScrollView postDetailNestedScroll;
+    //    NestedScrollView postDetailNestedScroll;
     LandLayoutLivePlayer detailPlayer;
     RelativeLayout activityDetailPlayer;
 
@@ -613,7 +613,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         endTime = System.nanoTime();
 
         //极光统计  浏览事件
-        BrowseEvent bEvent = new BrowseEvent(programId + "", programTitle, "直播", (endTime - startTime)/1000000000);
+        BrowseEvent bEvent = new BrowseEvent(programId + "", programTitle, "直播", (endTime - startTime) / 1000000000);
         JAnalyticsInterface.onEvent(this, bEvent);
     }
 
@@ -736,7 +736,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     pay(v, data.getEntity().getAmount() + "", data.getEntity().getTradeTitle(), "直播", data.getEntity().getPrepayId(), data.getEntity().getAlipayOrderString());
 
                     //极光统计  购买对象
-                    pEvent = new PurchaseEvent(programId+"",data.getEntity().getTradeTitle(),data.getEntity().getAmount(),true, Currency.CNY,"直播",1);
+                    pEvent = new PurchaseEvent(programId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "直播", 1);
                 }
             }, liveOrderDto);
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -757,6 +757,14 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                         ToastUtils.show(LiveProgramDetailActivity2.this, data.getMsg());
                         return;
                     }
+
+                    Log.e(getLocalClassName(), data.getEntity().getRequestPay().getPartnerid() +  "\n"+
+                            data.getEntity().getRequestPay().getPrepayid() +  "\n"+
+                            data.getEntity().getRequestPay().getNoncestr() +  "\n"+
+                            data.getEntity().getRequestPay().getTimeStamp() +  "\n"+
+                            data.getEntity().getRequestPay().getPackageX() +  "\n"+
+                            data.getEntity().getRequestPay().getSign());
+
                     payByWechat(data.getEntity().getRequestPay().getPartnerid(),
                             data.getEntity().getRequestPay().getPrepayid(),
                             data.getEntity().getRequestPay().getNoncestr(),
@@ -765,7 +773,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                             data.getEntity().getRequestPay().getSign());
 
                     //极光统计  购买对象
-                    pEvent = new PurchaseEvent(programId+"",data.getEntity().getTradeTitle(),data.getEntity().getAmount(),true, Currency.CNY,"直播",1);
+                    pEvent = new PurchaseEvent(programId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "直播", 1);
                     Data.setPurchaseEvent(pEvent);
                 }
             }, liveOrderDto);
@@ -895,6 +903,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         api.registerApp(Constant.WeChat_AppID);
         this.runOnUiThread(() -> {
             try {
+                Log.e(TAG, "runOnUiThread");
                 PayReq req = new PayReq();
                 req.appId = Constant.WeChat_AppID;
                 req.partnerId = partnerId;

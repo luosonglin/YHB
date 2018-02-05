@@ -53,9 +53,15 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     signingConfigs {
+//        release {
+//            storeFile file('yihuibao_luo.jks')
+//            storePassword "luosonglin123456"
+//            keyAlias "yihuibao"
+//            keyPassword "wanyi_luosonglin"
+//        }
         release {
-            storeFile file('yihuibao_luo.jks')
-            storePassword "luosonglin123456"
+            storeFile file('yihiubao_luo.jks')
+            storePassword "luosonglin"
             keyAlias "yihuibao"
             keyPassword "wanyi_luosonglin"
         }
@@ -69,6 +75,8 @@ android {
         }
         debug {
 //            minifyEnabled false
+            //是否混淆
+            minifyEnabled true
             //debug时使用release签名
             signingConfig signingConfigs.release
             //Zip代码压缩优化
@@ -80,10 +88,10 @@ android {
     dexOptions {
         jumboMode = true
     }
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
+//    lintOptions {
+//        checkReleaseBuilds false
+////        abortOnError false
+//    }
     productFlavors {
         develop {}
 //        xiaomi{}
