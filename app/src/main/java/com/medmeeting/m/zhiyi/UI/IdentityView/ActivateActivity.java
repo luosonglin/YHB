@@ -10,12 +10,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddActivationEntity;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observer;
 
 
 /**
@@ -46,7 +50,7 @@ public class ActivateActivity extends AppCompatActivity {
     @BindView(R.id.activate_5)
     LinearLayout activate_5;
 
-    @BindView(R.id.name)
+    @BindView(R.id.name_et)
     EditText name;
     @BindView(R.id.company1)
     EditText company1;
@@ -84,11 +88,16 @@ public class ActivateActivity extends AppCompatActivity {
 
     UserAddActivationEntity userAddActivationEntity;
 
+    private int type = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activate);
         ButterKnife.bind(this);
+
+//        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         toolBar();
 
         activate_1.setVisibility(View.VISIBLE);
@@ -97,12 +106,6 @@ public class ActivateActivity extends AppCompatActivity {
         activate_4.setVisibility(View.GONE);
         activate_5.setVisibility(View.GONE);
 
-        new AlertDialog.Builder(ActivateActivity.this)
-                .setIcon(R.mipmap.logo)
-                .setTitle("")
-                .setMessage("您填写的信息仅用于激活医会宝账号。医会宝将严格保密您的个人信息，激活成功后可正常参与评论点赞，转发；关注大咖。")
-                .setPositiveButton("知道了", (dialogInterface, i) -> dialogInterface.dismiss())
-                .show();
     }
 
     private void toolBar() {
@@ -130,13 +133,7 @@ public class ActivateActivity extends AppCompatActivity {
                 activate_4.setVisibility(View.GONE);
                 activate_5.setVisibility(View.GONE);
 
-                userAddActivationEntity = new UserAddActivationEntity();
-                userAddActivationEntity.setIdentityCode("ASSOCIATION");
-                userAddActivationEntity.setIdentityTitle("医疗协会");
-
-                userAddActivationEntity.setName(name.getText().toString().trim());
-                userAddActivationEntity.setCompany(company1.getText().toString().trim());
-                userAddActivationEntity.setPostion(position1.getText().toString().trim());
+                type = 1;
 
                 break;
             case R.id.activate2:
@@ -153,15 +150,8 @@ public class ActivateActivity extends AppCompatActivity {
                 activate_4.setVisibility(View.GONE);
                 activate_5.setVisibility(View.GONE);
 
-                userAddActivationEntity = new UserAddActivationEntity();
-                userAddActivationEntity.setIdentityCode("MEDICAL_STAFF");
-                userAddActivationEntity.setIdentityTitle("医护人员");
+                type = 2;
 
-                userAddActivationEntity.setName(name.getText().toString().trim());
-                userAddActivationEntity.setCompany(hospital.getText().toString().trim());
-                userAddActivationEntity.setDepartment(department2.getText().toString().trim());
-                userAddActivationEntity.setPostion(position2.getText().toString().trim());
-                userAddActivationEntity.setTitle(title2.getText().toString().trim());
                 break;
             case R.id.activate3:
                 activate1.setBackgroundResource(R.mipmap.activate_bg2);
@@ -177,14 +167,7 @@ public class ActivateActivity extends AppCompatActivity {
                 activate_4.setVisibility(View.GONE);
                 activate_5.setVisibility(View.GONE);
 
-                userAddActivationEntity = new UserAddActivationEntity();
-                userAddActivationEntity.setIdentityCode("MEDICAL_COMPANY");
-                userAddActivationEntity.setIdentityTitle("药械企业");
-
-                userAddActivationEntity.setName(name.getText().toString().trim());
-                userAddActivationEntity.setCompany(company3.getText().toString().trim());
-                userAddActivationEntity.setDepartment(department3.getText().toString().trim());
-                userAddActivationEntity.setPostion(position3.getText().toString().trim());
+                type = 3;
 
                 break;
             case R.id.activate4:
@@ -201,15 +184,7 @@ public class ActivateActivity extends AppCompatActivity {
                 activate_4.setVisibility(View.VISIBLE);
                 activate_5.setVisibility(View.GONE);
 
-                userAddActivationEntity = new UserAddActivationEntity();
-                userAddActivationEntity.setIdentityCode("MEDICO");
-                userAddActivationEntity.setIdentityTitle("医学生");
-
-                userAddActivationEntity.setName(name.getText().toString().trim());
-                userAddActivationEntity.setCompany(school.getText().toString().trim());
-                userAddActivationEntity.setDepartment(major.getText().toString().trim());
-                userAddActivationEntity.setDiploma(education.getText().toString().trim());
-                userAddActivationEntity.setEntranceDate(year.getText().toString().trim());
+                type = 4;
                 break;
             case R.id.activate5:
                 activate1.setBackgroundResource(R.mipmap.activate_bg2);
@@ -225,14 +200,7 @@ public class ActivateActivity extends AppCompatActivity {
                 activate_4.setVisibility(View.GONE);
                 activate_5.setVisibility(View.VISIBLE);
 
-                userAddActivationEntity = new UserAddActivationEntity();
-                userAddActivationEntity.setIdentityCode("EDUCATION_SCIENCE");
-                userAddActivationEntity.setIdentityTitle("医药教科研人员");
-
-                userAddActivationEntity.setName(name.getText().toString().trim());
-                userAddActivationEntity.setCompany(company5.getText().toString().trim());
-                userAddActivationEntity.setDepartment(department5.getText().toString().trim());
-                userAddActivationEntity.setPostion(position5.getText().toString().trim());
+                type = 5;
                 break;
             case R.id.activate6:
                 activate1.setBackgroundResource(R.mipmap.activate_bg2);
@@ -248,35 +216,98 @@ public class ActivateActivity extends AppCompatActivity {
                 activate_4.setVisibility(View.GONE);
                 activate_5.setVisibility(View.GONE);
 
-                userAddActivationEntity = new UserAddActivationEntity();
-                userAddActivationEntity.setIdentityCode("OTHER");
-                userAddActivationEntity.setIdentityTitle("其他人员");
-
-                userAddActivationEntity.setName(name.getText().toString().trim());
+                type = 6;
                 break;
             case R.id.activate_save:
-//                HttpData.getInstance().HttpDataActivate(new Observer<HttpResult3>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        ToastUtils.show(ActivateActivity.this, e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(HttpResult3 data) {
-//                        if (!data.getStatus().equals("success")) {
-//                            ToastUtils.show(ActivateActivity.this, data.getMsg());
-//                            return;
-//                        }
-//                        startActivity(new Intent(ActivateActivity.this, ActivatedActivity.class ));
-//                    }
-//                }, userAddActivationEntity);
+                if (type == 0) {
+                    ToastUtils.show(ActivateActivity.this, "请选择一种身份");
+                    return;
+                } else if (type == 1) {
+                    userAddActivationEntity = new UserAddActivationEntity();
+                    userAddActivationEntity.setIdentityCode("ASSOCIATION");
+                    userAddActivationEntity.setIdentityTitle("医疗协会");
 
-                startActivity(new Intent(ActivateActivity.this, ActivatedActivity.class ));
+                    userAddActivationEntity.setName(name.getText().toString().trim());
+                    userAddActivationEntity.setCompany(company1.getText().toString().trim());
+                    userAddActivationEntity.setPostion(position1.getText().toString().trim());
+                } else if (type == 2) {
+                    userAddActivationEntity = new UserAddActivationEntity();
+                    userAddActivationEntity.setIdentityCode("MEDICAL_STAFF");
+                    userAddActivationEntity.setIdentityTitle("医护人员");
+
+                    userAddActivationEntity.setName(name.getText().toString().trim());
+                    userAddActivationEntity.setCompany(hospital.getText().toString().trim());
+                    userAddActivationEntity.setDepartment(department2.getText().toString().trim());
+                    userAddActivationEntity.setPostion(position2.getText().toString().trim());
+                    userAddActivationEntity.setTitle(title2.getText().toString().trim());
+                } else if (type == 3) {
+
+                    userAddActivationEntity = new UserAddActivationEntity();
+                    userAddActivationEntity.setIdentityCode("MEDICAL_COMPANY");
+                    userAddActivationEntity.setIdentityTitle("药械企业");
+
+                    userAddActivationEntity.setName(name.getText().toString().trim());
+                    userAddActivationEntity.setCompany(company3.getText().toString().trim());
+                    userAddActivationEntity.setDepartment(department3.getText().toString().trim());
+                    userAddActivationEntity.setPostion(position3.getText().toString().trim());
+                } else if (type == 4) {
+
+                    userAddActivationEntity = new UserAddActivationEntity();
+                    userAddActivationEntity.setIdentityCode("MEDICO");
+                    userAddActivationEntity.setIdentityTitle("医学生");
+
+                    userAddActivationEntity.setName(name.getText().toString().trim());
+                    userAddActivationEntity.setCompany(school.getText().toString().trim());
+                    userAddActivationEntity.setDepartment(major.getText().toString().trim());
+                    userAddActivationEntity.setDiploma(education.getText().toString().trim());
+                    userAddActivationEntity.setEntranceDate(year.getText().toString().trim());
+                } else if (type == 5) {
+
+                    userAddActivationEntity = new UserAddActivationEntity();
+                    userAddActivationEntity.setIdentityCode("EDUCATION_SCIENCE");
+                    userAddActivationEntity.setIdentityTitle("医药教科研人员");
+
+                    userAddActivationEntity.setName(name.getText().toString().trim());
+                    userAddActivationEntity.setCompany(company5.getText().toString().trim());
+                    userAddActivationEntity.setDepartment(department5.getText().toString().trim());
+                    userAddActivationEntity.setPostion(position5.getText().toString().trim());
+                } else if (type == 6) {
+                    userAddActivationEntity = new UserAddActivationEntity();
+                    userAddActivationEntity.setIdentityCode("OTHER");
+                    userAddActivationEntity.setIdentityTitle("其他人员");
+
+                    userAddActivationEntity.setName(name.getText().toString().trim());
+                }
+
+                new AlertDialog.Builder(ActivateActivity.this)
+                        .setIcon(R.mipmap.logo)
+                        .setTitle("")
+                        .setMessage("您填写的信息仅用于激活医会宝账号。医会宝将严格保密您的个人信息，激活成功后可正常参与评论点赞，转发；关注大咖。")
+                        .setPositiveButton("知道了", (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                            HttpData.getInstance().HttpDataActivate(new Observer<HttpResult3>() {
+                                @Override
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    ToastUtils.show(ActivateActivity.this, e.getMessage());
+                                }
+
+                                @Override
+                                public void onNext(HttpResult3 data) {
+                                    if (!data.getStatus().equals("success")) {
+                                        ToastUtils.show(ActivateActivity.this, data.getMsg());
+                                        return;
+                                    }
+                                    startActivity(new Intent(ActivateActivity.this, ActivatedActivity.class));
+                                    finish();
+                                }
+                            }, userAddActivationEntity);
+                        })
+                        .show();
                 break;
         }
     }

@@ -229,7 +229,7 @@
                             android:textSize="14dp" />
 
                         <EditText
-                            android:id="@+id/name"
+                            android:id="@+id/name_et"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
@@ -242,8 +242,6 @@
                             android:maxLines="1"
                             android:textColor="@color/black"
                             android:textSize="14dp"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
                             />
                     </LinearLayout>
 
@@ -286,9 +284,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -323,9 +319,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -404,9 +398,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -441,9 +433,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -477,9 +467,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -522,9 +510,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -559,9 +545,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -595,9 +579,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -641,9 +623,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -678,9 +658,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false" />
+                                android:textSize="14dp" />
                         </LinearLayout>
 
                         <View
@@ -714,9 +692,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -750,9 +726,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false" />
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -795,9 +769,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false" />
+                                android:textSize="14dp" />
                         </LinearLayout>
 
                         <View
@@ -831,9 +803,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -868,9 +838,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false" />
+                                android:textSize="14dp" />
                         </LinearLayout>
 
                         <View
