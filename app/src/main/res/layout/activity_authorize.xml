@@ -144,8 +144,6 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="16dp"
                         android:background="@drawable/edittext_delete_line"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
                         android:hint="请输入真实姓名"
                         android:maxLines="1"
@@ -183,8 +181,6 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="16dp"
                         android:background="@drawable/edittext_delete_line"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
                         android:hint="请输入手机号"
                         android:maxLines="1"
@@ -222,8 +218,6 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="16dp"
                         android:background="@drawable/edittext_delete_line"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
                         android:hint="请输入邮箱"
                         android:maxLines="1"
@@ -260,8 +254,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="16dp"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
                         android:maxLines="1"
                         android:singleLine="true"
@@ -303,7 +295,7 @@
             android:background="@color/white"
             android:backgroundTint="@color/grey2"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -358,7 +350,9 @@
                 android:textSize="14sp" />
 
 
+            <!--医疗协会-->
             <LinearLayout
+                android:id="@+id/authorize1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -387,8 +381,6 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="16dp"
                         android:background="@drawable/edittext_delete_line"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
                         android:hint="请输入单位"
                         android:maxLines="1"
@@ -426,8 +418,6 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="16dp"
                         android:background="@drawable/edittext_delete_line"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
                         android:hint="请输入职务"
                         android:maxLines="1"
@@ -442,6 +432,538 @@
                     android:background="@color/grey1" />
             </LinearLayout>
 
+            <!--医护人员-->
+            <LinearLayout
+                android:id="@+id/authorize2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="医院"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/hospital"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请输入医院"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="科室"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/department2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请选择科室"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="职务"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/position2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请选择职务"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="职称"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/title2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请选择职称"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+            </LinearLayout>
+
+            <!--药械企业-->
+            <LinearLayout
+                android:id="@+id/authorize3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="单位"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/company3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请输入单位"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="部门"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/department3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请输入部门"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="职务"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/position3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请输入职务"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+            </LinearLayout>
+
+            <!--医学生-->
+            <LinearLayout
+                android:id="@+id/authorize4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="学校"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/school"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请输入学校"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="专业"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/major"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请选择专业"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="学历"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/education"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请选择学历"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="入学年份"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/year"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请选择入学年份"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+            </LinearLayout>
+
+
+            <!--医药教科研人员-->
+            <LinearLayout
+                android:id="@+id/authorize5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="单位"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/company5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请输入单位"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="部门"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/department5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请输入部门"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="职务"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/position5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:hint="请输入职务"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/next21"
@@ -480,7 +1002,8 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:backgroundTint="@color/grey2"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -563,8 +1086,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="16dp"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
                         android:maxLines="1"
                         android:singleLine="true"

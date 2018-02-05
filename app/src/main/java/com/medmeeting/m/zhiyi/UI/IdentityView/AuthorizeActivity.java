@@ -22,6 +22,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IdentityTypeAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -58,6 +59,22 @@ public class AuthorizeActivity extends AppCompatActivity {
     @BindView(R.id.identity_3)
     LinearLayout identity3;
 
+
+    @BindView(R.id.authorize1)
+    LinearLayout authorize1;
+    @BindView(R.id.authorize2)
+    LinearLayout authorize2;
+    @BindView(R.id.authorize3)
+    LinearLayout authorize3;
+    @BindView(R.id.authorize4)
+    LinearLayout authorize4;
+    @BindView(R.id.authorize5)
+    LinearLayout authorize5;
+
+    private int type = 0;
+
+    private UserAddAuthenEntity userAddAuthenEntity = new UserAddAuthenEntity();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +86,12 @@ public class AuthorizeActivity extends AppCompatActivity {
         identity1.setVisibility(View.VISIBLE);
         identity2.setVisibility(View.GONE);
         identity3.setVisibility(View.GONE);
+
+        authorize1.setVisibility(View.VISIBLE);
+        authorize2.setVisibility(View.GONE);
+        authorize3.setVisibility(View.GONE);
+        authorize4.setVisibility(View.GONE);
+        authorize5.setVisibility(View.GONE);
     }
 
     private void toolBar() {
@@ -103,7 +126,41 @@ public class AuthorizeActivity extends AppCompatActivity {
                 identity3.setVisibility(View.GONE);
                 break;
             case R.id.next31:
-                ToastUtils.show(AuthorizeActivity.this, "提交");
+
+//                userAddAuthenEntity.setCompany();
+//                userAddAuthenEntity.setDepartment();
+//                userAddAuthenEntity.setDiploma();
+//                userAddAuthenEntity.setEmail();
+//                userAddAuthenEntity.setEntranceDate();
+//                userAddAuthenEntity.setIdentityPhoto();
+//                userAddAuthenEntity.setPostion();
+//                userAddAuthenEntity.setTitle();
+//                userAddAuthenEntity.setUserName();
+//                userAddAuthenEntity.setWorkPhoto();
+//                userAddAuthenEntity.setWorkPhotoType();
+
+                HttpData.getInstance().HttpDataAuthorize(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(AuthorizeActivity.this, data.getMsg());
+                            return;
+                        }
+
+                        ToastUtils.show(AuthorizeActivity.this, "提交");
+                    }
+                }, userAddAuthenEntity);
+
                 break;
             case R.id.next32:
                 identity1.setVisibility(View.GONE);
@@ -128,7 +185,6 @@ public class AuthorizeActivity extends AppCompatActivity {
 
 
         // 创建PopupWindow对象，指定宽度和高度
-//                PopupWindow window = new PopupWindow(popupView, 400, 600);
         final PopupWindow window = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, 1600);
         // 设置动画
         window.setAnimationStyle(R.style.popup_window_anim);
@@ -147,12 +203,7 @@ public class AuthorizeActivity extends AppCompatActivity {
 
 
         ImageView cancelIv = (ImageView) popupView.findViewById(R.id.cancel);
-        cancelIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                window.dismiss();
-            }
-        });
+        cancelIv.setOnClickListener(view -> window.dismiss());
 
 
         if (userIdentities.size() == 0) {
@@ -173,10 +224,48 @@ public class AuthorizeActivity extends AppCompatActivity {
                         ToastUtils.show(AuthorizeActivity.this, data.getMsg());
                         return;
                     }
+                    userIdentities.clear();
                     userIdentities.addAll(data.getData());
                     mBaseQuickAdapter.setNewData(data.getData());
                     mBaseQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                         identityName.setText(data.getData().get(position).getTitle());
+
+                        userAddAuthenEntity.setCategory(data.getData().get(position).getCode());
+                        userAddAuthenEntity.setCategoryName(data.getData().get(position).getTitle());
+
+                        type = position + 1;
+                        if (type == 1) {
+                            authorize1.setVisibility(View.VISIBLE);
+                            authorize2.setVisibility(View.GONE);
+                            authorize3.setVisibility(View.GONE);
+                            authorize4.setVisibility(View.GONE);
+                            authorize5.setVisibility(View.GONE);
+                        } else if (type == 2) {
+                            authorize1.setVisibility(View.GONE);
+                            authorize2.setVisibility(View.VISIBLE);
+                            authorize3.setVisibility(View.GONE);
+                            authorize4.setVisibility(View.GONE);
+                            authorize5.setVisibility(View.GONE);
+                        } else if (type == 3) {
+                            authorize1.setVisibility(View.GONE);
+                            authorize2.setVisibility(View.GONE);
+                            authorize3.setVisibility(View.VISIBLE);
+                            authorize4.setVisibility(View.GONE);
+                            authorize5.setVisibility(View.GONE);
+                        } else if (type == 4) {
+                            authorize1.setVisibility(View.GONE);
+                            authorize2.setVisibility(View.GONE);
+                            authorize3.setVisibility(View.GONE);
+                            authorize4.setVisibility(View.VISIBLE);
+                            authorize5.setVisibility(View.GONE);
+                        } else if (type == 5) {
+                            authorize1.setVisibility(View.GONE);
+                            authorize2.setVisibility(View.GONE);
+                            authorize3.setVisibility(View.GONE);
+                            authorize4.setVisibility(View.GONE);
+                            authorize5.setVisibility(View.VISIBLE);
+                        }
+
                         window.dismiss();
                     });
                 }

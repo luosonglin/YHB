@@ -41,6 +41,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddActivationEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
@@ -520,6 +521,10 @@ public interface APILiveService {
     //GET /v1/users/app/info APP-获取个人信息
     @GET("/v1/users/app/info")
     Observable<HttpResult3<Object, UserGetInfoEntity>> getUserInfo2();
+
+    //POST /v1/users/authentication/add 用户认证-提交认证信息
+    @POST("/v1/users/authentication/add")
+    Observable<HttpResult3> authorize(@Body UserAddAuthenEntity userAddAuthenEntity);
 
 
 }
