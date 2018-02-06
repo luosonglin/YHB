@@ -21,13 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
-import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CleanUtils;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
@@ -35,13 +35,9 @@ import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
-import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.snappydb.SnappydbException;
-
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -129,47 +125,102 @@ public class SettingActivity extends AppCompatActivity {
         updataDialog = new UpdataDialog(SettingActivity.this, R.layout.dialog_updataversion, new int[]{R.id.dialog_sure});
         oldVersion = CustomUtils.getVersion(SettingActivity.this) + "";
         update = (RelativeLayout) findViewById(R.id.update);
-        update.setOnClickListener(view -> HttpData.getInstance().HttpDataGetLatestAndroidVersion(new Observer<HttpResult<VersionDto>>() {
-            @Override
-            public void onCompleted() {
+        update.setOnClickListener(view ->
+                /*HttpData.getInstance().HttpDataGetLatestAndroidVersion(new Observer<HttpResult<VersionDto>>() {
+                    @Override
+                    public void onCompleted() {
 
-            }
+                    }
 
-            @Override
-            public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
 
-            }
+                    }
 
-            @Override
-            public void onNext(HttpResult<VersionDto> versionDtoHttpResult) {
-                newVersion = versionDtoHttpResult.getData().getVersion().getVersion();
-                versionmsg = versionDtoHttpResult.getData().getVersion().getLog();
-                url = versionDtoHttpResult.getData().getVersion().getUrl();
-                Log.e(TAG, newVersion + " " + oldVersion);
-                if (!newVersion.equals(oldVersion)) {
-                    updataDialog.show();
+                    @Override
+                    public void onNext(HttpResult<VersionDto> versionDtoHttpResult) {
+                        newVersion = versionDtoHttpResult.getData().getVersion().getVersion();
+                        versionmsg = versionDtoHttpResult.getData().getVersion().getLog();
+                        url = versionDtoHttpResult.getData().getVersion().getUrl();
+                        Log.e(TAG, newVersion + " " + oldVersion);
+                        if (!newVersion.equals(oldVersion)) {
+                            updataDialog.show();
 
-                    tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
-                    tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
-                    updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
-                    tvcode.setText(newVersion);
-                    tvmsg.setText(versionmsg);
-                    updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
-                    updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
-                        switch (view12.getId()) {
-                            case R.id.dialog_sure:
-                                Intent intent = new Intent();
-                                intent.setAction("android.intent.action.VIEW");
-                                Uri content_url = Uri.parse(url);
-                                intent.setData(content_url);
-                                startActivity(intent);
-                                break;
+                            tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
+                            tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                            updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
+                            tvcode.setText(newVersion);
+                            tvmsg.setText(versionmsg);
+                            updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
+                            updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
+                                switch (view12.getId()) {
+                                    case R.id.dialog_sure:
+                                        Intent intent = new Intent();
+                                        intent.setAction("android.intent.action.VIEW");
+                                        Uri content_url = Uri.parse(url);
+                                        intent.setData(content_url);
+                                        startActivity(intent);
+                                        break;
+                                }
+                                updataDialog.dismiss();
+                            });
                         }
-                        updataDialog.dismiss();
-                    });
-                }
-            }
-        }));
+                    }
+                };*/
+
+                HttpData.getInstance().HttpDataGetAndroidVersion(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(SettingActivity.this, "网络错误");
+                            return;
+                        }
+                        newVersion = data.getEntity().toString();
+                        Log.e(getLocalClassName(), oldVersion+" "+newVersion);
+
+                        String[] olds = oldVersion.split("\\.");
+                        String[] news = newVersion.split("\\.");
+                        Log.e(getLocalClassName(), olds[0]+" "+olds[1]+" "+olds[2]);
+                        Log.e(getLocalClassName(), news[0]+" "+news[1]+" "+news[2]);
+
+                        if (Integer.parseInt(olds[0]) >= Integer.parseInt(news[0]) && Integer.parseInt(olds[1]) >= Integer.parseInt(news[1]) && Integer.parseInt(olds[2]) >= Integer.parseInt(news[2])) {
+                           ToastUtils.show(SettingActivity.this, "已经是最新版本");
+                        } else {
+                            updataDialog.show();
+
+                            tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
+                            tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                            updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
+                            tvcode.setText(newVersion);
+                            tvmsg.setText(versionmsg);
+                            updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
+                            updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
+                                switch (view12.getId()) {
+                                    case R.id.dialog_sure:
+                                        Intent intent = new Intent();
+                                        intent.setAction("android.intent.action.VIEW");
+                                        Uri content_url = Uri.parse(Constant.APP_Download_URL);
+                                        intent.setData(content_url);
+                                        startActivity(intent);
+                                        break;
+                                }
+                                updataDialog.dismiss();
+                            });
+                        }
+
+                    }
+                })
+        );
 
         clean = (RelativeLayout) findViewById(R.id.clean);
         clean.setOnClickListener(view -> dialog());
@@ -277,6 +328,7 @@ public class SettingActivity extends AppCompatActivity {
     private String qiniuKey;
     private String qiniuToken;
     private String images = "";
+
     private void getQiniuToken(final String file) {
         HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
             @Override

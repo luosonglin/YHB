@@ -709,6 +709,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataGetAndroidVersion(Observer<HttpResult3> observer) {
+        Observable observable = service_live.getAndroidVersion();
+        setSubscribe(observable, observer);
+    }
+
     public void HttpDataActivate(Observer<HttpResult3> observer, UserAddActivationEntity userAddActivationEntity) {
         Observable observable = service_live.activate(userAddActivationEntity);
         setSubscribe(observable, observer);
@@ -728,6 +733,7 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.authorize(userAddAuthenEntity);
         setSubscribe(observable, observer);
     }
+
 
 
     /**

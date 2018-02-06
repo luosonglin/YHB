@@ -527,4 +527,12 @@ public interface APILiveService {
     Observable<HttpResult3> authorize(@Body UserAddAuthenEntity userAddAuthenEntity);
 
 
+    /**
+     * android版本号
+     */
+    //GET /v1/open/app/version/android 获取android版本号
+    @GET("/v1/open/app/version/android")
+    Observable<HttpResult3> getAndroidVersion();
+
+
 }

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.githang.statusbar.StatusBarCompat;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -26,10 +27,11 @@ import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment2;
 import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenu;
 import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenuItem;
-import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenuItemListener;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
 import com.snappydb.SnappydbException;
 
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements
         });
 
 //        //检查android最新版本
-//        getLatestAndroidVersion();
+        getLatestAndroidVersion();
 
 //        fakerAction();
     }
@@ -420,87 +422,66 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onFragmentInteraction(Uri uri) {
     }
-//
-//    public void getLatestAndroidVersion() {
-//        //初始化弹窗 布局 点击事件的id
-//        updataDialog = new UpdataDialog(this, R.layout.dialog_updataversion, new int[]{R.id.dialog_sure});
-//
-//        oldVersion = CustomUtils.getVersion(MainActivity.this) + "";
-//
-//        HttpData.getInstance().HttpDataGetLatestAndroidVersion(new Observer<HttpResult<VersionDto>>() {
-//            @Override
-//            public void onCompleted() {
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//                ToastUtils.show(MainActivity.this, e.getMessage());
-//            }
-//
-//            @Override
-//            public void onNext(HttpResult<VersionDto> versionDtoHttpResult) {
-//                newVersion = versionDtoHttpResult.getData().getVersion().getVersion();
-//                versionmsg = versionDtoHttpResult.getData().getVersion().getLog();
-//                url = versionDtoHttpResult.getData().getVersion().getUrl();
-//                Log.e(TAG, newVersion + " " + oldVersion);
-//                if (!newVersion.equals(oldVersion)) {
-//                    updataDialog.show();
-//
-//                    tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
-//                    tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
-//                    tvcode.setText(newVersion);
-//                    tvmsg.setText(versionmsg);
-//                    updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
-//                    updateDeletIv.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            updataDialog.dismiss();
-//                        }
-//                    });
-//                    updataDialog.setOnCenterItemClickListener(new UpdataDialog.OnCenterItemClickListener() {
-//                        @Override
-//                        public void OnCenterItemClick(UpdataDialog dialog, View view) {
-//
-//                            switch (view.getId()) {
-//                                case R.id.dialog_sure:
-//                                    //添加更新记录
-//                                    Map<String, Object> map = new HashMap<>();
-//                                    map.put("userId", Data.getUserId());
-//                                    map.put("oldVersionId", oldVersion);
-//                                    map.put("newVersionId", newVersion);
-//                                    HttpData.getInstance().HttpDataAddUpdataLog(new Observer<HttpResult>() {
-//                                        @Override
-//                                        public void onCompleted() {
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onError(Throwable e) {
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onNext(HttpResult httpResult) {
-//                                            if (httpResult.getCode() == 200) {
-//                                                /**调用系统自带的浏览器去下载最新apk*/
-//                                                Intent intent = new Intent();
-//                                                intent.setAction("android.intent.action.VIEW");
-//                                                Uri content_url = Uri.parse(url);
-//                                                intent.setData(content_url);
-//                                                startActivity(intent);
-//                                            }
-//                                        }
-//                                    }, map);
-//                                    break;
-//                            }
-//                            updataDialog.dismiss();
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//    }
+
+    public void getLatestAndroidVersion() {
+        //初始化弹窗 布局 点击事件的id
+        updataDialog = new UpdataDialog(this, R.layout.dialog_updataversion, new int[]{R.id.dialog_sure});
+
+        oldVersion = CustomUtils.getVersion(MainActivity.this) + "";
+
+
+        HttpData.getInstance().HttpDataGetAndroidVersion(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult3 data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(MainActivity.this, "网络错误");
+                    return;
+                }
+                newVersion = data.getEntity().toString();
+                Log.e(getLocalClassName(), oldVersion+" "+newVersion);
+
+                String[] olds = oldVersion.split("\\.");
+                String[] news = newVersion.split("\\.");
+                Log.e(getLocalClassName(), olds[0]+" "+olds[1]+" "+olds[2]);
+                Log.e(getLocalClassName(), news[0]+" "+news[1]+" "+news[2]);
+
+                if (Integer.parseInt(olds[0]) >= Integer.parseInt(news[0]) && Integer.parseInt(olds[1]) >= Integer.parseInt(news[1]) && Integer.parseInt(olds[2]) >= Integer.parseInt(news[2])) {
+                    Log.e(MainActivity.this.getLocalClassName(), "已经是最新版本");
+                } else {
+                    updataDialog.show();
+
+                    tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
+                    tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                    updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
+                    tvcode.setText(newVersion);
+                    tvmsg.setText(versionmsg);
+                    updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
+                    updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
+                        switch (view12.getId()) {
+                            case R.id.dialog_sure:
+                                Intent intent = new Intent();
+                                intent.setAction("android.intent.action.VIEW");
+                                Uri content_url = Uri.parse(Constant.APP_Download_URL);
+                                intent.setData(content_url);
+                                startActivity(intent);
+                                break;
+                        }
+                        updataDialog.dismiss();
+                    });
+                }
+            }
+        });
+    }
 
 //    private void fakerAction() {
 //        new Thread(new Runnable() {

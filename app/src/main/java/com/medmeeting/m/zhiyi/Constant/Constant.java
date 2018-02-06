@@ -21,6 +21,10 @@ public class Constant {
     public static final String API_SERVER_LIVE_TEST = "http://106.14.0.72:8088";
     public static final String API_SERVER_LIVE = "http://api.medmeeting.com";
 
+    //APP下载地址
+    public static final String APP_Download_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.medmeeting.m.zhiyi";
+
+
     //前端web
     public static final String API_SERVER_microWeb = "http://mobile.medmeeting.com/";
 
