@@ -174,4 +174,17 @@ public class Data {
     public static void setPurchaseEvent(PurchaseEvent purchaseEvent) {
         Data.purchaseEvent = purchaseEvent;
     }
+
+    /**
+     * 手机号
+     */
+    public static String phone;
+
+    public static String getPhone() {
+        return phone;
+    }
+
+    public static void setPhone(String phone) {
+        Data.phone = phone;
+    }
 }

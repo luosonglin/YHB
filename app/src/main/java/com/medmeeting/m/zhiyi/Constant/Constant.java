@@ -21,16 +21,16 @@ public class Constant {
     public static final String API_SERVER_LIVE_TEST = "http://106.14.0.72:8088";
     public static final String API_SERVER_LIVE = "http://api.medmeeting.com";
 
+    //前端web
+    public static final String API_SERVER_microWeb = "http://mobile.medmeeting.com/";
+
+
     public static final String FIRST_OPEN = "first_open";
 
     //会议
-    public static final String URL_microWebsiteDetail = "http://mobile.medmeeting.com/?#/mw/"; //微站
-    public static final String URL_Meeting_Detail = "http://mobile.medmeeting.com/?#/wv/meeting/detail/";
-    public static final String URL_Meeting_Enrol = "http://mobile.medmeeting.com/?#/m/reg/sign/";
-
-//    public static final String URL_microWebsiteDetail = "http://192.168.199.147/#/mw/";
-//    public static final String URL_Meeting_Detail = "http://192.168.199.147/#/wv/meeting/detail/";
-//    public static final String URL_Meeting_Enrol = "http://192.168.199.147/#/m/reg/sign/";
+    public static final String URL_microWebsiteDetail = API_SERVER_microWeb + "?#/mw/"; //微站
+    public static final String URL_Meeting_Detail = API_SERVER_microWeb +  "?#/wv/meeting/detail/";
+    public static final String URL_Meeting_Enrol = API_SERVER_microWeb + "?#/m/reg/sign/";
 
     //会议订单页：
     public static final String URL_Meeting_Order = "http://mobile.medmeeting.com/#/wv/meeting/order";

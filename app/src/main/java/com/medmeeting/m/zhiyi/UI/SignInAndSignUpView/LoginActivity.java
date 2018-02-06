@@ -27,7 +27,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -671,6 +670,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             e.printStackTrace();
                         }
 
+                        Data.setPhone(mPhone);
+
                         //极光推送 别名设置
                         JPushInterface.setAlias(LoginActivity.this, 1, mPhone);
 
@@ -713,7 +714,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
                 }, map);
 
-
             } else {
                 map.put("pwd", mPassword);
                 HttpData.getInstance().HttpDataLoginByPwd(new Observer<HttpResult3<Object, AccessToken>>() {
@@ -741,6 +741,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
+
+                        Data.setPhone(mPhone);
 
                         //极光推送 别名设置
                         JPushInterface.setAlias(LoginActivity.this, 1, mPhone);

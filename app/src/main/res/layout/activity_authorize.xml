@@ -295,7 +295,7 @@
             android:background="@color/white"
             android:backgroundTint="@color/grey2"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -439,6 +439,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -446,10 +447,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="医院"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -462,20 +463,21 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="16dp"
                         android:background="@drawable/edittext_delete_line"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:gravity="center_vertical"
                         android:hint="请输入医院"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/grey1" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -483,10 +485,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="科室"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -501,10 +503,10 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请选择科室"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
@@ -519,10 +521,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="职务"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -537,16 +539,17 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请选择职务"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/grey1" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -554,10 +557,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="职称"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -572,10 +575,10 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请选择职称"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
@@ -591,6 +594,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -598,10 +602,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="单位"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -616,10 +620,10 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请输入单位"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
@@ -634,10 +638,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="部门"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -652,16 +656,17 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请输入部门"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/grey1" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -669,10 +674,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="职务"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -687,10 +692,10 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请输入职务"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
@@ -706,6 +711,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -713,10 +719,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="学校"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -731,10 +737,10 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请输入学校"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
@@ -749,10 +755,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="专业"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -767,8 +773,8 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请选择专业"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
                 </LinearLayout>
@@ -777,6 +783,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/grey1" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -784,10 +791,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="学历"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -802,16 +809,17 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请选择学历"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/grey1" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -819,10 +827,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="入学年份"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -837,10 +845,10 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请选择入学年份"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
@@ -857,6 +865,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -864,10 +873,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="单位"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -882,8 +891,8 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请输入单位"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
                 </LinearLayout>
@@ -892,6 +901,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/grey1" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
@@ -899,10 +909,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="部门"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -917,10 +927,10 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请输入部门"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="14dp"/>
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <View
@@ -935,10 +945,10 @@
 
                     <TextView
                         android:layout_width="60dp"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="10dp"
+                        android:gravity="center"
                         android:text="职务"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -953,8 +963,8 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="请输入职务"
-                        android:singleLine="true"
                         android:maxLines="1"
+                        android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
                 </LinearLayout>
@@ -1003,7 +1013,7 @@
             android:background="@color/white"
             android:backgroundTint="@color/grey2"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1079,19 +1089,32 @@
                         android:textColor="@color/black"
                         android:textSize="14dp" />
 
-                    <TextView
-                        android:id="@+id/material"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="12dp"
-                        android:layout_marginRight="16dp"
-                        android:gravity="center_vertical"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/material"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="11"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="12dp"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="14dp" />
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:layout_weight="1"
+                            android:scaleType="center"
+                            android:src="@mipmap/live_turn_left" />
+                    </LinearLayout>
                 </LinearLayout>
 
 
@@ -1125,6 +1148,7 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/work_phone1"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:layout_gravity="center_vertical"
@@ -1132,6 +1156,7 @@
                             android:src="@mipmap/authorize_image" />
 
                         <ImageView
+                            android:id="@+id/work_phone2"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:layout_gravity="center_vertical"

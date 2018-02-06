@@ -321,14 +321,16 @@
             android:label="@string/title_activity_activate"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-            <!--android:windowSoftInputMode="adjustResize" />-->
+        <!-- android:windowSoftInputMode="adjustResize" /> -->
         <activity
             android:name=".UI.IdentityView.ActivatedActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.IdentityView.AuthorizeActivity"
+        <activity
+            android:name=".UI.IdentityView.AuthorizeActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity android:name=".UI.UserInfoView.UpdateUserInfoActivity"></activity>
+        <activity android:name=".UI.UserInfoView.UpdateUserInfoActivity" />
+        <activity android:name=".UI.IdentityView.AuthorizedActivity"></activity>
     </application>
 
 </manifest>
