@@ -88,9 +88,9 @@ public class SearchMeetingActivity extends AppCompatActivity {
     private void searchMeeting(String word) {
         Map<String, Object> map = new HashMap<>();
         map.put("pageNum", 1);
-        map.put("pageSize", 100);
+        map.put("pageSize", 1000);
         map.put("pojo", word);
-        HttpData.getInstance().HttpDataSearchMeeting(new Observer<HttpResult3<Event, Object>>() {
+        HttpData.getInstance().HttpDataGetAllEventList(new Observer<HttpResult3<Event, Object>>() {
             @Override
             public void onCompleted() {
 
@@ -114,7 +114,6 @@ public class SearchMeetingActivity extends AppCompatActivity {
                 rvMeetingList.setVisibility(View.VISIBLE);
 
                 mMeetingAdapter.setNewData(data.getData());
-
                 mMeetingAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent intent = new Intent(SearchMeetingActivity.this, MeetingDetailActivity.class);
                     Bundle bundle = new Bundle();
@@ -127,6 +126,7 @@ public class SearchMeetingActivity extends AppCompatActivity {
                             + " 欢迎参加： " + data.getData().get(position).getTitle());
                     intent.putExtras(bundle);
                     startActivity(intent);
+
                 });
             }
         }, map);
