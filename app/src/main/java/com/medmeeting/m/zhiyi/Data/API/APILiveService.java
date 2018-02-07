@@ -42,6 +42,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddActivationEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAuthenRecord;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
@@ -525,6 +526,10 @@ public interface APILiveService {
     //POST /v1/users/authentication/add 用户认证-提交认证信息
     @POST("/v1/users/authentication/add")
     Observable<HttpResult3> authorize(@Body UserAddAuthenEntity userAddAuthenEntity);
+
+    //GET /v1/users/authentication/last 用户认证-获取上一次认证记录信息
+    @GET("/v1/users/authentication/last")
+    Observable<HttpResult3<Object, UserAuthenRecord>> getLastAuthentizeStatus();
 
 
     /**

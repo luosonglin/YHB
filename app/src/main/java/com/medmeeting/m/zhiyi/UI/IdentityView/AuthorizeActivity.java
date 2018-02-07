@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.IdentityView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,6 +11,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,22 +22,30 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IdentityTypeAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.qiniu.android.storage.Configuration;
+import com.qiniu.android.storage.UploadManager;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.iwf.photopicker.PhotoPicker;
 import rx.Observer;
 
 /**
@@ -108,9 +118,20 @@ public class AuthorizeActivity extends AppCompatActivity {
     @BindView(R.id.position5)
     EditText position5;
 
+
+    @BindView(R.id.material)
+    TextView material;
+    @BindView(R.id.work_photo1)
+    ImageView workPhoto1;
+    @BindView(R.id.work_photo2)
+    ImageView workPhoto2;
+
     private int type;
 
     private UserAddAuthenEntity userAddAuthenEntity = new UserAddAuthenEntity();
+    private String workPhoto;
+    private String identityPhoto;
+    private int photoType = 0; //0为上传的是工作证，1为身份证
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +162,7 @@ public class AuthorizeActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.rights, R.id.identity_name, R.id.next1, R.id.next21, R.id.next22, R.id.material, R.id.work_phone1, R.id.work_phone2, R.id.next31, R.id.next32})
+    @OnClick({R.id.rights, R.id.identity_name, R.id.next1, R.id.next21, R.id.next22, R.id.material, R.id.work_photo1, R.id.work_photo2, R.id.next31, R.id.next32})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rights:
@@ -241,11 +262,23 @@ public class AuthorizeActivity extends AppCompatActivity {
             case R.id.material:
                 chooseWorkPhotoType(type);
                 break;
-            case R.id.work_phone1:
-                userAddAuthenEntity.setWorkPhoto("");
+            case R.id.work_photo1:
+                photoType = 0;  //识别图片类型
+                PhotoPicker.builder()
+                        .setShowCamera(true)
+                        .setPreviewEnabled(false)
+                        .setPhotoCount(1)
+                        .setGridColumnCount(3)
+                        .start(AuthorizeActivity.this);
                 break;
-            case R.id.work_phone2:
-                userAddAuthenEntity.setWorkPhoto("");
+            case R.id.work_photo2:
+                photoType = 1;  //识别图片类型
+                PhotoPicker.builder()
+                        .setShowCamera(true)
+                        .setPreviewEnabled(false)
+                        .setPhotoCount(1)
+                        .setGridColumnCount(3)
+                        .start(AuthorizeActivity.this);
                 break;
             case R.id.next31:
                 userAddAuthenEntity.setEmail(email.getText().toString().trim());
@@ -274,6 +307,8 @@ public class AuthorizeActivity extends AppCompatActivity {
                     userAddAuthenEntity.setPostion(position5.getText().toString().trim());
                 }
 
+                userAddAuthenEntity.setWorkPhoto(workPhoto);
+                userAddAuthenEntity.setIdentityPhoto(identityPhoto);
 
                 HttpData.getInstance().HttpDataAuthorize(new Observer<HttpResult3>() {
                     @Override
@@ -481,25 +516,46 @@ public class AuthorizeActivity extends AppCompatActivity {
         }
 
         checkBox1.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) userAddAuthenEntity.setWorkPhotoType(checkBox1.getText().toString().trim());
+            if (b) {
+                material.setText(checkBox1.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox1.getText().toString().trim());
+            }
         });
         checkBox2.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) userAddAuthenEntity.setWorkPhotoType(checkBox2.getText().toString().trim());
+            if (b) {
+                material.setText(checkBox2.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox2.getText().toString().trim());
+            }
         });
         checkBox3.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) userAddAuthenEntity.setWorkPhotoType(checkBox3.getText().toString().trim());
+            if (b) {
+                material.setText(checkBox3.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox3.getText().toString().trim());
+            }
         });
         checkBox4.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) userAddAuthenEntity.setWorkPhotoType(checkBox4.getText().toString().trim());
+            if (b) {
+                material.setText(checkBox4.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox4.getText().toString().trim());
+            }
         });
         checkBox5.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) userAddAuthenEntity.setWorkPhotoType(checkBox5.getText().toString().trim());
+            if (b) {
+                material.setText(checkBox5.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox5.getText().toString().trim());
+            }
         });
         checkBox6.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) userAddAuthenEntity.setWorkPhotoType(checkBox6.getText().toString().trim());
+            if (b) {
+                material.setText(checkBox6.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox6.getText().toString().trim());
+            }
         });
         checkBox7.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) userAddAuthenEntity.setWorkPhotoType(checkBox7.getText().toString().trim());
+            if (b) {
+                material.setText(checkBox7.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox7.getText().toString().trim());
+            }
         });
 
         // 创建PopupWindow对象，指定宽度和高度
@@ -522,6 +578,106 @@ public class AuthorizeActivity extends AppCompatActivity {
 
         ImageView cancelIv = (ImageView) popupView.findViewById(R.id.cancel);
         cancelIv.setOnClickListener(view -> window.dismiss());
+    }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<String> photos = null;
+        if (data != null) {
+            photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+            for (String i : photos) {
+                Log.e(getLocalClassName(), i);
+            }
+            ToastUtils.show(AuthorizeActivity.this, "正在上传...");
+            getQiniuToken(photos.get(0));
+
+            if (photoType == 0) {
+                Glide.with(AuthorizeActivity.this)
+                        .load(photos.get(0))
+                        .crossFade()
+                        .into(workPhoto1);
+            } else if (photoType == 1) {
+                Glide.with(AuthorizeActivity.this)
+                        .load(photos.get(0))
+                        .crossFade()
+                        .into(workPhoto2);
+            }
+        }
+    }
+
+    private String qiniuKey;
+    private String qiniuToken;
+
+    private void getQiniuToken(final String file) {
+        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
+            @Override
+            public void onCompleted() {
+                Log.e(getLocalClassName(), "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(getLocalClassName(), "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onNext(QiniuTokenDto q) {
+                if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
+                    return;
+                }
+                qiniuToken = q.getData().getUploadToken();
+
+                // 设置图片名字
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                qiniuKey = "android_live_" + sdf.format(new Date());
+
+                int i = new Random().nextInt(1000) + 1;
+
+                Log.e(getLocalClassName(), "File对象、或 文件路径、或 字节数组: " + file);
+                Log.e(getLocalClassName(), "指定七牛服务上的文件名，或 null: " + qiniuKey + i);
+                Log.e(getLocalClassName(), "从服务端SDK获取: " + qiniuToken);
+                Log.e(getLocalClassName(), "http://ono5ms5i0.bkt.clouddn.com/" + qiniuKey + i);
+
+                upload(file, qiniuKey + i, qiniuToken);
+            }
+        }, "android");
+    }
+
+    private Configuration config = new Configuration.Builder()
+            .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
+            .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
+            .connectTimeout(10) // 链接超时。默认10秒
+            .responseTimeout(60) // 服务器响应超时。默认60秒
+//            .zone(Zone.zone1) // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
+            .build();
+
+    private void upload(final String data, final String key, final String token) {
+        new Thread() {
+            public void run() {
+                // 重用uploadManager。一般地，只需要创建一个uploadManager对象
+                UploadManager uploadManager = new UploadManager(config);
+                uploadManager.put(data, key, token,
+                        (key1, info, res) -> {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                Log.i("qiniu", "Upload Success");
+
+//                                    ToastUtils.show(LiveBuildProgramActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
+                            } else {
+                                Log.i("qiniu", "Upload Fail");
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                            }
+                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
+
+                            if (photoType == 0) {
+                                workPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
+                            } else if (photoType == 1) {
+                                identityPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
+                            }
+                        }, null);
+            }
+        }.start();
     }
 }

@@ -28,9 +28,11 @@ import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAuthenRecord;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizeActivity;
+import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizedActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.UI.UserInfoView.UpdateUserInfoActivity;
@@ -234,17 +236,17 @@ public class MineFragment extends Fragment {
                             specialistIv.setVisibility(View.GONE);
                             break;
                     }
-//                    switch (data.getEntity().getTocPortStatus()) {
-//                        case "wait_activation":
-//                            activate.setText("待激活");
-//                            break;
-//                        case "done_activation":
-//                            activate.setText("已激活");
-//                            break;
-//                        case "done_authen":
-//                            activate.setText("已认证");
-//                            break;
-//                    }
+                    switch (data.getEntity().getTocPortStatus()) {
+                        case "wait_activation":
+                            activate.setText("待激活");
+                            break;
+                        case "done_activation":
+                            activate.setText("已激活");
+                            break;
+                        case "done_authen":
+                            activate.setText("已认证");
+                            break;
+                    }
 
                     showProgress(false);
                 }
@@ -378,11 +380,40 @@ public class MineFragment extends Fragment {
                         startActivity(intent);
                         break;
                     case "已激活":     //跳认证页
-                        intent = new Intent(getActivity(), AuthorizeActivity.class);
-                        startActivity(intent);
+                        HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
+                                if (!data.getStatus().equals("success")) {
+                                    ToastUtils.show(getActivity(), data.getMsg());
+                                    return;
+                                }
+                                switch (data.getEntity().getStatus()) {     //认证状态（A:已认证，B:待认证,X:未通过）
+                                    case "A":
+                                        break;
+                                    case "B":
+                                        Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                        startActivity(intent);
+                                        break;
+                                    case "X":
+                                        Intent intent3 = new Intent(getActivity(), AuthorizedActivity.class);
+                                        startActivity(intent3);
+                                        break;
+                                }
+                            }
+                        });
                         break;
                     case "已认证":     //跳认证状态页
-                        intent = new Intent(getActivity(), AuthorizeActivity.class);
+                        intent = new Intent(getActivity(), AuthorizedActivity.class);
                         startActivity(intent);
                         break;
                 }

@@ -60,7 +60,9 @@
             android:layout_height="40dp"
             android:layout_marginLeft="40dp"
             android:src="@mipmap/video_bg"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            />
 
         <CheckBox
             android:id="@+id/checkbox2"

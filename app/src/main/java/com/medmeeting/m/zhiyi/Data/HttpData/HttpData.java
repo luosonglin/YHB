@@ -59,6 +59,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.TallageDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UnifiedOrderResult;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddActivationEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAuthenRecord;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
@@ -734,6 +735,10 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataGetLastAuthentizeStatus(Observer<HttpResult3<Object, UserAuthenRecord>> observer) {
+        Observable observable = service_live.getLastAuthentizeStatus();
+        setSubscribe(observable, observer);
+    }
 
 
     /**
