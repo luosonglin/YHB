@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView.live;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +25,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.fragment.BottomPanelFragment2;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.gles.FBO;
@@ -51,6 +55,14 @@ import com.qiniu.pili.droid.streaming.StreamingState;
 import com.qiniu.pili.droid.streaming.StreamingStateChangedListener;
 import com.qiniu.pili.droid.streaming.SurfaceTextureCallback;
 import com.qiniu.pili.droid.streaming.av.common.PLFourCC;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import org.json.JSONObject;
 
@@ -62,6 +74,7 @@ import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.ChatRoomInfo;
@@ -216,6 +229,13 @@ public class StreamingBaseActivity extends Activity implements
     private ImageView btnEncodingOrientationSwitcher;
     private ImageView btnCaptureFrame;
 
+    /**
+     * 分享
+     */
+    private ImageView btnShare;
+    private UMShareListener mShareListener;
+    private ShareAction mShareAction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -290,7 +310,8 @@ public class StreamingBaseActivity extends Activity implements
                 .setCameraPrvSizeLevel(CameraStreamingSetting.PREVIEW_SIZE_LEVEL.MEDIUM)
                 .setCameraPrvSizeRatio(CameraStreamingSetting.PREVIEW_SIZE_RATIO.RATIO_16_9)
                 .setBuiltInFaceBeautyEnabled(true)
-                .setFaceBeautySetting(new CameraStreamingSetting.FaceBeautySetting(1.0f, 1.0f, 0.8f))
+                // FaceBeautySetting 中的参数依次为：beautyLevel，whiten，redden，即磨皮程度、美白程度以及红润程度，取值范围为[0.0f, 1.0f]
+                .setFaceBeautySetting(new CameraStreamingSetting.FaceBeautySetting(0.1f, 0.1f, 0.4f))
                 .setVideoFilter(CameraStreamingSetting.VIDEO_FILTER_TYPE.VIDEO_FILTER_BEAUTY);
 
         mIsNeedFB = true;
@@ -346,8 +367,46 @@ public class StreamingBaseActivity extends Activity implements
             LiveKit.sendMessage(content);
         });
 
+
         Log.e(TAG, "programId" + programId);
         joinChatRoom(programId);
+
+
+        //分享
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        });
+        btnShare = (ImageView) bottomPanel.getView().findViewById(R.id.share_btn);
+        btnShare.setOnClickListener(view -> {
+            ShareBoardConfig config = new ShareBoardConfig();
+            config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+            mShareAction.open(config);
+        });
+
+        initShare(programId,
+                getIntent().getExtras().getString("title"),
+                getIntent().getExtras().getString("photo"),
+                getIntent().getExtras().getString("description"));
+
     }
 
     @Override
@@ -391,6 +450,8 @@ public class StreamingBaseActivity extends Activity implements
 ////                Toast.makeText(StreamingBaseActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
 //            }
 //        });
+
+        mShareAction.close();
     }
 
     protected void setShutterButtonPressed(final boolean pressed) {
@@ -1040,4 +1101,42 @@ public class StreamingBaseActivity extends Activity implements
     private Handler mHandler2;
 
     int sum = 0;
+
+
+    /**
+     * 分享
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //qq微信新浪授权防杀死
+        UMShareAPI.get(this).onSaveInstanceState(outState);
+    }
+
+    public void initShare(final int programId, final String title, final String photo, final String description) {
+
+        //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{
+                    Manifest.permission.WRITE_APN_SETTINGS};
+            ActivityCompat.requestPermissions(this, mPermissionList, 123);
+        }
+
+        mShareListener = new CustomShareListener(this);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(StreamingBaseActivity.this)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
+
+                    UMWeb web = new UMWeb(Constant.Share_Live + programId); //http://wap.medmeeting.com/#!/live/room/show/
+                    web.setTitle(title);//标题
+                    web.setThumb(new UMImage(StreamingBaseActivity.this, photo));  //缩略图
+                    web.setDescription(description);//描述
+                    new ShareAction(StreamingBaseActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
+                });
+    }
 }

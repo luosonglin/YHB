@@ -63,11 +63,16 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
 
     private static final String TAG = LiveProgramDetailAuthorActivity.class.getSimpleName();
     private Toolbar toolbar;
-    private TextView titleTv, name, title, programIdTv;
+    private TextView titleTv, name, title2, programIdTv;
     private ImageView backgroundIv, userPic;
     private Integer roomId = 0;
     private Integer programId;
     private TextView detailTv;
+
+    //分享用
+    private String title;
+    private String photo;
+    private String description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +85,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         backgroundIv = (ImageView) findViewById(R.id.img);
         userPic = (ImageView) findViewById(R.id.live_user_pic);
         name = (TextView) findViewById(R.id.name);
-        title = (TextView) findViewById(R.id.author_title);
+        title2 = (TextView) findViewById(R.id.author_title);
         detailTv = (TextView) findViewById(R.id.detail);
 
         toolBar();
@@ -191,7 +196,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 titleTv.setText(data.getEntity().getTitle());
                 programIdTv.setText("节目No." + data.getEntity().getId());
                 name.setText(data.getEntity().getAuthorName());
-                title.setText(data.getEntity().getAuthorTitle());
+                title2.setText(data.getEntity().getAuthorTitle());
                 detailTv.setText(data.getEntity().getDes());
                 Glide.with(LiveProgramDetailAuthorActivity.this)
                         .load(data.getEntity().getCoverPhoto())
@@ -213,6 +218,10 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                         data.getEntity().getTitle(),
                         data.getEntity().getCoverPhoto(),
                         data.getEntity().getDes());
+                title = data.getEntity().getTitle();
+                photo = data.getEntity().getCoverPhoto();
+                description = data.getEntity().getDes();
+
             }
         }, programId);
 
@@ -248,7 +257,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                     e.printStackTrace();
                 } finally {
                     Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
-                    startStreamingActivity(intent, data.getEntity().getPushUrl(), programId);
+                    startStreamingActivity(intent, data.getEntity().getPushUrl(), programId, title, photo, description);
                 }
             }
         }, programId));
@@ -411,7 +420,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 
-    private void startStreamingActivity(final Intent intent, String pushUrl1, final Integer programId) {
+    private void startStreamingActivity(final Intent intent, String pushUrl1, final Integer programId, final String title, final String photo, final String description) {
         if (!isPermissionOK()) {
             return;
         }
@@ -457,6 +466,10 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             }
             intent.putExtra(Config.EXTRA_KEY_PUB_URL, publishUrl);
             intent.putExtra("programId", programId);
+            intent.putExtra("title", title);
+            intent.putExtra("photo", photo);
+            intent.putExtra("description", description);
+
             startActivity(intent);
         }).start();
     }
