@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -191,6 +192,8 @@ public class MineFragment extends Fragment {
                 @Override
                 public void onError(Throwable e) {
                     ToastUtils.show(getActivity(), e.getMessage());
+                    Log.e(getActivity().getLocalClassName(), e.getMessage());
+                    showProgress(false);
                 }
 
                 @Override
@@ -231,19 +234,17 @@ public class MineFragment extends Fragment {
                             specialistIv.setVisibility(View.GONE);
                             break;
                     }
-                    switch (data.getEntity().getTocPortStatus()) {
-                        case "wait_activation":
-                            activate.setText("待激活");
-                            break;
-                        case "done_activation":
-                            activate.setText("已激活");
-                            break;
-                        case "done_authen":
-                            activate.setText("已认证");
-                            break;
-                    }
-
-
+//                    switch (data.getEntity().getTocPortStatus()) {
+//                        case "wait_activation":
+//                            activate.setText("待激活");
+//                            break;
+//                        case "done_activation":
+//                            activate.setText("已激活");
+//                            break;
+//                        case "done_authen":
+//                            activate.setText("已认证");
+//                            break;
+//                    }
 
                     showProgress(false);
                 }
