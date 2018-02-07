@@ -6,7 +6,6 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -47,7 +46,7 @@ public class InputPanel extends LinearLayout {
         emojiBoard = (EmojiBoard) findViewById(R.id.input_emoji_board);
 
         //去掉emoji
-        emojiBtn.setVisibility(GONE);
+        emojiBtn.setVisibility(VISIBLE);
 
         textEditor.setOnFocusChangeListener((v, hasFocus) -> {
             inputBar.setSelected(hasFocus);
