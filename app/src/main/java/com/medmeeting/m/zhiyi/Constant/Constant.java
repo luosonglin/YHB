@@ -23,6 +23,7 @@ public class Constant {
 
     //APP下载地址
     public static final String APP_Download_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.medmeeting.m.zhiyi";
+    public static final String APP_Download_URL2 = "http://ovjdaa6w0.bkt.clouddn.com/yihuibao_release_3-2.1.7-2018-02-07.apk";
 
 
     //前端web

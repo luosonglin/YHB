@@ -204,7 +204,8 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(NewsActivity.this, e.getMessage());
-                finish();
+                Log.e(getLocalClassName(), e.getMessage());
+//                finish();
             }
 
             @Override

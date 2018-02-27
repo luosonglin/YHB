@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="6dp"
-                        android:text="中新网"
+                        android:text=""
                         android:textColor="@color/grey"
                         android:textSize="10sp" />
                 </LinearLayout>

@@ -471,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements
                             case R.id.dialog_sure:
                                 Intent intent = new Intent();
                                 intent.setAction("android.intent.action.VIEW");
-                                Uri content_url = Uri.parse(Constant.APP_Download_URL);
+                                Uri content_url = Uri.parse(Constant.APP_Download_URL2);
                                 intent.setData(content_url);
                                 startActivity(intent);
                                 break;
@@ -483,49 +483,7 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-//    private void fakerAction() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.e(TAG, RxDeviceUtils.getUniqueSerialNumber() + "");
-//
-//                Map<String, Object> map = new HashMap<>();
-//                map.put("userId", Data.getUserId());
-//                map.put("uniqueSerialNumber", RxDeviceUtils.getUniqueSerialNumber() + "");
-//                map.put("metrics", RxDeviceUtils.getScreenHeights(MainActivity.this) + " * " + RxDeviceUtils.getScreenWidths(MainActivity.this));
-//                map.put("imei", RxDeviceUtils.getIMEI(MainActivity.this));
-//                if (RxDeviceUtils.getIMSI(MainActivity.this) != null)
-//                    map.put("imsi", RxDeviceUtils.getIMSI(MainActivity.this));
-//                map.put("macAddress", RxDeviceUtils.getMacAddress(MainActivity.this));
-//                map.put("mccMnc", RxDeviceUtils.getNetworkOperator(MainActivity.this));
-//                map.put("simOperatorName", RxDeviceUtils.getSimOperatorName(MainActivity.this));
-//                if (RootUtils.isRootSystem()) {
-//                    map.put("isRoot", 1);
-//                } else {
-//                    map.put("isRoot", 0);
-//                }
-//                HttpData.getInstance().HttpDataAddNewPhoneInfo(new Observer<HttpResult>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Log.e(TAG, "HttpDataAddNewPhoneInfo onError: " + e.getMessage()
-//                                + "\n" + e.getCause()
-//                                + "\n" + e.getLocalizedMessage()
-//                                + "\n" + e.getStackTrace());
-//                    }
-//
-//                    @Override
-//                    public void onNext(HttpResult httpResult) {
-//
-//                    }
-//                }, map);
-//            }
-//        }).start();
-//    }
+
 
     public static void trunMeetingView() {
         tabMerchandise.performClick();
