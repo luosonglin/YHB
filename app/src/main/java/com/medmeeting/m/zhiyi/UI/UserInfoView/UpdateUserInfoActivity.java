@@ -1,24 +1,44 @@
 package com.medmeeting.m.zhiyi.UI.UserInfoView;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
+import com.medmeeting.m.zhiyi.Util.StringUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.qiniu.android.storage.Configuration;
+import com.qiniu.android.storage.UploadManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.iwf.photopicker.PhotoPicker;
 import rx.Observer;
 
 public class UpdateUserInfoActivity extends AppCompatActivity {
@@ -60,7 +80,14 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     EditText email;
     @BindView(R.id.activate_save)
     TextView activateSave;
+    @BindView(R.id.code1)
+    LinearLayout code1;
+    @BindView(R.id.code2)
+    LinearLayout code2;
+    @BindView(R.id.code3)
+    LinearLayout code3;
 
+    private UserGetInfoEntity userGetInfoEntity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +124,8 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                     return;
                 }
 
+                userGetInfoEntity = data.getEntity();
+
                 Glide.with(UpdateUserInfoActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()
@@ -107,6 +136,39 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 nickname.setText(data.getEntity().getNickName());
                 des.setText(data.getEntity().getDes());
                 city.setText(data.getEntity().getCity());
+
+                /*switch (data.getEntity().getMedical()) {
+                    case "ASSOCIATION": //医疗协会
+                        code1.setVisibility(View.GONE);
+                        code2.setVisibility(View.VISIBLE);
+                        code3.setVisibility(View.GONE);
+                        break;
+                    case "MEDICAL_STAFF": //医护人员
+                        code1.setVisibility(View.VISIBLE);
+                        code2.setVisibility(View.GONE);
+                        code3.setVisibility(View.GONE);
+                        break;
+                    case "MEDICAL_COMPANY": //药械企业
+                        code1.setVisibility(View.VISIBLE);
+                        code2.setVisibility(View.GONE);
+                        code3.setVisibility(View.GONE);
+                        break;
+                    case "MEDICO": //医学生
+                        code1.setVisibility(View.GONE);
+                        code2.setVisibility(View.GONE);
+                        code3.setVisibility(View.VISIBLE);
+                        break;
+                    case "EDUCATION_SCIENCE": //医药教科研人员
+                        code1.setVisibility(View.GONE);
+                        code2.setVisibility(View.VISIBLE);
+                        code3.setVisibility(View.GONE);
+                        break;
+                    case "OTHER": //其他人员
+                        code1.setVisibility(View.GONE);
+                        code2.setVisibility(View.GONE);
+                        code3.setVisibility(View.GONE);
+                        break;
+                }*/
                 hospital.setText(data.getEntity().getCompany());
                 department.setText(data.getEntity().getDepartment());
                 title.setText(data.getEntity().getTitle());
@@ -125,9 +187,17 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.nickname, R.id.des, R.id.city, R.id.hospital, R.id.department, R.id.title, R.id.position, R.id.education, R.id.year, R.id.sex, R.id.activate_save})
+    @OnClick({R.id.avatar, R.id.nickname, R.id.des, R.id.city, R.id.hospital, R.id.department, R.id.title, R.id.position, R.id.education, R.id.year, R.id.sex, R.id.activate_save})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.avatar:
+                PhotoPicker.builder()
+                        .setShowCamera(true)
+                        .setPreviewEnabled(false)
+                        .setPhotoCount(1)
+                        .setGridColumnCount(3)
+                        .start(UpdateUserInfoActivity.this);
+                break;
             case R.id.nickname:
                 break;
             case R.id.des:
@@ -139,8 +209,10 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             case R.id.department:
                 break;
             case R.id.title:
+                showTitlePopupwindow();
                 break;
             case R.id.position:
+                showPositionPopupwindow();
                 break;
             case R.id.education:
                 break;
@@ -152,4 +224,238 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    /**
+     * 以下为头像上传
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<String> photos = null;
+        if (data != null) {
+            photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+            for (String i : photos) {
+                Log.e(getLocalClassName(), i);
+            }
+            ToastUtils.show(UpdateUserInfoActivity.this, "正在上传封面图片...");
+            getQiniuToken(photos.get(0));
+        }
+    }
+
+    private String qiniuKey;
+    private String qiniuToken;
+
+    private void getQiniuToken(final String file) {
+        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
+            @Override
+            public void onCompleted() {
+                Log.e(getLocalClassName(), "onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(UpdateUserInfoActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(QiniuTokenDto q) {
+                if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
+                    return;
+                }
+                qiniuToken = q.getData().getUploadToken();
+
+                // 设置图片名字
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                qiniuKey = "android_live_" + sdf.format(new Date());
+
+                int i = new Random().nextInt(1000) + 1;
+
+                upload(file, qiniuKey + i, qiniuToken);
+            }
+        }, "android");
+    }
+
+    private Configuration config = new Configuration.Builder()
+            .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
+            .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
+            .connectTimeout(10) // 链接超时。默认10秒
+            .responseTimeout(60) // 服务器响应超时。默认60秒
+//            .zone(Zone.zone1) // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
+            .build();
+    // 重用uploadManager。一般地，只需要创建一个uploadManager对象
+    UploadManager uploadManager = new UploadManager(config);
+
+    private void upload(final String data, final String key, final String token) {
+        new Thread() {
+            public void run() {
+                uploadManager.put(data, key, token,
+                        (key1, info, res) -> {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                Glide.with(UpdateUserInfoActivity.this)
+                                        .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
+                                        .crossFade()
+                                        .into(avatar);
+
+                                //run API
+                                userGetInfoEntity.setUserPic("http://ono5ms5i0.bkt.clouddn.com/" + key1);
+
+                            } else {
+                                ToastUtils.show(UpdateUserInfoActivity.this, "qiniu "+"Upload Fail "+info);
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                            }
+                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
+
+                        }, null);
+            }
+        }.start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //此处避免you cannot start a load for a destroyed activity，因为glide不在主线程
+        Glide.with(getApplicationContext()).pauseRequests();
+    }
+
+
+    /**
+     * 填写职务的弹出窗
+     */
+    private PopupWindow academicPopupWindow;
+    private String[] academic = new String[]{"院长", "副院长", "科室/部门主任", "科室/部门副主任", "临床医师", "药师", "护士", "其他医技人员"};
+    private String mChooseAcademic = "院长"; //用户选择的学历
+
+    private void showTitlePopupwindow() {
+        View academicPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
+        academicPopupWindow = new PopupWindow(academicPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        final TextView academicConfirmTv = (TextView) academicPopupwindowView.findViewById(R.id.academic_confirm);
+        academicConfirmTv.setOnClickListener(v -> {
+            academicPopupWindow.dismiss();
+            title.setText(mChooseAcademic);
+        });
+
+        NumberPicker academicPicker = (NumberPicker) academicPopupwindowView.findViewById(R.id.academic_picker);
+        final TextView academicDisplayTv = (TextView) academicPopupwindowView.findViewById(R.id.academic_display);
+
+        if (!StringUtils.isEmpty(Arrays.toString(academic))) {
+            academicPicker.setDisplayedValues(academic);//test data
+            Log.d("hahaha", academic.length + "");
+
+            academicPicker.setMinValue(0);
+            if (academic.length <= 1) {
+                academicPicker.setMaxValue(1);
+            } else {
+                academicPicker.setMaxValue(academic.length - 1);
+            }
+        } else {
+            academicPicker.setMinValue(0);
+            academicPicker.setDisplayedValues(new String[]{"暂无数据"});
+            academicPicker.setMaxValue(0);
+        }
+
+        academicPicker.setValue(2);
+
+        academicPicker.setWrapSelectorWheel(false); //防止NumberPicker无限滚动
+        academicPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); //禁止NumberPicker输入
+
+        academicPicker.setFocusable(true);
+        academicPicker.setFocusableInTouchMode(true);
+
+        academicPicker.setOnScrollListener((numberPicker, scrollState) -> {
+            if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (numberPicker.getValue() > academic.length) {
+                    mChooseAcademic = academic[academic.length];
+                } else {
+                    mChooseAcademic = academic[numberPicker.getValue()];
+                }
+                Log.d("mChooseAcademic", mChooseAcademic);
+            }
+            academicDisplayTv.setText(mChooseAcademic);
+        });
+
+        LinearLayout academicPopupParentLayout = (LinearLayout) academicPopupwindowView.findViewById(R.id.popup_parent);
+        academicPopupParentLayout.setOnClickListener(v -> {
+            if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
+                academicPopupWindow.dismiss();
+            }
+        });
+
+        academicPopupWindow.setOutsideTouchable(false);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        academicPopupWindow.setBackgroundDrawable(dw);
+        academicPopupWindow.showAtLocation(academicPopupwindowView, Gravity.BOTTOM, 0, 0);
+    }
+
+
+    /**
+     * 填写职称的弹出窗
+     */
+    private PopupWindow positionPopupWindow;
+    private String[] positions = new String[]{"未定级（含研究生在读）", "初级职称", "中级职称", "副高级职称", "高级职称"};
+    private String mChoosePosition = "未定级（含研究生在读）"; //用户选择的职称
+
+    private void showPositionPopupwindow() {
+        View positionPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
+        positionPopupWindow = new PopupWindow(positionPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        final TextView positionConfirmTv = (TextView) positionPopupwindowView.findViewById(R.id.academic_confirm);
+        positionConfirmTv.setOnClickListener(v -> {
+            positionPopupWindow.dismiss();
+            position.setText(mChoosePosition);
+        });
+
+        NumberPicker positionPicker = (NumberPicker) positionPopupwindowView.findViewById(R.id.academic_picker);
+        final TextView positionDisplayTv = (TextView) positionPopupwindowView.findViewById(R.id.academic_display);
+
+        if (!StringUtils.isEmpty(Arrays.toString(positions))) {
+            positionPicker.setDisplayedValues(positions);//test data
+            Log.d("hahaha", positions.length + "");
+
+            positionPicker.setMinValue(0);
+            if (positions.length <= 1) {
+                positionPicker.setMaxValue(1);
+            } else {
+                positionPicker.setMaxValue(positions.length - 1);
+            }
+        } else {
+            positionPicker.setMinValue(0);
+            positionPicker.setDisplayedValues(new String[]{"暂无数据"});
+            positionPicker.setMaxValue(0);
+        }
+
+        positionPicker.setValue(2);
+
+        positionPicker.setWrapSelectorWheel(false); //防止NumberPicker无限滚动
+        positionPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); //禁止NumberPicker输入
+
+        positionPicker.setFocusable(true);
+        positionPicker.setFocusableInTouchMode(true);
+
+        positionPicker.setOnScrollListener((numberPicker, scrollState) -> {
+            if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (numberPicker.getValue() > positions.length) {
+                    mChoosePosition = positions[positions.length];
+                } else {
+                    mChoosePosition = positions[positionPicker.getValue()];
+                }
+                Log.d("mChoosePosition", mChoosePosition);
+            }
+            positionDisplayTv.setText(mChoosePosition);
+        });
+
+        LinearLayout positionPopupParentLayout = (LinearLayout) positionPopupwindowView.findViewById(R.id.popup_parent);
+        positionPopupParentLayout.setOnClickListener(v -> {
+            if (positionPopupWindow != null && positionPopupWindow.isShowing()) {
+                positionPopupWindow.dismiss();
+            }
+        });
+
+        positionPopupWindow.setOutsideTouchable(false);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        positionPopupWindow.setBackgroundDrawable(dw);
+        positionPopupWindow.showAtLocation(positionPopupwindowView, Gravity.BOTTOM, 0, 0);
+    }
+
 }

@@ -59,7 +59,7 @@ public class UserGetInfoEntity {
     private String openId;
     private String qqOpenId;
     private String authenStatus;
-    private String medical;
+    private String medical; //用户身份CODE
     private String tobPortStatus;
     private String tocPortStatus;
 

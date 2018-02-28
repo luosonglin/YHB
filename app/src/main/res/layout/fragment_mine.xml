@@ -105,7 +105,7 @@
                                 android:background="@mipmap/identity_bg2"
                                 android:layout_marginStart="6dp"
                                 android:layout_gravity="center_vertical"
-                                android:text="未认证"
+                                android:text=""
                                 android:gravity="center"
                                 android:textColor="@color/grey"
                                 android:textSize="9sp"

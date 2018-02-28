@@ -330,7 +330,11 @@
             android:name=".UI.IdentityView.AuthorizeActivity"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".UI.UserInfoView.UpdateUserInfoActivity" />
-        <activity android:name=".UI.IdentityView.AuthorizedActivity"></activity>
+        <activity android:name=".UI.IdentityView.AuthorizedActivity" />
+        <activity
+            android:name=".UI.IdentityView.RightsActivity"
+            android:label="@string/title_activity_rights"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

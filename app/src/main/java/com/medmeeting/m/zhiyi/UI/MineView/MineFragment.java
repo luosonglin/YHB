@@ -174,7 +174,6 @@ public class MineFragment extends Fragment {
         initView();
 
         return view;
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -236,6 +235,8 @@ public class MineFragment extends Fragment {
                             specialistIv.setVisibility(View.GONE);
                             break;
                     }
+
+                    //正式服，该字段暂无
                     switch (data.getEntity().getTocPortStatus()) {
                         case "wait_activation":
                             activate.setText("待激活");
