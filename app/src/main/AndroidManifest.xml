@@ -333,8 +333,8 @@
         <activity android:name=".UI.IdentityView.AuthorizedActivity" />
         <activity
             android:name=".UI.IdentityView.RightsActivity"
-            android:label="@string/title_activity_rights"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
