@@ -215,6 +215,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 showPositionPopupwindow();
                 break;
             case R.id.education:
+                showEduPopupwindow();
                 break;
             case R.id.year:
                 break;
@@ -456,6 +457,76 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         ColorDrawable dw = new ColorDrawable(0x00000000);
         positionPopupWindow.setBackgroundDrawable(dw);
         positionPopupWindow.showAtLocation(positionPopupwindowView, Gravity.BOTTOM, 0, 0);
+    }
+
+
+    /**
+     * 填写学历的弹出窗
+     */
+    private PopupWindow eduPopupWindow;
+    private String[] edus = new String[]{"大专以下", "大专", "本科", "硕士", "博士", "博士后"};
+    private String mChooseEdu = "大专以下"; //用户选择的职称
+
+    private void showEduPopupwindow() {
+        View eduPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
+        eduPopupWindow = new PopupWindow(eduPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        final TextView eduConfirmTv = (TextView) eduPopupwindowView.findViewById(R.id.academic_confirm);
+        eduConfirmTv.setOnClickListener(v -> {
+            eduPopupWindow.dismiss();
+            education.setText(mChooseEdu);
+        });
+
+        NumberPicker eduPicker = (NumberPicker) eduPopupwindowView.findViewById(R.id.academic_picker);
+        final TextView eduDisplayTv = (TextView) eduPopupwindowView.findViewById(R.id.academic_display);
+
+        if (!StringUtils.isEmpty(Arrays.toString(edus))) {
+            eduPicker.setDisplayedValues(edus);//test data
+            Log.d("hahaha", edus.length + "");
+
+            eduPicker.setMinValue(0);
+            if (edus.length <= 1) {
+                eduPicker.setMaxValue(1);
+            } else {
+                eduPicker.setMaxValue(edus.length - 1);
+            }
+        } else {
+            eduPicker.setMinValue(0);
+            eduPicker.setDisplayedValues(new String[]{"暂无数据"});
+            eduPicker.setMaxValue(0);
+        }
+
+        eduPicker.setValue(2);
+
+        eduPicker.setWrapSelectorWheel(false); //防止NumberPicker无限滚动
+        eduPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); //禁止NumberPicker输入
+
+        eduPicker.setFocusable(true);
+        eduPicker.setFocusableInTouchMode(true);
+
+        eduPicker.setOnScrollListener((numberPicker, scrollState) -> {
+            if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (numberPicker.getValue() > edus.length) {
+                    mChooseEdu = edus[edus.length];
+                } else {
+                    mChooseEdu = edus[eduPicker.getValue()];
+                }
+                Log.d("mChooseEdu", mChooseEdu);
+            }
+            eduDisplayTv.setText(mChooseEdu);
+        });
+
+        LinearLayout eduPopupParentLayout = (LinearLayout) eduPopupwindowView.findViewById(R.id.popup_parent);
+        eduPopupParentLayout.setOnClickListener(v -> {
+            if (eduPopupWindow != null && eduPopupWindow.isShowing()) {
+                eduPopupWindow.dismiss();
+            }
+        });
+
+        eduPopupWindow.setOutsideTouchable(false);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        eduPopupWindow.setBackgroundDrawable(dw);
+        eduPopupWindow.showAtLocation(eduPopupwindowView, Gravity.BOTTOM, 0, 0);
     }
 
 }
