@@ -16,6 +16,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
 import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.HospitalInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
@@ -530,6 +531,10 @@ public interface APILiveService {
     //GET /v1/users/authentication/last 用户认证-获取上一次认证记录信息
     @GET("/v1/users/authentication/last")
     Observable<HttpResult3<Object, UserAuthenRecord>> getLastAuthentizeStatus();
+
+//GET /v1/app/hospital/A/getHospitalDetail 获取医院名称
+    @GET("/v1/app/hospital/A/getHospitalDetail")
+    Observable<HttpResult3<HospitalInfo, Object>> getHospitalInfo(@Query("pojo") String word);
 
 
     /**

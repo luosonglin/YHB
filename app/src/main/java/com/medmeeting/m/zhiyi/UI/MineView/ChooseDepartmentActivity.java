@@ -78,10 +78,15 @@ public class ChooseDepartmentActivity extends AppCompatActivity
     private String[] data16 = {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "男科", "生殖中心", "体验中心"};
 
     //科室的第一级数据
-    private String[] data00 = {"\uE900" + " " + data0[0], "\uE900" + " " + data1[0], "\uE900" + " " + data2[0], "\uE900" + " " + data3[0], "\uE900" + " " + data4[0],
-            "\uE900" + " " + data5[0], "\uE900" + " " + data6[0], "\uE900" + " " + data7[0], "\uE900" + " " + data8[0], "\uE900" + " " + data9[0],
-            "\uE900" + " " + data10[0], "\uE900" + " " + data11[0], "\uE900" + " " + data12[0], "\uE900" + " " + data13[0], "\uE900" + " " + data14[0],
-            "\uE900" + " " + data15[0], "\uE900" + " " + data16[0]};
+//    private String[] data00 = {"\uE900" + " " + data0[0], "\uE900" + " " + data1[0], "\uE900" + " " + data2[0], "\uE900" + " " + data3[0], "\uE900" + " " + data4[0],
+//            "\uE900" + " " + data5[0], "\uE900" + " " + data6[0], "\uE900" + " " + data7[0], "\uE900" + " " + data8[0], "\uE900" + " " + data9[0],
+//            "\uE900" + " " + data10[0], "\uE900" + " " + data11[0], "\uE900" + " " + data12[0], "\uE900" + " " + data13[0], "\uE900" + " " + data14[0],
+//            "\uE900" + " " + data15[0], "\uE900" + " " + data16[0]};
+
+    private String[] data00 = {" " + data0[0],  " " + data1[0],  " " + data2[0], " " + data3[0],  " " + data4[0],
+            " " + data5[0],  " " + data6[0],  " " + data7[0], " " + data8[0],  " " + data9[0],
+             " " + data10[0],  " " + data11[0], " " + data12[0],  " " + data13[0],  " " + data14[0],
+             " " + data15[0],  " " + data16[0]};
 
     private String[][] data01 = {
             {"外科", "普通外科", "胃肠外科", "甲状腺外科", "甲状腺乳腺外科", "肝脏外科", "胆胰外科", "血管外科",

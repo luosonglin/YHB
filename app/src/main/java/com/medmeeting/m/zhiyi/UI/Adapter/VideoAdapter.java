@@ -34,15 +34,17 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListEntity> {
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
-                .setText(R.id.author, item.getAuthorName() + " | "+item.getAuthorTitle())
+                .setText(R.id.author, item.getAuthorName() + " | " + item.getAuthorTitle())
                 .setText(R.id.sum, "观看 " + item.getPlayCount() + "    收藏 " + item.getCollectCount())
                 .setText(R.id.time, DateUtils.formatDate(item.getCreateTime(), DateUtils.TYPE_08));
 
-        if (item.getChargeType().equals("no")) {
-            helper.getView(R.id.price).setVisibility(View.GONE);
-        } else {
-            helper.setText(R.id.price, "¥ " + item.getPrice());
-        }
+//        if (item.getChargeType().equals("no")) {
+//            helper.getView(R.id.price).setVisibility(View.GONE);
+//        } else {
+//            helper.setText(R.id.price, "¥ " + item.getPrice());
+//        }
+
+        helper.setText(R.id.price, "¥ " + item.getPrice());
 
         if (item.getVideoStatus() != null) {
             if (item.getVideoStatus().equals("ready")) {

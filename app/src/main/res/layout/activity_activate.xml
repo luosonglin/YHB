@@ -362,9 +362,7 @@
                                 android:singleLine="true"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="14dp"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:textSize="14dp"/>
                         </LinearLayout>
 
                         <View
@@ -385,7 +383,7 @@
                                 android:textColor="@color/black"
                                 android:textSize="14dp" />
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/department2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -420,7 +418,7 @@
                                 android:textColor="@color/black"
                                 android:textSize="14dp" />
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/position2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -454,7 +452,7 @@
                                 android:textColor="@color/black"
                                 android:textSize="14dp" />
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/title2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"

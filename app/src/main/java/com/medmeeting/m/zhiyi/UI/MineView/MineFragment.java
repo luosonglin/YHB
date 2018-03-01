@@ -227,10 +227,10 @@ public class MineFragment extends Fragment {
                         case "B":
                             specialistIv.setVisibility(View.GONE);
                             break;
-                        case "C":
-                            specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.red_v);
-                            break;
+//                        case "C":
+//                            specialistIv.setVisibility(View.VISIBLE);
+//                            specialistIv.setImageResource(R.mipmap.red_v);
+//                            break;
                         default:
                             specialistIv.setVisibility(View.GONE);
                             break;
@@ -246,6 +246,8 @@ public class MineFragment extends Fragment {
                             break;
                         case "done_authen":
                             activate.setText("已认证");
+                            specialistIv.setVisibility(View.VISIBLE);
+                            specialistIv.setImageResource(R.mipmap.red_v);
                             break;
                     }
 
