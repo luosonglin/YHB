@@ -138,6 +138,7 @@ public class ActivateActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
+
     @OnClick({R.id.activate1, R.id.activate2, R.id.department2, R.id.position2, R.id.activate3, R.id.activate4, R.id.activate5, R.id.activate6, R.id.activate_save})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -198,9 +199,9 @@ public class ActivateActivity extends AppCompatActivity {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                        hospitalPopupWindow.setOutsideTouchable(false);
                         ColorDrawable dw = new ColorDrawable(0x00000000);
                         hospitalPopupWindow.setBackgroundDrawable(dw);
+                        hospitalPopupWindow.setOutsideTouchable(false); //外部是否可以点击
                     }
 
                     @Override
@@ -233,14 +234,16 @@ public class ActivateActivity extends AppCompatActivity {
 
 
                                 mQuickAdapter.setNewData(data.getData());
+                                hospitalPopupWindow.showAsDropDown(activate_2);
                                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                                     hospital.setText(data.getData().get(position).getHsName());
-                                    hospitalPopupWindow.dismiss();
+
+
+                                    if (hospitalPopupWindow.isShowing())
+                                        hospitalPopupWindow.dismiss();
+                                    else
+                                        hospitalPopupWindow.showAsDropDown(activate_2);
                                 });
-
-
-                                if (!hospitalPopupWindow.isShowing())
-                                    hospitalPopupWindow.showAsDropDown(hospital);
 
                             }
                         }, charSequence.toString());
