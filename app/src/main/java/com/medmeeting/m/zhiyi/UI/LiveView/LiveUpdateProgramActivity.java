@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -41,12 +40,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
-
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -223,6 +218,8 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 updateTime = data.getEntity().getUpdateTime();
                 privacyType = data.getEntity().getPrivacyType();
                 mLiveDto = data.getEntity();
+                expectBeginTime = data.getEntity().getStartTime();
+                expectEndTime = data.getEntity().getEndTime();
             }
         }, programId);
     }
@@ -551,7 +548,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
             if ("START".equals(sign)) {
 
-                startDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+                startDateTime = year + "-" + judgeDecade(month) + "-" + judgeDecade(day) + " " + judgeDecade(hour) + ":" + judgeDecade(minute);
 
                 //判断开始时间是否早于当前时间
                 try {
@@ -582,7 +579,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                         return;
                     }
                 }
-                endDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+                endDateTime = year + "-" + judgeDecade(month) + "-" + judgeDecade(day) + " " + judgeDecade(hour) + ":" + judgeDecade(minute);
 
                 //判断结束时间是否早于开始时间
                 try {
@@ -651,4 +648,12 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         }
     }
 
+
+    //判断时候是小于10，如果小于10，则前面加0
+    private String judgeDecade(int i){
+        if (i >= 10)
+            return Integer.toString(i);
+        else
+            return "0"+i;
+    }
 }

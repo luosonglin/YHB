@@ -265,6 +265,7 @@ public class ActivateActivity extends AppCompatActivity {
                 showPositionPopupwindow();
                 break;
             case R.id.title2:
+                ToastUtils.show(ActivateActivity.this, "dddd");
                 showTitlePopupwindow();
                 break;
             case R.id.activate3:
@@ -458,70 +459,70 @@ public class ActivateActivity extends AppCompatActivity {
     /**
      * 填写职务的弹出窗
      */
-    private PopupWindow academicPopupWindow;
-    private String[] academic = new String[]{"院长", "副院长", "科室/部门主任", "科室/部门副主任", "临床医师", "药师", "护士", "其他医技人员"};
-    private String mChooseAcademic = "院长"; //用户选择的学历
+    private PopupWindow titlePopupWindow;
+    private String[] titles = new String[]{"院长", "副院长", "科室/部门主任", "科室/部门副主任", "临床医师", "药师", "护士", "其他医技人员"};
+    private String mChooseTitle = "院长"; //用户选择的学历
 
     private void showTitlePopupwindow() {
-        View academicPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
-        academicPopupWindow = new PopupWindow(academicPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+        View titlePopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
+        titlePopupWindow = new PopupWindow(titlePopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
 
-        final TextView academicConfirmTv = (TextView) academicPopupwindowView.findViewById(R.id.academic_confirm);
-        academicConfirmTv.setOnClickListener(v -> {
-            academicPopupWindow.dismiss();
-            title2.setText(mChooseAcademic);
+        final TextView titleConfirmTv = (TextView) titlePopupwindowView.findViewById(R.id.academic_confirm);
+        titleConfirmTv.setOnClickListener(v -> {
+            titlePopupWindow.dismiss();
+            title2.setText(mChooseTitle);
         });
 
-        NumberPicker academicPicker = (NumberPicker) academicPopupwindowView.findViewById(R.id.academic_picker);
-        final TextView academicDisplayTv = (TextView) academicPopupwindowView.findViewById(R.id.academic_display);
+        NumberPicker titlePicker = (NumberPicker) titlePopupwindowView.findViewById(R.id.academic_picker);
+        final TextView titleDisplayTv = (TextView) titlePopupwindowView.findViewById(R.id.academic_display);
 
-        if (!StringUtils.isEmpty(Arrays.toString(academic))) {
-            academicPicker.setDisplayedValues(academic);//test data
-            Log.d("hahaha", academic.length + "");
+        if (!StringUtils.isEmpty(Arrays.toString(titles))) {
+            titlePicker.setDisplayedValues(titles);//test data
+            Log.d("hahaha", titles.length + "");
 
-            academicPicker.setMinValue(0);
-            if (academic.length <= 1) {
-                academicPicker.setMaxValue(1);
+            titlePicker.setMinValue(0);
+            if (titles.length <= 1) {
+                titlePicker.setMaxValue(1);
             } else {
-                academicPicker.setMaxValue(academic.length - 1);
+                titlePicker.setMaxValue(titles.length - 1);
             }
         } else {
-            academicPicker.setMinValue(0);
-            academicPicker.setDisplayedValues(new String[]{"暂无数据"});
-            academicPicker.setMaxValue(0);
+            titlePicker.setMinValue(0);
+            titlePicker.setDisplayedValues(new String[]{"暂无数据"});
+            titlePicker.setMaxValue(0);
         }
 
-        academicPicker.setValue(2);
+        titlePicker.setValue(2);
 
-        academicPicker.setWrapSelectorWheel(false); //防止NumberPicker无限滚动
-        academicPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); //禁止NumberPicker输入
+        titlePicker.setWrapSelectorWheel(false); //防止NumberPicker无限滚动
+        titlePicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); //禁止NumberPicker输入
 
-        academicPicker.setFocusable(true);
-        academicPicker.setFocusableInTouchMode(true);
+        titlePicker.setFocusable(true);
+        titlePicker.setFocusableInTouchMode(true);
 
-        academicPicker.setOnScrollListener((numberPicker, scrollState) -> {
+        titlePicker.setOnScrollListener((numberPicker, scrollState) -> {
             if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
-                if (numberPicker.getValue() > academic.length) {
-                    mChooseAcademic = academic[academic.length];
+                if (numberPicker.getValue() > titles.length) {
+                    mChooseTitle = titles[titles.length];
                 } else {
-                    mChooseAcademic = academic[numberPicker.getValue()];
+                    mChooseTitle = titles[numberPicker.getValue()];
                 }
-                Log.d("mChooseAcademic", mChooseAcademic);
+                Log.d("mChooseAcademic", mChooseTitle);
             }
-            academicDisplayTv.setText(mChooseAcademic);
+            titleDisplayTv.setText(mChooseTitle);
         });
 
-        LinearLayout academicPopupParentLayout = (LinearLayout) academicPopupwindowView.findViewById(R.id.popup_parent);
-        academicPopupParentLayout.setOnClickListener(v -> {
-            if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
-                academicPopupWindow.dismiss();
+        LinearLayout titlePopupParentLayout = (LinearLayout) titlePopupwindowView.findViewById(R.id.popup_parent);
+        titlePopupParentLayout.setOnClickListener(v -> {
+            if (titlePopupWindow != null && titlePopupWindow.isShowing()) {
+                titlePopupWindow.dismiss();
             }
         });
 
-        academicPopupWindow.setOutsideTouchable(false);
+        titlePopupWindow.setOutsideTouchable(false);
         ColorDrawable dw = new ColorDrawable(0x00000000);
-        academicPopupWindow.setBackgroundDrawable(dw);
-        academicPopupWindow.showAtLocation(academicPopupwindowView, Gravity.BOTTOM, 0, 0);
+        titlePopupWindow.setBackgroundDrawable(dw);
+        titlePopupWindow.showAtLocation(titlePopupwindowView, Gravity.BOTTOM, 0, 0);
     }
 
 
