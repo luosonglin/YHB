@@ -199,8 +199,10 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                         .start(UpdateUserInfoActivity.this);
                 break;
             case R.id.nickname:
+                startActivityForResult(new Intent(UpdateUserInfoActivity.this, UpdateUserInfoNickNameActivity.class), 1);
                 break;
             case R.id.des:
+                startActivityForResult(new Intent(UpdateUserInfoActivity.this, UpdateUserInfoDescriptionActivity.class), 2);
                 break;
             case R.id.city:
                 break;
@@ -209,10 +211,10 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             case R.id.department:
                 break;
             case R.id.title:
-                showTitlePopupwindow();
+                showPositionPopupwindow();
                 break;
             case R.id.position:
-                showPositionPopupwindow();
+                showTitlePopupwindow();
                 break;
             case R.id.education:
                 showEduPopupwindow();
@@ -234,6 +236,20 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         List<String> photos = null;
         if (data != null) {
+
+            if (requestCode == 1) {
+                if (resultCode == 1) {
+                    nickname.setText(data.getExtras().getString("nickname"));
+                    return;
+                }
+
+            } else if (requestCode == 2) {
+                if (resultCode == 2) {
+                    des.setText(data.getExtras().getString("des"));
+                    return;
+                }
+            }
+
             photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             for (String i : photos) {
                 Log.e(getLocalClassName(), i);
@@ -241,6 +257,8 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             ToastUtils.show(UpdateUserInfoActivity.this, "正在上传封面图片...");
             getQiniuToken(photos.get(0));
         }
+
+
     }
 
     private String qiniuKey;
@@ -302,7 +320,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                                 userGetInfoEntity.setUserPic("http://ono5ms5i0.bkt.clouddn.com/" + key1);
 
                             } else {
-                                ToastUtils.show(UpdateUserInfoActivity.this, "qiniu "+"Upload Fail "+info);
+                                ToastUtils.show(UpdateUserInfoActivity.this, "qiniu " + "Upload Fail " + info);
                                 //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
                             }
                             Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
@@ -325,7 +343,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
      */
     private PopupWindow academicPopupWindow;
     private String[] academic = new String[]{"院长", "副院长", "科室/部门主任", "科室/部门副主任", "临床医师", "药师", "护士", "其他医技人员"};
-    private String mChooseAcademic = "院长"; //用户选择的学历
+    private String mChooseAcademic = "科室/部门主任"; //用户选择的学历
 
     private void showTitlePopupwindow() {
         View academicPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
@@ -334,7 +352,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         final TextView academicConfirmTv = (TextView) academicPopupwindowView.findViewById(R.id.academic_confirm);
         academicConfirmTv.setOnClickListener(v -> {
             academicPopupWindow.dismiss();
-            title.setText(mChooseAcademic);
+            position.setText(mChooseAcademic);
         });
 
         NumberPicker academicPicker = (NumberPicker) academicPopupwindowView.findViewById(R.id.academic_picker);
@@ -395,7 +413,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
      */
     private PopupWindow positionPopupWindow;
     private String[] positions = new String[]{"未定级（含研究生在读）", "初级职称", "中级职称", "副高级职称", "高级职称"};
-    private String mChoosePosition = "未定级（含研究生在读）"; //用户选择的职称
+    private String mChoosePosition = "中级职称"; //用户选择的职称
 
     private void showPositionPopupwindow() {
         View positionPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
@@ -404,7 +422,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         final TextView positionConfirmTv = (TextView) positionPopupwindowView.findViewById(R.id.academic_confirm);
         positionConfirmTv.setOnClickListener(v -> {
             positionPopupWindow.dismiss();
-            position.setText(mChoosePosition);
+            title.setText(mChoosePosition);
         });
 
         NumberPicker positionPicker = (NumberPicker) positionPopupwindowView.findViewById(R.id.academic_picker);
@@ -465,7 +483,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
      */
     private PopupWindow eduPopupWindow;
     private String[] edus = new String[]{"大专以下", "大专", "本科", "硕士", "博士", "博士后"};
-    private String mChooseEdu = "大专以下"; //用户选择的职称
+    private String mChooseEdu = "本科"; //用户选择的职称
 
     private void showEduPopupwindow() {
         View eduPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);

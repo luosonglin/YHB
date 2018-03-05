@@ -64,9 +64,7 @@
             android:label="LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity android:name=".MainActivity"
-
-            />
+        <activity android:name=".MainActivity" />
         <activity android:name=".UI.MeetingView.MeetingDetailActivity" />
         <activity
             android:name=".UI.MeetingView.MeetingEnrolActivity"
@@ -336,7 +334,15 @@
         <activity
             android:name=".UI.IdentityView.RightsActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.UserInfoView.UpdateUserInfoNickNameActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.UserInfoView.UpdateUserInfoDescriptionActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

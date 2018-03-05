@@ -130,6 +130,9 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_rights">RightsActivity</string>
+    <string name="title_activity_update_user_info_nick_name">UpdateUserInfoNickNameActivity</string>
+    <string name="title_activity_update_user_info_description">UpdateUserInfoDescriptionActivity
+    </string>
 
 
 </resources>
