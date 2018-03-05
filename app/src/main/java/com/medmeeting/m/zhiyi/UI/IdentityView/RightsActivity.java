@@ -1,16 +1,13 @@
 package com.medmeeting.m.zhiyi.UI.IdentityView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 认证权益页
@@ -19,8 +16,6 @@ public class RightsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.activate)
-    TextView activate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +33,4 @@ public class RightsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
-    @OnClick(R.id.activate)
-    public void onClick() {
-        startActivity(new Intent(RightsActivity.this, ActivateActivity.class));
-    }
 }

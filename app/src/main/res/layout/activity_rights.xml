@@ -178,7 +178,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="17dp"
                 android:layout_marginBottom="4dp"
                 android:paddingEnd="14dp"
                 android:paddingStart="14dp"
@@ -309,18 +309,6 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/activate"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="14dp"
-                android:background="@mipmap/activate_finished_button_2"
-                android:gravity="center"
-                android:text="立即认证"
-                android:paddingBottom="4dp"
-                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -59,6 +59,7 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -252,6 +253,7 @@
 
                     <!--医疗协会-->
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/activate_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -425,7 +427,6 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="12dp"
                                 android:layout_marginRight="16dp"
-                                android:background="@drawable/edittext_delete_line"
                                 android:gravity="center_vertical"
                                 android:hint="请选择职务"
                                 android:singleLine="true"
@@ -459,7 +460,6 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="12dp"
                                 android:layout_marginRight="16dp"
-                                android:background="@drawable/edittext_delete_line"
                                 android:gravity="center_vertical"
                                 android:hint="请选择职称"
                                 android:singleLine="true"

@@ -139,7 +139,7 @@ public class ActivateActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.activate1, R.id.activate2, R.id.department2, R.id.position2, R.id.activate3, R.id.activate4, R.id.activate5, R.id.activate6, R.id.activate_save})
+    @OnClick({R.id.activate1, R.id.activate2, R.id.department2, R.id.position2, R.id.title2, R.id.activate3, R.id.activate4, R.id.activate5, R.id.activate6, R.id.activate_save})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.activate1:
@@ -265,7 +265,6 @@ public class ActivateActivity extends AppCompatActivity {
                 showPositionPopupwindow();
                 break;
             case R.id.title2:
-                ToastUtils.show(ActivateActivity.this, "dddd");
                 showTitlePopupwindow();
                 break;
             case R.id.activate3:
@@ -460,8 +459,8 @@ public class ActivateActivity extends AppCompatActivity {
      * 填写职务的弹出窗
      */
     private PopupWindow titlePopupWindow;
-    private String[] titles = new String[]{"院长", "副院长", "科室/部门主任", "科室/部门副主任", "临床医师", "药师", "护士", "其他医技人员"};
-    private String mChooseTitle = "院长"; //用户选择的学历
+    private String[] titles = new String[]{"未定级（含研究生在读）", "初级职称", "中级职称", "副高级职称", "高级职称"};
+    private String mChooseTitle = "中级职称"; //用户选择的学历
 
     private void showTitlePopupwindow() {
         View titlePopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
@@ -530,12 +529,14 @@ public class ActivateActivity extends AppCompatActivity {
      * 填写职称的弹出窗
      */
     private PopupWindow positionPopupWindow;
-    private String[] positions = new String[]{"未定级（含研究生在读）", "初级职称", "中级职称", "副高级职称", "高级职称"};
-    private String mChoosePosition = "未定级（含研究生在读）"; //用户选择的职称
+    private String[] positions = new String[]{"院长", "副院长", "科室/部门主任", "科室/部门副主任", "临床医师", "药师", "护士", "其他医技人员"};
+    private String mChoosePosition = "科室/部门主任"; //用户选择的职称
 
     private void showPositionPopupwindow() {
         View positionPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
         positionPopupWindow = new PopupWindow(positionPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        mChoosePosition = "科室/部门主任";
 
         final TextView positionConfirmTv = (TextView) positionPopupwindowView.findViewById(R.id.academic_confirm);
         positionConfirmTv.setOnClickListener(v -> {

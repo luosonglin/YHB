@@ -126,9 +126,9 @@ public class AuthorizeActivity extends AppCompatActivity {
     @BindView(R.id.work_photo2)
     ImageView workPhoto2;
 
-    private int type;
 
     private UserAddAuthenEntity userAddAuthenEntity = new UserAddAuthenEntity();
+    private String Category;
     private String workPhoto;
     private String identityPhoto;
     private int photoType = 0; //0为上传的是工作证，1为身份证
@@ -152,6 +152,11 @@ public class AuthorizeActivity extends AppCompatActivity {
         authorize5.setVisibility(View.GONE);
 
         phone.setText(Data.getPhone());
+        identityName.setText(getIntent().getExtras().getString("CategoryName"));
+
+        Category = getIntent().getExtras().getString("Category");
+        userAddAuthenEntity.setCategory(Category);
+        userAddAuthenEntity.setCategoryName(getIntent().getExtras().getString("CategoryName"));
     }
 
     private void toolBar() {
@@ -166,6 +171,7 @@ public class AuthorizeActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rights:
+                startActivity(new Intent(AuthorizeActivity.this, RightsActivity.class));
                 break;
             case R.id.identity_name:
                 chooseIdentityType();
@@ -185,13 +191,47 @@ public class AuthorizeActivity extends AppCompatActivity {
                     ToastUtils.show(AuthorizeActivity.this, "请选择你的身份");
                     return;
                 }
+
+                if (Category.equals("ASSOCIATION")) {
+                    authorize1.setVisibility(View.VISIBLE);
+                    authorize2.setVisibility(View.GONE);
+                    authorize3.setVisibility(View.GONE);
+                    authorize4.setVisibility(View.GONE);
+                    authorize5.setVisibility(View.GONE);
+                } else if (Category.equals("MEDICAL_STAFF")) {
+                    authorize1.setVisibility(View.GONE);
+                    authorize2.setVisibility(View.VISIBLE);
+                    authorize3.setVisibility(View.GONE);
+                    authorize4.setVisibility(View.GONE);
+                    authorize5.setVisibility(View.GONE);
+                } else if (Category.equals("MEDICAL_COMPANY")) {
+                    authorize1.setVisibility(View.GONE);
+                    authorize2.setVisibility(View.GONE);
+                    authorize3.setVisibility(View.VISIBLE);
+                    authorize4.setVisibility(View.GONE);
+                    authorize5.setVisibility(View.GONE);
+                } else if (Category.equals("MEDICO")) {
+                    authorize1.setVisibility(View.GONE);
+                    authorize2.setVisibility(View.GONE);
+                    authorize3.setVisibility(View.GONE);
+                    authorize4.setVisibility(View.VISIBLE);
+                    authorize5.setVisibility(View.GONE);
+                } else if (Category.equals("EDUCATION_SCIENCE")) {
+                    authorize1.setVisibility(View.GONE);
+                    authorize2.setVisibility(View.GONE);
+                    authorize3.setVisibility(View.GONE);
+                    authorize4.setVisibility(View.GONE);
+                    authorize5.setVisibility(View.VISIBLE);
+                }
+
                 identity1.setVisibility(View.GONE);
                 identity2.setVisibility(View.VISIBLE);
                 identity3.setVisibility(View.GONE);
                 break;
             case R.id.next21:
                 //非空判断
-                if (type == 1) {
+                if (Category.equals("ASSOCIATION")) {
+                    //医疗协会
                     if (company.getText().toString().trim().equals("")) {
                         ToastUtils.show(AuthorizeActivity.this, "单位不能为空");
                         return;
@@ -199,7 +239,8 @@ public class AuthorizeActivity extends AppCompatActivity {
                         ToastUtils.show(AuthorizeActivity.this, "职务不能为空");
                         return;
                     }
-                } else if (type == 2) {
+                } else if (Category.equals("MEDICAL_STAFF")) {
+                    //医护人员
                     if (hospital.getText().toString().trim().equals("")) {
                         ToastUtils.show(AuthorizeActivity.this, "医院不能为空");
                         return;
@@ -213,7 +254,8 @@ public class AuthorizeActivity extends AppCompatActivity {
                         ToastUtils.show(AuthorizeActivity.this, "职称不能为空");
                         return;
                     }
-                } else if (type == 3) {
+                } else if (Category.equals("MEDICAL_COMPANY")) {
+                    //药械企业
                     if (company3.getText().toString().trim().equals("")) {
                         ToastUtils.show(AuthorizeActivity.this, "单位不能为空");
                         return;
@@ -224,7 +266,8 @@ public class AuthorizeActivity extends AppCompatActivity {
                         ToastUtils.show(AuthorizeActivity.this, "职务不能为空");
                         return;
                     }
-                } else if (type == 4) {
+                } else if (Category.equals("MEDICO")) {
+                    //医学生
                     if (school.getText().toString().trim().equals("")) {
                         ToastUtils.show(AuthorizeActivity.this, "学校不能为空");
                         return;
@@ -238,7 +281,8 @@ public class AuthorizeActivity extends AppCompatActivity {
                         ToastUtils.show(AuthorizeActivity.this, "入学年份不能为空");
                         return;
                     }
-                } else if (type == 5) {
+                } else if (Category.equals("EDUCATION_SCIENCE")) {
+                    //医药教科研人员
                     if (company5.getText().toString().trim().equals("")) {
                         ToastUtils.show(AuthorizeActivity.this, "单位不能为空");
                         return;
@@ -260,7 +304,7 @@ public class AuthorizeActivity extends AppCompatActivity {
                 identity3.setVisibility(View.GONE);
                 break;
             case R.id.material:
-                chooseWorkPhotoType(type);
+                chooseWorkPhotoType(Category);
                 break;
             case R.id.work_photo1:
                 photoType = 0;  //识别图片类型
@@ -284,24 +328,24 @@ public class AuthorizeActivity extends AppCompatActivity {
                 userAddAuthenEntity.setEmail(email.getText().toString().trim());
                 userAddAuthenEntity.setUserName(name.getText().toString().trim());
 
-                if (type == 1) {
+                if (Category.equals("ASSOCIATION")) {
                     userAddAuthenEntity.setCompany(company.getText().toString().trim());
                     userAddAuthenEntity.setPostion(position.getText().toString().trim());
-                } else if (type == 2) {
+                } else if (Category.equals("MEDICAL_STAFF")) {
                     userAddAuthenEntity.setCompany(hospital.getText().toString().trim());
                     userAddAuthenEntity.setDepartment(department2.getText().toString().trim());
                     userAddAuthenEntity.setPostion(position2.getText().toString().trim());
                     userAddAuthenEntity.setTitle(title2.getText().toString().trim());
-                } else if (type == 3) {
+                } else if (Category.equals("MEDICAL_COMPANY")) {
                     userAddAuthenEntity.setCompany(company3.getText().toString().trim());
                     userAddAuthenEntity.setDepartment(department3.getText().toString().trim());
                     userAddAuthenEntity.setPostion(position3.getText().toString().trim());
-                } else if (type == 4) {
+                } else if (Category.equals("MEDICO")) {
                     userAddAuthenEntity.setCompany(school.getText().toString().trim());
                     userAddAuthenEntity.setDepartment(major.getText().toString().trim());
                     userAddAuthenEntity.setDiploma(education.getText().toString().trim());
                     userAddAuthenEntity.setEntranceDate(year.getText().toString().trim());
-                } else if (type == 5) {
+                } else if (Category.equals("EDUCATION_SCIENCE")) {
                     userAddAuthenEntity.setCompany(company5.getText().toString().trim());
                     userAddAuthenEntity.setDepartment(department5.getText().toString().trim());
                     userAddAuthenEntity.setPostion(position5.getText().toString().trim());
@@ -364,7 +408,7 @@ public class AuthorizeActivity extends AppCompatActivity {
         // 设置动画
         window.setAnimationStyle(R.style.popup_window_anim);
         // 设置背景颜色
-        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F8F8F8")));
+        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0DFFFFFF")));
 
         // 设置可以获取焦点
         window.setFocusable(true);
@@ -408,32 +452,31 @@ public class AuthorizeActivity extends AppCompatActivity {
                         userAddAuthenEntity.setCategory(data.getData().get(position).getCode());
                         userAddAuthenEntity.setCategoryName(data.getData().get(position).getTitle());
 
-                        type = position + 1;
-                        if (type == 1) {
+                        if (Category.equals("ASSOCIATION")) {
                             authorize1.setVisibility(View.VISIBLE);
                             authorize2.setVisibility(View.GONE);
                             authorize3.setVisibility(View.GONE);
                             authorize4.setVisibility(View.GONE);
                             authorize5.setVisibility(View.GONE);
-                        } else if (type == 2) {
+                        } else if (Category.equals("MEDICAL_STAFF")) {
                             authorize1.setVisibility(View.GONE);
                             authorize2.setVisibility(View.VISIBLE);
                             authorize3.setVisibility(View.GONE);
                             authorize4.setVisibility(View.GONE);
                             authorize5.setVisibility(View.GONE);
-                        } else if (type == 3) {
+                        } else if (Category.equals("MEDICAL_COMPANY")) {
                             authorize1.setVisibility(View.GONE);
                             authorize2.setVisibility(View.GONE);
                             authorize3.setVisibility(View.VISIBLE);
                             authorize4.setVisibility(View.GONE);
                             authorize5.setVisibility(View.GONE);
-                        } else if (type == 4) {
+                        } else if (Category.equals("MEDICO")) {
                             authorize1.setVisibility(View.GONE);
                             authorize2.setVisibility(View.GONE);
                             authorize3.setVisibility(View.GONE);
                             authorize4.setVisibility(View.VISIBLE);
                             authorize5.setVisibility(View.GONE);
-                        } else if (type == 5) {
+                        } else if (Category.equals("EDUCATION_SCIENCE")) {
                             authorize1.setVisibility(View.GONE);
                             authorize2.setVisibility(View.GONE);
                             authorize3.setVisibility(View.GONE);
@@ -458,11 +501,11 @@ public class AuthorizeActivity extends AppCompatActivity {
     /**
      * 选择上传证件类型弹窗
      */
-    private void chooseWorkPhotoType(int type) {
-        if (type == 0) {
-            ToastUtils.show(AuthorizeActivity.this, "请上2步选择身份类型");
-            return;
-        }
+    private void chooseWorkPhotoType(String category) {
+//        if (type == 0) {
+//            ToastUtils.show(AuthorizeActivity.this, "请上2步选择身份类型");
+//            return;
+//        }
         final View popupView = this.getLayoutInflater().inflate(R.layout.popupwindow_work_photo_type, null);
 
         CheckBox checkBox1 = (CheckBox) popupView.findViewById(R.id.checkbox1);
@@ -473,7 +516,7 @@ public class AuthorizeActivity extends AppCompatActivity {
         CheckBox checkBox6 = (CheckBox) popupView.findViewById(R.id.checkbox6);
         CheckBox checkBox7 = (CheckBox) popupView.findViewById(R.id.checkbox7);
 
-        if (type == 1) {
+        if (Category.equals("ASSOCIATION")) {
             checkBox1.setVisibility(View.VISIBLE);
             checkBox2.setVisibility(View.GONE);
             checkBox3.setVisibility(View.GONE);
@@ -481,7 +524,7 @@ public class AuthorizeActivity extends AppCompatActivity {
             checkBox5.setVisibility(View.GONE);
             checkBox6.setVisibility(View.GONE);
             checkBox7.setVisibility(View.GONE);
-        } else if (type == 2) {
+        } else if (Category.equals("MEDICAL_STAFF")) {
             checkBox1.setVisibility(View.GONE);
             checkBox2.setVisibility(View.VISIBLE);
             checkBox3.setVisibility(View.VISIBLE);
@@ -489,7 +532,7 @@ public class AuthorizeActivity extends AppCompatActivity {
             checkBox5.setVisibility(View.VISIBLE);
             checkBox6.setVisibility(View.VISIBLE);
             checkBox7.setVisibility(View.GONE);
-        } else if (type == 3) {
+        } else if (Category.equals("MEDICAL_COMPANY")) {
             checkBox1.setVisibility(View.VISIBLE);
             checkBox2.setVisibility(View.GONE);
             checkBox3.setVisibility(View.GONE);
@@ -497,7 +540,7 @@ public class AuthorizeActivity extends AppCompatActivity {
             checkBox5.setVisibility(View.GONE);
             checkBox6.setVisibility(View.GONE);
             checkBox7.setVisibility(View.GONE);
-        } else if (type == 4) {
+        } else if (Category.equals("MEDICO")) {
             checkBox1.setVisibility(View.GONE);
             checkBox2.setVisibility(View.GONE);
             checkBox3.setVisibility(View.GONE);
@@ -505,7 +548,7 @@ public class AuthorizeActivity extends AppCompatActivity {
             checkBox5.setVisibility(View.GONE);
             checkBox6.setVisibility(View.GONE);
             checkBox7.setVisibility(View.VISIBLE);
-        } else if (type == 5) {
+        } else if (Category.equals("EDUCATION_SCIENCE")) {
             checkBox1.setVisibility(View.VISIBLE);
             checkBox2.setVisibility(View.GONE);
             checkBox3.setVisibility(View.GONE);
