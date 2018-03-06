@@ -342,6 +342,10 @@
         <activity
             android:name=".UI.UserInfoView.UpdateUserInfoDescriptionActivity"
             android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.UserInfoView.UpdateUserInfoAreaActivity"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

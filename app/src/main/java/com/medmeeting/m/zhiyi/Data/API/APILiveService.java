@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.Data.API;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
+import com.medmeeting.m.zhiyi.UI.Entity.BaseArea;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
@@ -536,6 +537,9 @@ public interface APILiveService {
     @GET("/v1/app/hospital/A/getHospitalDetail")
     Observable<HttpResult3<HospitalInfo, Object>> getHospitalInfo(@Query("pojo") String word);
 
+    //GET /v1/open/app/area/{parentId} 获取地区列表信息
+    @GET("/v1/open/app/area/{parentId}")
+    Observable<HttpResult3<BaseArea, Object>> getArea(@Path("parentId") Integer areaId);
 
     /**
      * android版本号

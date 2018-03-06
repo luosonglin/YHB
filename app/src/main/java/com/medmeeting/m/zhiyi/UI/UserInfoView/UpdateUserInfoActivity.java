@@ -137,7 +137,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 des.setText(data.getEntity().getDes());
                 city.setText(data.getEntity().getCity());
 
-                /*switch (data.getEntity().getMedical()) {
+                switch (data.getEntity().getMedical()) {
                     case "ASSOCIATION": //医疗协会
                         code1.setVisibility(View.GONE);
                         code2.setVisibility(View.VISIBLE);
@@ -168,7 +168,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                         code2.setVisibility(View.GONE);
                         code3.setVisibility(View.GONE);
                         break;
-                }*/
+                }
                 hospital.setText(data.getEntity().getCompany());
                 department.setText(data.getEntity().getDepartment());
                 title.setText(data.getEntity().getTitle());
@@ -205,6 +205,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(UpdateUserInfoActivity.this, UpdateUserInfoDescriptionActivity.class), 2);
                 break;
             case R.id.city:
+                startActivityForResult(new Intent(UpdateUserInfoActivity.this, UpdateUserInfoAreaActivity.class), 3);
                 break;
             case R.id.hospital:
                 break;
@@ -246,6 +247,11 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             } else if (requestCode == 2) {
                 if (resultCode == 2) {
                     des.setText(data.getExtras().getString("des"));
+                    return;
+                }
+            }else if (requestCode == 3) {
+                if (resultCode == 3) {
+                    city.setText(data.getExtras().getString("area"));
                     return;
                 }
             }

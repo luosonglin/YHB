@@ -133,6 +133,7 @@
     <string name="title_activity_update_user_info_nick_name">UpdateUserInfoNickNameActivity</string>
     <string name="title_activity_update_user_info_description">UpdateUserInfoDescriptionActivity
     </string>
+    <string name="title_activity_update_user_info_area">UpdateUserInfoAreaActivity</string>
 
 
 </resources>

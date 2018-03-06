@@ -12,6 +12,7 @@ import com.medmeeting.m.zhiyi.Data.Retrofit.RetrofitUtils;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.AddVideoCommentEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.AdminEventActive;
+import com.medmeeting.m.zhiyi.UI.Entity.BaseArea;
 import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
@@ -743,6 +744,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetHospitalInfo(Observer<HttpResult3<HospitalInfo, Object>> observer, String word) {
         Observable observable = service_live.getHospitalInfo(word);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetArea(Observer<HttpResult3<BaseArea, Object>> observer, Integer areaId) {
+        Observable observable = service_live.getArea(areaId);
         setSubscribe(observable, observer);
     }
 
