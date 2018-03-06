@@ -35,8 +35,14 @@ public class UserGetInfoEntity {
      * medical : ASSOCIATION
      * tobPortStatus :
      * tocPortStatus : done_activation
+     * "provinceName": "北京",
+     * "cityName": "东城",
+     * "countyName": null,
      */
 
+    private String provinceName;
+    private String cityName;
+    private String countyName;
     private int id;
     private String userPic;
     private String name;
@@ -62,6 +68,30 @@ public class UserGetInfoEntity {
     private String medical; //用户身份CODE
     private String tobPortStatus;
     private String tocPortStatus;
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
+    }
 
     public int getId() {
         return id;

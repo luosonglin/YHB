@@ -135,7 +135,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 name.setText(data.getEntity().getName());
                 nickname.setText(data.getEntity().getNickName());
                 des.setText(data.getEntity().getDes());
-                city.setText(data.getEntity().getCity());
+                city.setText(data.getEntity().getProvinceName() + " - " + data.getEntity().getCityName());
 
                 switch (data.getEntity().getMedical()) {
                     case "ASSOCIATION": //医疗协会
@@ -223,6 +223,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             case R.id.year:
                 break;
             case R.id.sex:
+                showSexPopupwindow();
                 break;
             case R.id.activate_save:
                 break;
@@ -249,7 +250,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                     des.setText(data.getExtras().getString("des"));
                     return;
                 }
-            }else if (requestCode == 3) {
+            } else if (requestCode == 3) {
                 if (resultCode == 3) {
                     city.setText(data.getExtras().getString("area"));
                     return;
@@ -320,6 +321,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                                 Glide.with(UpdateUserInfoActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .transform(new GlideCircleTransform(UpdateUserInfoActivity.this))
                                         .into(avatar);
 
                                 //run API
@@ -551,6 +553,83 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         ColorDrawable dw = new ColorDrawable(0x00000000);
         eduPopupWindow.setBackgroundDrawable(dw);
         eduPopupWindow.showAtLocation(eduPopupwindowView, Gravity.BOTTOM, 0, 0);
+    }
+
+    /**
+     * 填写性别的弹出窗
+     */
+    private PopupWindow sexPopupWindow;
+    private String[] sexs = new String[]{"男", "女"};
+    private String mChooseSex = "女"; //用户选择的职称
+
+    private void showSexPopupwindow() {
+        View sexPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
+        sexPopupWindow = new PopupWindow(sexPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        final TextView sexConfirmTv = (TextView) sexPopupwindowView.findViewById(R.id.academic_confirm);
+        sexConfirmTv.setOnClickListener(v -> {
+            sexPopupWindow.dismiss();
+            sex.setText(mChooseSex);
+        });
+
+        NumberPicker eduPicker = (NumberPicker) sexPopupwindowView.findViewById(R.id.academic_picker);
+        final TextView eduDisplayTv = (TextView) sexPopupwindowView.findViewById(R.id.academic_display);
+
+        if (!StringUtils.isEmpty(Arrays.toString(sexs))) {
+            eduPicker.setDisplayedValues(sexs);//test data
+            Log.d("hahaha", sexs.length + "");
+
+            eduPicker.setMinValue(0);
+            if (sexs.length <= 1) {
+                eduPicker.setMaxValue(1);
+            } else {
+                eduPicker.setMaxValue(sexs.length - 1);
+            }
+        } else {
+            eduPicker.setMinValue(0);
+            eduPicker.setDisplayedValues(new String[]{"暂无数据"});
+            eduPicker.setMaxValue(0);
+        }
+
+        eduPicker.setValue(2);
+
+        eduPicker.setWrapSelectorWheel(false); //防止NumberPicker无限滚动
+        eduPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); //禁止NumberPicker输入
+
+        eduPicker.setFocusable(true);
+        eduPicker.setFocusableInTouchMode(true);
+
+        eduPicker.setOnScrollListener((numberPicker, scrollState) -> {
+            if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (numberPicker.getValue() > sexs.length) {
+                    mChooseSex = sexs[sexs.length];
+                } else {
+                    mChooseSex = sexs[eduPicker.getValue()];
+                }
+                Log.d("mChooseEdu", mChooseSex);
+            }
+            eduDisplayTv.setText(mChooseSex);
+        });
+        eduPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                mChooseSex = sexs[numberPicker.getValue()];
+                eduDisplayTv.setText(mChooseSex);
+            }
+        });
+
+
+        LinearLayout eduPopupParentLayout = (LinearLayout) sexPopupwindowView.findViewById(R.id.popup_parent);
+        eduPopupParentLayout.setOnClickListener(v -> {
+            if (sexPopupWindow != null && sexPopupWindow.isShowing()) {
+                sexPopupWindow.dismiss();
+            }
+        });
+
+        sexPopupWindow.setOutsideTouchable(false);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        sexPopupWindow.setBackgroundDrawable(dw);
+        sexPopupWindow.showAtLocation(sexPopupwindowView, Gravity.BOTTOM, 0, 0);
     }
 
 }
