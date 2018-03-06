@@ -47,6 +47,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthenRecord;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.Entity.UserEditEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
@@ -540,6 +541,11 @@ public interface APILiveService {
     //GET /v1/open/app/area/{parentId} 获取地区列表信息
     @GET("/v1/open/app/area/{parentId}")
     Observable<HttpResult3<BaseArea, Object>> getArea(@Path("parentId") Integer areaId);
+
+    //PUT /v1/users/app/edit APP-更新用户信息
+    @PUT("/v1/users/app/edit")
+    Observable<HttpResult3> editUserInfo(@Body UserEditEntity userEditEntity);
+
 
     /**
      * android版本号

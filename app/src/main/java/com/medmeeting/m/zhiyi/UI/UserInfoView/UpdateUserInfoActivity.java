@@ -22,7 +22,9 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserEditEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
+import com.medmeeting.m.zhiyi.UI.MineView.ChooseDepartmentActivity;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.StringUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -88,6 +90,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     LinearLayout code3;
 
     private UserGetInfoEntity userGetInfoEntity;
+    private UserEditEntity userEditEntity = new UserEditEntity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +185,43 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 year.setText(data.getEntity().getEntranceDate());
                 sex.setText(data.getEntity().getSex());
                 email.setText(data.getEntity().getEmail());
+
+                //修改API用的
+                userEditEntity.setUserPic(data.getEntity().getUserPic());
+                userEditEntity.setName(data.getEntity().getName());
+                userEditEntity.setNickName(data.getEntity().getNickName());
+                userEditEntity.setDes(data.getEntity().getDes());
+                userEditEntity.setCity(data.getEntity().getCity());
+                switch (data.getEntity().getMedical()) {
+                    case "ASSOCIATION": //医疗协会
+                        userEditEntity.setCompany(data.getEntity().getCompany());
+                        userEditEntity.setPostion(data.getEntity().getPostion());
+                        break;
+                    case "MEDICAL_STAFF": //医护人员
+                        userEditEntity.setCompany(data.getEntity().getCompany());
+                        userEditEntity.setDepartment(data.getEntity().getDepartment());
+                        userEditEntity.setTitle(data.getEntity().getTitle());
+                        userEditEntity.setPostion(data.getEntity().getPostion());
+                        break;
+                    case "MEDICAL_COMPANY": //药械企业
+                        userEditEntity.setCompany(data.getEntity().getCompany());
+                        userEditEntity.setDepartment(data.getEntity().getDepartment());
+                        userEditEntity.setPostion(data.getEntity().getPostion());
+                        break;
+                    case "MEDICO": //医学生
+                        userEditEntity.setCompany(data.getEntity().getCompany());
+                        userEditEntity.setDepartment(data.getEntity().getDepartment());
+                        userEditEntity.setDiploma(data.getEntity().getDiploma());
+                        userEditEntity.setEntranceDate(data.getEntity().getEntranceDate());
+                        break;
+                    case "EDUCATION_SCIENCE": //医药教科研人员
+                        userEditEntity.setCompany(data.getEntity().getCompany());
+                        userEditEntity.setDepartment(data.getEntity().getDepartment());
+                        userEditEntity.setPostion(data.getEntity().getPostion());
+                        break;
+                }
+                userEditEntity.setSex(data.getEntity().getSex());
+                userEditEntity.setEmail(data.getEntity().getEmail());
             }
         });
     }
@@ -210,6 +250,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             case R.id.hospital:
                 break;
             case R.id.department:
+                startActivityForResult(new Intent(UpdateUserInfoActivity.this, ChooseDepartmentActivity.class), 0);
                 break;
             case R.id.title:
                 showPositionPopupwindow();
@@ -226,6 +267,26 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 showSexPopupwindow();
                 break;
             case R.id.activate_save:
+                HttpData.getInstance().HttpDataEditUserInfo(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(UpdateUserInfoActivity.this, e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(UpdateUserInfoActivity.this, data.getMsg());
+                            return;
+                        }
+                        onResume();
+                    }
+                }, userEditEntity);
                 break;
         }
     }
@@ -239,7 +300,13 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         List<String> photos = null;
         if (data != null) {
 
-            if (requestCode == 1) {
+            if (requestCode == 0) {
+                if (resultCode == 0) {
+                    department.setText(data.getExtras().getString("department"));
+                    return;
+                }
+
+            } else if (requestCode == 1) {
                 if (resultCode == 1) {
                     nickname.setText(data.getExtras().getString("nickname"));
                     return;
@@ -264,8 +331,6 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             ToastUtils.show(UpdateUserInfoActivity.this, "正在上传封面图片...");
             getQiniuToken(photos.get(0));
         }
-
-
     }
 
     private String qiniuKey;
@@ -325,7 +390,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                                         .into(avatar);
 
                                 //run API
-                                userGetInfoEntity.setUserPic("http://ono5ms5i0.bkt.clouddn.com/" + key1);
+                                userEditEntity.setUserPic("http://ono5ms5i0.bkt.clouddn.com/" + key1);
 
                             } else {
                                 ToastUtils.show(UpdateUserInfoActivity.this, "qiniu " + "Upload Fail " + info);

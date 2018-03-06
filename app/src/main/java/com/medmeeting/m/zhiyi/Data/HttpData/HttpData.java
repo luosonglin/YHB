@@ -64,6 +64,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthenRecord;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.Entity.UserEditEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
@@ -749,6 +750,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetArea(Observer<HttpResult3<BaseArea, Object>> observer, Integer areaId) {
         Observable observable = service_live.getArea(areaId);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataEditUserInfo(Observer<HttpResult3> observer, UserEditEntity userEditEntity) {
+        Observable observable = service_live.editUserInfo(userEditEntity);
         setSubscribe(observable, observer);
     }
 

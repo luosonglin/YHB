@@ -358,7 +358,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        ToastUtils.show(LiveUpdateProgramActivity.this, e.getMessage());
                     }
 
                     @Override
