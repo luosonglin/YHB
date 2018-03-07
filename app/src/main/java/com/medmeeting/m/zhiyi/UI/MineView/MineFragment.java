@@ -400,24 +400,31 @@ public class MineFragment extends Fragment {
                                     ToastUtils.show(getActivity(), data.getMsg());
                                     return;
                                 }
+
+
                                 if (data.getEntity() == null) {
+                                    //从未认证过
                                     Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                    intent.putExtra("Category", "");
+                                    intent.putExtra("CategoryName", "");
                                     startActivity(intent);
                                     return;
-                                }
-                                switch (data.getEntity().getStatus()) {     //认证状态（A:已认证，B:待认证,X:未通过）
-                                    case "A":
-                                        break;
-                                    case "B":
-                                        Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
-                                        intent.putExtra("Category", data.getEntity().getCategory());
-                                        intent.putExtra("CategoryName", data.getEntity().getCategoryName());
-                                        startActivity(intent);
-                                        break;
-                                    case "X":
-                                        Intent intent3 = new Intent(getActivity(), AuthorizedActivity.class);
-                                        startActivity(intent3);
-                                        break;
+                                } else {
+                                    //认证过
+                                    switch (data.getEntity().getStatus()) {     //认证状态（A:已认证，B:待认证,X:未通过）
+                                        case "A":
+                                            break;
+                                        case "B":
+                                            Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                            intent.putExtra("Category", data.getEntity().getCategory());
+                                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+                                            startActivity(intent);
+                                            break;
+                                        case "X":
+                                            Intent intent3 = new Intent(getActivity(), AuthorizedActivity.class);
+                                            startActivity(intent3);
+                                            break;
+                                    }
                                 }
                             }
                         });

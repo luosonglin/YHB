@@ -231,6 +231,7 @@ public class SettingActivity extends AppCompatActivity {
             Data.clearUserId();
             Data.clearPayType();
             Data.clearSession();
+            Data.clearPhone();
             SharedPreferencesMgr.clearAll();
             finish();
             startActivity(new Intent(SettingActivity.this, LoginActivity.class));

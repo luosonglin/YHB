@@ -178,7 +178,7 @@ public class Data {
     /**
      * 手机号
      */
-    public static String phone;
+    public static String phone = "";
 
     public static String getPhone() {
         return phone;
@@ -186,5 +186,9 @@ public class Data {
 
     public static void setPhone(String phone) {
         Data.phone = phone;
+    }
+
+    public static void clearPhone() {
+        Data.phone="";
     }
 }

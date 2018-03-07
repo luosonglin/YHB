@@ -23,7 +23,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IdentityTypeAdapter;
@@ -31,9 +30,11 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
+import com.snappydb.SnappydbException;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import java.text.SimpleDateFormat;
@@ -151,12 +152,28 @@ public class AuthorizeActivity extends AppCompatActivity {
         authorize4.setVisibility(View.GONE);
         authorize5.setVisibility(View.GONE);
 
-        phone.setText(Data.getPhone());
-        identityName.setText(getIntent().getExtras().getString("CategoryName"));
+//        phone.setText(Data.getPhone());
+        try {
+            phone.setText(DBUtils.get(AuthorizeActivity.this, "phone"));
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+        phone.setFocusable(false);
+        phone.setFocusableInTouchMode(false);
 
-        Category = getIntent().getExtras().getString("Category");
-        userAddAuthenEntity.setCategory(Category);
-        userAddAuthenEntity.setCategoryName(getIntent().getExtras().getString("CategoryName"));
+        if (getIntent().getExtras().getString("CategoryName").equals("")) {
+            //从未认证过
+            identityName.setText("医疗协会");
+            Category = "ASSOCIATION";
+            userAddAuthenEntity.setCategory(Category);
+            userAddAuthenEntity.setCategoryName("医疗协会");
+        } else {
+            //已认证过
+            identityName.setText(getIntent().getExtras().getString("CategoryName"));
+            Category = getIntent().getExtras().getString("Category");
+            userAddAuthenEntity.setCategory(Category);
+            userAddAuthenEntity.setCategoryName(getIntent().getExtras().getString("CategoryName"));
+        }
     }
 
     private void toolBar() {
@@ -181,10 +198,12 @@ public class AuthorizeActivity extends AppCompatActivity {
                 if (name.getText().toString().trim().equals("")) {
                     ToastUtils.show(AuthorizeActivity.this, "姓名不能为空");
                     return;
-                } else if (phone.getText().toString().trim().equals("")) {
-                    ToastUtils.show(AuthorizeActivity.this, "手机号不能为空");
-                    return;
-                } else if (email.getText().toString().trim().equals("")) {
+                }
+//                else if (phone.getText().toString().trim().equals("")) {
+//                    ToastUtils.show(AuthorizeActivity.this, "手机号不能为空");
+//                    return;
+//                }
+                else if (email.getText().toString().trim().equals("")) {
                     ToastUtils.show(AuthorizeActivity.this, "邮箱不能为空");
                     return;
                 } else if (identityName.getText().toString().trim().equals("")) {

@@ -666,6 +666,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
                         try {
                             DBUtils.put(LoginActivity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
+                            DBUtils.put(LoginActivity.this, "phone", mPhone);
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
@@ -738,6 +739,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
                         try {
                             DBUtils.put(LoginActivity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
+                            DBUtils.put(LoginActivity.this, "phone", mPhone);
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
