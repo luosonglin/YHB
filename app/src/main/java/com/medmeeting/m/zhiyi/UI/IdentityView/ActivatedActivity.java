@@ -41,7 +41,10 @@ public class ActivatedActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.apply_authorization:
-                startActivity(new Intent(ActivatedActivity.this, AuthorizeActivity.class));
+                Intent intent = new Intent(ActivatedActivity.this, AuthorizeActivity.class);
+                intent.putExtra("Category", "");
+                intent.putExtra("CategoryName", "");
+                startActivity(intent);
                 break;
         }
     }

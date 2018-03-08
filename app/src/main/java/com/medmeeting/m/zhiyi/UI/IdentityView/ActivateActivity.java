@@ -232,12 +232,11 @@ public class ActivateActivity extends AppCompatActivity {
                                     }
                                 });
 
-
                                 mQuickAdapter.setNewData(data.getData());
                                 hospitalPopupWindow.showAsDropDown(activate_2);
+                                //重点
                                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                                    hospital.setText(data.getData().get(position).getHsName());
-
+                                    hospital.setText(data.getData().get(position).getHsName());''
 
                                     if (hospitalPopupWindow.isShowing())
                                         hospitalPopupWindow.dismiss();
