@@ -139,6 +139,9 @@ public class ActivateActivity extends AppCompatActivity {
     }
 
 
+    //医院弹窗次数
+    int tag = 0;
+
     @OnClick({R.id.activate1, R.id.activate2, R.id.department2, R.id.position2, R.id.title2, R.id.activate3, R.id.activate4, R.id.activate5, R.id.activate6, R.id.activate_save})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -201,51 +204,60 @@ public class ActivateActivity extends AppCompatActivity {
 
                         ColorDrawable dw = new ColorDrawable(0x00000000);
                         hospitalPopupWindow.setBackgroundDrawable(dw);
-                        hospitalPopupWindow.setOutsideTouchable(false); //外部是否可以点击
+                        hospitalPopupWindow.setOutsideTouchable(true); //外部是否可以点击
                     }
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //获取数据
-                        HttpData.getInstance().HttpDataGetHospitalInfo(new Observer<HttpResult3<HospitalInfo, Object>>() {
-                            @Override
-                            public void onCompleted() {
+                        if (charSequence.toString().trim().equals("")) {
+                            tag = 0;
+                            return;
+                        }
+                        if (tag == 0) {
+                            HttpData.getInstance().HttpDataGetHospitalInfo(new Observer<HttpResult3<HospitalInfo, Object>>() {
+                                @Override
+                                public void onCompleted() {
 
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(HttpResult3<HospitalInfo, Object> data) {
-                                if (!data.getStatus().equals("success")) {
-                                    ToastUtils.show(ActivateActivity.this, data.getMsg());
-                                    return;
                                 }
 
-                                LinearLayout hospitalPopupParentLayout = (LinearLayout) hospitalPopupwindowView.findViewById(R.id.popup_parent);
-                                hospitalPopupParentLayout.setOnClickListener(v -> {
-                                    if (hospitalPopupWindow != null && hospitalPopupWindow.isShowing()) {
-                                        hospitalPopupWindow.dismiss();
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onNext(HttpResult3<HospitalInfo, Object> data) {
+                                    if (!data.getStatus().equals("success")) {
+                                        ToastUtils.show(ActivateActivity.this, data.getMsg());
+                                        return;
                                     }
-                                });
 
-                                mQuickAdapter.setNewData(data.getData());
-                                hospitalPopupWindow.showAsDropDown(activate_2);
-                                //重点
-                                mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                                    hospital.setText(data.getData().get(position).getHsName());''
+//                                LinearLayout hospitalPopupParentLayout = (LinearLayout) hospitalPopupwindowView.findViewById(R.id.popup_parent);
+//                                hospitalPopupParentLayout.setOnClickListener(v -> {
+//                                    if (hospitalPopupWindow != null && hospitalPopupWindow.isShowing()) {
+//                                        hospitalPopupWindow.dismiss();
+//                                    }
+//                                });
 
-                                    if (hospitalPopupWindow.isShowing())
-                                        hospitalPopupWindow.dismiss();
-                                    else
+
+                                    mQuickAdapter.setNewData(data.getData());
+                                    Log.e(getLocalClassName(), "000 " + hospitalPopupWindow.isShowing());
+                                    if (!hospitalPopupWindow.isShowing()) {
                                         hospitalPopupWindow.showAsDropDown(activate_2);
-                                });
-
-                            }
-                        }, charSequence.toString());
+                                        Log.e(getLocalClassName(), "aaa");
+                                    } else {
+                                        Log.e(getLocalClassName(), "bbb");
+                                    }
+                                    Log.e(getLocalClassName(), "111 " + hospitalPopupWindow.isShowing());
+                                    //重点
+                                    mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                                        tag++;
+                                        hospital.setText(data.getData().get(position).getHsName());
+                                    });
+                                }
+                            }, charSequence.toString());
+                        }
 
                     }
 
