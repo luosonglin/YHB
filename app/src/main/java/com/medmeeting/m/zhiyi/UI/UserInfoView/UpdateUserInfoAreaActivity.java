@@ -31,7 +31,10 @@ public class UpdateUserInfoAreaActivity extends AppCompatActivity {
     RecyclerView rvList2;
 
     private BaseQuickAdapter mQuickAdapter, mQuickAdapter2;
-    private String city;
+    private int province;
+    private String provinceName;
+    private int city;
+    private String cityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,14 +115,23 @@ public class UpdateUserInfoAreaActivity extends AppCompatActivity {
                     mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                         rvList.setVisibility(View.GONE);
                         rvList2.setVisibility(View.VISIBLE);
-                        city = data.getData().get(position).getName();
+
+                        province = data.getData().get(position).getBaseAreaid();
+                        provinceName = data.getData().get(position).getName();
                         getAreaService(data.getData().get(position).getBaseAreaid());
                     });
                 } else {
                     mQuickAdapter2.setNewData(data.getData());
                     mQuickAdapter2.setOnRecyclerViewItemClickListener((view, position) -> {
+
+                        city = data.getData().get(position).getBaseAreaid();
+                        cityName = data.getData().get(position).getName();
+
                         Intent intent = new Intent();
-                        intent.putExtra("area", city + " - " + data.getData().get(position).getName());
+                        intent.putExtra("province", province);
+                        intent.putExtra("provinceName", provinceName);
+                        intent.putExtra("city", city);
+                        intent.putExtra("cityName", cityName);
                         UpdateUserInfoAreaActivity.this.setResult(3, intent);
                         finish();
                     });

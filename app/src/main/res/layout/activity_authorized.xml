@@ -33,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="资料提交成功"
+                    android:text="资料提交状态"
                     android:textColor="@color/black" />
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
@@ -78,9 +78,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
-                android:text="  您的医会宝认证申请已提交"
+                android:text=""
                 android:gravity="center_vertical"
-                android:drawableStart="@drawable/authorize_status"
                 android:textColor="@color/black"
                 android:textSize="16dp" />
 

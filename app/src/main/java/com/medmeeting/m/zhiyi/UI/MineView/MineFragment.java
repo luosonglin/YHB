@@ -114,6 +114,8 @@ public class MineFragment extends Fragment {
 
     private String authenStatus = "";
 
+    private String code = ""; //身份类型
+
     // 记录首次按下位置
     private float mFirstPosition = 0;
     // 是否正在放大
@@ -242,7 +244,8 @@ public class MineFragment extends Fragment {
                             activate.setText("待激活");
                             break;
                         case "done_activation":
-                            activate.setText("已激活");
+                            activate.setText("未认证");//已激活
+                            code = data.getEntity().getMedical();
                             break;
                         case "done_authen":
                             activate.setText("已认证");
@@ -382,7 +385,7 @@ public class MineFragment extends Fragment {
                         intent = new Intent(getActivity(), ActivateActivity.class);
                         startActivity(intent);
                         break;
-                    case "已激活":     //跳认证页
+                    case "未认证":     //跳认证页
                         HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
                             @Override
                             public void onCompleted() {
@@ -405,8 +408,25 @@ public class MineFragment extends Fragment {
                                 if (data.getEntity() == null) {
                                     //从未认证过
                                     Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
-                                    intent.putExtra("Category", "");
-                                    intent.putExtra("CategoryName", "");
+                                    if(code.equals("OTHER")) code="ASSOCIATION"; //回到默认值，传参
+                                    intent.putExtra("Category", code);
+                                    switch (code) {
+                                        case "ASSOCIATION":
+                                            intent.putExtra("CategoryName", "医疗协会");
+                                            break;
+                                        case "MEDICAL_STAFF":
+                                            intent.putExtra("CategoryName", "医护人员");
+                                            break;
+                                        case "MEDICAL_COMPANY":
+                                            intent.putExtra("CategoryName", "药械企业");
+                                            break;
+                                        case "MEDICO":
+                                            intent.putExtra("CategoryName", "医学生");
+                                            break;
+                                        case "EDUCATION_SCIENCE":
+                                            intent.putExtra("CategoryName", "医药教科研人员");
+                                            break;
+                                    }
                                     startActivity(intent);
                                     return;
                                 } else {

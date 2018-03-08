@@ -32,7 +32,9 @@ import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -262,6 +264,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 showEduPopupwindow();
                 break;
             case R.id.year:
+                showYearPopupwindow();
                 break;
             case R.id.sex:
                 showSexPopupwindow();
@@ -303,23 +306,28 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
             if (requestCode == 0) {
                 if (resultCode == 0) {
                     department.setText(data.getExtras().getString("department"));
+                    userEditEntity.setDepartment(data.getExtras().getString("department"));
                     return;
                 }
 
             } else if (requestCode == 1) {
                 if (resultCode == 1) {
                     nickname.setText(data.getExtras().getString("nickname"));
+                    userEditEntity.setNickName(data.getExtras().getString("nickname"));
                     return;
                 }
 
             } else if (requestCode == 2) {
                 if (resultCode == 2) {
                     des.setText(data.getExtras().getString("des"));
+                    userEditEntity.setDes(data.getExtras().getString("des"));
                     return;
                 }
             } else if (requestCode == 3) {
                 if (resultCode == 3) {
-                    city.setText(data.getExtras().getString("area"));
+                    city.setText(data.getExtras().getString("provinceName") + " - " + data.getExtras().getString("cityName"));
+                    userEditEntity.setProvince(data.getExtras().getInt("province") + "");
+                    userEditEntity.setCity(data.getExtras().getInt("city") + "");
                     return;
                 }
             }
@@ -695,6 +703,90 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         ColorDrawable dw = new ColorDrawable(0x00000000);
         sexPopupWindow.setBackgroundDrawable(dw);
         sexPopupWindow.showAtLocation(sexPopupwindowView, Gravity.BOTTOM, 0, 0);
+    }
+
+    /**
+     * 填写入学年份的弹出窗
+     */
+    private PopupWindow yearPopupWindow;
+    private List<String> yearls = new ArrayList<>();
+    private String mChooseYear = (Calendar.getInstance().get(Calendar.YEAR) - 3) + ""; //用户选择的职称
+
+    private void showYearPopupwindow() {
+        for (int i = Calendar.getInstance().get(Calendar.YEAR); i > Calendar.getInstance().get(Calendar.YEAR) - 100; i--) {
+            yearls.add(i + "");
+        }
+        String[] years = yearls.toArray(new String[yearls.size()]);
+
+
+        View yearPopupwindowView = LayoutInflater.from(this).inflate(R.layout.popupwindow_choose_academic, null);
+        yearPopupWindow = new PopupWindow(yearPopupwindowView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        final TextView yearConfirmTv = (TextView) yearPopupwindowView.findViewById(R.id.academic_confirm);
+        yearConfirmTv.setOnClickListener(v -> {
+            yearPopupWindow.dismiss();
+            year.setText(mChooseYear);
+            userEditEntity.setEntranceDate(mChooseYear);
+        });
+
+        NumberPicker yearPicker = (NumberPicker) yearPopupwindowView.findViewById(R.id.academic_picker);
+        final TextView yearDisplayTv = (TextView) yearPopupwindowView.findViewById(R.id.academic_display);
+
+        if (!StringUtils.isEmpty(Arrays.toString(years))) {
+            yearPicker.setDisplayedValues(years);//test data
+            Log.d("hahaha", years.length + "");
+
+            yearPicker.setMinValue(0);
+            if (years.length <= 1) {
+                yearPicker.setMaxValue(1);
+            } else {
+                yearPicker.setMaxValue(years.length - 1);
+            }
+        } else {
+            yearPicker.setMinValue(0);
+            yearPicker.setDisplayedValues(new String[]{"暂无数据"});
+            yearPicker.setMaxValue(0);
+        }
+
+        yearPicker.setValue(2);
+
+        yearPicker.setWrapSelectorWheel(false); //防止NumberPicker无限滚动
+        yearPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS); //禁止NumberPicker输入
+
+        yearPicker.setFocusable(true);
+        yearPicker.setFocusableInTouchMode(true);
+
+        yearPicker.setOnScrollListener((numberPicker, scrollState) -> {
+            if (scrollState == NumberPicker.OnScrollListener.SCROLL_STATE_IDLE) {
+                if (numberPicker.getValue() > years.length) {
+                    mChooseYear = years[years.length];
+                } else {
+                    mChooseYear = years[yearPicker.getValue()];
+                }
+                Log.d("mChooseEdu", mChooseYear);
+            }
+            yearDisplayTv.setText(mChooseYear);
+        });
+        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                mChooseYear = years[numberPicker.getValue()];
+                yearDisplayTv.setText(mChooseYear);
+            }
+        });
+
+
+        LinearLayout yearPopupParentLayout = (LinearLayout) yearPopupwindowView.findViewById(R.id.popup_parent);
+        yearPopupParentLayout.setOnClickListener(v -> {
+            if (yearPopupWindow != null && yearPopupWindow.isShowing()) {
+                yearPopupWindow.dismiss();
+            }
+        });
+
+        yearPopupWindow.setOutsideTouchable(false);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        yearPopupWindow.setBackgroundDrawable(dw);
+        yearPopupWindow.showAtLocation(yearPopupwindowView, Gravity.BOTTOM, 0, 0);
     }
 
 }

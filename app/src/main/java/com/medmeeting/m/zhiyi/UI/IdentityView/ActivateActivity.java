@@ -441,7 +441,10 @@ public class ActivateActivity extends AppCompatActivity {
                                 ToastUtils.show(ActivateActivity.this, data.getMsg());
                                 return;
                             }
-                            startActivity(new Intent(ActivateActivity.this, ActivatedActivity.class));
+                            Intent intent =  new Intent(ActivateActivity.this, ActivatedActivity.class);
+                            intent.putExtra("code", userAddActivationEntity.getIdentityCode());
+                            intent.putExtra("title", userAddActivationEntity.getIdentityTitle());
+                            startActivity(intent);
                             finish();
                         }
                     }, userAddActivationEntity);

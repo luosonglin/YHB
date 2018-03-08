@@ -316,6 +316,8 @@ public class AuthorizeActivity extends AppCompatActivity {
                 identity1.setVisibility(View.GONE);
                 identity2.setVisibility(View.GONE);
                 identity3.setVisibility(View.VISIBLE);
+
+                chooseWorkPhotoType(Category);
                 break;
             case R.id.next22:
                 identity1.setVisibility(View.VISIBLE);
@@ -577,48 +579,6 @@ public class AuthorizeActivity extends AppCompatActivity {
             checkBox7.setVisibility(View.GONE);
         }
 
-        checkBox1.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                material.setText(checkBox1.getText().toString().trim());
-                userAddAuthenEntity.setWorkPhotoType(checkBox1.getText().toString().trim());
-            }
-        });
-        checkBox2.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                material.setText(checkBox2.getText().toString().trim());
-                userAddAuthenEntity.setWorkPhotoType(checkBox2.getText().toString().trim());
-            }
-        });
-        checkBox3.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                material.setText(checkBox3.getText().toString().trim());
-                userAddAuthenEntity.setWorkPhotoType(checkBox3.getText().toString().trim());
-            }
-        });
-        checkBox4.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                material.setText(checkBox4.getText().toString().trim());
-                userAddAuthenEntity.setWorkPhotoType(checkBox4.getText().toString().trim());
-            }
-        });
-        checkBox5.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                material.setText(checkBox5.getText().toString().trim());
-                userAddAuthenEntity.setWorkPhotoType(checkBox5.getText().toString().trim());
-            }
-        });
-        checkBox6.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                material.setText(checkBox6.getText().toString().trim());
-                userAddAuthenEntity.setWorkPhotoType(checkBox6.getText().toString().trim());
-            }
-        });
-        checkBox7.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                material.setText(checkBox7.getText().toString().trim());
-                userAddAuthenEntity.setWorkPhotoType(checkBox7.getText().toString().trim());
-            }
-        });
 
         // 创建PopupWindow对象，指定宽度和高度
         final PopupWindow window = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, 1600);
@@ -626,20 +586,68 @@ public class AuthorizeActivity extends AppCompatActivity {
         window.setAnimationStyle(R.style.popup_window_anim);
         // 设置背景颜色
         window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F8F8F8")));
-
         // 设置可以获取焦点
         window.setFocusable(true);
         // 设置可以触摸弹出框以外的区域
         window.setOutsideTouchable(true);
-
         // 更新popupwindow的状态
         window.update();
         // 以下拉的方式显示，并且可以设置显示的位置
         window.showAtLocation(identityName, Gravity.CENTER, 0, 0);
 
-
         ImageView cancelIv = (ImageView) popupView.findViewById(R.id.cancel);
         cancelIv.setOnClickListener(view -> window.dismiss());
+
+        checkBox1.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                material.setText(checkBox1.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox1.getText().toString().trim());
+                window.dismiss();
+            }
+        });
+        checkBox2.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                material.setText(checkBox2.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox2.getText().toString().trim());
+                window.dismiss();
+            }
+        });
+        checkBox3.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                material.setText(checkBox3.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox3.getText().toString().trim());
+                window.dismiss();
+            }
+        });
+        checkBox4.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                material.setText(checkBox4.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox4.getText().toString().trim());
+                window.dismiss();
+            }
+        });
+        checkBox5.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                material.setText(checkBox5.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox5.getText().toString().trim());
+                window.dismiss();
+            }
+        });
+        checkBox6.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                material.setText(checkBox6.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox6.getText().toString().trim());
+                window.dismiss();
+            }
+        });
+        checkBox7.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                material.setText(checkBox7.getText().toString().trim());
+                userAddAuthenEntity.setWorkPhotoType(checkBox7.getText().toString().trim());
+                window.dismiss();
+            }
+        });
+
     }
 
 

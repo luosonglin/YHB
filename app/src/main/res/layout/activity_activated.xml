@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="去新闻，直播，视频等模块，参与评论点赞，转发；关注大咖" />
+                android:text="去新闻，直播，视频等模块，参与评论点赞，转发，关注大咖" />
 
             <TextView
                 android:id="@+id/back"
