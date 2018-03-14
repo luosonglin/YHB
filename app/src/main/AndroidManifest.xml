@@ -320,7 +320,9 @@
             android:name=".UI.IdentityView.ActivateActivity"
             android:label="@string/title_activity_activate"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+            android:windowSoftInputMode="adjustUnspecified"
+            />
+            <!--android:windowSoftInputMode="adjustUnspecified|stateHidden" />-->
         <!-- android:windowSoftInputMode="adjustResize" /> -->
         <activity
             android:name=".UI.IdentityView.ActivatedActivity"
@@ -346,7 +348,8 @@
         <activity
             android:name=".UI.UserInfoView.UpdateUserInfoAreaActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

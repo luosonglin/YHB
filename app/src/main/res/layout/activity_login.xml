@@ -43,6 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|top"
+                    android:layout_marginTop="10dp"
                     android:padding="10dp"
                     android:text="切换密码登录"
                     android:textColor="@color/grey"
@@ -52,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
-                    android:layout_marginTop="70dp"
+                    android:layout_marginTop="60dp"
                     android:text=" 医会宝 "
                     android:textColor="@color/deepskyblue"
                     android:textSize="40sp" />

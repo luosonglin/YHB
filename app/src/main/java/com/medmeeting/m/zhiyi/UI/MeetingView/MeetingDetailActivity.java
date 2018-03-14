@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.MeetingView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -41,8 +42,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -218,7 +217,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
         // Technical settings
         settings.setAppCacheEnabled(false);  //是否使用缓存
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        settings.setDatabaseEnabled(true);
+        settings.setDatabaseEnabled(true); //启用数据库
         settings.setDomStorageEnabled(true);    //DOM Storage
 
         settings.setSupportMultipleWindows(true);
@@ -226,6 +225,71 @@ public class MeetingDetailActivity extends AppCompatActivity {
         mWebView.setScrollbarFadingEnabled(true);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         mWebView.setDrawingCacheEnabled(true);
+
+
+        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        //启用地理定位
+        settings.setGeolocationEnabled(true);
+        //设置定位的数据库路径
+        settings.setGeolocationDatabasePath(dir);
+        //最重要的方法，一定要设置，这就是出不来的主要原因
+        settings.setDomStorageEnabled(true);
+
+        mWebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onReceivedTitle(android.webkit.WebView view, String title) {
+                Log.d(TAG, "－－－－－－setWebChromeClient ");
+            }
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+            }
+        });
+        mWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                //返回值是true的时候WebView打开，为false则系统浏览器或第三方浏览器打开。
+                //如果要下载页面中的游戏或者继续点击网页中的链接进入下一个网页的话，重写此方法下，不然就会跳到手机自带的浏览器了，而不继续在你这个webview里面展现了
+//                return super.shouldOverrideUrlLoading(view, url);
+                Log.d(TAG, " url:" + url);
+                view.loadUrl(url);// 当打开新链接时，使用当前的 WebView，不会使用系统其他浏览器
+                return true;
+
+//                if(url.contains("http://map.baidu.com/?newmap=")){
+//                    Log.d(TAG, " url包含" + url);
+//                    url=url + "&vt=map&ecom=0";
+//                }
+//                view.loadUrl(url);
+//                return true;
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                //想在页面开始加载时有操作，在这添加
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                //想在页面加载结束时有操作，在这添加
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                //想在收到错误信息的时候，执行一些操作，走此方法
+                super.onReceivedError(view, request, error);
+            }
+
+        });
 
         CookieManager.getInstance().setAcceptCookie(true);
 
@@ -254,51 +318,8 @@ public class MeetingDetailActivity extends AppCompatActivity {
                 break;
         }
         mWebView.loadUrl(URL);
-        Log.e(TAG, URL);
+        Log.e(TAG+" heiheihei ", URL);
 
-        mWebView.addJavascriptInterface(new JSHook(), "SetAndroidJavaScriptBridge");
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onReceivedTitle(android.webkit.WebView view, String title) {
-                Log.d(TAG, "－－－－－－setWebChromeClient ");
-            }
-        });
-        mWebView.setWebViewClient(new WebViewClient() {
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                //返回值是true的时候WebView打开，为false则系统浏览器或第三方浏览器打开。
-                //如果要下载页面中的游戏或者继续点击网页中的链接进入下一个网页的话，重写此方法下，不然就会跳到手机自带的浏览器了，而不继续在你这个webview里面展现了
-//                return super.shouldOverrideUrlLoading(view, url);
-                Log.d(TAG, " url:" + url);
-                view.loadUrl(url);// 当打开新链接时，使用当前的 WebView，不会使用系统其他浏览器
-                return true;
-            }
-
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return super.shouldOverrideUrlLoading(view, request);
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                //想在页面开始加载时有操作，在这添加
-                super.onPageStarted(view, url, favicon);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                //想在页面加载结束时有操作，在这添加
-                super.onPageFinished(view, url);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                //想在收到错误信息的时候，执行一些操作，走此方法
-                super.onReceivedError(view, request, error);
-            }
-
-        });
     }
 
     /**

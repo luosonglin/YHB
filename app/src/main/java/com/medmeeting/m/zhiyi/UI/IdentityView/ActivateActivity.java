@@ -3,7 +3,10 @@ package com.medmeeting.m.zhiyi.UI.IdentityView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,12 +19,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.HospitalAdapter;
@@ -29,11 +34,28 @@ import com.medmeeting.m.zhiyi.UI.Entity.HospitalInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddActivationEntity;
 import com.medmeeting.m.zhiyi.UI.MineView.ChooseDepartmentActivity;
+import com.medmeeting.m.zhiyi.Util.NetworkUtils;
 import com.medmeeting.m.zhiyi.Util.StringUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -111,13 +133,15 @@ public class ActivateActivity extends AppCompatActivity {
 
     private int type = 1;
 
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activate);
         ButterKnife.bind(this);
 
-//        getWindow().setSoftInputMode( WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         toolBar();
 
@@ -127,6 +151,7 @@ public class ActivateActivity extends AppCompatActivity {
         activate_4.setVisibility(View.GONE);
         activate_5.setVisibility(View.GONE);
 
+        recyclerView = (RecyclerView) LayoutInflater.from(ActivateActivity.this).inflate(R.layout.popupwindow_hospital, null).findViewById(R.id.rv_list);
 
     }
 
@@ -138,9 +163,6 @@ public class ActivateActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
-
-    //医院弹窗次数
-    int tag = 0;
 
     @OnClick({R.id.activate1, R.id.activate2, R.id.department2, R.id.position2, R.id.title2, R.id.activate3, R.id.activate4, R.id.activate5, R.id.activate6, R.id.activate_save})
     public void onClick(View view) {
@@ -177,7 +199,7 @@ public class ActivateActivity extends AppCompatActivity {
                 activate_5.setVisibility(View.GONE);
 
                 type = 2;
-
+/*
 
                 //医院弹窗
                 View hospitalPopupwindowView = LayoutInflater.from(ActivateActivity.this).inflate(R.layout.popupwindow_hospital, null);
@@ -197,75 +219,108 @@ public class ActivateActivity extends AppCompatActivity {
                 //将适配器添加到RecyclerView
                 recyclerView.setAdapter(mQuickAdapter);
 
+                ColorDrawable dw = new ColorDrawable(0x00000000);
+                hospitalPopupWindow.setBackgroundDrawable(dw);
+                hospitalPopupWindow.setOutsideTouchable(true); //外部是否可以点击
+
+//                LinearLayout hospitalPopupParentLayout = (LinearLayout) hospitalPopupwindowView.findViewById(R.id.popup_parent);
+//                hospitalPopupParentLayout.setOnClickListener(v -> {
+//                    if (hospitalPopupWindow != null && hospitalPopupWindow.isShowing()) {
+//                        hospitalPopupWindow.dismiss();
+//                    }
+//                });
+
                 //动态跟随键盘输入的监听
                 hospital.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                        ColorDrawable dw = new ColorDrawable(0x00000000);
-                        hospitalPopupWindow.setBackgroundDrawable(dw);
-                        hospitalPopupWindow.setOutsideTouchable(true); //外部是否可以点击
+//                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                        imm.toggleSoftInput(0, InputMethodManager.RESULT_SHOWN);
                     }
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                        Log.e(getLocalClassName(), "000 " + hospitalPopupWindow.isShowing());
+//                        if (!hospitalPopupWindow.isShowing()) {
+                            hospitalPopupWindow.showAsDropDown(activate_2);
+//                            Log.e(getLocalClassName(), "aaa");
+//                        } else {
+//                            Log.e(getLocalClassName(), "bbb");
+//                        }
+//                        Log.e(getLocalClassName(), "111 " + hospitalPopupWindow.isShowing());
+
+
+
                         //获取数据
-                        if (charSequence.toString().trim().equals("")) {
-                            tag = 0;
-                            return;
-                        }
-                        if (tag == 0) {
-                            HttpData.getInstance().HttpDataGetHospitalInfo(new Observer<HttpResult3<HospitalInfo, Object>>() {
-                                @Override
-                                public void onCompleted() {
+                        HttpData.getInstance().HttpDataGetHospitalInfo(new Observer<HttpResult3<HospitalInfo, Object>>() {
+                            @Override
+                            public void onCompleted() {
 
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<HospitalInfo, Object> data) {
+                                if (!data.getStatus().equals("success")) {
+                                    ToastUtils.show(ActivateActivity.this, data.getMsg());
+                                    return;
                                 }
 
-                                @Override
-                                public void onError(Throwable e) {
-
+                                if (data.getData().get(0).getHsName().equals(hospital.getText().toString().trim())) {
+                                    hospitalPopupWindow.dismiss();
+                                    return;
                                 }
 
-                                @Override
-                                public void onNext(HttpResult3<HospitalInfo, Object> data) {
-                                    if (!data.getStatus().equals("success")) {
-                                        ToastUtils.show(ActivateActivity.this, data.getMsg());
-                                        return;
-                                    }
+                                mQuickAdapter.setNewData(data.getData());
+                                //重点
+                                mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                                    hospital.setText(data.getData().get(position).getHsName());
+                                });
 
-//                                LinearLayout hospitalPopupParentLayout = (LinearLayout) hospitalPopupwindowView.findViewById(R.id.popup_parent);
-//                                hospitalPopupParentLayout.setOnClickListener(v -> {
-//                                    if (hospitalPopupWindow != null && hospitalPopupWindow.isShowing()) {
-//                                        hospitalPopupWindow.dismiss();
-//                                    }
-//                                });
+                                hospital.setCursorVisible(true);
+                                hospital.jumpDrawablesToCurrentState();
 
-
-                                    mQuickAdapter.setNewData(data.getData());
-                                    Log.e(getLocalClassName(), "000 " + hospitalPopupWindow.isShowing());
-                                    if (!hospitalPopupWindow.isShowing()) {
-                                        hospitalPopupWindow.showAsDropDown(activate_2);
-                                        Log.e(getLocalClassName(), "aaa");
-                                    } else {
-                                        Log.e(getLocalClassName(), "bbb");
-                                    }
-                                    Log.e(getLocalClassName(), "111 " + hospitalPopupWindow.isShowing());
-                                    //重点
-                                    mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                                        tag++;
-                                        hospital.setText(data.getData().get(position).getHsName());
-                                    });
-                                }
-                            }, charSequence.toString());
-                        }
-
+                            }
+                        }, charSequence.toString());
                     }
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        hospitalPopupWindow.dismiss();
+//                        hospitalPopupWindow.dismiss();
+                    }
+                });*/
+                hospital.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (!charSequence.toString().trim().equals("")) {
+                            initPopWindow();
+                            new ShowPopwindow().execute(charSequence.toString().trim());
+                            hospitalPopupWindow.setFocusable(true);
+                            ColorDrawable dw = new ColorDrawable(0x00000000);
+                            hospitalPopupWindow.setBackgroundDrawable(dw);
+                            hospitalPopupWindow.setOutsideTouchable(true); //外部是否可以点击
+
+                            hospitalPopupWindow.showAsDropDown(activate_2);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
                     }
                 });
+
+
                 break;
             case R.id.department2:
                 Intent intent = new Intent(ActivateActivity.this, ChooseDepartmentActivity.class);
@@ -441,7 +496,7 @@ public class ActivateActivity extends AppCompatActivity {
                                 ToastUtils.show(ActivateActivity.this, data.getMsg());
                                 return;
                             }
-                            Intent intent =  new Intent(ActivateActivity.this, ActivatedActivity.class);
+                            Intent intent = new Intent(ActivateActivity.this, ActivatedActivity.class);
                             intent.putExtra("code", userAddActivationEntity.getIdentityCode());
                             intent.putExtra("title", userAddActivationEntity.getIdentityTitle());
                             startActivity(intent);
@@ -611,4 +666,138 @@ public class ActivateActivity extends AppCompatActivity {
     }
 
 
+    private class ShowPopwindow extends AsyncTask<String, Void, List<HospitalInfo>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        protected List<HospitalInfo> doInBackground(String... strings) {
+            if (NetworkUtils.isNetworkConnected(ActivateActivity.this)) {
+                //获取数据
+                return getHospitalService(strings[0]);
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(List<HospitalInfo> hospitalInfos) {
+
+            Log.e(getLocalClassName(), hospitalInfos.size() + " onPostExecute");
+            if (hospitalInfos != null) {
+                //设置适配器
+                BaseQuickAdapter mQuickAdapter = new HospitalAdapter(R.layout.item_hospital, hospitalInfos);
+                //设置RecyclerView的显示模式  当前List模式
+                recyclerView.setLayoutManager(new LinearLayoutManager(ActivateActivity.this));
+                //如果Item高度固定  增加该属性能够提高效率
+                recyclerView.setHasFixedSize(true);
+                //分割线
+                recyclerView.addItemDecoration(new DividerItemDecoration(ActivateActivity.this, DividerItemDecoration.VERTICAL));
+                //设置加载动画
+                mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+                //将适配器添加到RecyclerView
+                recyclerView.setAdapter(mQuickAdapter);
+                Log.e(getLocalClassName(), mQuickAdapter.getData().size() + " initPopWindow mQuickAdapter");
+
+                //重点
+                mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    hospital.setText(hospitalInfos.get(position).getHsName());
+                });
+                Log.e(getLocalClassName(), mQuickAdapter.getData().size() + " mQuickAdapter");
+
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private List<HospitalInfo> getHospitalService(String word) {
+        List<HospitalInfo> hospitalInfoList = new ArrayList<>();
+
+        try {
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(Constant.API_SERVER_LIVE_TEST + "/v1/app/hospital/A/getHospitalDetail?pojo=" + word);
+            HttpResponse response = httpClient.execute(httpGet);
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            //HttpURLConnection.HTTP_OK即200响应码
+            if (statusCode == HttpURLConnection.HTTP_OK) {
+                InputStream ins = response.getEntity().getContent();
+
+                //将输入流转换成字符串
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int len = 0;
+                while ((len = ins.read(buffer)) != -1) {
+                    baos.write(buffer, 0, len);
+                }
+                String jsonString = baos.toString();
+                baos.close();
+                ins.close();
+
+                String data = null;
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonString);//json就是JSON字符串
+                    Iterator iterator = jsonObject.keys();
+                    while (iterator.hasNext()) {
+                        String key = (String) iterator.next();
+                        String value = jsonObject.getString(key);
+                        Log.e(getLocalClassName(), "key=" + key + "\tvalue=" + value);//键值对key value
+
+                        if (key.equals("data")) {
+                            data = jsonObject.getString("data");
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //转换成json数据处理
+                JSONArray jsonArray = new JSONArray(data);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    HospitalInfo hospitalInfo = new HospitalInfo();
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    hospitalInfo.setHsId(jsonObject.getInt("hsId"));
+                    hospitalInfo.setHsAddress(jsonObject.getString("hsAddress"));
+                    hospitalInfo.setHsCity(jsonObject.getString("hsCity"));
+                    hospitalInfo.setHsName(jsonObject.getString("hsName"));
+                    hospitalInfo.setHsProvince(jsonObject.getString("hsProvince"));
+//                    hospitalInfo.setSelectCount(jsonObject.getInt("selectCount"));
+
+                    hospitalInfoList.add(hospitalInfo);
+                }
+
+                return hospitalInfoList;
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    //医院弹窗
+    PopupWindow hospitalPopupWindow;
+
+    private void initPopWindow() {
+        if (hospitalPopupWindow == null) {
+            hospitalPopupWindow = new PopupWindow(LayoutInflater.from(ActivateActivity.this).inflate(R.layout.popupwindow_hospital, null), LinearLayout.LayoutParams.MATCH_PARENT, 600, true);
+
+        }
+        if (hospitalPopupWindow.isShowing()) hospitalPopupWindow.dismiss();
+    }
 }

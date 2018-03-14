@@ -217,6 +217,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mAgreementTv = (TextView) findViewById(R.id.agreement_tv);
         mAgreementTv.setOnClickListener(view -> BrowserActivity.launch(LoginActivity.this, "http://webview.medmeeting.com/#/page/user-protocol", "《登录协议》"));
+//        mAgreementTv.setOnClickListener(view -> BrowserActivity.launch(LoginActivity.this, "https://testhttps.51fapiao.cn:8181/FPFX/actions/0c03f9078b8380f116e606f5102e64198451e5", "《登录协议》"));
     }
 
     public static void getTxCodeView() {
