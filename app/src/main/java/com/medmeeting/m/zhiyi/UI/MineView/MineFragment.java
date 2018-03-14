@@ -242,15 +242,18 @@ public class MineFragment extends Fragment {
                     switch (data.getEntity().getTocPortStatus()) {
                         case "wait_activation":
                             activate.setText("待激活");
+                            authorize.setText("去激活");
                             break;
                         case "done_activation":
                             activate.setText("未认证");//已激活
                             code = data.getEntity().getMedical();
+                            authorize.setText("去认证");
                             break;
                         case "done_authen":
                             activate.setText("已认证");
                             specialistIv.setVisibility(View.VISIBLE);
                             specialistIv.setImageResource(R.mipmap.red_v);
+                            authorize.setVisibility(View.GONE);
                             break;
                     }
 
