@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -206,7 +207,13 @@ public class AuthorizeActivity extends AppCompatActivity {
                 else if (email.getText().toString().trim().equals("")) {
                     ToastUtils.show(AuthorizeActivity.this, "邮箱不能为空");
                     return;
-                } else if (identityName.getText().toString().trim().equals("")) {
+                }
+                else if (!Pattern.compile("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$").matcher(email.getText().toString().trim()).matches()) {
+                    ToastUtils.show(AuthorizeActivity.this, "请填写正确的邮箱格式");
+                    return;
+                }
+
+                else if (identityName.getText().toString().trim().equals("")) {
                     ToastUtils.show(AuthorizeActivity.this, "请选择你的身份");
                     return;
                 }
@@ -473,6 +480,7 @@ public class AuthorizeActivity extends AppCompatActivity {
                         userAddAuthenEntity.setCategory(data.getData().get(position).getCode());
                         userAddAuthenEntity.setCategoryName(data.getData().get(position).getTitle());
 
+                        Category = data.getData().get(position).getCode();
                         if (Category.equals("ASSOCIATION")) {
                             authorize1.setVisibility(View.VISIBLE);
                             authorize2.setVisibility(View.GONE);
@@ -513,6 +521,43 @@ public class AuthorizeActivity extends AppCompatActivity {
             mBaseQuickAdapter.setNewData(userIdentities);
             mBaseQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                 identityName.setText(userIdentities.get(position).getTitle());
+
+                userAddAuthenEntity.setCategory(userIdentities.get(position).getCode());
+                userAddAuthenEntity.setCategoryName(userIdentities.get(position).getTitle());
+
+                Category = userIdentities.get(position).getCode();
+                if (Category.equals("ASSOCIATION")) {
+                    authorize1.setVisibility(View.VISIBLE);
+                    authorize2.setVisibility(View.GONE);
+                    authorize3.setVisibility(View.GONE);
+                    authorize4.setVisibility(View.GONE);
+                    authorize5.setVisibility(View.GONE);
+                } else if (Category.equals("MEDICAL_STAFF")) {
+                    authorize1.setVisibility(View.GONE);
+                    authorize2.setVisibility(View.VISIBLE);
+                    authorize3.setVisibility(View.GONE);
+                    authorize4.setVisibility(View.GONE);
+                    authorize5.setVisibility(View.GONE);
+                } else if (Category.equals("MEDICAL_COMPANY")) {
+                    authorize1.setVisibility(View.GONE);
+                    authorize2.setVisibility(View.GONE);
+                    authorize3.setVisibility(View.VISIBLE);
+                    authorize4.setVisibility(View.GONE);
+                    authorize5.setVisibility(View.GONE);
+                } else if (Category.equals("MEDICO")) {
+                    authorize1.setVisibility(View.GONE);
+                    authorize2.setVisibility(View.GONE);
+                    authorize3.setVisibility(View.GONE);
+                    authorize4.setVisibility(View.VISIBLE);
+                    authorize5.setVisibility(View.GONE);
+                } else if (Category.equals("EDUCATION_SCIENCE")) {
+                    authorize1.setVisibility(View.GONE);
+                    authorize2.setVisibility(View.GONE);
+                    authorize3.setVisibility(View.GONE);
+                    authorize4.setVisibility(View.GONE);
+                    authorize5.setVisibility(View.VISIBLE);
+                }
+
                 window.dismiss();
             });
         }

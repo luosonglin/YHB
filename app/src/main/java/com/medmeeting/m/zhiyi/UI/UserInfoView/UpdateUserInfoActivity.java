@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -270,6 +271,18 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 showSexPopupwindow();
                 break;
             case R.id.activate_save:
+                userEditEntity.setName(name.getText().toString().trim());
+                userEditEntity.setNickName(nickname.getText().toString().trim());
+                userEditEntity.setDes(des.getText().toString().trim());
+
+                userEditEntity.setSex(sex.getText().toString().trim());
+
+                if (!Pattern.compile("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$").matcher(email.getText().toString().trim()).matches()) {
+                    ToastUtils.show(UpdateUserInfoActivity.this, "请填写正确的邮箱格式");
+                    return;
+                }
+                userEditEntity.setEmail(email.getText().toString().trim());
+
                 HttpData.getInstance().HttpDataEditUserInfo(new Observer<HttpResult3>() {
                     @Override
                     public void onCompleted() {
@@ -434,6 +447,8 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         academicConfirmTv.setOnClickListener(v -> {
             academicPopupWindow.dismiss();
             position.setText(mChooseAcademic);
+
+            userEditEntity.setPostion(mChooseAcademic);
         });
 
         NumberPicker academicPicker = (NumberPicker) academicPopupwindowView.findViewById(R.id.academic_picker);
@@ -504,6 +519,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         positionConfirmTv.setOnClickListener(v -> {
             positionPopupWindow.dismiss();
             title.setText(mChoosePosition);
+            userEditEntity.setTitle(mChoosePosition);
         });
 
         NumberPicker positionPicker = (NumberPicker) positionPopupwindowView.findViewById(R.id.academic_picker);
@@ -574,6 +590,8 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
         eduConfirmTv.setOnClickListener(v -> {
             eduPopupWindow.dismiss();
             education.setText(mChooseEdu);
+            userEditEntity.setDiploma(mChooseEdu);
+
         });
 
         NumberPicker eduPicker = (NumberPicker) eduPopupwindowView.findViewById(R.id.academic_picker);
