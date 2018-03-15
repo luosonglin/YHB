@@ -534,7 +534,7 @@ public interface APILiveService {
     @GET("/v1/users/authentication/last")
     Observable<HttpResult3<Object, UserAuthenRecord>> getLastAuthentizeStatus();
 
-//GET /v1/app/hospital/A/getHospitalDetail 获取医院名称
+    //GET /v1/app/hospital/A/getHospitalDetail 获取医院名称
     @GET("/v1/app/hospital/A/getHospitalDetail")
     Observable<HttpResult3<HospitalInfo, Object>> getHospitalInfo(@Query("pojo") String word);
 

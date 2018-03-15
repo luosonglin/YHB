@@ -10,7 +10,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -62,7 +61,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
             "心脏外科", "泌尿外科", "胸外科", "烧伤整形科科", "美容整形科科", "小儿外科"};
     private String[] data1 = {"内科", "呼吸内科", "消化内科", "神经内科", "老年医学科", "心脏内科", "感染科", "肾脏内科", "内分泌科", "风湿免疫科", "血液内科"};
     private String[] data2 = {"口腔科", "口腔内科", "口腔修复科", "口腔种植科", "牙周科", "牙体牙髓科", "口腔黏膜科", "口腔正畸科", "颌面外科", "预防口腔科", "儿童口腔科"};
-    private String[] data3 = {"妇产科科", "妇科", "产科", "计划生育科", "生殖内分泌科", "产前诊断科", "遗传咨询科"};
+    private String[] data3 = {"妇产科", "妇科", "产科", "计划生育科", "生殖内分泌科", "产前诊断科", "遗传咨询科"};
     private String[] data4 = {"儿科", "新生儿科", "小儿呼吸内科", "小儿肾内科", "小二消化科", "小儿血液科", "小儿心脏科", "小儿营养保健科", "小儿神经科", "小儿感染科", "小儿免疫科", "小儿皮肤科", "小儿内分泌科", "小儿精神科"};
     private String[] data5 = {"五官科", "耳鼻咽喉头颈外科", "眼科"};
     private String[] data6 = {"传染科", "肝病科", "结核科", "其他传染病科"};
@@ -75,7 +74,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
     private String[] data13 = {"中西医结合科", "中西医结合肿瘤内科"};
     private String[] data14 = {"急诊医学"};
     private String[] data15 = {"康复理疗科"};
-    private String[] data16 = {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "男科", "生殖中心", "体验中心"};
+    private String[] data16 = {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "男科", "生殖中心", "体检中心"};
 
     //科室的第一级数据
 //    private String[] data00 = {"\uE900" + " " + data0[0], "\uE900" + " " + data1[0], "\uE900" + " " + data2[0], "\uE900" + " " + data3[0], "\uE900" + " " + data4[0],
@@ -94,7 +93,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
                     "心脏外科", "泌尿外科", "胸外科", "烧伤整形科科", "美容整形科科", "小儿外科"},
             {"内科", "呼吸内科", "消化内科", "神经内科", "老年医学科", "心脏内科", "感染科", "肾脏内科", "内分泌科", "风湿免疫科", "血液内科"},
             {"口腔科", "口腔内科", "口腔修复科", "口腔种植科", "牙周科", "牙体牙髓科", "口腔黏膜科", "口腔正畸科", "颌面外科", "预防口腔科", "儿童口腔科"},
-            {"妇产科科", "妇科", "产科", "计划生育科", "生殖内分泌科", "产前诊断科", "遗传咨询科"},
+            {"妇产科", "妇科", "产科", "计划生育科", "生殖内分泌科", "产前诊断科", "遗传咨询科"},
             {"儿科", "新生儿科", "小儿呼吸内科", "小儿肾内科", "小二消化科", "小儿血液科", "小儿心脏科", "小儿营养保健科", "小儿神经科", "小儿感染科", "小儿免疫科", "小儿皮肤科", "小儿内分泌科", "小儿精神科"},
             {"五官科", "耳鼻咽喉头颈外科", "眼科"},
             {"传染科", "肝病科", "结核科", "其他传染病科"},
@@ -107,7 +106,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
             {"中西医结合科", "中西医结合肿瘤内科"},
             {"急诊医学"},
             {"康复理疗科"},
-            {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "男科", "生殖中心", "体验中心"}
+            {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "男科", "生殖中心", "体检中心"}
     };
 
     //用于填充二级菜单
@@ -208,7 +207,6 @@ public class ChooseDepartmentActivity extends AppCompatActivity
 
         boolean clear = true;
         departmentLevelOneAdapter.setupDepartmentLevelOne(departmentLevelOnes, clear);
-
     }
 
     private void initSecondView() {
@@ -262,13 +260,13 @@ public class ChooseDepartmentActivity extends AppCompatActivity
     @Override
     public void onItemClick(View view, DepartmentLevelOneAdapter.DepartmentLevelOneViewHolder viewHolder, DepartmentLevelOne departmentLevelOne, int position) {
         Log.i("viewHolder ", viewHolder.getPosition() + " " + viewHolder.getAdapterPosition() + " " + viewHolder.getLayoutPosition() + " " + position);
-        if (viewHolder.getAdapterPosition() == position) {
+       /* if (viewHolder.getAdapterPosition() == position) {
             viewHolder.getName().setText(Html.fromHtml("<font color=\"#32A2F8\">" + departmentLevelOne.getName() + "</font>"));
             viewHolder.getLine().setBackground(this.getResources().getDrawable(R.color.colorAccent));
         } else {
             viewHolder.getName().setText(Html.fromHtml("<font color=\"#000000\">" + departmentLevelOne.getName() + "</font>"));
             viewHolder.getLine().setBackground(this.getResources().getDrawable(R.color.colorPrimaryDark));
-        }
+        }*/
         loadSecondData(data01[position]);
     }
 
