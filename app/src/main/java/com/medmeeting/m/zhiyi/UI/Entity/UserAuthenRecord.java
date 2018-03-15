@@ -49,7 +49,7 @@ public class UserAuthenRecord {
     private String status;
     private long createTime;
     private String examineDate;
-    private String note;
+    private String note;    //备注（用以审核不通过是填写拒审理由） ,
     private String type;
     private String queueType;
     private String diploma;

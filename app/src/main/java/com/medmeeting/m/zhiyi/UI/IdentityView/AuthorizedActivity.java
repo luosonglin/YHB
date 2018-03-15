@@ -12,6 +12,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthenRecord;
+import com.medmeeting.m.zhiyi.UI.UserInfoView.UpdateUserInfoActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
 import butterknife.BindView;
@@ -79,18 +80,36 @@ public class AuthorizedActivity extends AppCompatActivity {
                         rejected.setVisibility(View.GONE);
                         tip.setText(Html.fromHtml("<font color='#000000'>您已获得认证权益，</font><font color='#87CEEB'>点击查看</font>"));
                         tip.setOnClickListener(view -> startActivity(new Intent(AuthorizedActivity.this, RightsActivity.class)));
+                        update.setText("更新信息");
+//                        update.setTextColor(getResources().getColor(R.color.mediumslateblue));
+//                        update.setBackgroundResource(R.mipmap.authorize_finished_button_1);
+                        update.setOnClickListener(view -> startActivity(new Intent(AuthorizedActivity.this, UpdateUserInfoActivity.class)));
                         break;
                     case "B":
                         info.setText("  您的医会宝认证申请已提交");
                         tip.setText(Html.fromHtml("我们将在5个工作日内进行审核，请您留意电话、短息、消息中心或邮件通知"));
                         rejected.setVisibility(View.GONE);
+                        update.setText("更新信息");
+//                        update.setTextColor(getResources().getColor(R.color.mediumslateblue));
+//                        update.setBackgroundResource(R.mipmap.authorize_finished_button_1);
+                        update.setOnClickListener(view -> startActivity(new Intent(AuthorizedActivity.this, UpdateUserInfoActivity.class)));
                         break;
                     case "X":
                         info.setText("很抱歉，您的认证申请因为以下原因未审核通过");
                         info.setCompoundDrawablesRelativeWithIntrinsicBounds(getResources().getDrawable(R.drawable.authorize_status2), null, null, null);
                         rejected.setVisibility(View.VISIBLE);
+                        rejected.setText(data.getEntity().getNote());
                         tip.setText(Html.fromHtml("<font color='#000000'>通过后，您将获得认证权益，</font><font color='#87CEEB'>点击查看</font>"));
                         tip.setOnClickListener(view -> startActivity(new Intent(AuthorizedActivity.this, RightsActivity.class)));
+                        update.setText("重新认证");
+//                        update.setTextColor(getResources().getColor(R.color.white));
+//                        update.setBackgroundResource(R.mipmap.activate_finished_button_2);
+                        update.setOnClickListener(view -> {
+                            Intent intent = new Intent(AuthorizedActivity.this, AuthorizeActivity.class);
+                            intent.putExtra("Category", data.getEntity().getCategory());
+                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+                            startActivity(intent);
+                        });
                         break;
                 }
 
