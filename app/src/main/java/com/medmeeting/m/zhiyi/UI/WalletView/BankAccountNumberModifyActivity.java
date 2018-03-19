@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
@@ -129,6 +130,7 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
             Glide.with(BankAccountNumberModifyActivity.this)
                     .load(imageUrl)
                     .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .placeholder(R.mipmap.wallet_add_identity_number_icon)
                     .into(identityImage);
         }
@@ -329,6 +331,7 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
                                 Glide.with(BankAccountNumberModifyActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(identityImage);
                                 imageUrl = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
                             } else {

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailAuthorActivity;
@@ -24,6 +25,7 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
         Glide.with(mContext)
                 .load(item.getCoverPhoto())
                 .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) helper.getView(R.id.image));
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06))

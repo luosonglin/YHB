@@ -60,7 +60,6 @@ import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.TextViewHtmlImageGetter;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer;
 import com.medmeeting.m.zhiyi.Widget.weiboGridView.weiboGridView;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
-import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -383,9 +382,8 @@ public class NewsVideoActivity extends AppCompatActivity {
     private void initSourceVideoView(VideoDetailsEntity videoDetailsEntity) {
         Glide.with(NewsVideoActivity.this)
                 .load(videoDetailsEntity.getCoverPhoto())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
 //                .crossFade()
                 .placeholder(R.mipmap.ic_launcher)
                 .into(videoImage);

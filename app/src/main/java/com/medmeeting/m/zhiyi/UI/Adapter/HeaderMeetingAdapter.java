@@ -30,7 +30,7 @@ public class HeaderMeetingAdapter extends BaseQuickAdapter<Event> {
                 .load(item.getBanner()) //+"?imageView/1/w/50/h/30"
 //                .centerCrop()
                 .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.meeting_bg)
                 .into((ImageView) helper.getView(R.id.image));
 

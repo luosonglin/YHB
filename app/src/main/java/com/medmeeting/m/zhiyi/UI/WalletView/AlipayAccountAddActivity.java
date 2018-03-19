@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
@@ -285,6 +286,7 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
                                 Glide.with(AlipayAccountAddActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(identityImage);
                                 imageUrl = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
                             } else {

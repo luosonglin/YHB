@@ -29,7 +29,7 @@ public class MyOrderAdapter extends BaseQuickAdapter<VideoListEntity> {
     protected void convert(BaseViewHolder helper, final VideoListEntity item) {
         Glide.with(mContext)
                 .load(item.getCoverPhoto())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into((ImageView) helper.getView(R.id.image));
 

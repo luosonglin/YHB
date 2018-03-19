@@ -27,7 +27,7 @@ public class VideoPayUserAdapter2 extends BaseQuickAdapter<VideoPayUserEntity> {
     protected void convert(BaseViewHolder helper, final VideoPayUserEntity item) {
         Glide.with(mContext)
                 .load(item.getUserPic())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into((ImageView) helper.getView(R.id.avatar));
 

@@ -18,6 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -135,6 +136,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 Glide.with(UpdateUserInfoActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .placeholder(R.mipmap.avator_default)
                         .transform(new GlideCircleTransform(UpdateUserInfoActivity.this))
                         .into(avatar);
@@ -245,7 +247,9 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 startActivityForResult(new Intent(UpdateUserInfoActivity.this, UpdateUserInfoNickNameActivity.class), 1);
                 break;
             case R.id.des:
-                startActivityForResult(new Intent(UpdateUserInfoActivity.this, UpdateUserInfoDescriptionActivity.class), 2);
+                Intent intent = new Intent(UpdateUserInfoActivity.this, UpdateUserInfoDescriptionActivity.class);
+                intent.putExtra("des2", des.getText().toString().trim());
+                startActivityForResult(intent, 2);
                 break;
             case R.id.city:
                 startActivityForResult(new Intent(UpdateUserInfoActivity.this, UpdateUserInfoAreaActivity.class), 3);
@@ -300,7 +304,10 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                             ToastUtils.show(UpdateUserInfoActivity.this, data.getMsg());
                             return;
                         }
-                        onResume();
+                        ToastUtils.show(UpdateUserInfoActivity.this, "保存成功");
+
+//                        onResume();
+                        finish();
                     }
                 }, userEditEntity);
                 break;
@@ -407,6 +414,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                                 Glide.with(UpdateUserInfoActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .transform(new GlideCircleTransform(UpdateUserInfoActivity.this))
                                         .into(avatar);
 

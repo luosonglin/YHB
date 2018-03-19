@@ -110,7 +110,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
         authorName.setText(mLiveProgramDateilsEntity.getAuthorName() + " | " + mLiveProgramDateilsEntity.getAuthorTitle());
         Glide.with(getActivity())
                 .load(mLiveProgramDateilsEntity.getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .placeholder(R.mipmap.avator_default)
                 .transform(new GlideCircleTransform(getActivity()))
@@ -198,7 +198,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                 authorName.setText(data.getEntity().getAuthorName());
                 Glide.with(getActivity())
                         .load(data.getEntity().getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .transform(new GlideCircleTransform(getActivity()))
                         .crossFade()
                         .into(avatar);

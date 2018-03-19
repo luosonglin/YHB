@@ -2,10 +2,10 @@ package com.medmeeting.m.zhiyi.UI.Adapter;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
@@ -25,6 +25,7 @@ public class FinishedEventAdapter extends BaseQuickAdapter<FollowFinishedEvent> 
         Glide.with(mContext)
                 .load(item.getEventBanner())
                 .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
 

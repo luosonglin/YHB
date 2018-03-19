@@ -129,7 +129,7 @@ public class LiveIndexTabFragment1 extends Fragment
 
                     Glide.with(getActivity())
                             .load(firstData.getCoverPhoto())
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
                             .placeholder(R.mipmap.live_background)
                             .into(mBackgroundTv);
@@ -161,7 +161,7 @@ public class LiveIndexTabFragment1 extends Fragment
                     }
                     Glide.with(getActivity())
                             .load(firstData.getUserPic())
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
                             .error(R.mipmap.avator_default)
                             .transform(new GlideCircleTransform(getActivity()))

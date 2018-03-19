@@ -45,7 +45,7 @@ public class MyVideoAdapter extends RecyclerView.Adapter {
 
         Glide.with(mContext)
                 .load(mList.get(position).getCoverPhoto())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into(viewHolder.background);
 

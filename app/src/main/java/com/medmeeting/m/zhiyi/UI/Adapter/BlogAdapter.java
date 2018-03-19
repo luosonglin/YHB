@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.medmeeting.m.zhiyi.R;
@@ -38,6 +39,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                     Glide.with(mContext)
                             .load(blog.getImages())
                             .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .placeholder(R.mipmap.news_bg)
                             .into((ImageView) baseViewHolder.getView(R.id.ivRightImg1));
                     baseViewHolder.setVisible(R.id.rlRightImg, true)
@@ -64,6 +66,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                         Glide.with(mContext)
                                 .load(images[2])
                                 .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .placeholder(R.mipmap.news_bg)
                                 .into((ImageView) baseViewHolder.getView(R.id.ivCenterImg3));
                 }
@@ -72,6 +75,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                 Glide.with(mContext)
                         .load(blog.getVideoImages())
                         .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .placeholder(R.mipmap.video_bg)
                         .into((ImageView) baseViewHolder.getView(R.id.ivRightImg2));
                 baseViewHolder.setVisible(R.id.rlRightImg, false)

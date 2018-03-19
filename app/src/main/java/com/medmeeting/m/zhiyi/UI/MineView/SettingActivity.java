@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
@@ -102,6 +103,7 @@ public class SettingActivity extends AppCompatActivity {
         Glide.with(SettingActivity.this)
                 .load(getIntent().getExtras().getString("avatar"))
                 .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(avatarIv);
         avatarIv.setOnClickListener(view -> PhotoPicker.builder()
@@ -390,6 +392,7 @@ public class SettingActivity extends AppCompatActivity {
                                 Glide.with(SettingActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(avatarIv);
                                 showProgress(false);
                                 Map<String, Object> maps = new HashMap<>();

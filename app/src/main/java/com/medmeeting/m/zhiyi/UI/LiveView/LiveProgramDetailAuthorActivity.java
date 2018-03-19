@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.zxing.activity.CaptureActivity;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
@@ -201,10 +202,12 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 Glide.with(LiveProgramDetailAuthorActivity.this)
                         .load(data.getEntity().getCoverPhoto())
                         .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(backgroundIv);
                 Glide.with(LiveProgramDetailAuthorActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .transform(new GlideCircleTransform(LiveProgramDetailAuthorActivity.this))
                         .placeholder(R.mipmap.avator_default)
                         .into(userPic);

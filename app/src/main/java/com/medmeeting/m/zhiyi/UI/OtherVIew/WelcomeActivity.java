@@ -40,7 +40,6 @@ public class WelcomeActivity extends AppCompatActivity {
         Glide.with(WelcomeActivity.this)
                 .load(R.mipmap.appbg)
 //                .asGif()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageView);
 
 //        timeTv = (TextView) findViewById(R.id.time);

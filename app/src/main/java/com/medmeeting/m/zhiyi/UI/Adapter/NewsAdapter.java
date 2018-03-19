@@ -2,10 +2,10 @@ package com.medmeeting.m.zhiyi.UI.Adapter;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogDto;
 import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
@@ -28,11 +28,13 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
             Glide.with(mContext)
                     .load(images[0])
                     .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) helper.getView(R.id.image));
         } else {
             Glide.with(mContext)
                     .load(item.getImages())
                     .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) helper.getView(R.id.image));
         }
 
@@ -43,6 +45,7 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
         Glide.with(mContext)
                 .load(item.getUserPic())
                 .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .transform(new GlideCircleTransform(mContext))
                 .placeholder(R.mipmap.avator_default)
                 .into((ImageView) helper.getView(R.id.avatar));

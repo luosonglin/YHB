@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
@@ -275,6 +275,7 @@ public class LiveRedVipActivity extends AppCompatActivity {
                 Glide.with(LiveRedVipActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .transform(new GlideCircleTransform(LiveRedVipActivity.this))
                         .placeholder(R.mipmap.avator_default)
                         .into(avatarIv);

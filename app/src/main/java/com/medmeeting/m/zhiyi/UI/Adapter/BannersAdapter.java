@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.UI.Adapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.BannerDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -20,6 +21,7 @@ public class BannersAdapter extends BaseQuickAdapter<BannerDto.BannersBean> {
         Glide.with(mContext)
                 .load(item.getBanner())
                 .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.book_info_image_url));
         helper.setText(R.id.book_info_textview_name,item.getId()+"");

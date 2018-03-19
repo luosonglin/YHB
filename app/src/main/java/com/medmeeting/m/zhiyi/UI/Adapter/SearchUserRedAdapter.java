@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.UI.Adapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
@@ -30,6 +31,7 @@ public class SearchUserRedAdapter extends BaseQuickAdapter<UserRedEntity> {
         Glide.with(mContext)
                 .load(item.getUserPic())
                 .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.avator_default)
                 .transform(new GlideCircleTransform(mContext))
                 .into((ImageView) helper.getView(R.id.avatar));

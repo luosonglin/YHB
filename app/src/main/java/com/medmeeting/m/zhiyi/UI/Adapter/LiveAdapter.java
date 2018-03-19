@@ -23,13 +23,13 @@ public class LiveAdapter extends BaseQuickAdapter<LiveDto> {
     protected void convert(BaseViewHolder helper, final LiveDto item) {
         Glide.with(mContext)
                 .load(item.getCoverPhoto())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into((ImageView) helper.getView(R.id.image));
 
         Glide.with(mContext)
                 .load(item.getUserPic())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .transform(new GlideCircleTransform(mContext))
                 .into((ImageView) helper.getView(R.id.avatar));

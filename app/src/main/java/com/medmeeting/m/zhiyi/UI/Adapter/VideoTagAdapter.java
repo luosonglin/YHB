@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.UI.Adapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -27,7 +28,7 @@ public class VideoTagAdapter extends BaseQuickAdapter<TagDto> {
         helper.setText(R.id.name, item.getLabelName() + "");
         Glide.with(mContext)
                 .load(item.getIconUrl())
-                .crossFade()
+                .crossFade().diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) helper.getView(R.id.image));
     }
 }

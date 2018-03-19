@@ -27,7 +27,7 @@ public class WaitMeetingAdapter extends BaseQuickAdapter<VAppMyEvents> {
     protected void convert(BaseViewHolder helper, final VAppMyEvents item) {
         Glide.with(mContext)
                 .load(item.getBanner())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
 //                .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));

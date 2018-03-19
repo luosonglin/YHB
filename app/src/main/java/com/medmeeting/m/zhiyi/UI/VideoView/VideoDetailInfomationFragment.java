@@ -110,7 +110,7 @@ public class VideoDetailInfomationFragment extends Fragment {
             public void onNext(HttpResult3<Object, VideoDetailsEntity> data) {
                 Glide.with(getActivity())
                         .load(data.getEntity().getUserPic())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .crossFade()
                         .placeholder(R.mipmap.avator_default)
                         .transform(new GlideCircleTransform(getActivity()))

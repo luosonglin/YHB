@@ -22,6 +22,8 @@ public class UpdateUserInfoDescriptionActivity extends AppCompatActivity {
     @BindView(R.id.save)
     TextView save;
 
+    private String des2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,9 @@ public class UpdateUserInfoDescriptionActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         toolBar();
+
+        des2 = getIntent().getStringExtra("des2");
+        des.setText(des2);
     }
 
     private void toolBar() {

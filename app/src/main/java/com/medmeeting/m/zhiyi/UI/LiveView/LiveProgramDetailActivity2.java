@@ -313,7 +313,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     private void initFakerPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId, String liveStatus, int countIncrement, int countRatio) {
         Glide.with(LiveProgramDetailActivity2.this)
                 .load(photo)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into(cover);
 

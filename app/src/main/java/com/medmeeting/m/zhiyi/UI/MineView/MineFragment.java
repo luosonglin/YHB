@@ -25,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -210,6 +211,7 @@ public class MineFragment extends Fragment {
                     Glide.with(getActivity())
                             .load(userAvatar)
                             .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .placeholder(R.mipmap.avator_default)
                             .into(headIv);
                     nameTv.setText(data.getEntity().getName());
@@ -246,13 +248,15 @@ public class MineFragment extends Fragment {
                             break;
                         case "done_activation":
                             activate.setText("未认证");//已激活
+                            specialistIv.setVisibility(View.VISIBLE);
+                            specialistIv.setImageResource(R.mipmap.red_v);
                             code = data.getEntity().getMedical();
                             authorize.setText("去认证");
                             break;
                         case "done_authen":
                             activate.setText("已认证");
                             specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.red_v);
+                            specialistIv.setImageResource(R.mipmap.yellow_v);
                             authorize.setVisibility(View.GONE);
                             break;
                     }
