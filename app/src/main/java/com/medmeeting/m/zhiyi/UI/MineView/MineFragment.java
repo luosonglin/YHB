@@ -113,8 +113,6 @@ public class MineFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private String authenStatus = "";
-
     private String code = ""; //身份类型
 
     // 记录首次按下位置
@@ -217,35 +215,12 @@ public class MineFragment extends Fragment {
                             .into(headIv);
                     nameTv.setText(data.getEntity().getName());
 
-                    authenStatus = data.getEntity().getAuthenStatus();
-                    try {
-                        DBUtils.put(getActivity(), "authentication", data.getEntity().getAuthenStatus() + "");
-                    } catch (SnappydbException e) {
-                        e.printStackTrace();
-                    }
-                    //A:已认证'',''B:待审核'',''C:大咖认证'',''''X:未认证'
-                    switch (data.getEntity().getAuthenStatus()) {
-                        case "A":
-                            specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.yellow_v);
-                            break;
-                        case "B":
-                            specialistIv.setVisibility(View.GONE);
-                            break;
-//                        case "C":
-//                            specialistIv.setVisibility(View.VISIBLE);
-//                            specialistIv.setImageResource(R.mipmap.red_v);
-//                            break;
-                        default:
-                            specialistIv.setVisibility(View.GONE);
-                            break;
-                    }
-
                     //正式服，该字段暂无
                     switch (data.getEntity().getTocPortStatus()) {
                         case "wait_activation":
                             activate.setText("待激活");
                             authorize.setText("去激活");
+                            specialistIv.setVisibility(View.GONE);
                             break;
                         case "done_activation":
                             activate.setText("未认证");//已激活
@@ -443,7 +418,7 @@ public class MineFragment extends Fragment {
                                 if (data.getEntity() == null) {
                                     //从未认证过
                                     Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
-                                    if(code.equals("OTHER")) code="ASSOCIATION"; //回到默认值，传参
+                                    if (code.equals("OTHER")) code = "ASSOCIATION"; //回到默认值，传参
                                     intent.putExtra("Category", code);
                                     switch (code) {
                                         case "ASSOCIATION":
@@ -497,38 +472,52 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.wodeqianbao:
-                intent = new Intent(getActivity(), MyWalletActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.wodezhibo:
-                switch (authenStatus) {
-                    case "A":
-                        ToastUtils.show(getActivity(), "认证未完成，请耐心等待");
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        ToastUtils.show(getActivity(), "请先激活账户");
+                        intent = new Intent(getActivity(), ActivateActivity.class);
+                        startActivity(intent);
                         break;
-                    case "B":
-                        ToastUtils.show(getActivity(), "认证未完成，请耐心等待");
+                    case "未认证":
+                        intent = new Intent(getActivity(), MyWalletActivity.class);
+                        startActivity(intent);
                         break;
-                    case "C":
-                        startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
-                        break;
-                    case "X":
-                        startActivity(new Intent(getActivity(), IdentityActivity.class));
+                    case "已认证":     //跳认证状态页
+                        intent = new Intent(getActivity(), MyWalletActivity.class);
+                        startActivity(intent);
                         break;
                 }
                 break;
+            case R.id.wodezhibo:
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        ToastUtils.show(getActivity(), "请先激活账户");
+                        intent = new Intent(getActivity(), ActivateActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "未认证":
+                        intent = new Intent(getActivity(), MyLiveRoomActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "已认证":     //跳认证状态页
+                        intent = new Intent(getActivity(), MyLiveRoomActivity.class);
+                        startActivity(intent);
+                        break;
+                }
             case R.id.wodeluxiang:
-                switch (authenStatus) {
-                    case "A":
-                        ToastUtils.show(getActivity(), "认证未完成，请耐心等待");
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        ToastUtils.show(getActivity(), "请先激活账户");
+                        intent = new Intent(getActivity(), ActivateActivity.class);
+                        startActivity(intent);
                         break;
-                    case "B":
-                        ToastUtils.show(getActivity(), "认证未完成，请耐心等待");
+                    case "未认证":
+                        intent = new Intent(getActivity(), MyVideoActivity.class);
+                        startActivity(intent);
                         break;
-                    case "C":
-                        startActivity(new Intent(getActivity(), MyVideoActivity.class));
-                        break;
-                    case "X":
-                        startActivity(new Intent(getActivity(), IdentityActivity.class));
+                    case "已认证":     //跳认证状态页
+                        intent = new Intent(getActivity(), MyVideoActivity.class);
+                        startActivity(intent);
                         break;
                 }
                 break;
@@ -538,8 +527,21 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.wodedingdan:
-                intent = new Intent(getActivity(), MyOrderActivity.class);
-                startActivity(intent);
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        ToastUtils.show(getActivity(), "请先激活账户");
+                        intent = new Intent(getActivity(), ActivateActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "未认证":
+                        intent = new Intent(getActivity(), MyOrderActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "已认证":     //跳认证状态页
+                        intent = new Intent(getActivity(), MyOrderActivity.class);
+                        startActivity(intent);
+                        break;
+                }
                 break;
             case R.id.wodexuefen:
                 break;
