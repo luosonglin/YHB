@@ -21,6 +21,7 @@ public class BankAdapter extends BaseQuickAdapter<BankDto> {
         Glide.with(mContext)
                 .load(item.getImage())
                 .crossFade()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) helper.getView(R.id.image));
         helper.setText(R.id.name,item.getName());

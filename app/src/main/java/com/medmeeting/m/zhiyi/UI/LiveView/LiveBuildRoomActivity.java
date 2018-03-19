@@ -193,6 +193,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             Glide.with(LiveBuildRoomActivity.this)
                     .load(photos.get(0))
                     .crossFade()
+                    .dontAnimate()
                     .into(new GlideDrawableImageViewTarget(livePic) {
                         @Override
                         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {

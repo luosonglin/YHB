@@ -30,8 +30,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
@@ -121,6 +119,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
                 .load(getIntent().getExtras().getString("coverPhoto"))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .dontAnimate()
 //                .placeholder(R.mipmap.ic_launcher)
                 .into(backgroundIv);
 

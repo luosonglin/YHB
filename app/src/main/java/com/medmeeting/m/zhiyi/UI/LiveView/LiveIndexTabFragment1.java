@@ -131,6 +131,7 @@ public class LiveIndexTabFragment1 extends Fragment
                             .load(firstData.getCoverPhoto())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
+                            .dontAnimate()
                             .placeholder(R.mipmap.live_background)
                             .into(mBackgroundTv);
                     switch (firstData.getLiveStatus()) {
@@ -163,6 +164,7 @@ public class LiveIndexTabFragment1 extends Fragment
                             .load(firstData.getUserPic())
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
+                            .dontAnimate()
                             .error(R.mipmap.avator_default)
                             .transform(new GlideCircleTransform(getActivity()))
                             .into(mAvatarIv);

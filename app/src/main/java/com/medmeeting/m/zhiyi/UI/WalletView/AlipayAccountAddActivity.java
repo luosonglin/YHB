@@ -286,6 +286,7 @@ public class AlipayAccountAddActivity extends AppCompatActivity {
                                 Glide.with(AlipayAccountAddActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .dontAnimate()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(identityImage);
                                 imageUrl = "http://ono5ms5i0.bkt.clouddn.com/" + key1;

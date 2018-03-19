@@ -136,6 +136,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 Glide.with(UpdateUserInfoActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .placeholder(R.mipmap.avator_default)
                         .transform(new GlideCircleTransform(UpdateUserInfoActivity.this))
@@ -414,6 +415,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                                 Glide.with(UpdateUserInfoActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .dontAnimate()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .transform(new GlideCircleTransform(UpdateUserInfoActivity.this))
                                         .into(avatar);

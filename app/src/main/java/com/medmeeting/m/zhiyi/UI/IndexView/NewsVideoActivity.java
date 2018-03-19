@@ -327,10 +327,12 @@ public class NewsVideoActivity extends AppCompatActivity {
         if (isCollect) {
             Glide.with(NewsVideoActivity.this)
                     .load(R.mipmap.meeting_collect)
+                    .dontAnimate()
                     .into(collect);
         } else {
             Glide.with(NewsVideoActivity.this)
                     .load(R.mipmap.meeting_collect_no)
+                    .dontAnimate()
                     .into(collect);
         }
 
@@ -385,6 +387,7 @@ public class NewsVideoActivity extends AppCompatActivity {
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
 //                .crossFade()
+                .dontAnimate()
                 .placeholder(R.mipmap.ic_launcher)
                 .into(videoImage);
         videoName.setText(videoDetailsEntity.getTitle());
@@ -855,6 +858,7 @@ public class NewsVideoActivity extends AppCompatActivity {
                     Glide.with(NewsVideoActivity.this)
                             .load(R.mipmap.meeting_collect_no)
                             .crossFade()
+                            .dontAnimate()
                             .into(collect);
                 } else {
                     ToastUtils.show(NewsVideoActivity.this, "收藏成功");
@@ -862,6 +866,7 @@ public class NewsVideoActivity extends AppCompatActivity {
                     Glide.with(NewsVideoActivity.this)
                             .load(R.mipmap.meeting_collect)
                             .crossFade()
+                            .dontAnimate()
                             .into(collect);
                 }
             }

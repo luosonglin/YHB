@@ -315,6 +315,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
+                .dontAnimate()
                 .into(cover);
 
         Log.e("initPlayer(1", url);

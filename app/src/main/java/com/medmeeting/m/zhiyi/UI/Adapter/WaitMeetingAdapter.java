@@ -29,6 +29,7 @@ public class WaitMeetingAdapter extends BaseQuickAdapter<VAppMyEvents> {
                 .load(item.getBanner())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
+                .dontAnimate()
 //                .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
 

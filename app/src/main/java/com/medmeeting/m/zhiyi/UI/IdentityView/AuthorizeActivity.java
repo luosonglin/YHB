@@ -712,11 +712,13 @@ public class AuthorizeActivity extends AppCompatActivity {
                 Glide.with(AuthorizeActivity.this)
                         .load(photos.get(0))
                         .crossFade()
+                        .dontAnimate()
                         .into(workPhoto1);
             } else if (photoType == 1) {
                 Glide.with(AuthorizeActivity.this)
                         .load(photos.get(0))
                         .crossFade()
+                        .dontAnimate()
                         .into(workPhoto2);
             }
         }

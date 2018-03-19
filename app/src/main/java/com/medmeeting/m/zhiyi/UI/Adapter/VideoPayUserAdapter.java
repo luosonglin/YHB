@@ -29,6 +29,7 @@ public class VideoPayUserAdapter extends BaseQuickAdapter<LiveSettlementEntity.P
                 .load(item.getUserPic())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .dontAnimate()
                 .into((ImageView) helper.getView(R.id.avatar));
 
         helper.setText(R.id.name, item.getUserName()) //+ " " + item.getPostion()

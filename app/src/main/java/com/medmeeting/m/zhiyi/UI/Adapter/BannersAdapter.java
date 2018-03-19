@@ -21,6 +21,7 @@ public class BannersAdapter extends BaseQuickAdapter<BannerDto.BannersBean> {
         Glide.with(mContext)
                 .load(item.getBanner())
                 .crossFade()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.book_info_image_url));

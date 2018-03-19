@@ -103,6 +103,7 @@ public class SettingActivity extends AppCompatActivity {
         Glide.with(SettingActivity.this)
                 .load(getIntent().getExtras().getString("avatar"))
                 .crossFade()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.ic_launcher)
                 .into(avatarIv);
@@ -392,6 +393,7 @@ public class SettingActivity extends AppCompatActivity {
                                 Glide.with(SettingActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .dontAnimate()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(avatarIv);
                                 showProgress(false);

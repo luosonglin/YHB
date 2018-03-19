@@ -275,6 +275,7 @@ public class LiveRedVipActivity extends AppCompatActivity {
                 Glide.with(LiveRedVipActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .transform(new GlideCircleTransform(LiveRedVipActivity.this))
                         .placeholder(R.mipmap.avator_default)

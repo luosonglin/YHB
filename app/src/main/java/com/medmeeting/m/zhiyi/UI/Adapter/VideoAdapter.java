@@ -31,6 +31,8 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListEntity> {
                 .load(item.getCoverPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .dontAnimate()
+                .dontAnimate()
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())

@@ -40,13 +40,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.MineView.MyLiveRoomActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
-import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
-
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -122,6 +117,7 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
         Glide.with(LiveUpdateRoomActivity.this)
                 .load(videoPhoto)
                 .crossFade()
+                .dontAnimate()
                 .into(new GlideDrawableImageViewTarget(livePic) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
@@ -279,6 +275,7 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
             Glide.with(LiveUpdateRoomActivity.this)
                     .load(photos.get(0))
                     .crossFade()
+                    .dontAnimate()
                     .into(new GlideDrawableImageViewTarget(livePic) {
                         @Override
                         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {

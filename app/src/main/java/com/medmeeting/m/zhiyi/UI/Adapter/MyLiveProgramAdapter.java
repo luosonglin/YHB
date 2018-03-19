@@ -25,6 +25,7 @@ public class MyLiveProgramAdapter extends BaseQuickAdapter<LiveDto> {
         Glide.with(mContext)
                 .load(item.getCoverPhoto())
                 .crossFade()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) helper.getView(R.id.image));
         helper.setText(R.id.name, item.getTitle())

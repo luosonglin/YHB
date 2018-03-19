@@ -308,6 +308,7 @@ public class BankAccountNumberAddActivity extends AppCompatActivity {
                                 Glide.with(BankAccountNumberAddActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .dontAnimate()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(identityImage);
                                 imageUrl = "http://ono5ms5i0.bkt.clouddn.com/" + key1;

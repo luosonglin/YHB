@@ -28,12 +28,14 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
             Glide.with(mContext)
                     .load(images[0])
                     .crossFade()
+                    .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) helper.getView(R.id.image));
         } else {
             Glide.with(mContext)
                     .load(item.getImages())
                     .crossFade()
+                    .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into((ImageView) helper.getView(R.id.image));
         }
@@ -45,6 +47,7 @@ public class NewsAdapter extends BaseQuickAdapter<BlogDto.BlogBean.ListBean> {
         Glide.with(mContext)
                 .load(item.getUserPic())
                 .crossFade()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .transform(new GlideCircleTransform(mContext))
                 .placeholder(R.mipmap.avator_default)

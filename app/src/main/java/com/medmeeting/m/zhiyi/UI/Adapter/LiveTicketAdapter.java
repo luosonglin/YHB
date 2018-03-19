@@ -23,6 +23,7 @@ public class LiveTicketAdapter extends BaseQuickAdapter<LiveTicketDto.PayListBea
         Glide.with(mContext)
                 .load(item.getUserPic())
                 .crossFade()
+                .dontAnimate()
                 .transform(new GlideCircleTransform(mContext))
                 .placeholder(R.mipmap.avator_default)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

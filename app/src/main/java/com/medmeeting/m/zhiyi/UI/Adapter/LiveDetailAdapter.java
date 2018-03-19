@@ -28,6 +28,7 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
         Glide.with(mContext)
                 .load(item.getCoverPhoto())
                 .crossFade()
+                .dontAnimate()
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
 

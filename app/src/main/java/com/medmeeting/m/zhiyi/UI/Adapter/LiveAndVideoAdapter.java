@@ -29,6 +29,7 @@ public class LiveAndVideoAdapter extends BaseQuickAdapter<LiveRoomDto> {
                 .load(item.getCoverPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .dontAnimate()
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle());

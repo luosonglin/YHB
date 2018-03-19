@@ -39,6 +39,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                     Glide.with(mContext)
                             .load(blog.getImages())
                             .crossFade()
+                            .dontAnimate()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .placeholder(R.mipmap.news_bg)
                             .into((ImageView) baseViewHolder.getView(R.id.ivRightImg1));
@@ -54,11 +55,13 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                     Glide.with(mContext)
                             .load(images[0])
                             .crossFade()
+                            .dontAnimate()
                             .placeholder(R.mipmap.news_bg)
                             .into((ImageView) baseViewHolder.getView(R.id.ivCenterImg1));
                     Glide.with(mContext)
                             .load(images[1])
                             .crossFade()
+                            .dontAnimate()
                             .placeholder(R.mipmap.news_bg)
                             .into((ImageView) baseViewHolder.getView(R.id.ivCenterImg2));
 
@@ -66,6 +69,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                         Glide.with(mContext)
                                 .load(images[2])
                                 .crossFade()
+                                .dontAnimate()
                                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                 .placeholder(R.mipmap.news_bg)
                                 .into((ImageView) baseViewHolder.getView(R.id.ivCenterImg3));
@@ -75,6 +79,7 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                 Glide.with(mContext)
                         .load(blog.getVideoImages())
                         .crossFade()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .placeholder(R.mipmap.video_bg)
                         .into((ImageView) baseViewHolder.getView(R.id.ivRightImg2));

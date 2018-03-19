@@ -47,6 +47,7 @@ public class MyVideoAdapter extends RecyclerView.Adapter {
                 .load(mList.get(position).getCoverPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
+                .dontAnimate()
                 .into(viewHolder.background);
 
         viewHolder.liveNumber.setText(DateUtils.formatDate(mList.get(position).getCreateTime(), DateUtils.TYPE_08));

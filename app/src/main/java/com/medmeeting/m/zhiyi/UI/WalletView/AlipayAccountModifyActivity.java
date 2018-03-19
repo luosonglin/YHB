@@ -108,6 +108,7 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
             Glide.with(AlipayAccountModifyActivity.this)
                     .load(imageUrl)
                     .crossFade()
+                    .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .placeholder(R.mipmap.wallet_add_identity_number_icon)
                     .into(identityImage);
@@ -310,6 +311,7 @@ public class AlipayAccountModifyActivity extends AppCompatActivity {
                                 Glide.with(AlipayAccountModifyActivity.this)
                                         .load("http://ono5ms5i0.bkt.clouddn.com/" + key1)
                                         .crossFade()
+                                        .dontAnimate()
                                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                                         .into(identityImage);
                                 imageUrl = "http://ono5ms5i0.bkt.clouddn.com/" + key1;

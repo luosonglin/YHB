@@ -29,6 +29,7 @@ public class BlogCommentAdapter extends BaseQuickAdapter<BlogComment> {
         Glide.with(mContext)
                 .load(item.getUserPic())
                 .crossFade()
+                .dontAnimate()
                 .placeholder(R.mipmap.avator_default)
                 .transform(new GlideCircleTransform(mContext))
                 .into((ImageView) helper.getView(R.id.avatar));

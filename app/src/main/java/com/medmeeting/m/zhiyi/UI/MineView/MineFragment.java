@@ -211,6 +211,7 @@ public class MineFragment extends Fragment {
                     Glide.with(getActivity())
                             .load(userAvatar)
                             .crossFade()
+                            .dontAnimate()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .placeholder(R.mipmap.avator_default)
                             .into(headIv);

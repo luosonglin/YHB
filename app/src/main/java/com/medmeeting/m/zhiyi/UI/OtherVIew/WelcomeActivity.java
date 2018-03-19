@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
@@ -40,6 +39,7 @@ public class WelcomeActivity extends AppCompatActivity {
         Glide.with(WelcomeActivity.this)
                 .load(R.mipmap.appbg)
 //                .asGif()
+                .dontAnimate()
                 .into(imageView);
 
 //        timeTv = (TextView) findViewById(R.id.time);

@@ -112,6 +112,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                 .load(mLiveProgramDateilsEntity.getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
+                .dontAnimate()
                 .placeholder(R.mipmap.avator_default)
                 .transform(new GlideCircleTransform(getActivity()))
                 .into(avatar);
@@ -201,6 +202,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .transform(new GlideCircleTransform(getActivity()))
                         .crossFade()
+                        .dontAnimate()
                         .into(avatar);
                 time.setText(DateUtils.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtils.TYPE_04) +" ~ "+ DateUtils.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtils.TYPE_04));
                 if (data.getEntity().getChargeType().equals("no")) {

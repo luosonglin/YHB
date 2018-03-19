@@ -130,6 +130,7 @@ public class VideoUpdateActivity extends AppCompatActivity {
                 Glide.with(VideoUpdateActivity.this)
                         .load(data.getEntity().getCoverPhoto())
                         .crossFade()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(new GlideDrawableImageViewTarget(livePic) {
                             @Override
@@ -332,6 +333,7 @@ public class VideoUpdateActivity extends AppCompatActivity {
         Glide.with(VideoUpdateActivity.this)
                 .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
                 .crossFade()
+                .dontAnimate()
                 .into(new GlideDrawableImageViewTarget(livePic) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {

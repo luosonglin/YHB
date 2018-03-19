@@ -112,6 +112,7 @@ public class VideoDetailInfomationFragment extends Fragment {
                         .load(data.getEntity().getUserPic())
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .crossFade()
+                        .dontAnimate()
                         .placeholder(R.mipmap.avator_default)
                         .transform(new GlideCircleTransform(getActivity()))
                         .into(avatar);

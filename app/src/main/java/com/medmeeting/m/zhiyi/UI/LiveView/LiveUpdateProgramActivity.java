@@ -163,6 +163,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                         .load(data.getEntity().getCoverPhoto())
 //                        .crossFade()
 //                        .transform(new GlideCircleTransform(LiveUpdateProgramActivity.this))
+                        .dontAnimate()
                         .into(new GlideDrawableImageViewTarget(livePic) {
                             @Override
                             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
@@ -397,6 +398,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
             Glide.with(LiveUpdateProgramActivity.this)
                     .load(photos.get(0))
                     .crossFade()
+                    .dontAnimate()
                     .into(new GlideDrawableImageViewTarget(livePic) {
                         @Override
                         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {

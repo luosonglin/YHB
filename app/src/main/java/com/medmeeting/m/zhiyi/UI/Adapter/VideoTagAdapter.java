@@ -28,6 +28,7 @@ public class VideoTagAdapter extends BaseQuickAdapter<TagDto> {
         helper.setText(R.id.name, item.getLabelName() + "");
         Glide.with(mContext)
                 .load(item.getIconUrl())
+                .dontAnimate()
                 .crossFade().diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into((ImageView) helper.getView(R.id.image));
     }

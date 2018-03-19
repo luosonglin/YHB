@@ -30,6 +30,7 @@ public class EventAdapter extends BaseQuickAdapter<Event> {
                 .load(item.getBanner())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .dontAnimate()
                 .placeholder(R.mipmap.meeting_bg)
                 .into((ImageView) helper.getView(R.id.image));
 

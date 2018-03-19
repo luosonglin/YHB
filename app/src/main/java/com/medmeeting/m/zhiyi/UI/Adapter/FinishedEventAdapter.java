@@ -25,6 +25,7 @@ public class FinishedEventAdapter extends BaseQuickAdapter<FollowFinishedEvent> 
         Glide.with(mContext)
                 .load(item.getEventBanner())
                 .crossFade()
+                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));

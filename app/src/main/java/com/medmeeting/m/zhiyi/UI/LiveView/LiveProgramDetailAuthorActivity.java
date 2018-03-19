@@ -202,11 +202,13 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 Glide.with(LiveProgramDetailAuthorActivity.this)
                         .load(data.getEntity().getCoverPhoto())
                         .crossFade()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(backgroundIv);
                 Glide.with(LiveProgramDetailAuthorActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()
+                        .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .transform(new GlideCircleTransform(LiveProgramDetailAuthorActivity.this))
                         .placeholder(R.mipmap.avator_default)

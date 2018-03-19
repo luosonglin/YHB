@@ -31,6 +31,7 @@ public class MyPayLiveAdapter extends BaseQuickAdapter<LiveDto> {
                 .load(item.getCoverPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .dontAnimate()
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.sum, "收藏 "+ item.getCollectCount() + "")

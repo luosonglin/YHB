@@ -29,6 +29,7 @@ public class VideoPayUserAdapter2 extends BaseQuickAdapter<VideoPayUserEntity> {
                 .load(item.getUserPic())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
+                .dontAnimate()
                 .into((ImageView) helper.getView(R.id.avatar));
 
         helper.setText(R.id.name, item.getUserName()) //+ " " + item.getPostion()
