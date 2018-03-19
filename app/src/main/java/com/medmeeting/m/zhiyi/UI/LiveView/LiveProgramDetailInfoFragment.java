@@ -20,11 +20,14 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
+import com.snappydb.SnappydbException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +59,8 @@ public class LiveProgramDetailInfoFragment extends Fragment {
     private static Integer mProgramId;
 
     Unbinder unbinder;
+
+    private String tocPortStatus;
 
     public LiveProgramDetailInfoFragment() {
         // Required empty public constructor
@@ -136,6 +141,15 @@ public class LiveProgramDetailInfoFragment extends Fragment {
             like.setBtnColor(Color.GRAY);//初始颜色
         }
         like.setOnClickListener(view -> {
+            try {
+                tocPortStatus = DBUtils.get(getActivity(), "tocPortStatus");
+            } catch (SnappydbException e) {
+                e.printStackTrace();
+            }
+            if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+                startActivity(new Intent(getActivity(), ActivateActivity.class));
+                return;
+            }
             like.setChecked(false);//不能再点
             collectService(mLiveProgramDateilsEntity.isCollectFlag());
         });

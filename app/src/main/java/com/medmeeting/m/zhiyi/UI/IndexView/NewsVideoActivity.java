@@ -50,7 +50,9 @@ import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -64,6 +66,7 @@ import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
+import com.snappydb.SnappydbException;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -435,10 +438,23 @@ public class NewsVideoActivity extends AppCompatActivity {
         }, map);
     }
 
+    private String tocPortStatus;
+
     @OnClick({R.id.input_send, R.id.collect})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.input_send:
+                try {
+                    tocPortStatus = DBUtils.get(NewsVideoActivity.this, "tocPortStatus");
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
+                if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+                    startActivity(new Intent(NewsVideoActivity.this, ActivateActivity.class));
+                    return;
+                }
+
+
                 if (inputEditor.getText().toString().trim().equals("")) {
                     ToastUtils.show(NewsVideoActivity.this, "不能发空评论");
                     return;
@@ -832,6 +848,16 @@ public class NewsVideoActivity extends AppCompatActivity {
      * @param oldCollected
      */
     private void collectService(boolean oldCollected) {
+        try {
+            tocPortStatus = DBUtils.get(NewsVideoActivity.this, "tocPortStatus");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+        if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+            startActivity(new Intent(NewsVideoActivity.this, ActivateActivity.class));
+            return;
+        }
+
         UserCollect userCollect = new UserCollect();
         userCollect.setServiceId(blogId);
         userCollect.setServiceType("BLOG");

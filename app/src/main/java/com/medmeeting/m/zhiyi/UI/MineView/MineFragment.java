@@ -261,6 +261,11 @@ public class MineFragment extends Fragment {
                             authorize.setVisibility(View.GONE);
                             break;
                     }
+                    try {
+                        DBUtils.put(getActivity(), "tocPortStatus", data.getEntity().getTocPortStatus() + "");
+                    } catch (SnappydbException e) {
+                        e.printStackTrace();
+                    }
 
                     showProgress(false);
                 }
@@ -384,6 +389,28 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.modify_userinfo:
+                if (activate.getText().toString().trim().equals("待激活")) {
+//                    new AlertDialog.Builder(getActivity())
+//                            .setTitle("激活用户")
+//                            .setCancelable(false)
+//                            .setIcon(getResources().getDrawable(R.mipmap.logo))
+//                            .setMessage("选择您想要直播的时间")
+//                            .setNegativeButton("马上直播", (dialogInterface, i) -> {
+//                                expectType = "liveNow";
+//                                startTime.setText("现在直播");
+//                                endTime.setText("");
+//                                expectBeginTime = System.currentTimeMillis();
+//                            })
+//                            .setPositiveButton("预约时间", (dialogInterface, i) -> {
+//                                expectType = "expect";
+//                                showDateTimePopupwindow("START");
+//                            })
+//                            .show()
+//                            .setCanceledOnTouchOutside(true);
+                    startActivity(new Intent(getActivity(), ActivateActivity.class));
+                    return;
+                }
+
                 intent = new Intent(getActivity(), UpdateUserInfoActivity.class);
                 startActivity(intent);
                 break;

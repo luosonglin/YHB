@@ -45,12 +45,16 @@ import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.LoadingFlashView;
 import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.LinkMovementMethodExt;
 import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.MessageSpan;
 import com.medmeeting.m.zhiyi.Widget.TextVIewHtmlImage.TextViewHtmlImageGetter;
+import com.snappydb.SnappydbException;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -337,6 +341,16 @@ public class NewsActivity extends AppCompatActivity {
 
     @OnClick(R.id.input_send)
     public void onClick() {
+        try {
+            tocPortStatus = DBUtils.get(NewsActivity.this, "tocPortStatus");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+        if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+            startActivity(new Intent(NewsActivity.this, ActivateActivity.class));
+            return;
+        }
+
         if (inputEditor.getText().toString().trim().equals("")) {
             ToastUtils.show(NewsActivity.this, "不能发空评论");
             return;
@@ -418,12 +432,23 @@ public class NewsActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    private String tocPortStatus;
     /**
      * 收藏API
      *
      * @param oldCollected
      */
     private void collectService(boolean oldCollected) {
+        try {
+            tocPortStatus = DBUtils.get(NewsActivity.this, "tocPortStatus");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+        if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+            startActivity(new Intent(NewsActivity.this, ActivateActivity.class));
+            return;
+        }
+
         UserCollect userCollect = new UserCollect();
         userCollect.setServiceId(blogId);
         userCollect.setServiceType("BLOG");

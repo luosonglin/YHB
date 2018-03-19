@@ -32,8 +32,11 @@ import com.medmeeting.m.zhiyi.UI.Entity.CollectType;
 import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.snappydb.SnappydbException;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -554,12 +557,23 @@ public class MeetingDetailActivity extends AppCompatActivity {
         mShareAction.close();
     }
 
+    private String tocPortStatus;
     /**
      * 收藏API
      *
      * @param oldCollected
      */
     private void collectService(boolean oldCollected) {
+        try {
+            tocPortStatus = DBUtils.get(MeetingDetailActivity.this, "tocPortStatus");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+        if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+            startActivity(new Intent(MeetingDetailActivity.this, ActivateActivity.class));
+            return;
+        }
+
         UserCollect userCollect = new UserCollect();
         userCollect.setServiceId(eventId);
         userCollect.setServiceType("EVENT");

@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -19,7 +20,10 @@ import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.snappydb.SnappydbException;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
 import butterknife.BindView;
@@ -125,8 +129,20 @@ public class VideoDetailCommandFragment extends Fragment {
         unbinder.unbind();
     }
 
+    private String tocPortStatus;
+
     @OnClick(R.id.input_send)
     public void onClick() {
+        try {
+            tocPortStatus = DBUtils.get(getActivity(), "tocPortStatus");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+        if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+            startActivity(new Intent(getActivity(), ActivateActivity.class));
+            return;
+        }
+
         if (inputEditor.getText().toString().trim().equals("")) {
             ToastUtils.show(getActivity(), "不能发空评论");
             return;
