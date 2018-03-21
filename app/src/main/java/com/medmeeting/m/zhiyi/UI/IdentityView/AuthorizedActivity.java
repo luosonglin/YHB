@@ -114,6 +114,11 @@ public class AuthorizedActivity extends AppCompatActivity {
                         break;
                 }
 
+                //第一次提交，不显示这个按钮（陈伟说的）
+                if (data.getEntity().getQueueType().equals("FIRST")) {
+                    update.setVisibility(View.GONE);
+                }
+
             }
         });
     }

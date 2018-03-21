@@ -366,13 +366,14 @@ public class MineFragment extends Fragment {
                 intent.putExtra("avatar", userAvatar);
                 startActivity(intent);
                 break;
-            case R.id.modify_userinfo:
+            case R.id.modify_userinfo:  //激活后就能修改
                 switch (activate.getText().toString().trim()) {
                     case "待激活":     //跳激活页
                         startActivity(new Intent(getActivity(), ActivateActivity.class));
                         break;
                     case "未认证":     //跳认证页
-                        HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                        startActivity(new Intent(getActivity(), UpdateUserInfoActivity.class));
+                       /* HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
                             @Override
                             public void onCompleted() {
 
@@ -431,7 +432,7 @@ public class MineFragment extends Fragment {
                                 }
 
                             }
-                        });
+                        });*/
                         break;
                     case "已认证":     //跳认证状态页
                         startActivity(new Intent(getActivity(), UpdateUserInfoActivity.class));
@@ -495,10 +496,11 @@ public class MineFragment extends Fragment {
                                             startActivity(new Intent(getActivity(), AuthorizedActivity.class));
                                             break;
                                         case "X":
-                                            Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
-                                            intent.putExtra("Category", data.getEntity().getCategory());
-                                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
-                                            startActivity(intent);
+                                            startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+//                                            Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+//                                            intent.putExtra("Category", data.getEntity().getCategory());
+//                                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+//                                            startActivity(intent);
                                             break;
                                     }
                                 }
@@ -759,8 +761,8 @@ public class MineFragment extends Fragment {
                 break;
             case R.id.user_flyt:
                 if (activate.getText().toString().trim().equals("已认证")) {
-
-                    HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                    /*HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
                         @Override
                         public void onCompleted() {
 
@@ -783,13 +785,13 @@ public class MineFragment extends Fragment {
                             intent.putExtra("CategoryName", data.getEntity().getCategoryName());
                             startActivity(intent);
                         }
-                    });
+                    });*/
                 }
                 break;
             case R.id.name:
                 if (activate.getText().toString().trim().equals("已认证")) {
-
-                    HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                    /*HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
                         @Override
                         public void onCompleted() {
 
@@ -812,13 +814,14 @@ public class MineFragment extends Fragment {
                             intent.putExtra("CategoryName", data.getEntity().getCategoryName());
                             startActivity(intent);
                         }
-                    });
+                    });*/
                 }
                 break;
             case R.id.activate:
                 if (activate.getText().toString().trim().equals("已认证")) {
+                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
 
-                    HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                    /*HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
                         @Override
                         public void onCompleted() {
 
@@ -841,7 +844,7 @@ public class MineFragment extends Fragment {
                             intent.putExtra("CategoryName", data.getEntity().getCategoryName());
                             startActivity(intent);
                         }
-                    });
+                    });*/
                 }
                 break;
         }

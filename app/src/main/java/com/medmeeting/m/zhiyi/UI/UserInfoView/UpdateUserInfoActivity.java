@@ -95,6 +95,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
 
     private UserGetInfoEntity userGetInfoEntity;
     private UserEditEntity userEditEntity = new UserEditEntity();
+private String code; //data.getEntity().getMedical()
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +145,14 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 name.setText(data.getEntity().getName());
                 nickname.setText(data.getEntity().getNickName());
                 des.setText(data.getEntity().getDes());
-                city.setText(data.getEntity().getProvinceName() + " - " + data.getEntity().getCityName());
+
+                if (data.getEntity().getProvinceName() == null && data.getEntity().getCityName() == null) {
+                    city.setText("");
+                } else {
+                    city.setText(data.getEntity().getProvinceName() + " - " + data.getEntity().getCityName());
+                }
+
+                code = data.getEntity().getMedical();
 
                 switch (data.getEntity().getMedical()) {
                     case "ASSOCIATION": //医疗协会
@@ -180,15 +188,19 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 }
                 hospital.setText(data.getEntity().getCompany());
                 department.setText(data.getEntity().getDepartment());
+
                 title.setText(data.getEntity().getTitle());
                 position.setText(data.getEntity().getPostion());
                 name.setText(data.getEntity().getName());
+
                 company.setText(data.getEntity().getCompany());
                 position2.setText(data.getEntity().getPostion());
+
                 school.setText(data.getEntity().getCompany());
                 major.setText(data.getEntity().getDepartment());
                 education.setText(data.getEntity().getDiploma());
                 year.setText(data.getEntity().getEntranceDate());
+
                 sex.setText(data.getEntity().getSex());
                 email.setText(data.getEntity().getEmail());
 
@@ -288,6 +300,34 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
                 }
                 userEditEntity.setEmail(email.getText().toString().trim());
 
+                switch (code) {
+                    case "ASSOCIATION": //医疗协会
+                        userEditEntity.setCompany(company.getText().toString().trim());
+                        userEditEntity.setPostion(position2.getText().toString().trim());
+                        break;
+                    case "MEDICAL_STAFF": //医护人员
+                        userEditEntity.setCompany(hospital.getText().toString().trim());
+                        userEditEntity.setDepartment(department.getText().toString().trim());
+                        userEditEntity.setTitle(title.getText().toString().trim());
+                        userEditEntity.setPostion(position.getText().toString().trim());
+                        break;
+                    case "MEDICAL_COMPANY": //药械企业
+                        userEditEntity.setCompany(hospital.getText().toString().trim());
+                        userEditEntity.setDepartment(department.getText().toString().trim());
+                        userEditEntity.setPostion(position.getText().toString().trim());
+                        break;
+                    case "MEDICO": //医学生
+                        userEditEntity.setCompany(school.getText().toString().trim());
+                        userEditEntity.setDepartment(major.getText().toString().trim());
+                        userEditEntity.setDiploma(education.getText().toString().trim());
+                        userEditEntity.setEntranceDate(year.getText().toString().trim());
+                        break;
+                    case "EDUCATION_SCIENCE": //医药教科研人员
+                        userEditEntity.setCompany(company.getText().toString().trim());
+//                        userEditEntity.setDepartment(department.getText().toString().trim());
+                        userEditEntity.setPostion(position2.getText().toString().trim());
+                        break;
+                }
                 HttpData.getInstance().HttpDataEditUserInfo(new Observer<HttpResult3>() {
                     @Override
                     public void onCompleted() {
