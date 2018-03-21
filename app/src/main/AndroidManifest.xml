@@ -89,8 +89,7 @@
             android:name=".UI.LiveView.LiveDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.MineView.MyLiveRoomActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".UI.MineView.MyLiveRoomActivity"/>
         <activity
             android:name=".UI.LiveView.MyLiveRoomDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />

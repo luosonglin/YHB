@@ -109,6 +109,7 @@ public class AuthorizedActivity extends AppCompatActivity {
                             intent.putExtra("Category", data.getEntity().getCategory());
                             intent.putExtra("CategoryName", data.getEntity().getCategoryName());
                             startActivity(intent);
+                            finish();
                         });
                         break;
                 }
