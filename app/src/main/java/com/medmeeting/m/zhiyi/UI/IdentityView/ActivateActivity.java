@@ -644,7 +644,8 @@ public class ActivateActivity extends AppCompatActivity {
 
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpGet httpGet = new HttpGet(Constant.API_SERVER_LIVE_TEST + "/v1/app/hospital/A/getHospitalDetail?pojo=" + word);
+//            HttpGet httpGet = new HttpGet(Constant.API_SERVER_LIVE_TEST + "/v1/app/hospital/A/getHospitalDetail?pojo=" + word);
+            HttpGet httpGet = new HttpGet(Constant.API_SERVER_LIVE + "/v1/app/hospital/A/getHospitalDetail?pojo=" + word);
             HttpResponse response = httpClient.execute(httpGet);
             int statusCode = response.getStatusLine().getStatusCode();
 

@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
@@ -213,7 +212,7 @@ public class SettingActivity extends AppCompatActivity {
                                     case R.id.dialog_sure:
                                         Intent intent = new Intent();
                                         intent.setAction("android.intent.action.VIEW");
-                                        Uri content_url = Uri.parse(Constant.APP_Download_URL);
+                                        Uri content_url = Uri.parse(data.getEntity().getUrl());
                                         intent.setData(content_url);
                                         startActivity(intent);
                                         break;

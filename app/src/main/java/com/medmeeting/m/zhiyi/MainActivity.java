@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.githang.statusbar.StatusBarCompat;
-import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -472,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements
                             case R.id.dialog_sure:
                                 Intent intent = new Intent();
                                 intent.setAction("android.intent.action.VIEW");
-                                Uri content_url = Uri.parse(Constant.APP_Download_URL2);
+                                Uri content_url = Uri.parse(data.getEntity().getUrl());
                                 intent.setData(content_url);
                                 startActivity(intent);
                                 break;
