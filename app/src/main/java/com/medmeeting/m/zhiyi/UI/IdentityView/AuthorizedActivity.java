@@ -83,7 +83,14 @@ public class AuthorizedActivity extends AppCompatActivity {
                         update.setText("更新信息");
 //                        update.setTextColor(getResources().getColor(R.color.mediumslateblue));
 //                        update.setBackgroundResource(R.mipmap.authorize_finished_button_1);
-                        update.setOnClickListener(view -> startActivity(new Intent(AuthorizedActivity.this, UpdateUserInfoActivity.class)));
+//                        update.setOnClickListener(view -> startActivity(new Intent(AuthorizedActivity.this, UpdateUserInfoActivity.class)));
+                        update.setOnClickListener(view -> {
+                            Intent intent = new Intent(AuthorizedActivity.this, AuthorizeActivity.class);
+                            intent.putExtra("Category", data.getEntity().getCategory());
+                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+                            startActivity(intent);
+                            finish();
+                        });
                         break;
                     case "B":
                         info.setText("  您的医会宝认证申请已提交");

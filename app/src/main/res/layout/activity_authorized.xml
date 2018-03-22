@@ -43,7 +43,6 @@
             android:layout_height="1dp"
             android:background="@color/grey2" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,8 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
-                android:text=""
                 android:gravity="center_vertical"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="16dp" />
 
@@ -87,17 +86,17 @@
                 android:id="@+id/rejected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
                 android:layout_gravity="center_horizontal"
-                android:visibility="gone"
-                android:text="未通过原因：实名认证需要提交能证明您身份的相关照片（如执业证、资格证、工作证和学生证等），您未成功上传能证明您现在专业身份的照片和身份证照片。请您重新提交，并保持电话畅通。"  />
+                android:layout_marginTop="14dp"
+                android:text="未通过原因：实名认证需要提交能证明您身份的相关照片（如执业证、资格证、工作证和学生证等），您未成功上传能证明您现在专业身份的照片和身份证照片。请您重新提交，并保持电话畅通。"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
                 android:text="" />
 
             <TextView
@@ -108,117 +107,123 @@
                 android:layout_marginTop="24dp"
                 android:background="@mipmap/authorize_finished_button_1"
                 android:gravity="center"
-                android:text="更新信息"
                 android:paddingBottom="4dp"
+                android:text="更新信息"
                 android:textColor="@color/mediumslateblue" />
         </LinearLayout>
 
-        <LinearLayout
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:paddingEnd="14dp"
-            android:paddingStart="14dp">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingEnd="14dp"
+                android:paddingStart="14dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:text="真实姓名"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/name_et"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@drawable/edittext_delete_line"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:text=""
-                    android:textSize="14dp"
-                    />
-            </LinearLayout>
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey1" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="真实姓名"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/name_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/edittext_delete_line"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:text="认证类型"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/type1"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:text=""
-                    android:textSize="14dp"/>
-            </LinearLayout>
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/grey1" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:text="手机号码"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/phone1"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:maxLines="1"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="14dp"/>
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="认证类型"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/type1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/grey1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="手机号码"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/phone1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="16dp"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

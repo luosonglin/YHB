@@ -632,9 +632,9 @@ public class AuthorizeActivity extends AppCompatActivity {
         // 设置背景颜色
         window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F8F8F8")));
         // 设置可以获取焦点
-        window.setFocusable(true);
+        window.setFocusable(false);
         // 设置可以触摸弹出框以外的区域
-        window.setOutsideTouchable(true);
+        window.setOutsideTouchable(false);
         // 更新popupwindow的状态
         window.update();
         // 以下拉的方式显示，并且可以设置显示的位置
@@ -642,6 +642,7 @@ public class AuthorizeActivity extends AppCompatActivity {
 
         ImageView cancelIv = (ImageView) popupView.findViewById(R.id.cancel);
         cancelIv.setOnClickListener(view -> window.dismiss());
+        cancelIv.setVisibility(View.GONE);
 
         checkBox1.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {

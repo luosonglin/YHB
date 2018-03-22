@@ -93,9 +93,18 @@ public class UpdateUserInfoActivity extends AppCompatActivity {
     @BindView(R.id.code3)
     LinearLayout code3;
 
+    @BindView(R.id.company4)
+    EditText company4;
+    @BindView(R.id.department4)
+    EditText department4;
+    @BindView(R.id.position4)
+    EditText position4;
+    @BindView(R.id.code4)
+    LinearLayout code4;
+
     private UserGetInfoEntity userGetInfoEntity;
     private UserEditEntity userEditEntity = new UserEditEntity();
-private String code; //data.getEntity().getMedical()
+    private String code; //data.getEntity().getMedical()
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,31 +168,37 @@ private String code; //data.getEntity().getMedical()
                         code1.setVisibility(View.GONE);
                         code2.setVisibility(View.VISIBLE);
                         code3.setVisibility(View.GONE);
+                        code4.setVisibility(View.GONE);
                         break;
                     case "MEDICAL_STAFF": //医护人员
                         code1.setVisibility(View.VISIBLE);
                         code2.setVisibility(View.GONE);
                         code3.setVisibility(View.GONE);
+                        code4.setVisibility(View.GONE);
                         break;
                     case "MEDICAL_COMPANY": //药械企业
-                        code1.setVisibility(View.VISIBLE);
+                        code1.setVisibility(View.GONE);
                         code2.setVisibility(View.GONE);
                         code3.setVisibility(View.GONE);
+                        code4.setVisibility(View.VISIBLE);
                         break;
                     case "MEDICO": //医学生
                         code1.setVisibility(View.GONE);
                         code2.setVisibility(View.GONE);
                         code3.setVisibility(View.VISIBLE);
+                        code4.setVisibility(View.GONE);
                         break;
                     case "EDUCATION_SCIENCE": //医药教科研人员
                         code1.setVisibility(View.GONE);
                         code2.setVisibility(View.VISIBLE);
                         code3.setVisibility(View.GONE);
+                        code4.setVisibility(View.GONE);
                         break;
                     case "OTHER": //其他人员
                         code1.setVisibility(View.GONE);
                         code2.setVisibility(View.GONE);
                         code3.setVisibility(View.GONE);
+                        code4.setVisibility(View.GONE);
                         break;
                 }
                 hospital.setText(data.getEntity().getCompany());
@@ -200,6 +215,10 @@ private String code; //data.getEntity().getMedical()
                 major.setText(data.getEntity().getDepartment());
                 education.setText(data.getEntity().getDiploma());
                 year.setText(data.getEntity().getEntranceDate());
+
+                company4.setText(data.getEntity().getCompany());
+                department4.setText(data.getEntity().getDepartment());
+                position4.setText(data.getEntity().getPostion());
 
                 sex.setText(data.getEntity().getSex());
                 email.setText(data.getEntity().getEmail());
@@ -312,9 +331,9 @@ private String code; //data.getEntity().getMedical()
                         userEditEntity.setPostion(position.getText().toString().trim());
                         break;
                     case "MEDICAL_COMPANY": //药械企业
-                        userEditEntity.setCompany(hospital.getText().toString().trim());
-                        userEditEntity.setDepartment(department.getText().toString().trim());
-                        userEditEntity.setPostion(position.getText().toString().trim());
+                        userEditEntity.setCompany(company4.getText().toString().trim());
+                        userEditEntity.setDepartment(department4.getText().toString().trim());
+                        userEditEntity.setPostion(position4.getText().toString().trim());
                         break;
                     case "MEDICO": //医学生
                         userEditEntity.setCompany(school.getText().toString().trim());
