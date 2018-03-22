@@ -88,8 +88,7 @@
         <activity
             android:name=".UI.LiveView.LiveDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".UI.MineView.MyLiveRoomActivity"/>
+        <activity android:name=".UI.MineView.MyLiveRoomActivity" />
         <activity
             android:name=".UI.LiveView.MyLiveRoomDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -319,9 +318,8 @@
             android:name=".UI.IdentityView.ActivateActivity"
             android:label="@string/title_activity_activate"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustUnspecified"
-            />
-            <!--android:windowSoftInputMode="adjustUnspecified|stateHidden" />-->
+            android:windowSoftInputMode="adjustUnspecified" />
+        <!-- android:windowSoftInputMode="adjustUnspecified|stateHidden" /> -->
         <!-- android:windowSoftInputMode="adjustResize" /> -->
         <activity
             android:name=".UI.IdentityView.ActivatedActivity"
@@ -347,8 +345,12 @@
         <activity
             android:name=".UI.UserInfoView.UpdateUserInfoAreaActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.SignInAndSignUpView.Login_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.SignUp_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.ResetPassword_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.BindPhone_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.BindSubject_v2Activity"></activity>
     </application>
 
 </manifest>

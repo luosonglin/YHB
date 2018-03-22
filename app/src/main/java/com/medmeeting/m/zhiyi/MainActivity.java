@@ -18,6 +18,7 @@ import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
+import com.medmeeting.m.zhiyi.UI.Entity.Version;
 import com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveIndexFragment;
@@ -430,7 +431,7 @@ public class MainActivity extends AppCompatActivity implements
         oldVersion = CustomUtils.getVersion(MainActivity.this) + "";
 
 
-        HttpData.getInstance().HttpDataGetAndroidVersion(new Observer<HttpResult3>() {
+        HttpData.getInstance().HttpDataGetAndroidVersion(new Observer<HttpResult3<Object, Version>>() {
             @Override
             public void onCompleted() {
 
@@ -442,12 +443,12 @@ public class MainActivity extends AppCompatActivity implements
             }
 
             @Override
-            public void onNext(HttpResult3 data) {
+            public void onNext(HttpResult3<Object, Version> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(MainActivity.this, "网络错误");
                     return;
                 }
-                newVersion = data.getEntity().toString();
+                newVersion = data.getEntity().getVersion();
                 Log.e(getLocalClassName(), oldVersion+" "+newVersion);
 
                 String[] olds = oldVersion.split("\\.");

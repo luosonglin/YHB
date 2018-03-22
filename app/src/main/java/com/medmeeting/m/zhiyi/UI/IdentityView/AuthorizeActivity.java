@@ -342,8 +342,10 @@ public class AuthorizeActivity extends AppCompatActivity {
                         .setPhotoCount(1)
                         .setGridColumnCount(3)
                         .start(AuthorizeActivity.this);
+
                 break;
             case R.id.work_photo2:
+
                 photoType = 1;  //识别图片类型
                 PhotoPicker.builder()
                         .setShowCamera(true)
@@ -709,7 +711,7 @@ public class AuthorizeActivity extends AppCompatActivity {
             ToastUtils.show(AuthorizeActivity.this, "正在上传...");
             getQiniuToken(photos.get(0));
 
-            if (photoType == 0) {
+           /* if (photoType == 0) {
                 Glide.with(AuthorizeActivity.this)
                         .load(photos.get(0))
                         .crossFade()
@@ -721,7 +723,7 @@ public class AuthorizeActivity extends AppCompatActivity {
                         .crossFade()
                         .dontAnimate()
                         .into(workPhoto2);
-            }
+            }*/
         }
     }
 
@@ -793,6 +795,20 @@ public class AuthorizeActivity extends AppCompatActivity {
                                 workPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
                             } else if (photoType == 1) {
                                 identityPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
+                            }
+
+                            if (photoType == 0) {
+                                Glide.with(AuthorizeActivity.this)
+                                        .load(workPhoto)
+                                        .crossFade()
+                                        .dontAnimate()
+                                        .into(workPhoto1);
+                            } else if (photoType == 1) {
+                                Glide.with(AuthorizeActivity.this)
+                                        .load(identityPhoto)
+                                        .crossFade()
+                                        .dontAnimate()
+                                        .into(workPhoto2);
                             }
                         }, null);
             }

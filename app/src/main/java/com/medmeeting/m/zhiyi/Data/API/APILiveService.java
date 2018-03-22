@@ -55,6 +55,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
+import com.medmeeting.m.zhiyi.UI.Entity.Version;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
@@ -552,5 +553,5 @@ public interface APILiveService {
      */
     //GET /v1/open/app/version/android 获取android版本号
     @GET("/v1/open/app/version/android")
-    Observable<HttpResult3> getAndroidVersion();
+    Observable<HttpResult3<Object, Version>> getAndroidVersion();
 }

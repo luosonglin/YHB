@@ -29,6 +29,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
+import com.medmeeting.m.zhiyi.UI.Entity.Version;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.CleanUtils;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
@@ -171,7 +172,7 @@ public class SettingActivity extends AppCompatActivity {
                     }
                 };*/
 
-                HttpData.getInstance().HttpDataGetAndroidVersion(new Observer<HttpResult3>() {
+                HttpData.getInstance().HttpDataGetAndroidVersion(new Observer<HttpResult3<Object, Version>>() {
                     @Override
                     public void onCompleted() {
 
@@ -183,12 +184,12 @@ public class SettingActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(HttpResult3 data) {
+                    public void onNext(HttpResult3<Object, Version> data) {
                         if (!data.getStatus().equals("success")) {
                             ToastUtils.show(SettingActivity.this, "网络错误");
                             return;
                         }
-                        newVersion = data.getEntity().toString();
+                        newVersion = data.getEntity().getVersion();
                         Log.e(getLocalClassName(), oldVersion+" "+newVersion);
 
                         String[] olds = oldVersion.split("\\.");

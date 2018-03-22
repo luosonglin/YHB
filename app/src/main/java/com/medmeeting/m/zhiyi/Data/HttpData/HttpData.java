@@ -72,6 +72,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
+import com.medmeeting.m.zhiyi.UI.Entity.Version;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
@@ -713,7 +714,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataGetAndroidVersion(Observer<HttpResult3> observer) {
+    public void HttpDataGetAndroidVersion(Observer<HttpResult3<Object, Version>> observer) {
         Observable observable = service_live.getAndroidVersion();
         setSubscribe(observable, observer);
     }
