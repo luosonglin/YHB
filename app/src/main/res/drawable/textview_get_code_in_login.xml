@@ -7,9 +7,9 @@
     <!-- 圆角 -->
     <corners
         android:radius="19dp"
-        android:topLeftRadius="34dp"
+        android:topLeftRadius="0dp"
         android:topRightRadius="34dp"
-        android:bottomLeftRadius="34dp"
+        android:bottomLeftRadius="0dp"
         android:bottomRightRadius="34dp"/><!-- 设置圆角半径 -->
 
     <!-- 描边 -->
@@ -20,7 +20,7 @@
 
     <!---->
     <gradient
-        android:startColor="#1d76e4"
+        android:startColor="#79b5f2"
         android:endColor="#79b5f2"
         android:angle="0"/>
 </shape>

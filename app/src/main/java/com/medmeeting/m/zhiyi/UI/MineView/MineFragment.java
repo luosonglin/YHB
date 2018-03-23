@@ -36,6 +36,7 @@ import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizeActivity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizedActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.UI.UserInfoView.UpdateUserInfoActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -789,33 +790,11 @@ public class MineFragment extends Fragment {
                 }
                 break;
             case R.id.name:
-                if (activate.getText().toString().trim().equals("已认证")) {
-                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
-                    /*HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
-                        @Override
-                        public void onCompleted() {
+//                if (activate.getText().toString().trim().equals("已认证")) {
+//                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+//                }
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-
-                        }
-
-                        @Override
-                        public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
-                            if (!data.getStatus().equals("success")) {
-                                ToastUtils.show(getActivity(), data.getMsg());
-                                return;
-                            }
-
-                            Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
-                            intent.putExtra("Category", data.getEntity().getCategory());
-                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
-                            startActivity(intent);
-                        }
-                    });*/
-                }
+                startActivity(new Intent(getActivity(), Login_v2Activity.class));
                 break;
             case R.id.activate:
                 if (activate.getText().toString().trim().equals("已认证")) {
