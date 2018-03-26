@@ -1,16 +1,21 @@
 package com.medmeeting.m.zhiyi.UI.SignInAndSignUpView;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
@@ -131,6 +136,37 @@ public class Login_v2Activity extends AppCompatActivity {
         });
     }
 
+    private void initCodePopupwindow() {
+        View codeView = LayoutInflater.from(Login_v2Activity.this).inflate(R.layout.popupwindow_get_code_in_login, null);
+        PopupWindow codePopupwindow = new PopupWindow(codeView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+
+        EditText codeEt = (EditText) codeView.findViewById(R.id.code_et);
+        ImageView codeIv = (ImageView) codeView.findViewById(R.id.code_iv);
+        TextView codeTv = (TextView) codeView.findViewById(R.id.code_tv);
+
+
+        TextView codeConfirm = (TextView) codeView.findViewById(R.id.confirm);
+        codeConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                codePopupwindow.dismiss();
+            }
+        });
+
+
+
+
+        codePopupwindow.setOutsideTouchable(true);
+        ColorDrawable dw = new ColorDrawable(0x000ff000);
+        codePopupwindow.setBackgroundDrawable(dw);
+        codePopupwindow.showAtLocation(codeView, Gravity.BOTTOM, 0, 0);
+
+
+
+    }
+
     @OnClick({R.id.login_by_password, R.id.login_by_code, R.id.forget_password, R.id.login1, R.id.get_code, R.id.login2})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -167,6 +203,7 @@ public class Login_v2Activity extends AppCompatActivity {
             case R.id.login1:
                 break;
             case R.id.get_code:
+                initCodePopupwindow();
                 break;
             case R.id.login2:
                 break;
