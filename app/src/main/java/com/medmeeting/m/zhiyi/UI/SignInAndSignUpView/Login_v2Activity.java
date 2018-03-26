@@ -196,9 +196,12 @@ public class Login_v2Activity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.login_by_password, R.id.login_by_code, R.id.forget_password, R.id.login1, R.id.get_code, R.id.login2})
+    @OnClick({R.id.fast_sign_up, R.id.login_by_password, R.id.login_by_code, R.id.forget_password, R.id.login1, R.id.get_code, R.id.login2})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.fast_sign_up:
+                startActivity(new Intent(Login_v2Activity.this, SignUp_v2Activity.class));
+                break;
             case R.id.login_by_password:
                 ll1.setVisibility(View.VISIBLE);
                 ll2.setVisibility(View.GONE);
@@ -230,6 +233,11 @@ public class Login_v2Activity extends AppCompatActivity {
             case R.id.forget_password:
                 break;
             case R.id.login1:
+                if (!PhoneUtils.isMobile(phone.getText().toString().trim())) {
+                    ToastUtils.show(Login_v2Activity.this, "手机号格式不正确,请重新输入");
+                    return;
+                }
+
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -324,6 +332,11 @@ public class Login_v2Activity extends AppCompatActivity {
                 new WorkThread().start();
                 break;
             case R.id.login2:
+                if (!PhoneUtils.isMobile(phone2.getText().toString().trim())) {
+                    ToastUtils.show(Login_v2Activity.this, "手机号格式不正确,请重新输入");
+                    return;
+                }
+
                 InputMethodManager imm2 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm2 != null) {
                     imm2.hideSoftInputFromWindow(view.getWindowToken(), 0);
