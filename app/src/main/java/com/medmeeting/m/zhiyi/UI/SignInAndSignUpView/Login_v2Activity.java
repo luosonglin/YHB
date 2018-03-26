@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -228,6 +230,86 @@ public class Login_v2Activity extends AppCompatActivity {
             case R.id.forget_password:
                 break;
             case R.id.login1:
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
+                showProgress(true);
+
+                Map<String, Object> map = new HashMap<>();
+                map.put("phone", phone.getText().toString().trim());
+                map.put("pwd", password.getText().toString().trim());
+                HttpData.getInstance().HttpDataLoginByPwd(new Observer<HttpResult3<Object, AccessToken>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(Login_v2Activity.this, e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<Object, AccessToken> data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(Login_v2Activity.this, data.getMsg());
+                            showProgress(false);
+                            return;
+                        }
+
+                        Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
+                        try {
+                            DBUtils.put(Login_v2Activity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
+                            DBUtils.put(Login_v2Activity.this, "phone", phone.getText().toString().trim());
+                        } catch (SnappydbException e) {
+                            e.printStackTrace();
+                        }
+
+                        Data.setPhone(phone.getText().toString().trim());
+
+                        //极光推送 别名设置
+                        JPushInterface.setAlias(Login_v2Activity.this, 1, phone.getText().toString().trim());
+
+                        HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                ToastUtils.show(Login_v2Activity.this, e.getMessage());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserInfoDto> data2) {
+                                if (!data2.getStatus().equals("success")) {
+                                    ToastUtils.show(Login_v2Activity.this, data2.getMsg());
+                                    return;
+                                }
+
+                                Data.setUserId(data2.getEntity().getId());
+                                try {
+                                    DBUtils.put(Login_v2Activity.this, "userId", data2.getEntity().getId() + "");
+                                    DBUtils.put(Login_v2Activity.this, "userName", data2.getEntity().getName() + "");
+                                    DBUtils.put(Login_v2Activity.this, "userNickName", data2.getEntity().getNickName() + "");
+                                    DBUtils.put(Login_v2Activity.this, "authentication", data2.getEntity().getAuthenStatus() + "");
+                                    DBUtils.put(Login_v2Activity.this, "confirmNumber", data2.getEntity().getConfirmNumber() + "");
+                                    DBUtils.put(Login_v2Activity.this, "tokenId", data2.getEntity().getTokenId() + "");
+                                } catch (SnappydbException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    Log.d(getLocalClassName(), "Login succeed!");
+                                    finish();
+                                    startActivity(new Intent(Login_v2Activity.this, MainActivity.class));
+                                }
+                            }
+                        });
+                    }
+                }, map);
+
                 break;
             case R.id.get_code:
                 if (phone2.getText().toString().trim().equals("")) {
@@ -242,11 +324,17 @@ public class Login_v2Activity extends AppCompatActivity {
                 new WorkThread().start();
                 break;
             case R.id.login2:
+                InputMethodManager imm2 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm2 != null) {
+                    imm2.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
                 showProgress(true);
-                Map<String, Object> map = new HashMap<>();
-                map.put("phone", phone2.getText().toString().trim());
-                map.put("code", code.getText().toString().trim());
-                map.put("source", "android");
+
+                Map<String, Object> map2 = new HashMap<>();
+                map2.put("phone", phone2.getText().toString().trim());
+                map2.put("code", code.getText().toString().trim());
+                map2.put("source", "android");
                 HttpData.getInstance().HttpDataLoginByCode(new Observer<HttpResult3<Object, AccessToken>>() {
                     @Override
                     public void onCompleted() {
@@ -316,7 +404,7 @@ public class Login_v2Activity extends AppCompatActivity {
                             }
                         });
                     }
-                }, map);
+                }, map2);
 
                 break;
         }
