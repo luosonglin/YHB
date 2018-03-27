@@ -18,7 +18,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.Blog;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.BlogVideoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.CollectType;
-import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.EditAlipayReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.EditVideoEntity;
@@ -27,7 +26,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
 import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
-import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
 import com.medmeeting.m.zhiyi.UI.Entity.HospitalInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -51,7 +49,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
-import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.PaySettlement;
 import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
 import com.medmeeting.m.zhiyi.UI.Entity.PushUserMessage;
@@ -73,7 +70,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 import com.medmeeting.m.zhiyi.UI.Entity.Version;
-import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
@@ -133,39 +129,7 @@ public class HttpData extends RetrofitUtils {
         return SingletonHolder.INSTANCE;
     }
 
-//    //Get请求  视频列表
-//    public void verfacationCodeGetCache(Observer<List<VideoListDto>> observer) {
-//        Observable observable=service.getVideoList().map(new HttpResultFunc<List<VideoListDto>>());
-//        Observable observableCahce=providers.getVideoList(observable,new DynamicKey("视频列表"),new EvictDynamicKey(false)).map(new HttpResultFuncCcche<List<VideoListDto>>());
-//        setSubscribe(observableCahce,observer);
-//    }
-//
-//    //post请求 学校列表
-//    public void HttpDataToSchoolList(String type, int pageIndex, Observer<List<BookListDto>> observer){
-//        Observable observable=service.getBookList(type,pageIndex).map(new HttpResultFunc<List<BookListDto>>());
-//        Observable observableCahce=providers.getBookList(observable,new DynamicKey("书籍列表"+pageIndex+type),new EvictDynamicKey(false)).map(new HttpResultFuncCcche<List<BookListDto>>());
-//        setSubscribe(observableCahce,observer);
-//    }
 
-
-    //update user avatar
-    public void HttpDataUpdateAvatar(Observer<MyInfoDto> observer, Map<String, Object> map) {
-        Observable observable = service.updateAvatar(map);
-        setSubscribe(observable, observer);
-    }
-
-
-    //我的参会 待参会
-    public void HttpDataGetMyMeeting(Observer<HttpResult4<MeetingDto>> observer, Map<String, Object> map) {
-        Observable observable = service_meeting.getWaitEntryEvents(map);
-        setSubscribe(observable, observer);
-    }
-
-    //我的参会 已结束
-    public void HttpDataGetMyFinishedMeeting(Observer<HttpResult4<FollowFinishedEvent>> observer, Map<String, Object> map) {
-        Observable observable = service_meeting.getFollowFinishedEvents(map);
-        setSubscribe(observable, observer);
-    }
 
     //test get hot meetings
     public void HttpDataGetHotMeetings(Observer<HttpResult4<MeetingDto>> observer, Integer pageNum, Integer pageSize) {
@@ -174,13 +138,7 @@ public class HttpData extends RetrofitUtils {
         Log.e(TAG, "HttpDataGetHotMeetings: " + observable);
     }
 
-    /**
-     * 以下用于会议详情支付页
-     */
-    public void HttpDataGetEventStatus(Observer<HttpResult4> observer, Map<String, Object> map) {
-        Observable observable = service_meeting.getEventStatus(map);
-        setSubscribe(observable, observer);
-    }
+
 
     public void HttpDataGetPayInfo(Observer<HttpResult4> observer, Map<String, Object> map) {
         Observable observable = service_meeting.getPayInfo(map);
@@ -254,12 +212,6 @@ public class HttpData extends RetrofitUtils {
     //get live order
     public void HttpDataGetLiveOrder(Observer<HttpResult3<Object, LiveAndVideoPayDto>> observer, LiveOrderDto liveOrderDto) {
         Observable observable = service_live.getLiveOrder(liveOrderDto);
-        setSubscribe(observable, observer);
-    }
-
-    //authentic
-    public void HttpDataAuthentication(Observer<DoctorAuthentication> observer, Map<String, Object> options) {
-        Observable observable = service.Authentication(options);
         setSubscribe(observable, observer);
     }
 
@@ -353,29 +305,12 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    //get latest android version
-    public void HttpDataGetLatestAndroidVersion(Observer<HttpResult<VersionDto>> observer) {
-        Observable observable = service.getLatestAndroidVersion();
-        setSubscribe(observable, observer);
-    }
-
     //update order status
     public void HttpDataUpdateLiveOrderStatus(Observer<HttpResult3<Object, Object>> observer, String tradeId) {
         Observable observable = service_live.updateOrderStatus(tradeId);
         setSubscribe(observable, observer);
     }
 
-    //add update log
-    public void HttpDataAddUpdataLog(Observer<HttpResult> observer, Map<String, Object> map) {
-        Observable observable = service.addLatestUpdateLog(map);
-        setSubscribe(observable, observer);
-    }
-
-    //add phone info
-    public void HttpDataAddNewPhoneInfo(Observer<HttpResult> observer, Map<String, Object> map) {
-        Observable observable = service.addNewPhoneInfo(map);
-        setSubscribe(observable, observer);
-    }
 
     public void HttpDataGetWalletInfo(Observer<HttpResult3<Object, WalletInfoDto>> observer) {
         Observable observable = service_live.getWalletInfo();
