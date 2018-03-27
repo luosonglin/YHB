@@ -2,7 +2,6 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -36,12 +35,9 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UploadManager;
 
 import java.io.File;
 import java.text.ParseException;
@@ -50,7 +46,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -299,9 +294,6 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
             for (String i : photos) {
                 Log.e(TAG, i);
             }
-//            showProgress(true);
-//            ToastUtils.show(LiveBuildProgramActivity.this, "正在上传封面图片...");
-//            getQiniuToken(photos.get(0));
 
             File file = new File(photos.get(0));
             // creates RequestBody instance from file
@@ -351,76 +343,6 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
         }
     }
 
-    private String qiniuKey;
-    private String qiniuToken;
-
-    private void getQiniuToken(final String file) {
-        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
-            @Override
-            public void onCompleted() {
-                Log.e(TAG, "onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage());
-            }
-
-            @Override
-            public void onNext(QiniuTokenDto q) {
-                if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
-                    showProgress(false);
-                    return;
-                }
-                qiniuToken = q.getData().getUploadToken();
-
-                // 设置图片名字
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                qiniuKey = "android_live_" + sdf.format(new Date());
-
-                int i = new Random().nextInt(1000) + 1;
-
-                Log.e(TAG, "File对象、或 文件路径、或 字节数组: " + file);
-                Log.e(TAG, "指定七牛服务上的文件名，或 null: " + qiniuKey + i);
-                Log.e(TAG, "从服务端SDK获取: " + qiniuToken);
-                Log.e(TAG, "http://ono5ms5i0.bkt.clouddn.com/" + qiniuKey + i);
-
-                upload(file, qiniuKey + i, qiniuToken);
-            }
-        }, "android");
-    }
-
-    private Configuration config = new Configuration.Builder()
-            .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
-            .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
-            .connectTimeout(10) // 链接超时。默认10秒
-            .responseTimeout(60) // 服务器响应超时。默认60秒
-//            .zone(Zone.zone1) // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
-            .build();
-
-    private void upload(final String data, final String key, final String token) {
-        new Thread() {
-            public void run() {
-                // 重用uploadManager。一般地，只需要创建一个uploadManager对象
-                UploadManager uploadManager = new UploadManager(config);
-                uploadManager.put(data, key, token,
-                        (key1, info, res) -> {
-                            //res包含hash、key等信息，具体字段取决于上传策略的设置
-                            if (info.isOK()) {
-                                Log.i("qiniu", "Upload Success");
-
-//                                    ToastUtils.show(LiveBuildProgramActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
-                            } else {
-                                Log.i("qiniu", "Upload Fail");
-                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                            }
-                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
-
-                            videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
-                        }, null);
-            }
-        }.start();
-    }
 
     /**
      * 弹窗

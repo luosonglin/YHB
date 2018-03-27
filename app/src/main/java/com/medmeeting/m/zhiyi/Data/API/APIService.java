@@ -4,7 +4,6 @@ package com.medmeeting.m.zhiyi.Data.API;
 import com.medmeeting.m.zhiyi.UI.Entity.DoctorAuthentication;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
-import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
 
 import java.util.Map;
@@ -12,7 +11,6 @@ import java.util.Map;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
@@ -22,9 +20,6 @@ import rx.Observable;
  */
 public interface APIService {
 
-    //获取七牛云存储的uploadToken
-    @GET("/api/v1/qiniu/{bucketName}/")
-    Observable<QiniuTokenDto> getQiniuToken(@Path("bucketName") String bucketName);
 
     //医师认证
     @PUT("/api/v1/userinfos/")

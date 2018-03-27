@@ -264,7 +264,6 @@ public class VideoUpdateActivity extends AppCompatActivity {
             photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
             showProgress(true);
             ToastUtils.show(VideoUpdateActivity.this, "正在上传封面图片...");
-//            getQiniuToken(photos.get(0));
 
             File file = new File(photos.get(0));
             // creates RequestBody instance from file
