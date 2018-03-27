@@ -27,6 +27,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.IdentityTypeAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAddAuthenEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
@@ -37,6 +38,7 @@ import com.qiniu.android.storage.UploadManager;
 import com.snappydb.SnappydbException;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +50,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 
 /**
@@ -207,13 +212,10 @@ public class AuthorizeActivity extends AppCompatActivity {
                 else if (email.getText().toString().trim().equals("")) {
                     ToastUtils.show(AuthorizeActivity.this, "邮箱不能为空");
                     return;
-                }
-                else if (!Pattern.compile("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$").matcher(email.getText().toString().trim()).matches()) {
+                } else if (!Pattern.compile("^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$").matcher(email.getText().toString().trim()).matches()) {
                     ToastUtils.show(AuthorizeActivity.this, "请填写正确的邮箱格式");
                     return;
-                }
-
-                else if (identityName.getText().toString().trim().equals("")) {
+                } else if (identityName.getText().toString().trim().equals("")) {
                     ToastUtils.show(AuthorizeActivity.this, "请选择你的身份");
                     return;
                 }
@@ -709,21 +711,58 @@ public class AuthorizeActivity extends AppCompatActivity {
                 Log.e(getLocalClassName(), i);
             }
             ToastUtils.show(AuthorizeActivity.this, "正在上传...");
-            getQiniuToken(photos.get(0));
+//            getQiniuToken(photos.get(0));
 
-           /* if (photoType == 0) {
-                Glide.with(AuthorizeActivity.this)
-                        .load(photos.get(0))
-                        .crossFade()
-                        .dontAnimate()
-                        .into(workPhoto1);
-            } else if (photoType == 1) {
-                Glide.with(AuthorizeActivity.this)
-                        .load(photos.get(0))
-                        .crossFade()
-                        .dontAnimate()
-                        .into(workPhoto2);
-            }*/
+            File file = new File(photos.get(0));
+            // creates RequestBody instance from file
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+            // MultipartBody.Part is used to send also the actual filename
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            Log.e("mediaType is  ", requestFile.contentType().toString());
+
+            // adds another part within the multipart request
+            String descriptionString = "Sample description";
+            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), descriptionString); //multipart/form-data
+
+            HttpData.getInstance().HttpUploadFile(new Observer<HttpResult6>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult6 data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(AuthorizeActivity.this, data.getMsg());
+                        return;
+                    }
+
+                    if (photoType == 0) {
+                        workPhoto = data.getExtra().getAbsQiniuImgHash();
+                    } else if (photoType == 1) {
+                        identityPhoto = data.getExtra().getAbsQiniuImgHash();
+                    }
+
+                    if (photoType == 0) {
+                        Glide.with(AuthorizeActivity.this)
+                                .load(workPhoto)
+                                .crossFade()
+                                .dontAnimate()
+                                .into(workPhoto1);
+                    } else if (photoType == 1) {
+                        Glide.with(AuthorizeActivity.this)
+                                .load(identityPhoto)
+                                .crossFade()
+                                .dontAnimate()
+                                .into(workPhoto2);
+                    }
+                }
+            }, body, description);
         }
     }
 

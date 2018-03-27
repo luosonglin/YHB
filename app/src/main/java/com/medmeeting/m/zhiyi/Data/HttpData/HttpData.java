@@ -33,6 +33,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult5;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
@@ -95,6 +96,8 @@ import java.util.Map;
 
 import io.rx_cache.Reply;
 import io.rx_cache.internal.RxCache;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Observer;
@@ -756,6 +759,15 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataEditUserInfo(Observer<HttpResult3> observer, UserEditEntity userEditEntity) {
         Observable observable = service_live.editUserInfo(userEditEntity);
+        setSubscribe(observable, observer);
+    }
+
+//    public void HttpUploadFile(Observer<HttpResult6> observer, RequestBody description, MultipartBody.Part file) {
+//        Observable observable = service_live.uploadFile(description, file);
+//        setSubscribe(observable, observer);
+//    }
+    public void HttpUploadFile(Observer<HttpResult6> observer, MultipartBody.Part file, RequestBody description) {
+        Observable observable = service_live.uploadFile(file, description);
         setSubscribe(observable, observer);
     }
 

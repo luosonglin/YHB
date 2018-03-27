@@ -20,6 +20,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HospitalInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
@@ -73,12 +74,16 @@ import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -554,4 +559,15 @@ public interface APILiveService {
     //GET /v1/open/app/version/android 获取android版本号
     @GET("/v1/open/app/version/android")
     Observable<HttpResult3<Object, Version>> getAndroidVersion();
+
+    /**
+     * 文件上传
+     */
+    //POST /v1/files 普通文件上传，通过file文件的形式
+    @Multipart
+    @POST("/v1/files")
+//    Observable<HttpResult6> uploadFile(@Path("") RequestBody description, @Part MultipartBody.Part file);
+//    Observable<HttpResult6> uploadFile(@Part MultipartBody.Part file, MultipartFile);
+    Observable<HttpResult6> uploadFile(@Part MultipartBody.Part file, @Part("description") RequestBody description);
+
 }
