@@ -464,7 +464,8 @@ public class MainActivity extends AppCompatActivity implements
                     tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
                     updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
                     tvcode.setText(newVersion);
-                    tvmsg.setText(versionmsg);
+                    tvmsg.setText(data.getEntity().getLog());
+
                     updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
                     updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
                         switch (view12.getId()) {

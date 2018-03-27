@@ -19,6 +19,7 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.EditBankCardReqEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
@@ -26,6 +27,7 @@ import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +38,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 
 public class BankAccountNumberModifyActivity extends AppCompatActivity {
@@ -263,7 +268,47 @@ public class BankAccountNumberModifyActivity extends AppCompatActivity {
                     Log.e(TAG, i);
                 }
                 ToastUtils.show(BankAccountNumberModifyActivity.this, "正在上传...");
-                getQiniuToken(photos.get(0));
+//                getQiniuToken(photos.get(0));
+
+
+                File file = new File(photos.get(0));
+                // creates RequestBody instance from file
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+                // MultipartBody.Part is used to send also the actual filename
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                // adds another part within the multipart request
+                String descriptionString = "Sample description";
+                RequestBody description = RequestBody.create(MediaType.parse("text/plain"), descriptionString); //multipart/form-data
+
+                HttpData.getInstance().HttpUploadFile(new Observer<HttpResult6>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult6 data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(BankAccountNumberModifyActivity.this, data.getMsg());
+                            return;
+                        }
+
+                        imageUrl = data.getExtra().getAbsQiniuImgHash();
+
+                        Glide.with(BankAccountNumberModifyActivity.this)
+                                .load(imageUrl)
+                                .crossFade()
+                                .dontAnimate()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .into(identityImage);
+                    }
+                }, body, description);
+
             }
         }
     }

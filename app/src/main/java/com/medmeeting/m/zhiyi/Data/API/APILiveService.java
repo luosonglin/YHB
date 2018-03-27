@@ -566,8 +566,6 @@ public interface APILiveService {
     //POST /v1/files 普通文件上传，通过file文件的形式
     @Multipart
     @POST("/v1/files")
-//    Observable<HttpResult6> uploadFile(@Path("") RequestBody description, @Part MultipartBody.Part file);
-//    Observable<HttpResult6> uploadFile(@Part MultipartBody.Part file, MultipartFile);
     Observable<HttpResult6> uploadFile(@Part MultipartBody.Part file, @Part("description") RequestBody description);
 
 }

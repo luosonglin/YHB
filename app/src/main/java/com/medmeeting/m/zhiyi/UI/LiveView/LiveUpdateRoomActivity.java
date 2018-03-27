@@ -34,15 +34,18 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.MineView.MyLiveRoomActivity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoUpdateActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,6 +56,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 
 public class LiveUpdateRoomActivity extends AppCompatActivity {
@@ -270,22 +276,53 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
             }
 //            showProgress(true);
 //            ToastUtils.show(LiveUpdateRoomActivity.this, "正在上传封面图片...");
-            getQiniuToken(photos.get(0));
+//            getQiniuToken(photos.get(0));
 
-            Glide.with(LiveUpdateRoomActivity.this)
-                    .load(photos.get(0))
-                    .crossFade()
-                    .dontAnimate()
-                    .into(new GlideDrawableImageViewTarget(livePic) {
-                        @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                            //在这里添加一些图片加载完成的操作
-                            super.onResourceReady(resource, animation);
-//                            showProgress(false);
-                            livePicTipTv.setText("修改直播间封面");
-//                            ToastUtils.show(LiveUpdateRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
-                        }
-                    });
+            File file = new File(photos.get(0));
+            // creates RequestBody instance from file
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+            // MultipartBody.Part is used to send also the actual filename
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            Log.e("mediaType is  ", requestFile.contentType().toString());
+
+            // adds another part within the multipart request
+            String descriptionString = "Sample description";
+            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), descriptionString); //multipart/form-data
+
+            HttpData.getInstance().HttpUploadFile(new Observer<HttpResult6>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult6 data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(LiveUpdateRoomActivity.this, data.getMsg());
+                        return;
+                    }
+
+                    videoPhoto = data.getExtra().getAbsQiniuImgHash();
+                    Glide.with(LiveUpdateRoomActivity.this)
+                            .load(videoPhoto)
+                            .crossFade()
+                            .dontAnimate()
+                            .into(new GlideDrawableImageViewTarget(livePic) {
+                                @Override
+                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                    //在这里添加一些图片加载完成的操作
+                                    super.onResourceReady(resource, animation);
+                                    livePicTipTv.setText("修改直播间封面");
+                                }
+                            });
+                }
+            }, body, description);
+
         }
     }
 
