@@ -54,6 +54,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRegEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 import com.medmeeting.m.zhiyi.UI.Entity.Version;
@@ -568,4 +569,10 @@ public interface APILiveService {
     @POST("/v1/files")
     Observable<HttpResult6> uploadFile(@Part MultipartBody.Part file, @Part("description") RequestBody description);
 
+    /**
+     * 快速注册
+     */
+    //POST /v1/app/fast/reg APP-快速注册
+    @POST("/v1/app/fast/reg")
+    Observable<HttpResult3<Object, AccessToken>> fastSignUp(@Body UserRegEntity userRegEntity);
 }

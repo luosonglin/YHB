@@ -67,6 +67,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRegEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 import com.medmeeting.m.zhiyi.UI.Entity.Version;
@@ -696,6 +697,11 @@ public class HttpData extends RetrofitUtils {
 //    }
     public void HttpUploadFile(Observer<HttpResult6> observer, MultipartBody.Part file, RequestBody description) {
         Observable observable = service_live.uploadFile(file, description);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataFastRignUp(Observer<HttpResult3<Object, AccessToken>> observer, UserRegEntity userRegEntity) {
+        Observable observable = service_live.fastSignUp(userRegEntity);
         setSubscribe(observable, observer);
     }
 
