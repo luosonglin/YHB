@@ -46,6 +46,9 @@ import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -423,8 +426,70 @@ public class Login_v2Activity extends AppCompatActivity {
 
                 break;
             case R.id.wechat:
+                UMShareAPI.get(this).getPlatformInfo(Login_v2Activity.this, SHARE_MEDIA.WEIXIN, new UMAuthListener() { //doOauthVerify //getPlatformInfo
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                        //回调成功，即登陆成功后这里返回Map<String, String> map，map里面就是用户的信息，可以拿出来使用了
+
+                        ToastUtils.show(Login_v2Activity.this, "微信登录授权成功");
+                        if (map != null) {
+                            Intent intent = new Intent(Login_v2Activity.this, BindPhone_v2Activity.class);
+                            intent.putExtra("nickname", map.get("name"));
+                            intent.putExtra("iconurl", map.get("iconurl"));
+                            intent.putExtra("openId", map.get("openid"));
+                            intent.putExtra("source", "wechat");
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                        ToastUtils.show(Login_v2Activity.this, "微信登录失败，失败原因：" + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media, int i) {
+                        ToastUtils.show(Login_v2Activity.this, "取消微信登录");
+                    }
+                });
                 break;
             case R.id.qq:
+                UMShareAPI.get(this).getPlatformInfo(Login_v2Activity.this, SHARE_MEDIA.QQ, new UMAuthListener() { //doOauthVerify //getPlatformInfo
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                        //回调成功，即登陆成功后这里返回Map<String, String> map，map里面就是用户的信息，可以拿出来使用了
+
+                        ToastUtils.show(Login_v2Activity.this, "微信登录授权成功");
+                        if (map != null) {
+                            Intent intent = new Intent(Login_v2Activity.this, BindPhone_v2Activity.class);
+                            intent.putExtra("nickname", map.get("name"));
+                            intent.putExtra("iconurl", map.get("iconurl"));
+                            intent.putExtra("openId", map.get("openid"));
+                            intent.putExtra("source", "qq");
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                        ToastUtils.show(Login_v2Activity.this, "微信登录失败，失败原因：" + throwable.getMessage());
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media, int i) {
+                        ToastUtils.show(Login_v2Activity.this, "取消微信登录");
+                    }
+                });
                 break;
             case R.id.agreement:
                 BrowserActivity.launch(Login_v2Activity.this, "http://webview.medmeeting.com/#/page/user-protocol", "《登录协议》");

@@ -722,7 +722,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataAddThird(Observer<HttpResult3> observer, UserOpenAddEntity userOpenAddEntity) {
+    public void HttpDataAddThird(Observer<HttpResult3<Object, AccessToken>> observer, UserOpenAddEntity userOpenAddEntity) {
         Observable observable = service_live.addThird(userOpenAddEntity);
         setSubscribe(observable, observer);
     }

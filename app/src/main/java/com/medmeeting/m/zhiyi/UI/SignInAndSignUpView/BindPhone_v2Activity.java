@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.SignInAndSignUpView;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
@@ -24,12 +25,17 @@ import android.widget.TextView;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserOpenAddEntity;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.snappydb.SnappydbException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -46,6 +52,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import rx.Observer;
 
 /**
@@ -129,9 +136,18 @@ public class BindPhone_v2Activity extends AppCompatActivity {
                 userOpenAddEntity.setCode(code.getText().toString().trim());
                 userOpenAddEntity.setUserSource("android");
 
+                userOpenAddEntity.setIconurl(getIntent().getStringExtra("iconurl"));
+                userOpenAddEntity.setNickName(getIntent().getStringExtra("name"));
+                switch (getIntent().getStringExtra("source")) {
+                    case "wechat":
+                        userOpenAddEntity.setWxOpenId(getIntent().getStringExtra("openid"));
+                        break;
+                    case "qq":
+                        userOpenAddEntity.setQqOpenId(getIntent().getStringExtra("openid"));
+                        break;
+                }
 
-
-                HttpData.getInstance().HttpDataAddThird(new Observer<HttpResult3>() {
+                HttpData.getInstance().HttpDataAddThird(new Observer<HttpResult3<Object, AccessToken>>() {
                     @Override
                     public void onCompleted() {
 
@@ -143,8 +159,62 @@ public class BindPhone_v2Activity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(HttpResult3 httpResult3) {
+                    public void onNext(HttpResult3<Object, AccessToken> data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(BindPhone_v2Activity.this, data.getMsg());
+                            return;
+                        }
 
+
+                        Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
+                        try {
+                            DBUtils.put(BindPhone_v2Activity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
+                            DBUtils.put(BindPhone_v2Activity.this, "phone", phone.getText().toString().trim());
+                        } catch (SnappydbException e) {
+                            e.printStackTrace();
+                        }
+
+                        Data.setPhone(phone.getText().toString().trim());
+
+                        //极光推送 别名设置
+                        JPushInterface.setAlias(BindPhone_v2Activity.this, 1, phone.getText().toString().trim());
+
+                        HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                ToastUtils.show(BindPhone_v2Activity.this, e.getMessage());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserInfoDto> data2) {
+                                if (!data2.getStatus().equals("success")) {
+                                    ToastUtils.show(BindPhone_v2Activity.this, data2.getMsg());
+//                                    showProgress(false);
+                                    return;
+                                }
+
+                                Data.setUserId(data2.getEntity().getId());
+                                try {
+                                    DBUtils.put(BindPhone_v2Activity.this, "userId", data2.getEntity().getId() + "");
+                                    DBUtils.put(BindPhone_v2Activity.this, "userName", data2.getEntity().getName() + "");
+                                    DBUtils.put(BindPhone_v2Activity.this, "userNickName", data2.getEntity().getNickName() + "");
+                                    DBUtils.put(BindPhone_v2Activity.this, "authentication", data2.getEntity().getAuthenStatus() + "");
+                                    DBUtils.put(BindPhone_v2Activity.this, "confirmNumber", data2.getEntity().getConfirmNumber() + "");
+                                    DBUtils.put(BindPhone_v2Activity.this, "tokenId", data2.getEntity().getTokenId() + "");
+                                } catch (SnappydbException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    Log.d(getLocalClassName(), "Login succeed!");
+                                    finish();
+                                    startActivity(new Intent(BindPhone_v2Activity.this, MainActivity.class));
+                                }
+                            }
+                        });
                     }
                 }, userOpenAddEntity);
                 break;
