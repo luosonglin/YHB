@@ -49,6 +49,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserAuthenRecord;
 import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserEditEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserEditPwdEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
@@ -582,4 +583,8 @@ public interface APILiveService {
     //    POST /v1/users/label/edit 用户标签-更新
     @POST("/v1/users/label/edit")
     Observable<HttpResult3> userSubject(@Path("labelIds") String labelIds);
+
+
+    //PUT /v1/users/app/user/editPwd APP-用户忘记密码
+    Observable<HttpResult3> editPwd(@Body UserEditPwdEntity userEditPwdEntity);
 }

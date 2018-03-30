@@ -231,6 +231,7 @@ public class Login_v2Activity extends AppCompatActivity {
 
                 break;
             case R.id.forget_password:
+                startActivity(new Intent(Login_v2Activity.this, ResetPassword_v2Activity.class));
                 break;
             case R.id.login1:
                 if (!PhoneUtils.isMobile(phone.getText().toString().trim())) {
