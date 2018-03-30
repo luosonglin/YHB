@@ -41,6 +41,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -196,7 +197,7 @@ public class Login_v2Activity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.fast_sign_up, R.id.login_by_password, R.id.login_by_code, R.id.forget_password, R.id.login1, R.id.get_code, R.id.login2})
+    @OnClick({R.id.fast_sign_up, R.id.login_by_password, R.id.login_by_code, R.id.forget_password, R.id.login1, R.id.get_code, R.id.login2, R.id.wechat, R.id.qq, R.id.agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fast_sign_up:
@@ -371,15 +372,15 @@ public class Login_v2Activity extends AppCompatActivity {
                         Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
                         try {
                             DBUtils.put(Login_v2Activity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
-                            DBUtils.put(Login_v2Activity.this, "phone",  phone2.getText().toString().trim());
+                            DBUtils.put(Login_v2Activity.this, "phone", phone2.getText().toString().trim());
                         } catch (SnappydbException e) {
                             e.printStackTrace();
                         }
 
-                        Data.setPhone( phone2.getText().toString().trim());
+                        Data.setPhone(phone2.getText().toString().trim());
 
                         //极光推送 别名设置
-                        JPushInterface.setAlias(Login_v2Activity.this, 1,  phone2.getText().toString().trim());
+                        JPushInterface.setAlias(Login_v2Activity.this, 1, phone2.getText().toString().trim());
 
                         HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
                             @Override
@@ -420,6 +421,13 @@ public class Login_v2Activity extends AppCompatActivity {
                     }
                 }, map2);
 
+                break;
+            case R.id.wechat:
+                break;
+            case R.id.qq:
+                break;
+            case R.id.agreement:
+                BrowserActivity.launch(Login_v2Activity.this, "http://webview.medmeeting.com/#/page/user-protocol", "《登录协议》");
                 break;
         }
     }
