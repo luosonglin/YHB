@@ -161,8 +161,6 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
             public void onNext(HttpResult3<Object, LiveDto> data) {
                 Glide.with(LiveUpdateProgramActivity.this)
                         .load(data.getEntity().getCoverPhoto())
-//                        .crossFade()
-//                        .transform(new GlideCircleTransform(LiveUpdateProgramActivity.this))
                         .dontAnimate()
                         .into(new GlideDrawableImageViewTarget(livePic) {
                             @Override
@@ -215,20 +213,16 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                     close.setTextColor(getResources().getColor(R.color.white));
                 }
                 introduction.setText(data.getEntity().getDes());
-                introduction.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        //触摸的是EditText并且当前EditText可以滚动则将事件交给EditText处理；否则将事件交由其父类处理
-                        if ((view.getId() == R.id.introduction && canVerticalScroll(introduction))) {
-                            view.getParent().requestDisallowInterceptTouchEvent(true);
-                            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                                view.getParent().requestDisallowInterceptTouchEvent(false);
-                            }
+                introduction.setOnTouchListener((view, motionEvent) -> {
+                    //触摸的是EditText并且当前EditText可以滚动则将事件交给EditText处理；否则将事件交由其父类处理
+                    if ((view.getId() == R.id.introduction && canVerticalScroll(introduction))) {
+                        view.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
                         }
-                        return false;
                     }
+                    return false;
                 });
-
 
                 createTime = data.getEntity().getCreateTime();
                 updateTime = data.getEntity().getUpdateTime();
