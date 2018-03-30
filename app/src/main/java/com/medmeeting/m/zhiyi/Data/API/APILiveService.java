@@ -125,7 +125,7 @@ public interface APILiveService {
     Observable<HttpResult3<LiveDto, Object>> getLivePrograms(@Path("roomId") Integer roomId);   //LiveDto需换
 
     //直播-公开-直播标签房间节目 GET /v1/open/liveLabel 获取直播标签列表 获取直播分类标签
-    @GET("v1/open/liveLabel?limit=100")
+    @GET("v1/open/liveLabel?limit=1000")
     Observable<HttpResult3<TagDto, Object>> getTags();
 
     //搜索
@@ -264,7 +264,7 @@ public interface APILiveService {
      */
     //直播-公开-直播标签房间节目 GET /v1/open/liveLabel 获取直播标签列表 获取直播分类标签
     @GET("v1/open/liveLabel")
-    Observable<HttpResult3<TagDto, Object>> getVideoTags(@QueryMap Map<String, Integer> map);
+    Observable<HttpResult3<TagDto, Object>> getVideoTags(@QueryMap Map<String, Object> map);
 
     //POST /v1/open/video/page 获取视频列表-分页 主页 相关视频页
     @POST("/v1/open/video/page")
@@ -575,4 +575,5 @@ public interface APILiveService {
     //POST /v1/app/fast/reg APP-快速注册
     @POST("/v1/app/fast/reg")
     Observable<HttpResult3<Object, AccessToken>> fastSignUp(@Body UserRegEntity userRegEntity);
+
 }

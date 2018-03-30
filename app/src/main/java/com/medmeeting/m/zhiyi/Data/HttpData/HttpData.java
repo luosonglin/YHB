@@ -373,7 +373,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDataGetVideoTags(Observer<HttpResult3<TagDto, Object>> observer, Map<String, Integer> map) {
+    public void HttpDataGetVideoTags(Observer<HttpResult3<TagDto, Object>> observer, Map<String, Object> map) {
         Observable observable = service_live.getVideoTags(map);
         setSubscribe(observable, observer);
     }

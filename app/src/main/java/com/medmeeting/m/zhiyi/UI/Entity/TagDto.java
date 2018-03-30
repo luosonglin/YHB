@@ -16,10 +16,19 @@ public class TagDto {
     private int searchCount;
     private int sort;
     private String iconUrl;
+    private String labelType;
 
     public TagDto(String labelName, String iconUrl) {
         this.labelName = labelName;
         this.iconUrl = iconUrl;
+    }
+
+    public String getLabelType() {
+        return labelType;
+    }
+
+    public void setLabelType(String labelType) {
+        this.labelType = labelType;
     }
 
     public String getIconUrl() {

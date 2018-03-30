@@ -106,7 +106,7 @@ public class LiveIndexTabFragment2 extends Fragment
     }
 
     private void getVideoTag() {
-        Map<String, Integer> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>();
         options.put("limit", 100);
         HttpData.getInstance().HttpDataGetVideoTags(new Observer<HttpResult3<TagDto, Object>>() {
             @Override

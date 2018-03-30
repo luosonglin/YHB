@@ -25,17 +25,11 @@ import android.widget.TextView;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
-import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
-import com.medmeeting.m.zhiyi.UI.Entity.UserRegEntity;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
-import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.snappydb.SnappydbException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -52,7 +46,6 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
 import rx.Observer;
 
 /**
@@ -133,36 +126,36 @@ public class SignUp_v2Activity extends AppCompatActivity {
                 BrowserActivity.launch(SignUp_v2Activity.this, "http://webview.medmeeting.com/#/page/user-protocol", "《登录协议》");
                 break;
             case R.id.confirm:
-                if (phone.getText().toString().trim().equals("")) {
-                    ToastUtils.show(SignUp_v2Activity.this, "请先填写手机号");
-                    return;
-                }
-                if (!PhoneUtils.isMobile(phone.getText().toString().trim())) {
-                    ToastUtils.show(SignUp_v2Activity.this, "手机号格式不正确,请重新输入");
-                    return;
-                }
-                if (code.getText().toString().trim().equals("")) {
-                    ToastUtils.show(SignUp_v2Activity.this, "请先填写验证码");
-                    return;
-                }
-                if (password.getText().toString().trim().equals("")) {
-                    ToastUtils.show(SignUp_v2Activity.this, "请先填写密码");
-                    return;
-                }
-                if (repassword.getText().toString().trim().equals("")) {
-                    ToastUtils.show(SignUp_v2Activity.this, "请先填写二次密码");
-                    return;
-                }
-                if (password.getText().toString().trim().equals(repassword.getText().toString().trim())) {
-                    ToastUtils.show(SignUp_v2Activity.this, "两次密码不正确，请重新填写");
-                    return;
-                }
-                if (!agree.isChecked()) {
-                    ToastUtils.show(SignUp_v2Activity.this, "请先同意《用户服务协议》");
-                    return;
-                }
+//                if (phone.getText().toString().trim().equals("")) {
+//                    ToastUtils.show(SignUp_v2Activity.this, "请先填写手机号");
+//                    return;
+//                }
+//                if (!PhoneUtils.isMobile(phone.getText().toString().trim())) {
+//                    ToastUtils.show(SignUp_v2Activity.this, "手机号格式不正确,请重新输入");
+//                    return;
+//                }
+//                if (code.getText().toString().trim().equals("")) {
+//                    ToastUtils.show(SignUp_v2Activity.this, "请先填写验证码");
+//                    return;
+//                }
+//                if (password.getText().toString().trim().equals("")) {
+//                    ToastUtils.show(SignUp_v2Activity.this, "请先填写密码");
+//                    return;
+//                }
+//                if (repassword.getText().toString().trim().equals("")) {
+//                    ToastUtils.show(SignUp_v2Activity.this, "请先填写二次密码");
+//                    return;
+//                }
+//                if (!password.getText().toString().trim().equals(repassword.getText().toString().trim())) {
+//                    ToastUtils.show(SignUp_v2Activity.this, "两次密码不正确，请重新填写");
+//                    return;
+//                }
+//                if (!agree.isChecked()) {
+//                    ToastUtils.show(SignUp_v2Activity.this, "请先同意《用户服务协议》");
+//                    return;
+//                }
 
-                UserRegEntity userRegEntity = new UserRegEntity();
+                /*UserRegEntity userRegEntity = new UserRegEntity();
                 userRegEntity.setPhone(phone.getText().toString().trim());
                 userRegEntity.setCode(code.getText().toString().trim());
                 userRegEntity.setPassword(password.getText().toString().trim());
@@ -229,13 +222,14 @@ public class SignUp_v2Activity extends AppCompatActivity {
                                 } finally {
                                     Log.d(getLocalClassName(), "Login succeed!");
                                     finish();
-                                    startActivity(new Intent(SignUp_v2Activity.this, MainActivity.class));
+                                    startActivity(new Intent(SignUp_v2Activity.this, BindSubject_v2Activity.class));
                                 }
                             }
                         });
 
                     }
-                }, userRegEntity);
+                }, userRegEntity);*/
+                startActivity(new Intent(SignUp_v2Activity.this, BindSubject_v2Activity.class));
                 break;
         }
     }
