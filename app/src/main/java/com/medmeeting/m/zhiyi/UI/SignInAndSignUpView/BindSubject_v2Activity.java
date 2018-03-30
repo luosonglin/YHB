@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.SignInAndSignUpView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -7,9 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.library.flowlayout.FlowLayoutManager;
+import com.library.flowlayout.SpaceItemDecoration;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
+import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.SubjectAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -58,7 +61,11 @@ public class BindSubject_v2Activity extends AppCompatActivity {
     private void initView() {
         mRecyclerView.stopNestedScroll();
         //设置RecyclerView的显示模式  当前List模式
-        mRecyclerView.setLayoutManager(new FlowLayoutManager());
+        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+        //设置每一个item间距
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(4));
+        mRecyclerView.setLayoutManager(flowLayoutManager);
+
 
 //        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
@@ -67,7 +74,7 @@ public class BindSubject_v2Activity extends AppCompatActivity {
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
 
-        mQuickAdapter = new TagAdapter(R.layout.item_tag_subject, null); //item_tag
+        mQuickAdapter = new SubjectAdapter(R.layout.item_tag_subject, null); //item_tag
         mRecyclerView.setAdapter(mQuickAdapter);
 
         Map<String, Object> options = new HashMap<>();
@@ -124,8 +131,6 @@ public class BindSubject_v2Activity extends AppCompatActivity {
     private void toolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-//        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     @OnClick(R.id.start)
@@ -133,11 +138,33 @@ public class BindSubject_v2Activity extends AppCompatActivity {
         String subjects = "";
         for (TagDto i : tags_confirm) {
             if (subjects.equals(""))
-                subjects = ""+i.getId();
+                subjects = "" + i.getId();
             else
                 subjects += "," + i.getId();
         }
 
+        Log.e(getLocalClassName(), subjects);
 
+        HttpData.getInstance().HttpDataUserSubject(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(HttpResult3 data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(BindSubject_v2Activity.this, data.getMsg());
+                    return;
+                }
+                finish();
+                startActivity(new Intent(BindSubject_v2Activity.this, MainActivity.class));
+            }
+        }, subjects);
     }
 }

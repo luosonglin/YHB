@@ -576,4 +576,10 @@ public interface APILiveService {
     @POST("/v1/app/fast/reg")
     Observable<HttpResult3<Object, AccessToken>> fastSignUp(@Body UserRegEntity userRegEntity);
 
+    /**
+     * 用户标签
+     */
+    //    POST /v1/users/label/edit 用户标签-更新
+    @POST("/v1/users/label/edit")
+    Observable<HttpResult3> userSubject(@Path("labelIds") String labelIds);
 }

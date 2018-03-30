@@ -705,6 +705,11 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataUserSubject(Observer<HttpResult3> observer, String labelIds) {
+        Observable observable = service_live.userSubject(labelIds);
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *
