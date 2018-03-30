@@ -50,6 +50,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserEditEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserEditPwdEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserForgetPwdEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
@@ -587,4 +588,8 @@ public interface APILiveService {
 
     //PUT /v1/users/app/user/editPwd APP-用户忘记密码
     Observable<HttpResult3> editPwd(@Body UserEditPwdEntity userEditPwdEntity);
+
+    //POST /v1/app/user/forgetPwd APP-忘记登录(未登录)
+    @POST("/v1/app/user/forgetPwd")
+    Observable<HttpResult3> forgetPwd(@Body UserForgetPwdEntity userForgetPwdEntity);
 }

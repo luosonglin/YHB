@@ -33,7 +33,7 @@ import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.UserEditPwdEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserForgetPwdEntity;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
@@ -136,11 +136,11 @@ public class ResetPassword_v2Activity extends AppCompatActivity {
                     imm2.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
 
-                UserEditPwdEntity userEditPwdEntity = new UserEditPwdEntity();
+                UserForgetPwdEntity userEditPwdEntity = new UserForgetPwdEntity();
                 userEditPwdEntity.setCode(code.getText().toString().trim());
                 userEditPwdEntity.setPassword(password.getText().toString().trim());
-                userEditPwdEntity.setConfirmPassword(password.getText().toString().trim());
-                HttpData.getInstance().HttpDateEditPwd(new Observer<HttpResult3>() {
+                userEditPwdEntity.setPhone( phone.getText().toString().trim());
+                HttpData.getInstance().HttpDateForgetPwd(new Observer<HttpResult3>() {
                     @Override
                     public void onCompleted() {
 

@@ -63,6 +63,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserAuthorEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.UserEditEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserEditPwdEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserForgetPwdEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
@@ -713,6 +714,10 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDateEditPwd(Observer<HttpResult3> observer, UserEditPwdEntity userRegEntity) {
         Observable observable = service_live.editPwd(userRegEntity);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDateForgetPwd(Observer<HttpResult3> observer, UserForgetPwdEntity userRegEntity) {
+        Observable observable = service_live.forgetPwd(userRegEntity);
         setSubscribe(observable, observer);
     }
 
