@@ -26,7 +26,7 @@ import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserOpenAddEntity;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.PhoneUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -71,7 +71,7 @@ public class BindPhone_v2Activity extends AppCompatActivity {
     TextView agreement;
     @BindView(R.id.confirm)
     TextView confirm;
-    
+
     private boolean isHidePwd = true;// 输入框密码是否是隐藏的，默认为true
 
     // timer
@@ -124,6 +124,29 @@ public class BindPhone_v2Activity extends AppCompatActivity {
                 BrowserActivity.launch(BindPhone_v2Activity.this, "http://webview.medmeeting.com/#/page/live-protocol", "《直播协议》");
                 break;
             case R.id.confirm:
+                UserOpenAddEntity userOpenAddEntity = new UserOpenAddEntity();
+                userOpenAddEntity.setPhone(phone.getText().toString().trim());
+                userOpenAddEntity.setCode(code.getText().toString().trim());
+                userOpenAddEntity.setUserSource("android");
+
+
+
+                HttpData.getInstance().HttpDataAddThird(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 httpResult3) {
+
+                    }
+                }, userOpenAddEntity);
                 break;
         }
     }
