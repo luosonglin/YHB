@@ -77,6 +77,23 @@ public class UserInfoDto {
     private String postion;
     private String company;
 
+    private String userLabels;
+
+    public String getPostion() {
+        return postion;
+    }
+
+    public void setPostion(String postion) {
+        this.postion = postion;
+    }
+
+    public String getUserLabels() {
+        return userLabels;
+    }
+
+    public void setUserLabels(String userLabels) {
+        this.userLabels = userLabels;
+    }
 
     public String getCompany() {
         return company;

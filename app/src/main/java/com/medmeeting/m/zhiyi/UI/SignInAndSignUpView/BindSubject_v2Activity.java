@@ -145,6 +145,7 @@ public class BindSubject_v2Activity extends AppCompatActivity {
 
         Log.e(getLocalClassName(), subjects);
 
+
         HttpData.getInstance().HttpDataUserSubject(new Observer<HttpResult3>() {
             @Override
             public void onCompleted() {
