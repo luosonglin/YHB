@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import br.com.goncalves.pugnotification.notification.PugNotification;
+import cn.jpush.android.api.CustomPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
 
 public class MyJPushReceiver extends BroadcastReceiver {
@@ -88,14 +89,28 @@ public class MyJPushReceiver extends BroadcastReceiver {
             System.out.println("收到了通知@@消息内容是:" + content);
             System.out.println("收到了通知@@消息extra是:" + extra);
 
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = new JSONObject(extra);
-                id = jsonObject.getString("id");
-                type = jsonObject.getString("type");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+//            JSONObject jsonObject = null;
+//            try {
+//                jsonObject = new JSONObject(extra);
+//                id = jsonObject.getString("id");
+//                type = jsonObject.getString("type");
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+
+            CustomPushNotificationBuilder builder = new CustomPushNotificationBuilder(context,
+                    R.layout.customer_notitfication_layout,
+                    R.id.icon,
+                    R.id.title,
+                    R.id.text);
+            // 指定定制的 Notification Layout
+            builder.statusBarDrawable = R.mipmap.logo;
+            // 指定最顶层状态栏小图标
+            builder.layoutIconDrawable = R.mipmap.ic_launcher;
+            // 指定下拉状态栏时显示的通知图标
+
+            JPushInterface.setPushNotificationBuilder(2, builder);
+
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
