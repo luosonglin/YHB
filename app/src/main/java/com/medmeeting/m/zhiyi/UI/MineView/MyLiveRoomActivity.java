@@ -53,8 +53,29 @@ public class MyLiveRoomActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(view -> finish());
         addTv = (TextView) findViewById(R.id.add);
         addTv.setOnClickListener(view -> {
-            startActivity(new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class));
-            finish();
+            HttpData.getInstance().HttpDataGetLiveRoom(new Observer<HttpResult3<LiveRoomDto, Object>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult3<LiveRoomDto, Object> data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(MyLiveRoomActivity.this, data.getMsg());
+                        return;
+                    }
+                    Intent intent = new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class);
+                    intent.putExtra("times", data.getData().size()+"");    //看创建过几个直播间，如果没创建过，则第一次创建要弹出直播间协议弹窗
+                    startActivity(intent);
+                    finish();
+                }
+            });
         });
     }
 

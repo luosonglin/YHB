@@ -29,7 +29,7 @@ public class MyJPushReceiver extends BroadcastReceiver {
     private NotificationManager nm;
 
     public MyJPushReceiver() {
-        Log.d(TAG, "啊啊啊");
+        Log.d(TAG, "嘿嘿嘿");
     }
 
     @Override

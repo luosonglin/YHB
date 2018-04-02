@@ -16,6 +16,7 @@ import com.githang.statusbar.StatusBarCompat;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.Entity.Version;
 import com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment;
@@ -359,7 +360,28 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(intent2);
                 break;
             case 2:
-                startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));
+                HttpData.getInstance().HttpDataGetLiveRoom(new Observer<HttpResult3<LiveRoomDto, Object>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<LiveRoomDto, Object> data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(MainActivity.this, data.getMsg());
+                            return;
+                        }
+                        Intent intent = new Intent(MainActivity.this, LiveBuildRoomActivity.class);
+                        intent.putExtra("times", data.getData().size()+"");    //看创建过几个直播间，如果没创建过，则第一次创建要弹出直播间协议弹窗
+                        startActivity(intent);
+                    }
+                });
                 break;
         }
     }

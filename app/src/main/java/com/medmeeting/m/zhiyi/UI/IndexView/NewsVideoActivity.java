@@ -194,7 +194,6 @@ public class NewsVideoActivity extends AppCompatActivity {
             @Override
             public void onCancel(SHARE_MEDIA platform, int action) {
 
-
             }
         });
 

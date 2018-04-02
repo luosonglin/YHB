@@ -131,7 +131,7 @@
                             android:layout_height="match_parent"
                             android:layout_toEndOf="@+id/line5"
                             android:gravity="center_vertical"
-                            android:text="视频来源"
+                            android:text="相关推荐"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
                     </RelativeLayout>
