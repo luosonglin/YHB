@@ -35,7 +35,6 @@ import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizeActivity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizedActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.UI.UserInfoView.UpdateUserInfoActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
@@ -161,7 +160,7 @@ public class MineFragment extends Fragment {
         }
 
         if (userId == null && "".equals(userId)) {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            startActivity(new Intent(getActivity(), Login_v2Activity.class));
         }
     }
 
@@ -184,7 +183,7 @@ public class MineFragment extends Fragment {
         showProgress(true);
 
         if (userId == null) {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+            startActivity(new Intent(getActivity(), Login_v2Activity.class));
         } else {
             HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
                 @Override
@@ -790,11 +789,11 @@ public class MineFragment extends Fragment {
                 }
                 break;
             case R.id.name:
-//                if (activate.getText().toString().trim().equals("已认证")) {
-//                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
-//                }
+                if (activate.getText().toString().trim().equals("已认证")) {
+                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                }
 
-                startActivity(new Intent(getActivity(), Login_v2Activity.class));
+//                startActivity(new Intent(getActivity(), Login_v2Activity.class));
                 break;
             case R.id.activate:
                 if (activate.getText().toString().trim().equals("已认证")) {

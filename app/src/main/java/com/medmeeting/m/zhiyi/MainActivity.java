@@ -26,7 +26,7 @@ import com.medmeeting.m.zhiyi.UI.MeetingView.ExchangeBusinessCardActivity;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment2;
 import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -342,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements
                 final String TAG_CARD = "002";
                 try {
                     if (!DBUtils.isSet(MainActivity.this, "tokenId") && !DBUtils.isSet(MainActivity.this, "openId")) {
-                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        Intent loginIntent = new Intent(MainActivity.this, Login_v2Activity.class);
                         int requestCode = 2;
                         startActivityForResult(loginIntent, requestCode);
                         return;

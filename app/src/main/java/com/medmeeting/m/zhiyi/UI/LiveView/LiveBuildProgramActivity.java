@@ -35,7 +35,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
@@ -276,7 +276,7 @@ public class LiveBuildProgramActivity extends AppCompatActivity {
                     buildllyt.setClickable(true);
                     if (httpResult3.getMsg().equals("invalid_token")) {
                         ToastUtils.show(LiveBuildProgramActivity.this, "账号有问题，请测试人员重新登录");
-                        startActivity(new Intent(LiveBuildProgramActivity.this, LoginActivity.class));
+                        startActivity(new Intent(LiveBuildProgramActivity.this, Login_v2Activity.class));
                         finish();
                     }
                 }

@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.BroadcastReceiver;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.Iterator;
 
+import br.com.goncalves.pugnotification.notification.PugNotification;
 import cn.jpush.android.api.JPushInterface;
 
 public class MyJPushReceiver extends BroadcastReceiver {
@@ -36,16 +39,20 @@ public class MyJPushReceiver extends BroadcastReceiver {
         String id = "";
         String type = "";
 
+
+        System.out.println(intent.getAction() + ", " + printBundle(bundle));
+
+
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
-            String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-            Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
-            //send the Registration Id to your server...
-
-            String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-            String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
-
-            System.out.println("收到了自定义消息@@消息内容是:" + content);
-            System.out.println("收到了自定义消息@@消息extra是:" + extra);
+//            String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
+//            Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
+//            //send the Registration Id to your server...
+//
+//            String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+//            String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+//
+//            System.out.println("收到了自定义消息@@消息内容是:" + content);
+//            System.out.println("收到了自定义消息@@消息extra是:" + extra);
 
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
@@ -57,21 +64,15 @@ public class MyJPushReceiver extends BroadcastReceiver {
             System.out.println("收到了自定义消息@@消息内容是:" + content);
             System.out.println("收到了自定义消息@@消息extra是:" + extra);
 
-/*
-            /*/
-//            MyApp.data.add(map);//需要保存
-            //**************解析推送过来的json数据并存放到集合中 end******************
-
-
-            //            PugNotification.with(context)
-//                    .load()
-//                    .title("医会宝")
-//                    .message(content)
-//                    .smallIcon(R.mipmap.ic_launcher)//"https://wxt.sinaimg.cn/thumb300/a601622bly1fmzwrjm8cxj20u01e9488.jpg?tags=%5B%5D"
-//                    .largeIcon(R.mipmap.ic_launcher)
-//                    .flags(Notification.DEFAULT_ALL)
-//                    .simple()
-//                    .build();
+            PugNotification.with(context)
+                    .load()
+                    .title("医会宝")
+                    .message(content)
+                    .smallIcon(R.mipmap.ic_launcher)//"https://wxt.sinaimg.cn/thumb300/a601622bly1fmzwrjm8cxj20u01e9488.jpg?tags=%5B%5D"
+                    .largeIcon(R.mipmap.ic_launcher)
+                    .flags(Notification.DEFAULT_ALL)
+                    .simple()
+                    .build();
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
@@ -96,16 +97,6 @@ public class MyJPushReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
 
-//            PugNotification.with(context)
-//                    .load()
-//                    .title(title)
-//                    .message(content)
-//                    .smallIcon(R.mipmap.ic_launcher)//"https://wxt.sinaimg.cn/thumb300/a601622bly1fmzwrjm8cxj20u01e9488.jpg?tags=%5B%5D"
-//                    .largeIcon(R.mipmap.ic_launcher)
-//                    .flags(Notification.DEFAULT_ALL)
-//                    .simple()
-//                    .build();
-
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
 
@@ -123,9 +114,9 @@ public class MyJPushReceiver extends BroadcastReceiver {
 
             if (TextUtils.isEmpty(id)) return;
             switch (type) {
-                case "active":
-//                    BrowserActivity.launch(context, data.getData().get(position - 1).getUrl(), title);
-                    break;
+//                case "active":
+//                    BrowserActivity.launch(context, "", "");
+//                    break;
                 case "live":
                     intent = new Intent(context, LiveProgramDetailActivity2.class);
                     intent.putExtra("programId", Integer.parseInt(id));

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,6 +151,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                 startActivity(new Intent(getActivity(), ActivateActivity.class));
                 return;
             }
+            Log.e(getActivity().getLocalClassName(), "tocPortStatus is " +tocPortStatus);
             like.setChecked(false);//不能再点
             collectService(mLiveProgramDateilsEntity.isCollectFlag());
         });

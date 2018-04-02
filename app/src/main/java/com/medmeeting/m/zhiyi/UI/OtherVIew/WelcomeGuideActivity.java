@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.GuideViewPagerAdapter;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.SpUtils;
 
 import java.util.ArrayList;
@@ -154,7 +154,7 @@ public class WelcomeGuideActivity extends Activity implements OnClickListener {
 
 
     private void enterMainActivity() {
-        Intent intent = new Intent(WelcomeGuideActivity.this, LoginActivity.class);
+        Intent intent = new Intent(WelcomeGuideActivity.this, Login_v2Activity.class);
         startActivity(intent);
         SpUtils.putBoolean(WelcomeGuideActivity.this, Constant.FIRST_OPEN, true);
         finish();
