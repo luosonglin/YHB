@@ -280,7 +280,6 @@ public class SearchHistoryFragment extends Fragment {
         mLiveTypeView = (TextView) mLiveHeaderView.findViewById(R.id.type);
         mLiveMoreView = (TextView) mLiveHeaderView.findViewById(R.id.more);
 
-
         rvVideoList.setVisibility(View.GONE);
         if (mType.equals("0")) {
             rvVideoList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {

@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -25,14 +26,18 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Presenter.ListSearchListPresent;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.SearchUserRedAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.VideoAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -68,6 +73,10 @@ public class LiveSearchActivity extends AppCompatActivity {
     RecyclerView tagsRecyclerView;
     @BindView(R.id.tags_swipe_refresh_lyt)
     SwipeRefreshLayout tagsSwipeRefreshLyt;
+
+    @BindView(R.id.rv_list_user)
+    RecyclerView rvUserList;
+    private BaseQuickAdapter mUserAdapter;
 
     private static final String TAG = LiveSearchActivity.class.getSimpleName();
     @BindView(R.id.type)
@@ -113,6 +122,8 @@ public class LiveSearchActivity extends AppCompatActivity {
 
         initTagsView();
 
+        initUsersView();
+
         initLivesView();
 
         initVideoView();
@@ -123,6 +134,59 @@ public class LiveSearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         toolbar.setNavigationOnClickListener(view -> finish());
+    }
+
+    private void initUsersView() {
+        rvUserList.setVisibility(View.GONE);
+        rvUserList.setLayoutManager(new LinearLayoutManager(LiveSearchActivity.this, LinearLayoutManager.HORIZONTAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        rvUserList.setHasFixedSize(true);
+        mUserAdapter = new SearchUserRedAdapter(R.layout.item_user_red, null);
+        rvUserList.setAdapter(mUserAdapter);
+    }
+
+    private void searchUser(String word) {
+        UserRedSearchEntity userRedSearchEntity = new UserRedSearchEntity();
+        userRedSearchEntity.setPageNum(1);
+        userRedSearchEntity.setPageSize(100);
+        userRedSearchEntity.setUserName(word);
+        HttpData.getInstance().HttpDataSearchRedUser(new Observer<HttpResult3<UserRedEntity, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(LiveSearchActivity.this, e.getMessage());
+                Log.e(LiveSearchActivity.this.getLocalClassName(), e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<UserRedEntity, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(LiveSearchActivity.this, data.getMsg());
+                    return;
+                }
+
+                if (data.getData().size() == 0) {
+                    rvUserList.setVisibility(View.GONE);
+                    return;
+                }
+                rvUserList.setVisibility(View.VISIBLE);
+
+                mUserAdapter.setNewData(data.getData());
+                mUserAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Intent intent = new Intent(LiveSearchActivity.this, LiveRedVipActivity.class);
+                    intent.putExtra("userId", data.getData().get(position).getUserId());
+                    startActivity(intent);
+                });
+            }
+        }, userRedSearchEntity);
     }
 
     private void initLivesView() {
@@ -182,8 +246,11 @@ public class LiveSearchActivity extends AppCompatActivity {
                 });
                 break;
             case R.id.search_tv:
+                if (!searchEt.getText().toString().equals(""))
+                    searchUser(searchEt.getText().toString());
+
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
                 if ("公开".equals(type)) {
                     liveSearchDto.setKeyword(searchEt.getText().toString());

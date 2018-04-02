@@ -1,6 +1,5 @@
 package com.medmeeting.m.zhiyi.UI.BroadcastReceiver;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,7 +19,6 @@ import org.json.JSONObject;
 
 import java.util.Iterator;
 
-import br.com.goncalves.pugnotification.notification.PugNotification;
 import cn.jpush.android.api.CustomPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
 
@@ -55,27 +53,31 @@ public class MyJPushReceiver extends BroadcastReceiver {
 //            System.out.println("收到了自定义消息@@消息内容是:" + content);
 //            System.out.println("收到了自定义消息@@消息extra是:" + extra);
 
+        }
 
-        } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-            // 自定义消息不会展示在通知栏，完全要开发者写代码去处理!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-            String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+        //此处后端让前端屏蔽，哈哈哈哈
+//        else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
+//            Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+//            // 自定义消息不会展示在通知栏，完全要开发者写代码去处理!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//            String content = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+//            String extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
+//
+//            System.out.println("收到了自定义消息@@消息内容是:" + content);
+//            System.out.println("收到了自定义消息@@消息extra是:" + extra);
+//
+//            PugNotification.with(context)
+//                    .load()
+//                    .title("医会宝")
+//                    .message(content)
+//                    .smallIcon(R.mipmap.ic_launcher)//"https://wxt.sinaimg.cn/thumb300/a601622bly1fmzwrjm8cxj20u01e9488.jpg?tags=%5B%5D"
+//                    .largeIcon(R.mipmap.ic_launcher)
+//                    .flags(Notification.DEFAULT_ALL)
+//                    .simple()
+//                    .build();
+//
+//        }
 
-            System.out.println("收到了自定义消息@@消息内容是:" + content);
-            System.out.println("收到了自定义消息@@消息extra是:" + extra);
-
-            PugNotification.with(context)
-                    .load()
-                    .title("医会宝")
-                    .message(content)
-                    .smallIcon(R.mipmap.ic_launcher)//"https://wxt.sinaimg.cn/thumb300/a601622bly1fmzwrjm8cxj20u01e9488.jpg?tags=%5B%5D"
-                    .largeIcon(R.mipmap.ic_launcher)
-                    .flags(Notification.DEFAULT_ALL)
-                    .simple()
-                    .build();
-
-        } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
+        else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);

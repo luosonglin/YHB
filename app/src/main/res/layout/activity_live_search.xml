@@ -52,12 +52,14 @@
                     android:layout_centerVertical="true"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="62dp"
-                    android:layout_marginEnd="60dp"
+                    android:layout_marginEnd="14dp"
                     android:background="@drawable/live_search_bar_bg"
+                    android:layout_toLeftOf="@+id/search_tv"
                     android:focusable="true"
                     android:hint="搜索直播间/主播/描述信息"
                     android:imeOptions="actionSearch"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:paddingStart="8dp"
                     android:paddingEnd="0dp"
                     android:textColor="#6f6f73"
@@ -72,6 +74,7 @@
                     android:layout_marginStart="88dp"
                     android:background="@mipmap/search_tag_bg"
                     android:orientation="horizontal"
+                    android:layout_toLeftOf="@+id/search_tv"
                     android:visibility="gone">
 
                     <TextView
