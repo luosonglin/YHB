@@ -174,9 +174,9 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     @Override
     public void showLoadCompleteAllData() {
         //所有数据加载完成后显示
-        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
-        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
-        mQuickAdapter.addFooterView(view);
+//        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
+//        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
+//        mQuickAdapter.addFooterView(view);
     }
 
     @Override
