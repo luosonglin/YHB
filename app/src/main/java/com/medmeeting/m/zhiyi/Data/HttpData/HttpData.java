@@ -68,6 +68,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserOpenAddEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserOpenIdEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRegEntity;
@@ -724,6 +725,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataAddThird(Observer<HttpResult3<Object, AccessToken>> observer, UserOpenAddEntity userOpenAddEntity) {
         Observable observable = service_live.addThird(userOpenAddEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDataGetTokenByOpenid(Observer<HttpResult3<Object, AccessToken>> observer, UserOpenIdEntity userOpenIdEntity) {
+        Observable observable = service_live.getTokenByOpenid(userOpenIdEntity);
         setSubscribe(observable, observer);
     }
 

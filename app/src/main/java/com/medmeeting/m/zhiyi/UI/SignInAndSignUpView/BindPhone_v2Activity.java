@@ -137,7 +137,7 @@ public class BindPhone_v2Activity extends AppCompatActivity {
                 userOpenAddEntity.setUserSource("android");
 
                 userOpenAddEntity.setIconurl(getIntent().getStringExtra("iconurl"));
-                userOpenAddEntity.setNickName(getIntent().getStringExtra("name"));
+                userOpenAddEntity.setNickName(getIntent().getStringExtra("nickname"));
                 switch (getIntent().getStringExtra("source")) {
                     case "wechat":
                         userOpenAddEntity.setWxOpenId(getIntent().getStringExtra("openid"));

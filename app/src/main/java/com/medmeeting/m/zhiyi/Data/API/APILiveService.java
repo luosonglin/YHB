@@ -55,6 +55,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserIdentity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserOpenAddEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserOpenIdEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserRegEntity;
@@ -597,4 +598,8 @@ public interface APILiveService {
     //POST /v1/app/openId/add APP-第三方登录-第三方注册
     @POST("/v1/app/openId/add")
     Observable<HttpResult3<Object, AccessToken>> addThird(@Body UserOpenAddEntity userOpenAddEntity);
+
+    //POST /v1/app/openId/get APP-第三方登录-根据openId获取token
+    @POST("/v1/app/openId/get")
+    Observable<HttpResult3<Object, AccessToken>> getTokenByOpenid(@Body UserOpenIdEntity userOpenIdEntity);
 }
