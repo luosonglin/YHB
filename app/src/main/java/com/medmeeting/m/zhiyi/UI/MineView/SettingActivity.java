@@ -26,9 +26,11 @@ import com.medmeeting.m.zhiyi.UI.Entity.Version;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.CleanUtils;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
+import com.snappydb.SnappydbException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -152,7 +154,22 @@ public class SettingActivity extends AppCompatActivity {
             Data.clearPayType();
             Data.clearSession();
             Data.clearPhone();
+
             SharedPreferencesMgr.clearAll();
+
+            try {
+                DBUtils.del(SettingActivity.this, "userToken");
+                DBUtils.del(SettingActivity.this, "phone");
+                DBUtils.del(SettingActivity.this, "userId");
+                DBUtils.del(SettingActivity.this, "userName");
+                DBUtils.del(SettingActivity.this, "userNickName");
+                DBUtils.del(SettingActivity.this, "authentication");
+                DBUtils.del(SettingActivity.this, "confirmNumber");
+                DBUtils.del(SettingActivity.this, "tokenId");
+            } catch (SnappydbException e) {
+                e.printStackTrace();
+            }
+
             finish();
             startActivity(new Intent(SettingActivity.this, Login_v2Activity.class));
         });
