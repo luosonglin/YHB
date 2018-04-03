@@ -211,7 +211,8 @@ public class BindPhone_v2Activity extends AppCompatActivity {
                                 } finally {
                                     Log.d(getLocalClassName(), "Login succeed!");
                                     finish();
-                                    startActivity(new Intent(BindPhone_v2Activity.this, MainActivity.class));
+//                                    startActivity(new Intent(BindPhone_v2Activity.this, MainActivity.class));
+                                    startActivity(new Intent(BindPhone_v2Activity.this, FirstPasswdActivity.class));
                                 }
                             }
                         });

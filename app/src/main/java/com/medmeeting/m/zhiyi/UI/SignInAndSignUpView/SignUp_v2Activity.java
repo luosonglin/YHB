@@ -165,7 +165,6 @@ public class SignUp_v2Activity extends AppCompatActivity {
                 userRegEntity.setPhone(phone.getText().toString().trim());
                 userRegEntity.setCode(code.getText().toString().trim());
                 userRegEntity.setPassword(password.getText().toString().trim());
-                userRegEntity.setConfirmPassword(repassword.getText().toString().trim());
                 HttpData.getInstance().HttpDataFastRignUp(new Observer<HttpResult3<Object, AccessToken>>() {
                     @Override
                     public void onCompleted() {
@@ -318,8 +317,8 @@ public class SignUp_v2Activity extends AppCompatActivity {
             Looper.prepare();
 
             //......处理比较耗时的操作
-            getBitmapFromServer(Constant.API_SERVER_LIVE + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
-//            getBitmapFromServer(Constant.API_SERVER_LIVE_TEST + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
+//            getBitmapFromServer(Constant.API_SERVER_LIVE + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
+            getBitmapFromServer(Constant.API_SERVER_LIVE_TEST + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
 
             //处理完成后给handler发送消息
             Message msg = new Message();

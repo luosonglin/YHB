@@ -135,14 +135,12 @@ public class HttpData extends RetrofitUtils {
     }
 
 
-
     //test get hot meetings
     public void HttpDataGetHotMeetings(Observer<HttpResult4<MeetingDto>> observer, Integer pageNum, Integer pageSize) {
         Observable observable = service_meeting.getHotMeetings(pageNum, pageSize);
         setSubscribe(observable, observer);
         Log.e(TAG, "HttpDataGetHotMeetings: " + observable);
     }
-
 
 
     public void HttpDataGetPayInfo(Observer<HttpResult4> observer, Map<String, Object> map) {
@@ -670,7 +668,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void  HttpDataAuthorize(Observer<HttpResult3> observer, UserAddAuthenEntity userAddAuthenEntity) {
+    public void HttpDataAuthorize(Observer<HttpResult3> observer, UserAddAuthenEntity userAddAuthenEntity) {
         Observable observable = service_live.authorize(userAddAuthenEntity);
         setSubscribe(observable, observer);
     }
@@ -695,7 +693,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-//    public void HttpUploadFile(Observer<HttpResult6> observer, RequestBody description, MultipartBody.Part file) {
+    //    public void HttpUploadFile(Observer<HttpResult6> observer, RequestBody description, MultipartBody.Part file) {
 //        Observable observable = service_live.uploadFile(description, file);
 //        setSubscribe(observable, observer);
 //    }
@@ -718,6 +716,7 @@ public class HttpData extends RetrofitUtils {
         Observable observable = service_live.editPwd(userRegEntity);
         setSubscribe(observable, observer);
     }
+
     public void HttpDateForgetPwd(Observer<HttpResult3> observer, UserForgetPwdEntity userRegEntity) {
         Observable observable = service_live.forgetPwd(userRegEntity);
         setSubscribe(observable, observer);
@@ -730,6 +729,11 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataGetTokenByOpenid(Observer<HttpResult3<Object, AccessToken>> observer, UserOpenIdEntity userOpenIdEntity) {
         Observable observable = service_live.getTokenByOpenid(userOpenIdEntity);
+        setSubscribe(observable, observer);
+    }
+
+    public void HttpDatafirstPwd(Observer<HttpResult3> observer, String pwd) {
+        Observable observable = service_live.firstPwd(pwd);
         setSubscribe(observable, observer);
     }
 

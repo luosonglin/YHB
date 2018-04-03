@@ -602,4 +602,8 @@ public interface APILiveService {
     //POST /v1/app/openId/get APP-第三方登录-根据openId获取token
     @POST("/v1/app/openId/get")
     Observable<HttpResult3<Object, AccessToken>> getTokenByOpenid(@Body UserOpenIdEntity userOpenIdEntity);
+
+    //PUT /v1/users/app/user/firstPwd APP-用户第一次设定登录密码
+    @PUT("/v1/users/app/user/firstPwd")
+    Observable<HttpResult3> firstPwd(@Body String pwd);
 }

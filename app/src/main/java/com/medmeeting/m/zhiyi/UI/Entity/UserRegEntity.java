@@ -17,7 +17,6 @@ public class UserRegEntity {
      */
 
     private String code;
-    private String confirmPassword;
     private String password;
     private String phone;
 
@@ -27,14 +26,6 @@ public class UserRegEntity {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
     public String getPassword() {

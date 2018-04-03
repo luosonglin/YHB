@@ -350,7 +350,8 @@
         <activity android:name=".UI.SignInAndSignUpView.SignUp_v2Activity" />
         <activity android:name=".UI.SignInAndSignUpView.ResetPassword_v2Activity" />
         <activity android:name=".UI.SignInAndSignUpView.BindPhone_v2Activity" />
-        <activity android:name=".UI.SignInAndSignUpView.BindSubject_v2Activity"></activity>
+        <activity android:name=".UI.SignInAndSignUpView.BindSubject_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.FirstPasswdActivity"></activity>
     </application>
 
 </manifest>
