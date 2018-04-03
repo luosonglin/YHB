@@ -346,7 +346,8 @@
             android:name=".UI.UserInfoView.UpdateUserInfoAreaActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UI.SignInAndSignUpView.Login_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.Login_v2Activity"
+            android:launchMode="singleTop" />
         <activity android:name=".UI.SignInAndSignUpView.SignUp_v2Activity" />
         <activity android:name=".UI.SignInAndSignUpView.ResetPassword_v2Activity" />
         <activity android:name=".UI.SignInAndSignUpView.BindPhone_v2Activity" />
