@@ -22,6 +22,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
@@ -62,6 +63,8 @@ public class LiveProgramDetailInfoFragment extends Fragment {
     Unbinder unbinder;
 
     private String tocPortStatus;
+    private String userId;
+
 
     public LiveProgramDetailInfoFragment() {
         // Required empty public constructor
@@ -143,9 +146,14 @@ public class LiveProgramDetailInfoFragment extends Fragment {
         }
         like.setOnClickListener(view -> {
             try {
+                userId = DBUtils.get(getActivity(), "userId");
                 tocPortStatus = DBUtils.get(getActivity(), "tocPortStatus");
             } catch (SnappydbException e) {
                 e.printStackTrace();
+            }
+            if (userId == null) {
+                startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                return;
             }
             if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
                 startActivity(new Intent(getActivity(), ActivateActivity.class));

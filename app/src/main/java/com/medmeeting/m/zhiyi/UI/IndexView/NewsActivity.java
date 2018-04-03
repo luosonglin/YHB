@@ -46,7 +46,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.BlogComment;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingDetailActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -342,9 +342,14 @@ public class NewsActivity extends AppCompatActivity {
     @OnClick(R.id.input_send)
     public void onClick() {
         try {
+            userId = DBUtils.get(NewsActivity.this, "userId");
             tocPortStatus = DBUtils.get(NewsActivity.this, "tocPortStatus");
         } catch (SnappydbException e) {
             e.printStackTrace();
+        }
+        if (userId == null) {
+            startActivity(new Intent(NewsActivity.this, Login_v2Activity.class));
+            return;
         }
         if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
             startActivity(new Intent(NewsActivity.this, ActivateActivity.class));
@@ -433,6 +438,7 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     private String tocPortStatus;
+    private String userId;
     /**
      * 收藏API
      *
@@ -440,10 +446,16 @@ public class NewsActivity extends AppCompatActivity {
      */
     private void collectService(boolean oldCollected) {
         try {
+            userId = DBUtils.get(NewsActivity.this, "userId");
             tocPortStatus = DBUtils.get(NewsActivity.this, "tocPortStatus");
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
+        if (userId == null) {
+            startActivity(new Intent(NewsActivity.this, Login_v2Activity.class));
+            return;
+        }
+
         if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
             startActivity(new Intent(NewsActivity.this, ActivateActivity.class));
             return;

@@ -33,6 +33,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
@@ -558,6 +560,7 @@ public class MeetingDetailActivity extends AppCompatActivity {
     }
 
     private String tocPortStatus;
+    private String userId;
     /**
      * 收藏API
      *
@@ -565,9 +568,14 @@ public class MeetingDetailActivity extends AppCompatActivity {
      */
     private void collectService(boolean oldCollected) {
         try {
+            userId = DBUtils.get(MeetingDetailActivity.this, "userId");
             tocPortStatus = DBUtils.get(MeetingDetailActivity.this, "tocPortStatus");
         } catch (SnappydbException e) {
             e.printStackTrace();
+        }
+        if (userId == null) {
+            startActivity(new Intent(MeetingDetailActivity.this, Login_v2Activity.class));
+            return;
         }
         if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
             startActivity(new Intent(MeetingDetailActivity.this, ActivateActivity.class));

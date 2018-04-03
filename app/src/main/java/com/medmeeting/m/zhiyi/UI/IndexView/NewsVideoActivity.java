@@ -51,6 +51,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
@@ -438,6 +439,7 @@ public class NewsVideoActivity extends AppCompatActivity {
     }
 
     private String tocPortStatus;
+    private String userId;
 
     @OnClick({R.id.input_send, R.id.collect})
     public void onClick(View view) {
@@ -445,8 +447,13 @@ public class NewsVideoActivity extends AppCompatActivity {
             case R.id.input_send:
                 try {
                     tocPortStatus = DBUtils.get(NewsVideoActivity.this, "tocPortStatus");
+                    userId = DBUtils.get(NewsVideoActivity.this, "userId");
                 } catch (SnappydbException e) {
                     e.printStackTrace();
+                }
+                if (userId == null) {
+                    startActivity(new Intent(NewsVideoActivity.this, Login_v2Activity.class));
+                    return;
                 }
                 if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
                     startActivity(new Intent(NewsVideoActivity.this, ActivateActivity.class));
@@ -848,9 +855,14 @@ public class NewsVideoActivity extends AppCompatActivity {
      */
     private void collectService(boolean oldCollected) {
         try {
+            userId = DBUtils.get(NewsVideoActivity.this, "userId");
             tocPortStatus = DBUtils.get(NewsVideoActivity.this, "tocPortStatus");
         } catch (SnappydbException e) {
             e.printStackTrace();
+        }
+        if (userId == null) {
+            startActivity(new Intent(NewsVideoActivity.this, Login_v2Activity.class));
+            return;
         }
         if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
             startActivity(new Intent(NewsVideoActivity.this, ActivateActivity.class));

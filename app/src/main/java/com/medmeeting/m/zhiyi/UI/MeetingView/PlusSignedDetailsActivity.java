@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.MeetingView;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitmapUtils;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.snappydb.SnappydbException;
 
@@ -131,6 +133,12 @@ public class PlusSignedDetailsActivity extends AppCompatActivity {
             input = DBUtils.get(PlusSignedDetailsActivity.this, "confirmNumber");
         } catch (SnappydbException e) {
             e.printStackTrace();
+        }
+
+        if (input == null) {
+            finish();
+            startActivity(new Intent(PlusSignedDetailsActivity.this, Login_v2Activity.class));
+            return;
         }
         if (input.equals("")){
             Toast.makeText(this,"请先登录", Toast.LENGTH_SHORT).show();

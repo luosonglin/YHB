@@ -159,9 +159,9 @@ public class MineFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if (userId == null && "".equals(userId)) {
-            startActivity(new Intent(getActivity(), Login_v2Activity.class));
-        }
+//        if (userId == null && "".equals(userId)) {
+//            startActivity(new Intent(getActivity(), Login_v2Activity.class));
+//        }
     }
 
     @Override
@@ -181,71 +181,6 @@ public class MineFragment extends Fragment {
     private void initView() {
 
         showProgress(true);
-
-        if (userId == null) {
-            startActivity(new Intent(getActivity(), Login_v2Activity.class));
-        } else {
-            HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    ToastUtils.show(getActivity(), e.getMessage());
-                    Log.e(getActivity().getLocalClassName(), e.getMessage());
-                    showProgress(false);
-                }
-
-                @Override
-                public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
-                    if (!data.getStatus().equals("success")) {
-                        ToastUtils.show(getActivity(), data.getMsg());
-                        showProgress(false);
-                        return;
-                    }
-                    userAvatar = data.getEntity().getUserPic();
-                    Glide.with(getActivity())
-                            .load(userAvatar)
-                            .crossFade()
-                            .dontAnimate()
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .placeholder(R.mipmap.avator_default)
-                            .into(headIv);
-                    nameTv.setText(data.getEntity().getName());
-
-                    //正式服，该字段暂无
-                    switch (data.getEntity().getTocPortStatus()) {
-                        case "wait_activation":
-                            activate.setText("待激活");
-                            authorize.setText("去激活");
-                            specialistIv.setVisibility(View.GONE);
-                            break;
-                        case "done_activation":
-                            activate.setText("未认证");//已激活
-                            specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.red_v);
-                            code = data.getEntity().getMedical();
-                            authorize.setText("去认证");
-                            break;
-                        case "done_authen":
-                            activate.setText("已认证");
-                            specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.yellow_v);
-                            authorize.setVisibility(View.GONE);
-                            break;
-                    }
-                    try {
-                        DBUtils.put(getActivity(), "tocPortStatus", data.getEntity().getTocPortStatus() + "");
-                    } catch (SnappydbException e) {
-                        e.printStackTrace();
-                    }
-
-                    showProgress(false);
-                }
-            });
-        }
 
         // 获取屏幕宽高
         metric = new DisplayMetrics();
@@ -289,6 +224,76 @@ public class MineFragment extends Fragment {
             }
             return false;
         });
+
+
+        if (userId == null) {
+//            startActivity(new Intent(getActivity(), Login_v2Activity.class));
+            showProgress(false);
+            return;
+        }
+
+        HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(getActivity(), e.getMessage());
+                Log.e(getActivity().getLocalClassName(), e.getMessage());
+                showProgress(false);
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(getActivity(), data.getMsg());
+                    showProgress(false);
+                    return;
+                }
+                userAvatar = data.getEntity().getUserPic();
+                Glide.with(getActivity())
+                        .load(userAvatar)
+                        .crossFade()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .placeholder(R.mipmap.avator_default)
+                        .into(headIv);
+                nameTv.setText(data.getEntity().getName());
+
+                //正式服，该字段暂无
+                switch (data.getEntity().getTocPortStatus()) {
+                    case "wait_activation":
+                        activate.setText("待激活");
+                        authorize.setText("去激活");
+                        specialistIv.setVisibility(View.GONE);
+                        break;
+                    case "done_activation":
+                        activate.setText("未认证");//已激活
+                        specialistIv.setVisibility(View.VISIBLE);
+                        specialistIv.setImageResource(R.mipmap.red_v);
+                        code = data.getEntity().getMedical();
+                        authorize.setText("去认证");
+                        break;
+                    case "done_authen":
+                        activate.setText("已认证");
+                        specialistIv.setVisibility(View.VISIBLE);
+                        specialistIv.setImageResource(R.mipmap.yellow_v);
+                        authorize.setVisibility(View.GONE);
+                        break;
+                }
+                try {
+                    DBUtils.put(getActivity(), "tocPortStatus", data.getEntity().getTocPortStatus() + "");
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
+
+                showProgress(false);
+            }
+        });
+
+
     }
 
     // 回弹动画 (使用了属性动画)
@@ -367,6 +372,11 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
                 break;
             case R.id.modify_userinfo:  //激活后就能修改
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 switch (activate.getText().toString().trim()) {
                     case "待激活":     //跳激活页
                         startActivity(new Intent(getActivity(), ActivateActivity.class));
@@ -440,6 +450,11 @@ public class MineFragment extends Fragment {
                 }
                 break;
             case R.id.authorize:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 switch (activate.getText().toString().trim()) {
                     case "待激活":     //跳激活页
                         Intent intent20 = new Intent(getActivity(), ActivateActivity.class);
@@ -514,10 +529,20 @@ public class MineFragment extends Fragment {
                 }
                 break;
             case R.id.wodecanhui:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 Intent intent30 = new Intent(getActivity(), MyMeetingActivity.class);
                 startActivity(intent30);
                 break;
             case R.id.wodeqianbao:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 switch (activate.getText().toString().trim()) {
                     case "待激活":     //跳激活页
                         ToastUtils.show(getActivity(), "请先激活账户");
@@ -594,6 +619,11 @@ public class MineFragment extends Fragment {
                 }
                 break;
             case R.id.my_live:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 switch (activate.getText().toString().trim()) {
                     case "待激活":     //跳激活页
                         ToastUtils.show(getActivity(), "请先激活账户");
@@ -670,6 +700,11 @@ public class MineFragment extends Fragment {
                 }
                 break;
             case R.id.my_video:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 switch (activate.getText().toString().trim()) {
                     case "待激活":     //跳激活页
                         ToastUtils.show(getActivity(), "请先激活账户");
@@ -745,9 +780,19 @@ public class MineFragment extends Fragment {
                 break;
 
             case R.id.wodeshoucang:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 startActivity(new Intent(getActivity(), MyCollectActivity.class));
                 break;
             case R.id.wodedingdan:  //非激活情况下也能使用
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 startActivity(new Intent(getActivity(), MyOrderActivity.class));
                 break;
             case R.id.wodexuefen:
@@ -757,9 +802,19 @@ public class MineFragment extends Fragment {
             case R.id.wodewendang:
                 break;
             case R.id.wodefufeizhibo:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 startActivity(new Intent(getActivity(), MyPayLiveRoomActivity.class));
                 break;
             case R.id.user_flyt:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 if (activate.getText().toString().trim().equals("已认证")) {
                     startActivity(new Intent(getActivity(), AuthorizedActivity.class));
                     /*HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
@@ -789,13 +844,21 @@ public class MineFragment extends Fragment {
                 }
                 break;
             case R.id.name:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 if (activate.getText().toString().trim().equals("已认证")) {
                     startActivity(new Intent(getActivity(), AuthorizedActivity.class));
                 }
-
-//                startActivity(new Intent(getActivity(), Login_v2Activity.class));
                 break;
             case R.id.activate:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 if (activate.getText().toString().trim().equals("已认证")) {
                     startActivity(new Intent(getActivity(), AuthorizedActivity.class));
 
