@@ -201,7 +201,12 @@ public class Login_v2Activity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.fast_sign_up, R.id.login_by_password, R.id.login_by_code, R.id.forget_password, R.id.login1, R.id.get_code, R.id.login2, R.id.wechat, R.id.qq, R.id.agreement})
+    @OnClick({R.id.fast_sign_up, R.id.login_by_password, R.id.login_by_code, R.id.forget_password,
+            R.id.login1, R.id.get_code,
+            R.id.login2,
+            R.id.wechat, R.id.qq,
+            R.id.fuck,
+            R.id.agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fast_sign_up:
@@ -502,6 +507,9 @@ public class Login_v2Activity extends AppCompatActivity {
                 break;
             case R.id.agreement:
                 BrowserActivity.launch(Login_v2Activity.this, "http://webview.medmeeting.com/#/page/user-protocol", "《登录协议》");
+                break;
+            case R.id.fuck:
+                finish();
                 break;
         }
     }

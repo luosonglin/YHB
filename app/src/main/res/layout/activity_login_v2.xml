@@ -334,7 +334,7 @@
                     android:layout_width="44dp"
                     android:layout_height="44dp"
                     android:layout_margin="24dp"
-                    android:background="@drawable/umeng_socialize_wechat"
+                    android:background="@mipmap/icon_Wechat"
                     android:scaleType="fitXY" />
 
                 <ImageView
@@ -342,9 +342,17 @@
                     android:layout_width="44dp"
                     android:layout_height="44dp"
                     android:layout_margin="24dp"
-                    android:background="@drawable/umeng_socialize_qq"
+                    android:background="@mipmap/icon_QQ"
                     android:scaleType="fitXY" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/fuck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/cornflowerblue"
+                android:text="随便看看 >>"/>
         </LinearLayout>
 
         <LinearLayout
