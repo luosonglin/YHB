@@ -32,6 +32,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult5;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult7;
 import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
@@ -48,6 +49,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LoginCodeExtraData;
 import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
 import com.medmeeting.m.zhiyi.UI.Entity.PaySettlement;
 import com.medmeeting.m.zhiyi.UI.Entity.PaymentStatus;
@@ -505,6 +507,10 @@ public class HttpData extends RetrofitUtils {
 
     public void HttpDataLoginByCode(Observer<HttpResult3<Object, AccessToken>> observer, Map<String, Object> map) {
         Observable observable = service_live.loginByCode(map);
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataLoginByCode_v2(Observer<HttpResult7<Object, AccessToken, LoginCodeExtraData>> observer, Map<String, Object> map) {
+        Observable observable = service_live.loginByCode_v2(map);
         setSubscribe(observable, observer);
     }
 

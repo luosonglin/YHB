@@ -21,6 +21,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.HospitalInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult7;
 import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveAudienceDetailDto;
@@ -37,6 +38,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSettlementEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveStream;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveTicketDto;
+import com.medmeeting.m.zhiyi.UI.Entity.LoginCodeExtraData;
 import com.medmeeting.m.zhiyi.UI.Entity.PaySettlement;
 import com.medmeeting.m.zhiyi.UI.Entity.PushUserMessage;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
@@ -381,6 +383,10 @@ public interface APILiveService {
     //GET /v1/oauth/token 2.0新版本手机号+验证码登录接口
     @GET("/v1/oauth/token")
     Observable<HttpResult3<Object, AccessToken>> loginByCode(@QueryMap Map<String, Object> map);
+
+    //GET /v1/oauth/token 2.0新版本手机号+验证码登录接口
+    @GET("/v1/oauth/token")
+    Observable<HttpResult7<Object, AccessToken, LoginCodeExtraData>> loginByCode_v2(@QueryMap Map<String, Object> map);
 
 //    //GET /v1/msgs/codes 发送验证码接口
 //    @GET("/v1/msgs/codes")

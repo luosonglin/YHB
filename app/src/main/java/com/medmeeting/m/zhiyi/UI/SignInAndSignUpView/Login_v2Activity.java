@@ -40,6 +40,8 @@ import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.AccessToken;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult7;
+import com.medmeeting.m.zhiyi.UI.Entity.LoginCodeExtraData;
 import com.medmeeting.m.zhiyi.UI.Entity.UserInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.UserOpenIdEntity;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
@@ -359,7 +361,7 @@ public class Login_v2Activity extends AppCompatActivity {
                 map2.put("phone", phone2.getText().toString().trim());
                 map2.put("code", code.getText().toString().trim());
                 map2.put("source", "android");
-                HttpData.getInstance().HttpDataLoginByCode(new Observer<HttpResult3<Object, AccessToken>>() {
+                HttpData.getInstance().HttpDataLoginByCode_v2(new Observer<HttpResult7<Object, AccessToken, LoginCodeExtraData>>() {
                     @Override
                     public void onCompleted() {
 
@@ -371,14 +373,72 @@ public class Login_v2Activity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(HttpResult3<Object, AccessToken> data) {
+                    public void onNext(HttpResult7<Object, AccessToken, LoginCodeExtraData> data) {
                         if (!data.getStatus().equals("success")) {
                             ToastUtils.show(Login_v2Activity.this, data.getMsg());
                             showProgress(false);
                             return;
                         }
 
-                       loginSuccess(data.getEntity());
+                        if (!data.getExtra().isNewUser()) {
+                            //老用户
+                            loginSuccess(data.getEntity());
+                            return;
+                        }
+
+                        //新用户
+                        Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
+                        try {
+                            DBUtils.put(Login_v2Activity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
+                            DBUtils.put(Login_v2Activity.this, "phone", phone2.getText().toString().trim());
+                        } catch (SnappydbException e) {
+                            e.printStackTrace();
+                        }
+
+                        Data.setPhone(phone2.getText().toString().trim());
+
+                        //极光推送 别名设置
+                        JPushInterface.setAlias(Login_v2Activity.this, 1, phone2.getText().toString().trim());
+
+                        HttpData.getInstance().HttpDataGetUserInfo(new Observer<HttpResult3<Object, UserInfoDto>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                ToastUtils.show(Login_v2Activity.this, e.getMessage());
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserInfoDto> data2) {
+                                if (!data2.getStatus().equals("success")) {
+                                    ToastUtils.show(Login_v2Activity.this, data2.getMsg());
+                                    showProgress(false);
+                                    return;
+                                }
+
+                                Data.setUserId(data2.getEntity().getId());
+                                try {
+                                    DBUtils.put(Login_v2Activity.this, "userId", data2.getEntity().getId() + "");
+                                    DBUtils.put(Login_v2Activity.this, "userName", data2.getEntity().getName() + "");
+                                    DBUtils.put(Login_v2Activity.this, "userNickName", data2.getEntity().getNickName() + "");
+                                    DBUtils.put(Login_v2Activity.this, "authentication", data2.getEntity().getAuthenStatus() + "");
+                                    DBUtils.put(Login_v2Activity.this, "confirmNumber", data2.getEntity().getConfirmNumber() + "");
+                                    DBUtils.put(Login_v2Activity.this, "tokenId", data2.getEntity().getTokenId() + "");
+                                } catch (SnappydbException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    Log.d(getLocalClassName(), "Login succeed!");
+                                    finish();
+                                    startActivity(new Intent(Login_v2Activity.this, FirstPasswdActivity.class));
+                                }
+                            }
+                        });
+
+
+
                     }
                 }, map2);
 
@@ -397,7 +457,7 @@ public class Login_v2Activity extends AppCompatActivity {
                         ToastUtils.show(Login_v2Activity.this, "微信登录授权成功");
                         Log.e(getLocalClassName(), map.get("openid"));
                         for (Object key : map.keySet())
-                            Log.e(getLocalClassName(), key + " "+ map.get(key));
+                            Log.e(getLocalClassName(), key + " " + map.get(key));
 
                         if (map != null) {
                             UserOpenIdEntity userOpenIdEntity = new UserOpenIdEntity();
@@ -675,7 +735,6 @@ public class Login_v2Activity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param accessToken
      */
     private void loginSuccess(AccessToken accessToken) {

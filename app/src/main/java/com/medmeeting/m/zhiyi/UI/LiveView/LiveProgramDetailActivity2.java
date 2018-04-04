@@ -710,7 +710,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     private void getPayInfo(final View v, String paymentChannel, String platformType, int programId) {
 
         LiveOrderDto liveOrderDto = new LiveOrderDto();
-        liveOrderDto.setOpenId("");
+//        liveOrderDto.setOpenId("");
         liveOrderDto.setPaymentChannel(paymentChannel);
         liveOrderDto.setPlatformType(platformType);
         liveOrderDto.setProgramId(programId);
@@ -770,7 +770,8 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                             data.getEntity().getRequestPay().getPrepayid(),
                             data.getEntity().getRequestPay().getNoncestr(),
                             data.getEntity().getRequestPay().getTimeStamp(),
-                            data.getEntity().getRequestPay().getPackageX(),
+//                            data.getEntity().getRequestPay().getPackageX(),
+                            "Sign=WXPay",
                             data.getEntity().getRequestPay().getSign());
 
                     //极光统计  购买对象
