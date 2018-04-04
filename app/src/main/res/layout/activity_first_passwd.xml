@@ -80,7 +80,7 @@
                 android:paddingStart="14dp"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textSize="17dp" />
         </LinearLayout>
 
         <TextView

@@ -131,32 +131,31 @@ public class MyJPushReceiver extends BroadcastReceiver {
 
             if (TextUtils.isEmpty(id)) return;
             switch (type) {
-//                case "active":
-//                    BrowserActivity.launch(context, "", "");
-//                    break;
-                case "live":
+                case "LIVE":
                     intent = new Intent(context, LiveProgramDetailActivity2.class);
                     intent.putExtra("programId", Integer.parseInt(id));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     break;
-                case "video":
+                case "VIDEO":
                     intent = new Intent(context, VideoDetailActivity.class);
                     intent.putExtra("videoId", Integer.parseInt(id));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     break;
-                case "event":
+                case "EVENT":
                     intent = new Intent(context, MeetingDetailActivity.class);
                     intent.putExtra("eventId", Integer.parseInt(id));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                     break;
-                case "blog":
+                case "NEWS":
                     intent = new Intent(context, NewsActivity.class);
                     intent.putExtra("blogId", Integer.parseInt(id));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                    break;
+                case "NOTIFY": //普通通知
                     break;
             }
 

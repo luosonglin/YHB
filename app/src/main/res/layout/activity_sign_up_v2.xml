@@ -65,7 +65,7 @@
                 android:paddingStart="14dp"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textSize="17dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                     android:paddingStart="14dp"
                     android:singleLine="true"
                     android:textColor="@color/black"
-                    android:textSize="14dp" />
+                    android:textSize="17dp" />
 
                 <TextView
                     android:id="@+id/get_code"
@@ -126,12 +126,12 @@
                 android:background="@drawable/edittext_delete_line"
                 android:gravity="center_vertical"
                 android:hint="设置登录密码"
-                android:inputType="number"
+                android:inputType="textPassword"
                 android:maxLines="1"
                 android:paddingStart="14dp"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textSize="17dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -150,12 +150,12 @@
                 android:background="@drawable/edittext_delete_line"
                 android:gravity="center_vertical"
                 android:hint="确认登录密码"
-                android:inputType="number"
+                android:inputType="textPassword"
                 android:maxLines="1"
                 android:paddingStart="14dp"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textSize="17dp" />
         </LinearLayout>
 
         <LinearLayout
