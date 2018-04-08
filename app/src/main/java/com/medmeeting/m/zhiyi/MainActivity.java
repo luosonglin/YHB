@@ -378,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements
                             return;
                         }
                         Intent intent = new Intent(MainActivity.this, LiveBuildRoomActivity.class);
-                        intent.putExtra("times", data.getData().size()+"");    //看创建过几个直播间，如果没创建过，则第一次创建要弹出直播间协议弹窗
+                        intent.putExtra("times", data.getData().size() + "");    //看创建过几个直播间，如果没创建过，则第一次创建要弹出直播间协议弹窗
                         startActivity(intent);
                     }
                 });
@@ -470,42 +470,51 @@ public class MainActivity extends AppCompatActivity implements
                     return;
                 }
                 newVersion = data.getEntity().getVersion();
-                Log.e(getLocalClassName(), oldVersion+" "+newVersion);
+                Log.e(getLocalClassName(), oldVersion + " " + newVersion);
 
-                String[] olds = oldVersion.split("\\.");
+                String[] yours = oldVersion.split("\\.");   //已经安装的版本
                 String[] news = newVersion.split("\\.");
-                Log.e(getLocalClassName(), olds[0]+" "+olds[1]+" "+olds[2]);
-                Log.e(getLocalClassName(), news[0]+" "+news[1]+" "+news[2]);
+                Log.e(getLocalClassName(), yours[0] + " " + yours[1] + " " + yours[2]);
+                Log.e(getLocalClassName(), news[0] + " " + news[1] + " " + news[2]);
 
-                if (Integer.parseInt(olds[0]) >= Integer.parseInt(news[0]) && Integer.parseInt(olds[1]) >= Integer.parseInt(news[1]) && Integer.parseInt(olds[2]) >= Integer.parseInt(news[2])) {
+                if (Integer.parseInt(yours[0]) >= Integer.parseInt(news[0])) { //&&  &&
                     Log.e(MainActivity.this.getLocalClassName(), "已经是最新版本");
-                } else {
-                    updataDialog.show();
 
-                    tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
-                    tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
-                    updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
-                    tvcode.setText(newVersion);
-                    tvmsg.setText(data.getEntity().getLog());
+                } else if (Integer.parseInt(yours[0]) < Integer.parseInt(news[0])) {
+                    if (Integer.parseInt(yours[1]) >= Integer.parseInt(news[1])) {
+                        Log.e(MainActivity.this.getLocalClassName(), "已经是最新版本");
 
-                    updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
-                    updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
-                        switch (view12.getId()) {
-                            case R.id.dialog_sure:
-                                Intent intent = new Intent();
-                                intent.setAction("android.intent.action.VIEW");
-                                Uri content_url = Uri.parse(data.getEntity().getUrl());
-                                intent.setData(content_url);
-                                startActivity(intent);
-                                break;
+                    } else if (Integer.parseInt(yours[1]) < Integer.parseInt(news[1])) {
+                        if (Integer.parseInt(yours[2]) >= Integer.parseInt(news[2])) {
+                            Log.e(MainActivity.this.getLocalClassName(), "已经是最新版本");
+                        } else {
+                            updataDialog.show();
+
+                            tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
+                            tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                            updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
+                            tvcode.setText(newVersion);
+                            tvmsg.setText(data.getEntity().getLog());
+
+                            updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
+                            updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
+                                switch (view12.getId()) {
+                                    case R.id.dialog_sure:
+                                        Intent intent = new Intent();
+                                        intent.setAction("android.intent.action.VIEW");
+                                        Uri content_url = Uri.parse(data.getEntity().getUrl());
+                                        intent.setData(content_url);
+                                        startActivity(intent);
+                                        break;
+                                }
+                                updataDialog.dismiss();
+                            });
                         }
-                        updataDialog.dismiss();
-                    });
+                    }
                 }
             }
         });
     }
-
 
 
     public static void trunMeetingView() {
