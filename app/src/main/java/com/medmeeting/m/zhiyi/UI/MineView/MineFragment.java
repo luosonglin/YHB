@@ -249,7 +249,7 @@ public class MineFragment extends Fragment {
 
                     @Override
                     public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
-                        if (!data.getStatus().equals("success")) {
+                       /* if (!data.getStatus().equals("success")) {
                             ToastUtils.show(getActivity(), data.getMsg());
                             showProgress(false);
 //                    if (data.getMsg().equals("token校验错误")) {
@@ -258,7 +258,7 @@ public class MineFragment extends Fragment {
                                 startActivity(new Intent(getActivity(), Login_v2Activity.class));
                             }
                             return;
-                        }
+                        }*/
                         userAvatar = data.getEntity().getUserPic();
                         Glide.with(getActivity())
                                 .load(userAvatar)
@@ -538,6 +538,7 @@ public class MineFragment extends Fragment {
                                     //认证过
                                     switch (data.getEntity().getStatus()) {     //认证状态（A:已认证，B:待认证,X:未通过）
                                         case "A":
+                                            ToastUtils.show(getActivity(), "已认证状态");
                                             break;
                                         case "B": //待认证 (运营端未审核,弹出“资料提交成功”界面
                                             startActivity(new Intent(getActivity(), AuthorizedActivity.class));
