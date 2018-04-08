@@ -164,7 +164,6 @@ public class BindPhone_v2Activity extends AppCompatActivity {
                             return;
                         }
 
-
                         Data.setUserToken(data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
                         try {
                             DBUtils.put(BindPhone_v2Activity.this, "userToken", data.getEntity().getTokenType() + "_" + data.getEntity().getAccessToken());
@@ -210,7 +209,11 @@ public class BindPhone_v2Activity extends AppCompatActivity {
                                 } finally {
                                     Log.d(getLocalClassName(), "Login succeed!");
                                     finish();
+                                    //老手机号用户
 //                                    startActivity(new Intent(BindPhone_v2Activity.this, MainActivity.class));
+
+
+                                    //新手机号用户
                                     startActivity(new Intent(BindPhone_v2Activity.this, FirstPasswdActivity.class));
                                 }
                             }
@@ -300,8 +303,8 @@ public class BindPhone_v2Activity extends AppCompatActivity {
             Looper.prepare();
 
             //......处理比较耗时的操作
-//            getBitmapFromServer(Constant.API_SERVER_LIVE + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
-            getBitmapFromServer(Constant.API_SERVER_LIVE_TEST + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
+            getBitmapFromServer(Constant.API_SERVER_LIVE + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
+//            getBitmapFromServer(Constant.API_SERVER_LIVE_TEST + "/" + "v1/token/imageCode/read?v=" + System.currentTimeMillis());
 
             //处理完成后给handler发送消息
             Message msg = new Message();
