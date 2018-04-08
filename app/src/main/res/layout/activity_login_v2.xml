@@ -136,6 +136,7 @@
                         android:background="@drawable/edittext_delete_line"
                         android:gravity="center_vertical"
                         android:hint="输入手机号码"
+                        android:inputType="number"
                         android:maxLines="1"
                         android:paddingStart="14dp"
                         android:singleLine="true"
@@ -246,6 +247,7 @@
                             android:background="@drawable/edittext_delete_line"
                             android:gravity="center_vertical"
                             android:hint="输入手机号码"
+                            android:inputType="number"
                             android:maxLines="1"
                             android:paddingStart="14dp"
                             android:singleLine="true"
@@ -261,7 +263,7 @@
                             android:gravity="center"
                             android:text="获取验证码"
                             android:textColor="@color/white"
-                            android:textSize="12sp" />
+                            android:textSize="11sp" />
                     </RelativeLayout>
                 </LinearLayout>
 

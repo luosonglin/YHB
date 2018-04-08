@@ -250,6 +250,11 @@ public class MineFragment extends Fragment {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity(), data.getMsg());
                     showProgress(false);
+//                    if (data.getMsg().equals("token校验错误")) {
+                    if (data.getErrorCode().equals("11010")) {
+                        getActivity().finish();
+                        startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    }
                     return;
                 }
                 userAvatar = data.getEntity().getUserPic();
