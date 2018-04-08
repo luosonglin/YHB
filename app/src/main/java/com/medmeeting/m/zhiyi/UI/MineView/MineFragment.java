@@ -232,71 +232,98 @@ public class MineFragment extends Fragment {
             return;
         }
 
-        HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
-            @Override
-            public void onCompleted() {
+        try {
+            if (DBUtils.isSet(getActivity(), "userToken")) {
+                HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
+                    @Override
+                    public void onCompleted() {
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                ToastUtils.show(getActivity(), e.getMessage());
-                Log.e(getActivity().getLocalClassName(), e.getMessage());
-                showProgress(false);
-            }
-
-            @Override
-            public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
-                if (!data.getStatus().equals("success")) {
-                    ToastUtils.show(getActivity(), data.getMsg());
-                    showProgress(false);
-//                    if (data.getMsg().equals("token校验错误")) {
-                    if (data.getErrorCode().equals("11010")) {
-                        getActivity().finish();
-                        startActivity(new Intent(getActivity(), Login_v2Activity.class));
                     }
-                    return;
-                }
-                userAvatar = data.getEntity().getUserPic();
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(getActivity(), e.getMessage());
+                        Log.e(getActivity().getLocalClassName(), e.getMessage());
+                        showProgress(false);
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(getActivity(), data.getMsg());
+                            showProgress(false);
+//                    if (data.getMsg().equals("token校验错误")) {
+                            if (data.getErrorCode().equals("11010")) {
+                                getActivity().finish();
+                                startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                            }
+                            return;
+                        }
+                        userAvatar = data.getEntity().getUserPic();
+                        Glide.with(getActivity())
+                                .load(userAvatar)
+                                .crossFade()
+                                .dontAnimate()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .placeholder(R.mipmap.avator_default)
+                                .into(headIv);
+                        if (data.getEntity().getName() != null) {
+                            nameTv.setText(data.getEntity().getName());
+                        } else {
+                            nameTv.setText(data.getEntity().getNickName());
+                        }
+
+                        //正式服，该字段暂无
+                        switch (data.getEntity().getTocPortStatus()) {
+                            case "wait_activation":
+                                activate.setText("待激活");
+                                authorize.setText("去激活");
+                                specialistIv.setVisibility(View.GONE);
+                                break;
+                            case "done_activation":
+                                activate.setText("未认证");//已激活
+                                specialistIv.setVisibility(View.VISIBLE);
+                                specialistIv.setImageResource(R.mipmap.red_v);
+                                code = data.getEntity().getMedical();
+                                authorize.setText("去认证");
+                                break;
+                            case "done_authen":
+                                activate.setText("已认证");
+                                specialistIv.setVisibility(View.VISIBLE);
+                                specialistIv.setImageResource(R.mipmap.yellow_v);
+                                authorize.setVisibility(View.GONE);
+                                break;
+                        }
+                        try {
+                            DBUtils.put(getActivity(), "tocPortStatus", data.getEntity().getTocPortStatus() + "");
+                        } catch (SnappydbException e) {
+                            e.printStackTrace();
+                        }
+
+                        showProgress(false);
+                    }
+                });
+
+            } else {
+                //退出登录后
                 Glide.with(getActivity())
-                        .load(userAvatar)
+                        .load(R.mipmap.avator_default)
                         .crossFade()
                         .dontAnimate()
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .placeholder(R.mipmap.avator_default)
                         .into(headIv);
-                nameTv.setText(data.getEntity().getName());
+                nameTv.setText("");
 
-                //正式服，该字段暂无
-                switch (data.getEntity().getTocPortStatus()) {
-                    case "wait_activation":
-                        activate.setText("待激活");
-                        authorize.setText("去激活");
-                        specialistIv.setVisibility(View.GONE);
-                        break;
-                    case "done_activation":
-                        activate.setText("未认证");//已激活
-                        specialistIv.setVisibility(View.VISIBLE);
-                        specialistIv.setImageResource(R.mipmap.red_v);
-                        code = data.getEntity().getMedical();
-                        authorize.setText("去认证");
-                        break;
-                    case "done_authen":
-                        activate.setText("已认证");
-                        specialistIv.setVisibility(View.VISIBLE);
-                        specialistIv.setImageResource(R.mipmap.yellow_v);
-                        authorize.setVisibility(View.GONE);
-                        break;
-                }
-                try {
-                    DBUtils.put(getActivity(), "tocPortStatus", data.getEntity().getTocPortStatus() + "");
-                } catch (SnappydbException e) {
-                    e.printStackTrace();
-                }
+                activate.setVisibility(View.GONE);
+                authorize.setVisibility(View.GONE);
+                specialistIv.setVisibility(View.GONE);
 
                 showProgress(false);
             }
-        });
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
 
 
     }
