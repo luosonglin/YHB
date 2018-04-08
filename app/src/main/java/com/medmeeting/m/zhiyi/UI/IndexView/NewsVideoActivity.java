@@ -672,6 +672,7 @@ public class NewsVideoActivity extends AppCompatActivity {
         super.onStop();
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
