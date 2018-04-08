@@ -9,7 +9,7 @@
     android:background="@drawable/live_item_shape"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="2dp"
     app:cardElevation="@null"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
