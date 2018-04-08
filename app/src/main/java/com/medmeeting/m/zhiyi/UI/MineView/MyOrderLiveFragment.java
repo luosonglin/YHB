@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,7 +64,7 @@ public class MyOrderLiveFragment extends Fragment {
 
         //直播订单
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false) {
             @Override
             public boolean canScrollVertically() {
@@ -74,12 +73,12 @@ public class MyOrderLiveFragment extends Fragment {
         });
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new MyPayLiveAdapter(R.layout.item_video_others, null);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        mAdapter.openLoadMore(8, true);
+//        mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mAdapter.openLoadMore(3, true);
         mRecyclerView.setAdapter(mAdapter);
         getMyPayLiveService();
         //头view
-        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_header, null);
+        mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_header_v2, null);
         mTypeView = (TextView) mHeaderView.findViewById(R.id.type);
         mTypeView.setText("直播订单");
         mMoreView = (TextView) mHeaderView.findViewById(R.id.more);
@@ -87,7 +86,7 @@ public class MyOrderLiveFragment extends Fragment {
 
         //视频订单
         mRecyclerView2 = (RecyclerView) view.findViewById(R.id.rv_list2);
-        mRecyclerView2.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+//        mRecyclerView2.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false){
             @Override
             public boolean canScrollVertically() {
@@ -96,12 +95,12 @@ public class MyOrderLiveFragment extends Fragment {
         } );
         mRecyclerView2.setHasFixedSize(true);
         mAdapter2 = new MyOrderAdapter(R.layout.item_video_others, null);
-        mAdapter2.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-        mAdapter2.openLoadMore(8, true);
+//        mAdapter2.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        mAdapter2.openLoadMore(3, true);
         mRecyclerView2.setAdapter(mAdapter2);
         getMyPayVideoService();
         //头view
-        mHeaderView2 = LayoutInflater.from(getActivity()).inflate(R.layout.item_header, null);
+        mHeaderView2 = LayoutInflater.from(getActivity()).inflate(R.layout.item_header_v2, null);
         mTypeView2 = (TextView) mHeaderView2.findViewById(R.id.type);
         mTypeView2.setText("视频订单");
         mMoreView2 = (TextView) mHeaderView2.findViewById(R.id.more);
