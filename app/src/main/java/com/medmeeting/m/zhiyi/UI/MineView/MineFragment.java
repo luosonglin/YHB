@@ -313,7 +313,8 @@ public class MineFragment extends Fragment {
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .placeholder(R.mipmap.avator_default)
                         .into(headIv);
-                nameTv.setText("");
+                nameTv.setText("未登录");
+                nameTv.setOnClickListener(view -> startActivity(new Intent(getActivity(), Login_v2Activity.class)));
 
                 activate.setVisibility(View.GONE);
                 authorize.setVisibility(View.GONE);
