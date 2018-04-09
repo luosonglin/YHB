@@ -75,7 +75,7 @@ android {
 //            minifyEnabled true //混淆打包
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            shrinkResources true // 是否去除无效的资源文件
+            shrinkResources false // 是否去除无效的资源文件
 
             zipAlignEnabled true //Zip代码压缩优化
         }
@@ -100,8 +100,9 @@ android {
     }
     productFlavors {
         develop {}
-//        xiaomi{}
-//        huawei{}
+        xiaomi{}
+        huawei{}
+        hx{}
 //        anzhi{}
     }
 
