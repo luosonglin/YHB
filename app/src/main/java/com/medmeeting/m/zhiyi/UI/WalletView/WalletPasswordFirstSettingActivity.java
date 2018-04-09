@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi.UI.WalletView;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,9 +30,24 @@ public class WalletPasswordFirstSettingActivity extends AppCompatActivity {
     @BindView(R.id.code)
     EditText code;
     @BindView(R.id.get_code_tv)
-    TextView getCodeTv;
+    TextView mGetCodeView;
     @BindView(R.id.next_btn)
     TextView nextBtn;
+
+    // timer
+    private CountDownTimer timer = new CountDownTimer(60000, 1000) {
+        @Override
+        public void onTick(long l) {
+            mGetCodeView.setEnabled(false);
+            mGetCodeView.setText("剩余" + l / 1000 + "秒");
+        }
+
+        @Override
+        public void onFinish() {
+            mGetCodeView.setEnabled(true);
+            mGetCodeView.setText("获取验证码");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +69,7 @@ public class WalletPasswordFirstSettingActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.get_code_tv:
+                getPhoneCode();
                 break;
             case R.id.next_btn:
 
@@ -71,6 +88,7 @@ public class WalletPasswordFirstSettingActivity extends AppCompatActivity {
                     public void onNext(HttpResult3 httpResult3) {
                         if (!httpResult3.getStatus().equals("success")) {
                             ToastUtils.show(WalletPasswordFirstSettingActivity.this, httpResult3.getMsg());
+                            return;
                         }
                         ToastUtils.show(WalletPasswordFirstSettingActivity.this, "设置成功");
                         finish();
@@ -78,5 +96,29 @@ public class WalletPasswordFirstSettingActivity extends AppCompatActivity {
                 }, new WalletPasswordDto(pwd.getText().toString().trim(), code.getText().toString().trim()));
                 break;
         }
+    }
+
+    private void getPhoneCode() {
+        timer.start();
+        HttpData.getInstance().HttpDataGetAuthMessage(new Observer<HttpResult3>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(WalletPasswordFirstSettingActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3 httpResult3) {
+                if (!httpResult3.getStatus().equals("success")) {
+                    ToastUtils.show(WalletPasswordFirstSettingActivity.this, httpResult3.getMsg());
+                    return;
+                }
+                ToastUtils.show(WalletPasswordFirstSettingActivity.this, httpResult3.getMsg());
+            }
+        });
     }
 }
