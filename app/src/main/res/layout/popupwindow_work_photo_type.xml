@@ -61,7 +61,7 @@
             android:layout_marginLeft="40dp"
             android:src="@mipmap/video_bg"
             android:scaleType="fitXY"
-            android:visibility="gone"
+            android:visibility="visible"
             />
 
         <CheckBox
