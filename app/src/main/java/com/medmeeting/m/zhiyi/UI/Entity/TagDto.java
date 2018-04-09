@@ -1,6 +1,14 @@
 package com.medmeeting.m.zhiyi.UI.Entity;
 
-public class TagDto {
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
+import java.io.Serializable;
+
+public class TagDto extends MultiItemEntity implements Serializable {
+    public static final int TYPE_MY = 1;
+    public static final int TYPE_OTHER = 2;
+    public static final int TYPE_MY_CHANNEL = 3;
+    public static final int TYPE_OTHER_CHANNEL = 4;
 
     /**
      * id : 2
@@ -21,6 +29,12 @@ public class TagDto {
     public TagDto(String labelName, String iconUrl) {
         this.labelName = labelName;
         this.iconUrl = iconUrl;
+    }
+
+    public TagDto(int type, int id, String labelName) {
+        this.id = id;
+        this.labelName = labelName;
+        itemType = type;
     }
 
     public String getLabelType() {

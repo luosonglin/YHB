@@ -16,7 +16,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.medmeeting.m.zhiyi.MVP.Listener.OnChannelDragListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.Channel;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
+import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import java.util.List;
  * Created by Administrator on 2017/1/5 0005.
  */
 
-public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
+public class ChannelAdapter extends BaseMultiItemQuickAdapter<TagDto> {
     private BaseViewHolder mEditViewHolder;
     private boolean mIsEdit;
     private long startTime;
@@ -33,14 +33,14 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
     private static final long SPACE_TIME = 100;
     private RecyclerView mRecyclerView;
 
-    public ChannelAdapter(List<LiveLabel> data) {
+    public ChannelAdapter(List<TagDto> data) {
         super(data);
         //默认进入编辑
         mIsEdit = true;
-        addItemType(LiveLabel.TYPE_MY, R.layout.item_channel_title);
-        addItemType(LiveLabel.TYPE_MY_CHANNEL, R.layout.item_channel);
-        addItemType(LiveLabel.TYPE_OTHER, R.layout.item_channel_title_other);
-        addItemType(LiveLabel.TYPE_OTHER_CHANNEL, R.layout.item_channel_other);
+        addItemType(TagDto.TYPE_MY, R.layout.item_channel_title);
+        addItemType(TagDto.TYPE_MY_CHANNEL, R.layout.item_channel);
+        addItemType(TagDto.TYPE_OTHER, R.layout.item_channel_title_other);
+        addItemType(TagDto.TYPE_OTHER_CHANNEL, R.layout.item_channel_other);
     }
 
     @Override
@@ -56,9 +56,9 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
     }
 
     @Override
-    protected void convert(final BaseViewHolder baseViewHolder, final LiveLabel channel) {
+    protected void convert(final BaseViewHolder baseViewHolder, final TagDto channel) {
         switch (baseViewHolder.getItemViewType()) {
-            case LiveLabel.TYPE_MY:
+            case TagDto.TYPE_MY:
                 //已订阅的节目
                 //赋值，以便之后修改文字
                 mEditViewHolder = baseViewHolder;
@@ -73,12 +73,12 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
                             }
                         });
                 break;
-            case LiveLabel.TYPE_OTHER:
+            case TagDto.TYPE_OTHER:
                 //节目推荐
                 baseViewHolder.setText(R.id.tvTitle, channel.getLabelName())
                         .setVisible(R.id.tvEdit, false);
                 break;
-            case LiveLabel.TYPE_MY_CHANNEL:
+            case TagDto.TYPE_MY_CHANNEL:
                 //我的频道列表
                 baseViewHolder
                         .setVisible(R.id.ivDelete, mIsEdit)//编辑模式就显示删除按钮
@@ -153,7 +153,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
                             }
                         });
                 break;
-            case LiveLabel.TYPE_OTHER_CHANNEL:
+            case TagDto.TYPE_OTHER_CHANNEL:
                 //频道推荐列表
                 baseViewHolder.setText(R.id.tvChannel, channel.getLabelName()).setVisible(R.id.ivDelete, false)
                         .setOnClickListener(R.id.tvChannel, v -> {
@@ -203,7 +203,7 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
     public int getMyChannelSize() {
         int size = 0;
         for (int i = 0; i < mData.size(); i++) {
-            LiveLabel channel = (LiveLabel) mData.get(i);
+            TagDto channel = (TagDto) mData.get(i);
             if (channel.getItemType() == Channel.TYPE_MY_CHANNEL) {
                 size++;
             }
@@ -287,8 +287,8 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
         //之前找到了第一个pos直接返回
 //        if (mOtherFirstPosition != 0) return mOtherFirstPosition;
         for (int i = 0; i < mData.size(); i++) {
-            LiveLabel channel = (LiveLabel) mData.get(i);
-            if (LiveLabel.TYPE_OTHER_CHANNEL == channel.getItemType()) {
+            TagDto channel = (TagDto) mData.get(i);
+            if (TagDto.TYPE_OTHER_CHANNEL == channel.getItemType()) {
                 //找到第一个直接返回
                 return i;
             }
@@ -303,8 +303,8 @@ public class ChannelAdapter extends BaseMultiItemQuickAdapter<LiveLabel> {
      */
     private int getMyLastPosition() {
         for (int i = mData.size() - 1; i > -1; i--) {
-            LiveLabel channel = (LiveLabel) mData.get(i);
-            if (LiveLabel.TYPE_MY_CHANNEL == channel.getItemType()) {
+            TagDto channel = (TagDto) mData.get(i);
+            if (TagDto.TYPE_MY_CHANNEL == channel.getItemType()) {
                 //找到第一个直接返回
                 return i;
             }

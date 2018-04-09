@@ -4,7 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.medmeeting.m.zhiyi.Base.BaseFragment;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
+import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ public class ChannelPagerAdapter extends FragmentStatePagerAdapter {
 
     private final FragmentManager mFm;
     private List<BaseFragment> fragments;
-    private List<LiveLabel> mChannels;
+    private List<TagDto> mChannels;
     private int mChildCount;
     private boolean[] fragmentsUpdateFlag;
 
-    public ChannelPagerAdapter(FragmentManager fm, List<BaseFragment> fragments, List<LiveLabel> channels) {
+    public ChannelPagerAdapter(FragmentManager fm, List<BaseFragment> fragments, List<TagDto> channels) {
         super(fm);
         mFm = fm;
         this.fragments = fragments;

@@ -21,8 +21,7 @@ import com.medmeeting.m.zhiyi.MVP.Listener.OnChannelListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.ChannelPagerAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
-import com.medmeeting.m.zhiyi.UI.Entity.IndexLabel;
-import com.medmeeting.m.zhiyi.UI.Entity.LiveLabel;
+import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.CommonUtil;
 import com.medmeeting.m.zhiyi.UI.SearchView.SearchActicity;
 import com.medmeeting.m.zhiyi.Util.ConstanceValue;
@@ -31,7 +30,9 @@ import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.colortrackview.ColorTrackTabLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,8 +58,8 @@ public class IndexFragment extends Fragment implements OnChannelListener {
     ViewPager vp;
     private ChannelPagerAdapter mTitlePagerAdapter;
 
-    public List<LiveLabel> mSelectedDatas = new ArrayList<>();
-    public List<LiveLabel> mUnSelectedDatas = new ArrayList<>();
+    public List<TagDto> mSelectedDatas = new ArrayList<>();
+    public List<TagDto> mUnSelectedDatas = new ArrayList<>();
     private List<BaseFragment> mFragments;
     private Gson mGson = new Gson();
     private OnFragmentInteractionListener mListener;
@@ -109,7 +110,7 @@ public class IndexFragment extends Fragment implements OnChannelListener {
 //            }
 
             //获取label
-            HttpData.getInstance().HttpDataGetLabels(new Observer<HttpResult3<Object, IndexLabel>>() {
+            /*HttpData.getInstance().HttpDataGetLabels(new Observer<HttpResult3<Object, IndexLabel>>() {
                 @Override
                 public void onCompleted() {
 
@@ -123,8 +124,8 @@ public class IndexFragment extends Fragment implements OnChannelListener {
                 @Override
                 public void onNext(HttpResult3<Object, IndexLabel> data) {
                     //默认添加频道
-                    List<LiveLabel> liveLabels = new ArrayList<>();
-                    liveLabels.add(new LiveLabel(0, "推荐", 0, 0, 0, ""));
+                    List<TagDto> liveLabels = new ArrayList<>();
+                    liveLabels.add(new TagDto(0, "推荐", 0, 0, 0, ""));
                     liveLabels.addAll(data.getEntity().getDefaultList());
 
                     mSelectedDatas.addAll(liveLabels);
@@ -137,13 +138,48 @@ public class IndexFragment extends Fragment implements OnChannelListener {
 
                     initView();
                 }
-            });
+            });*/
+            Map<String, Object> options = new HashMap<>();
+            options.put("type", "NEWS");
+            HttpData.getInstance().HttpDataGetVideoTags(new Observer<HttpResult3<TagDto, Object>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult3<TagDto, Object> data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(getActivity(), data.getMsg());
+                        return;
+                    }
+                    //默认添加频道
+                    List<TagDto> liveLabels = new ArrayList<>();
+                    liveLabels.add(new TagDto(0, 0,"推荐"));
+
+                    mSelectedDatas.addAll(liveLabels);
+                    String selectedStr = mGson.toJson(mSelectedDatas);
+                    SharedPreferencesMgr.setString(TITLE_SELECTED, selectedStr);
+
+                    liveLabels.addAll(data.getData());
+                    mUnSelectedDatas.addAll(liveLabels);
+                    String unselectTitle = mGson.toJson(mUnSelectedDatas);
+                    SharedPreferencesMgr.setString(TITLE_UNSELECTED, unselectTitle);
+
+                    initView();
+                }
+            }, options);
 
         } else {
             //之前添加过
-            List<LiveLabel> selecteData = mGson.fromJson(selectTitle, new TypeToken<List<LiveLabel>>() {
+            List<TagDto> selecteData = mGson.fromJson(selectTitle, new TypeToken<List<TagDto>>() {
             }.getType());
-            List<LiveLabel> unselecteData = mGson.fromJson(unselectTitle, new TypeToken<List<LiveLabel>>() {
+            List<TagDto> unselecteData = mGson.fromJson(unselectTitle, new TypeToken<List<TagDto>>() {
             }.getType());
             mSelectedDatas.addAll(selecteData);
             mUnSelectedDatas.addAll(unselecteData);
@@ -250,7 +286,7 @@ public class IndexFragment extends Fragment implements OnChannelListener {
     @Override
     public void onMoveToMyChannel(int starPos, int endPos) {
         //移动到我的频道
-        LiveLabel liveLabel = mUnSelectedDatas.remove(starPos);
+        TagDto liveLabel = mUnSelectedDatas.remove(starPos);
         mSelectedDatas.add(endPos, liveLabel);
         mFragments.add(NewsFragment.newInstance(liveLabel.getId(), liveLabel.getLabelName()));
     }
