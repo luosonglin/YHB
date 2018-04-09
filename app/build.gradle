@@ -75,7 +75,9 @@ android {
 //            minifyEnabled true //混淆打包
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            shrinkResources false // 是否去除无效的资源文件
+            shrinkResources true // 是否去除无效的资源文件
+
+            zipAlignEnabled true //Zip代码压缩优化
         }
         debug {
 //            minifyEnabled false
