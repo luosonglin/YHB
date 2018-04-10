@@ -112,3 +112,4 @@ public class BlogAdapter extends BaseQuickAdapter<Blog> {
                 .setVisible(R.id.videoRlyt, false);
     }
 }
+

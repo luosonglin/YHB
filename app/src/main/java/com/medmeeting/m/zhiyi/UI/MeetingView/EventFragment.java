@@ -3,7 +3,6 @@ package com.medmeeting.m.zhiyi.UI.MeetingView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +25,8 @@ import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
 import com.medmeeting.m.zhiyi.Widget.LoadingFlashView;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
+import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
+import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -50,11 +51,11 @@ import static java.lang.Thread.sleep;
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class EventFragment extends Fragment {
+public class EventFragment extends Fragment implements SpringView.OnFreshListener{
 
     private Integer eventType;
 
-    private SwipeRefreshLayout srl;
+    private SpringView sv;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
 
@@ -98,7 +99,14 @@ public class EventFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+
+        sv = (SpringView) view.findViewById(R.id.springview);
+        //设置下拉刷新监听
+        sv.setListener(this);
+        //设置下拉刷新样式
+        sv.setType(SpringView.Type.FOLLOW);
+        sv.setHeader(new DefaultHeader(getActivity()));
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -115,13 +123,6 @@ public class EventFragment extends Fragment {
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_event_header, null);
         mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
         getMeetingService(eventType);
-
-        //下啦刷新
-        srl.setOnRefreshListener(() -> {
-            srl.setRefreshing(false);
-            getMeetingService(eventType);
-        });
-
     }
 
     private void getMeetingService(Integer eventType) {
@@ -146,7 +147,7 @@ public class EventFragment extends Fragment {
                 public void onNext(HttpResult3<AdminEventActive, Object> data) {
                     if (!data.getStatus().equals("success")) {
                         ToastUtils.show(getActivity(), data.getMsg());
-                        srl.setRefreshing(false);
+                        sv.onFinishFreshAndLoad();
                         return;
                     }
                     bannerImages.clear();
@@ -195,7 +196,7 @@ public class EventFragment extends Fragment {
                     });
 
                     mAdapter.addHeaderView(mHeaderView);
-                    srl.setRefreshing(false);
+                    sv.onFinishFreshAndLoad();
                 }
             }, "EVENT");
         }
@@ -233,7 +234,7 @@ public class EventFragment extends Fragment {
                     getActivity().startActivity(intent);
 
                 });
-                srl.setRefreshing(false);
+                sv.onFinishFreshAndLoad();
 
 
                 new Timer().schedule(new TimerTask() {
@@ -264,5 +265,16 @@ public class EventFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onRefresh() {
+        sv.onFinishFreshAndLoad();
+        getMeetingService(eventType);
+    }
+
+    @Override
+    public void onLoadmore() {
+
     }
 }

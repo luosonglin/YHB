@@ -2,7 +2,6 @@ package com.medmeeting.m.zhiyi.UI.IndexView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +34,8 @@ import com.medmeeting.m.zhiyi.Util.ConstanceValue;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.GlideImageLoader;
+import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
+import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -56,10 +57,11 @@ import rx.Observer;
  * @email iluosonglin@gmail.com
  * @org Healife
  */
-public class NewsFragment extends BaseFragment {
+public class NewsFragment extends BaseFragment implements SpringView.OnFreshListener{
 
     RecyclerView recyclerView;
-    private SwipeRefreshLayout srl;
+//    private SwipeRefreshLayout srl;
+    private SpringView sv;
 
     private Integer mLabelId;
     private String mLabelName;
@@ -92,7 +94,7 @@ public class NewsFragment extends BaseFragment {
     private TextView mHeaderMeetingView;
     private HeaderMeetingAdapter mHeaderMeetingAdapter;
 
-Unbinder unbinder;
+    Unbinder unbinder;
 
     @Override
     protected View loadViewLayout(LayoutInflater inflater, ViewGroup container) {
@@ -114,7 +116,13 @@ Unbinder unbinder;
     @Override
     protected void bindViews(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+//        srl = (SwipeRefreshLayout) view.findViewById(R.id.srl);
+        sv = (SpringView) view.findViewById(R.id.springview);
+        //设置下拉刷新监听
+        sv.setListener(this);
+        //设置下拉刷新样式
+        sv.setType(SpringView.Type.FOLLOW);
+        sv.setHeader(new DefaultHeader(getActivity()));
 
         //绑定HeaderView
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_news_header, null);
@@ -144,14 +152,14 @@ Unbinder unbinder;
     @Override
     protected void processLogic() {
         //下啦刷新
-        srl.setOnRefreshListener(() -> {
-            srl.setRefreshing(false);
-            //如果是推荐页，自动加载header view
-            if (mLabelId == 0)
-                getHeaderView();
-            else
-                getData();
-        });
+//        srl.setOnRefreshListener(() -> {
+//            srl.setRefreshing(false);
+//            //如果是推荐页，自动加载header view
+//            if (mLabelId == 0)
+//                getHeaderView();
+//            else
+//                getData();
+//        });
 
         initCommonRecyclerView(createAdapter(), new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         mLabelId = getArguments().getInt(ConstanceValue.DATA);
@@ -180,7 +188,7 @@ Unbinder unbinder;
         if (TextUtils.isEmpty(mLabelId + ""))
             mLabelId = getArguments().getInt(ConstanceValue.DATA);
 
-        if (TextUtils.isEmpty(mLabelName+""))
+        if (TextUtils.isEmpty(mLabelName + ""))
             mLabelName = getArguments().getString("LabelName");
 
         //如果是推荐页，自动加载header view
@@ -206,14 +214,16 @@ Unbinder unbinder;
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity(), e.getMessage());
-                srl.setRefreshing(false);
+//                srl.setRefreshing(false);
+                sv.onFinishFreshAndLoad();
             }
 
             @Override
             public void onNext(HttpResult3<Blog, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity(), data.getMsg());
-                    srl.setRefreshing(false);
+//                    srl.setRefreshing(false);
+                    sv.onFinishFreshAndLoad();
                     return;
                 }
                 mAdapter.setNewData(data.getData());
@@ -235,7 +245,8 @@ Unbinder unbinder;
                     }
                     startActivity(intent);
                 });
-                srl.setRefreshing(false);
+//                srl.setRefreshing(false);
+                sv.onFinishFreshAndLoad();
             }
         }, map);
     }
@@ -251,14 +262,16 @@ Unbinder unbinder;
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
-                srl.setRefreshing(false);
+//                srl.setRefreshing(false);
+                sv.onFinishFreshAndLoad();
             }
 
             @Override
             public void onNext(HttpResult3<AdminEventActive, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
-                    srl.setRefreshing(false);
+//                    srl.setRefreshing(false);
+                    sv.onFinishFreshAndLoad();
                     return;
                 }
                 bannerImages.clear();
@@ -318,14 +331,16 @@ Unbinder unbinder;
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
-                srl.setRefreshing(false);
+//                srl.setRefreshing(false);
+                sv.onFinishFreshAndLoad();
             }
 
             @Override
             public void onNext(HttpResult3<LiveProListEntity, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
-                    srl.setRefreshing(false);
+//                    srl.setRefreshing(false);
+                    sv.onFinishFreshAndLoad();
                     return;
                 }
                 mHeaderMoreView.setOnClickListener(view -> MainActivity.trunLiveView());
@@ -377,24 +392,24 @@ Unbinder unbinder;
                             mHeaderLiveStatus1.setText("直播中");
                             mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
                             mHeaderLiveImage1.setImageResource(R.mipmap.index_alert1);
-                            Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus1直播中");
-                        } else if (data.getData().get(0).getLiveStatus().equals("ready")){
+                            Log.e(getActivity().getLocalClassName(), "mHeaderLiveStatus1直播中");
+                        } else if (data.getData().get(0).getLiveStatus().equals("ready")) {
                             mHeaderLiveStatus1.setText("预告");
                             mHeaderLiveStatus1.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
                             mHeaderLiveImage1.setImageResource(R.mipmap.index_alert2);
-                            Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus1预告");
+                            Log.e(getActivity().getLocalClassName(), "mHeaderLiveStatus1预告");
                         }
 
                         if (data.getData().get(1).getLiveStatus().equals("play")) {
                             mHeaderLiveStatus2.setText("直播中");
                             mHeaderLiveStatus2.setBackgroundResource(R.mipmap.icon_live_adapter_status_red);
                             mHeaderLiveImage2.setImageResource(R.mipmap.index_alert1);
-                            Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus2直播中");
-                        } else if (data.getData().get(1).getLiveStatus().equals("ready")){
+                            Log.e(getActivity().getLocalClassName(), "mHeaderLiveStatus2直播中");
+                        } else if (data.getData().get(1).getLiveStatus().equals("ready")) {
                             mHeaderLiveStatus2.setText("预告");
                             mHeaderLiveStatus2.setBackgroundResource(R.mipmap.icon_live_adapter_status_blue);
                             mHeaderLiveImage2.setImageResource(R.mipmap.index_alert2);
-                            Log.e(getActivity().getLocalClassName(),"mHeaderLiveStatus2预告");
+                            Log.e(getActivity().getLocalClassName(), "mHeaderLiveStatus2预告");
                         }
 
 
@@ -436,14 +451,16 @@ Unbinder unbinder;
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
-                srl.setRefreshing(false);
+//                srl.setRefreshing(false);
+                sv.onFinishFreshAndLoad();
             }
 
             @Override
             public void onNext(HttpResult3<Event, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
-                    srl.setRefreshing(false);
+//                    srl.setRefreshing(false);
+                    sv.onFinishFreshAndLoad();
                     return;
                 }
                 mHeaderMeetingView.setText("全部 (" + data.getData().size() + ") >");
@@ -480,14 +497,16 @@ Unbinder unbinder;
             @Override
             public void onError(Throwable e) {
                 ToastUtils.show(getActivity().getApplicationContext(), e.getMessage());
-                srl.setRefreshing(false);
+//                srl.setRefreshing(false);
+                sv.onFinishFreshAndLoad();
             }
 
             @Override
             public void onNext(HttpResult3<Blog, Object> data) {
                 if (!data.getStatus().equals("success")) {
                     ToastUtils.show(getActivity().getApplicationContext(), data.getMsg());
-                    srl.setRefreshing(false);
+//                    srl.setRefreshing(false);
+                    sv.onFinishFreshAndLoad();
                     return;
                 }
 
@@ -512,7 +531,8 @@ Unbinder unbinder;
                     startActivity(intent);
                 });
 
-                srl.setRefreshing(false);
+//                srl.setRefreshing(false);
+                sv.onFinishFreshAndLoad();
             }
         }, map);
 
@@ -527,13 +547,29 @@ Unbinder unbinder;
 
     @Override
     public void onStart() {
-        JAnalyticsInterface.onPageStart(getActivity(), "新闻列表("+mLabelName+")页");
+        JAnalyticsInterface.onPageStart(getActivity(), "新闻列表(" + mLabelName + ")页");
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        JAnalyticsInterface.onPageEnd(getActivity(), "新闻列表("+mLabelName+")页");
+        JAnalyticsInterface.onPageEnd(getActivity(), "新闻列表(" + mLabelName + ")页");
         super.onStop();
+    }
+
+    @Override
+    public void onRefresh() {
+        sv.onFinishFreshAndLoad();
+        //如果是推荐页，自动加载header view
+        if (mLabelId == 0) {
+            getHeaderView();
+            return;
+        }
+        getData();
+    }
+
+    @Override
+    public void onLoadmore() {
+
     }
 }

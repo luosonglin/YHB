@@ -110,35 +110,6 @@ public class IndexFragment extends Fragment implements OnChannelListener {
 //            }
 
             //获取label
-            /*HttpData.getInstance().HttpDataGetLabels(new Observer<HttpResult3<Object, IndexLabel>>() {
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    ToastUtils.show(getActivity(), e.getMessage());
-                }
-
-                @Override
-                public void onNext(HttpResult3<Object, IndexLabel> data) {
-                    //默认添加频道
-                    List<TagDto> liveLabels = new ArrayList<>();
-                    liveLabels.add(new TagDto(0, "推荐", 0, 0, 0, ""));
-                    liveLabels.addAll(data.getEntity().getDefaultList());
-
-                    mSelectedDatas.addAll(liveLabels);
-                    String selectedStr = mGson.toJson(mSelectedDatas);
-                    SharedPreferencesMgr.setString(TITLE_SELECTED, selectedStr);
-
-                    mUnSelectedDatas.addAll(data.getEntity().getSysList());
-                    String unselectTitle = mGson.toJson(mUnSelectedDatas);
-                    SharedPreferencesMgr.setString(TITLE_UNSELECTED, unselectTitle);
-
-                    initView();
-                }
-            });*/
             Map<String, Object> options = new HashMap<>();
             options.put("type", "NEWS");
             HttpData.getInstance().HttpDataGetVideoTags(new Observer<HttpResult3<TagDto, Object>>() {
