@@ -234,6 +234,7 @@ public class MineFragment extends Fragment {
 
         try {
             if (DBUtils.isSet(getActivity(), "userToken")) {
+                Log.e(getActivity().getLocalClassName(), DBUtils.get(getActivity(), "userToken"));
                 HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
                     @Override
                     public void onCompleted() {
@@ -314,6 +315,7 @@ public class MineFragment extends Fragment {
                         .placeholder(R.mipmap.avator_default)
                         .into(headIv);
                 nameTv.setText("未登录");
+                Log.e(getActivity().getLocalClassName(), DBUtils.get(getActivity(), nameTv.getText().toString().trim()));
                 nameTv.setOnClickListener(view -> startActivity(new Intent(getActivity(), Login_v2Activity.class)));
 
                 activate.setVisibility(View.GONE);
@@ -325,8 +327,6 @@ public class MineFragment extends Fragment {
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
-
-
     }
 
     // 回弹动画 (使用了属性动画)
