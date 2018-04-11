@@ -149,6 +149,8 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         progress = (ProgressActivity) findViewById(R.id.progress);
         //设置RecyclerView的显示模式  当前List模式
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //分割线
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(MyLiveRoomDetailActivity.this, DividerItemDecoration.VERTICAL));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..

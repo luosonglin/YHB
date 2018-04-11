@@ -148,13 +148,13 @@
                 android:id="@+id/springview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFFFFF">
+                android:background="@color/white">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#eeeeee" />
+                    android:background="@color/grey2" />
             </com.xiaochao.lcrapiddeveloplibrary.widget.SpringView>
 
         </LinearLayout>
