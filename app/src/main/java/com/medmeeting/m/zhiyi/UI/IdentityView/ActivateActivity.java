@@ -397,9 +397,9 @@ public class ActivateActivity extends AppCompatActivity {
                 window.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F8F8F8")));
 
                 // 设置可以获取焦点
-                window.setFocusable(true);
+                window.setFocusable(false);
                 // 设置可以触摸弹出框以外的区域
-                window.setOutsideTouchable(true);
+                window.setOutsideTouchable(false);
 
                 // 更新popupwindow的状态
                 window.update();
