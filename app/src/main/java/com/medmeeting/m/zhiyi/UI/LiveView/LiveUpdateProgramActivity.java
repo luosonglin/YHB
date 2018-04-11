@@ -230,6 +230,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 mLiveDto = data.getEntity();
                 expectBeginTime = data.getEntity().getStartTime();
                 expectEndTime = data.getEntity().getEndTime();
+
             }
         }, programId);
     }
@@ -507,7 +508,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         month = c.get(Calendar.MONTH) + 1;  //Calendar.getInstance().get(Calendar.MONTH) 月份少1，因为Calendar api月份是从0开始计数的
         day = c.get(Calendar.DAY_OF_MONTH);
         Log.e(TAG, "begin " + year + "-" + month + "-" + day);
-        datePicker.init(year, month, day, (datePicker1, i, i1, i2) -> {
+        datePicker.init(year, month - 1, day, (datePicker1, i, i1, i2) -> {
             year = i;
             month = i1 + 1;
             day = i2;
@@ -523,7 +524,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
             hour = timePicker.getCurrentHour();
             minute = timePicker.getCurrentMinute();
         }
-        Log.e(TAG, "hour " + hour + " minute " + minute);
+        Log.e(TAG, year + "-" + month + "-" + day + "hour " + hour + " minute " + minute);
 
         timePicker.setOnTimeChangedListener((timePicker1, i, i1) -> {
             hour = i;
@@ -558,13 +559,13 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
             } else if ("END".equals(sign)) {
 
-                if (!expectType.equals("liveNow")) {
-                    if (mStartDate == null) {
-                        ToastUtils.show(LiveUpdateProgramActivity.this, "请先设置开始时间，再设置结束时间");
-                        mLiveSettingPopupWindow.dismiss();
-                        return;
-                    }
-                }
+//                if (!expectType.equals("liveNow")) {
+//                    if (mStartDate == null) {
+//                        ToastUtils.show(LiveUpdateProgramActivity.this, "请先设置开始时间，再设置结束时间");
+//                        mLiveSettingPopupWindow.dismiss();
+//                        return;
+//                    }
+//                }
                 endDateTime = year + "-" + judgeDecade(month) + "-" + judgeDecade(day) + " " + judgeDecade(hour) + ":" + judgeDecade(minute);
 
                 //判断结束时间是否早于开始时间
