@@ -33,7 +33,6 @@ import com.medmeeting.m.zhiyi.UI.Entity.Event;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
-import com.medmeeting.m.zhiyi.UI.IndexView.NewsActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DateUtils;
@@ -373,6 +372,16 @@ public class MeetingDetailActivity extends AppCompatActivity {
 
         @JavascriptInterface
         public void pay(String info) {  //点击"支付订单"按钮时候调用
+            try {
+                if (!DBUtils.isSet(MeetingDetailActivity.this, "userToken")) {
+                    startActivity(new Intent(MeetingDetailActivity.this, Login_v2Activity.class));
+                    ToastUtils.show(MeetingDetailActivity.this, "请先登录");
+                    return;
+                }
+            } catch (SnappydbException e) {
+                e.printStackTrace();
+            }
+
             try {
                 // 解析js传递过来的json串
                 JSONObject mJson = new JSONObject(info);

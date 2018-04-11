@@ -41,6 +41,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.LiveAndVideoPayDto;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoOrderDto;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutVideoPlayer;
@@ -49,6 +51,7 @@ import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
+import com.snappydb.SnappydbException;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -384,7 +387,18 @@ public class VideoDetailActivity extends AppCompatActivity {
                 detailPlayer.getBuyButton().setVisibility(View.VISIBLE);
                 detailPlayer.getBuyButton().setText("购买 " + price + " 元");
                 detailPlayer.getBuyButton().setTextSize(12);
-                detailPlayer.getBuyButton().setOnClickListener(view -> initPopupwindow(videoId));
+                detailPlayer.getBuyButton().setOnClickListener(view -> {
+                    try {
+                        if (!DBUtils.isSet(VideoDetailActivity.this, "userToken")) {
+                            startActivity(new Intent(VideoDetailActivity.this, Login_v2Activity.class));
+                            ToastUtils.show(VideoDetailActivity.this, "请先登录");
+                            return;
+                        }
+                    } catch (SnappydbException e) {
+                        e.printStackTrace();
+                    }
+                    initPopupwindow(videoId);
+                });
             } else {
                 detailPlayer.getStartButton().setVisibility(View.VISIBLE);
                 detailPlayer.getBuyButton().setVisibility(View.GONE);
