@@ -49,6 +49,8 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
 import com.medmeeting.m.zhiyi.UI.MineView.MyOrderActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutLivePlayer;
@@ -328,7 +330,18 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
             buyBtn.setText("购买 " + price + " 元");
             buyBtn.setTextSize(12);
             buyBtn.setTextColor(Color.WHITE);
-            buyBtn.setOnClickListener(view -> initPopupwindow(programId));
+            buyBtn.setOnClickListener(view -> {
+                try {
+                    if (!DBUtils.isSet(LiveProgramDetailActivity2.this, "userToken")) {
+                        startActivity(new Intent(LiveProgramDetailActivity2.this, Login_v2Activity.class));
+                        ToastUtils.show(LiveProgramDetailActivity2.this, "请先登录");
+                        return;
+                    }
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
+                initPopupwindow(programId);
+            });
             Log.e("eeee", chargeType + " " + payFlag + " " + detailPlayer.getBuyButton().getText().toString());
         } else {
             switch (liveStatus) {
