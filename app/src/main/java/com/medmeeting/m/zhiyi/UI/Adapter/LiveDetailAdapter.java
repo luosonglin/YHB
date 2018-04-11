@@ -42,6 +42,15 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
 
         helper.getView(R.id.item_news_cv).setOnClickListener(view -> {
             Intent intent;
+            if (mUserId == null) {
+                //用户进的直播节目详情页
+                intent = new Intent(mContext, LiveProgramDetailActivity2.class);
+                Log.e(TAG, "0: " + mUserId + " " + item.getUserId());
+                intent.putExtra("programId", item.getId());
+                mContext.startActivity(intent);
+                return;
+            }
+
             if (mUserId.equals(item.getUserId() + "")) {
                 //主播进的直播节目详情页
                 intent = new Intent(mContext, LiveProgramDetailAuthorActivity.class);
