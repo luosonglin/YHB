@@ -180,8 +180,6 @@ public class MineFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     private void initView() {
 
-        showProgress(true);
-
         // 获取屏幕宽高
         metric = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -233,23 +231,44 @@ public class MineFragment extends Fragment {
         }
 
         try {
-            if (DBUtils.isSet(getActivity(), "userToken")) {
-                Log.e(getActivity().getLocalClassName(), DBUtils.get(getActivity(), "userToken"));
-                HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
-                    @Override
-                    public void onCompleted() {
+            if (!DBUtils.isSet(getActivity(), "userToken")) {
+                //退出登录后
+                Glide.with(getActivity())
+                        .load(R.mipmap.avator_default)
+                        .crossFade()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .placeholder(R.mipmap.avator_default)
+                        .into(headIv);
+                nameTv.setText("未登录");
+                nameTv.setOnClickListener(view -> startActivity(new Intent(getActivity(), Login_v2Activity.class)));
 
-                    }
+                activate.setVisibility(View.GONE);
+                authorize.setVisibility(View.GONE);
+                specialistIv.setVisibility(View.GONE);
 
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show(getActivity(), e.getMessage());
-                        Log.e(getActivity().getLocalClassName(), e.getMessage());
-                        showProgress(false);
-                    }
+                showProgress(false);
 
-                    @Override
-                    public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
+                return;
+            }
+
+            showProgress(true);
+            Log.e(getActivity().getLocalClassName(), DBUtils.get(getActivity(), "userToken"));
+            HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    ToastUtils.show(getActivity(), e.getMessage());
+                    Log.e(getActivity().getLocalClassName(), e.getMessage());
+                    showProgress(false);
+                }
+
+                @Override
+                public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
                        /* if (!data.getStatus().equals("success")) {
                             ToastUtils.show(getActivity(), data.getMsg());
                             showProgress(false);
@@ -260,70 +279,51 @@ public class MineFragment extends Fragment {
                             }
                             return;
                         }*/
-                        userAvatar = data.getEntity().getUserPic();
-                        Glide.with(getActivity())
-                                .load(userAvatar)
-                                .crossFade()
-                                .dontAnimate()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .placeholder(R.mipmap.avator_default)
-                                .into(headIv);
-                        if (data.getEntity().getName() != null) {
-                            nameTv.setText(data.getEntity().getName());
-                        } else {
-                            nameTv.setText(data.getEntity().getNickName());
-                        }
-
-                        //正式服，该字段暂无
-                        switch (data.getEntity().getTocPortStatus()) {
-                            case "wait_activation":
-                                activate.setText("待激活");
-                                authorize.setText("去激活");
-                                specialistIv.setVisibility(View.GONE);
-                                break;
-                            case "done_activation":
-                                activate.setText("未认证");//已激活
-                                specialistIv.setVisibility(View.VISIBLE);
-                                specialistIv.setImageResource(R.mipmap.red_v);
-                                code = data.getEntity().getMedical();
-                                authorize.setText("去认证");
-                                break;
-                            case "done_authen":
-                                activate.setText("已认证");
-                                specialistIv.setVisibility(View.VISIBLE);
-                                specialistIv.setImageResource(R.mipmap.yellow_v);
-                                authorize.setVisibility(View.GONE);
-                                break;
-                        }
-                        try {
-                            DBUtils.put(getActivity(), "tocPortStatus", data.getEntity().getTocPortStatus() + "");
-                        } catch (SnappydbException e) {
-                            e.printStackTrace();
-                        }
-
-                        showProgress(false);
+                    userAvatar = data.getEntity().getUserPic();
+                    Glide.with(getActivity())
+                            .load(userAvatar)
+                            .crossFade()
+                            .dontAnimate()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .placeholder(R.mipmap.avator_default)
+                            .into(headIv);
+                    if (data.getEntity().getName() != null) {
+                        nameTv.setText(data.getEntity().getName());
+                    } else {
+                        nameTv.setText(data.getEntity().getNickName());
                     }
-                });
 
-            } else {
-                //退出登录后
-                Glide.with(getActivity())
-                        .load(R.mipmap.avator_default)
-                        .crossFade()
-                        .dontAnimate()
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .placeholder(R.mipmap.avator_default)
-                        .into(headIv);
-                nameTv.setText("未登录");
-                Log.e(getActivity().getLocalClassName(), DBUtils.get(getActivity(), nameTv.getText().toString().trim()));
-                nameTv.setOnClickListener(view -> startActivity(new Intent(getActivity(), Login_v2Activity.class)));
+                    //正式服，该字段暂无
+                    switch (data.getEntity().getTocPortStatus()) {
+                        case "wait_activation":
+                            activate.setText("待激活");
+                            authorize.setText("去激活");
+                            specialistIv.setVisibility(View.GONE);
+                            break;
+                        case "done_activation":
+                            activate.setText("未认证");//已激活
+                            specialistIv.setVisibility(View.VISIBLE);
+                            specialistIv.setImageResource(R.mipmap.red_v);
+                            code = data.getEntity().getMedical();
+                            authorize.setText("去认证");
+                            break;
+                        case "done_authen":
+                            activate.setText("已认证");
+                            specialistIv.setVisibility(View.VISIBLE);
+                            specialistIv.setImageResource(R.mipmap.yellow_v);
+                            authorize.setVisibility(View.GONE);
+                            break;
+                    }
+                    try {
+                        DBUtils.put(getActivity(), "tocPortStatus", data.getEntity().getTocPortStatus() + "");
+                    } catch (SnappydbException e) {
+                        e.printStackTrace();
+                    }
 
-                activate.setVisibility(View.GONE);
-                authorize.setVisibility(View.GONE);
-                specialistIv.setVisibility(View.GONE);
+                    showProgress(false);
+                }
+            });
 
-                showProgress(false);
-            }
         } catch (SnappydbException e) {
             e.printStackTrace();
         }
@@ -360,6 +360,7 @@ public class MineFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.e(getActivity().getLocalClassName(), "resume");
         initView();
         super.onResume();
     }
@@ -400,6 +401,16 @@ public class MineFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting:
+                try {
+                    if (!DBUtils.isSet(getActivity(), "userToken")) {
+                        getActivity().finish();
+                        startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                        return;
+                    }
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 intent.putExtra("avatar", userAvatar);
                 startActivity(intent);

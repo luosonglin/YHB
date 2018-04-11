@@ -230,7 +230,6 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 mLiveDto = data.getEntity();
                 expectBeginTime = data.getEntity().getStartTime();
                 expectEndTime = data.getEntity().getEndTime();
-
             }
         }, programId);
     }
@@ -559,13 +558,18 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
             } else if ("END".equals(sign)) {
 
-//                if (!expectType.equals("liveNow")) {
-//                    if (mStartDate == null) {
+                if (!expectType.equals("liveNow")) {
+                    if (mStartDate == null) {
 //                        ToastUtils.show(LiveUpdateProgramActivity.this, "请先设置开始时间，再设置结束时间");
 //                        mLiveSettingPopupWindow.dismiss();
 //                        return;
-//                    }
-//                }
+                        try {
+                            mStartDate = DateUtils.longToDate(expectBeginTime, DateUtils.TYPE_01);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
                 endDateTime = year + "-" + judgeDecade(month) + "-" + judgeDecade(day) + " " + judgeDecade(hour) + ":" + judgeDecade(minute);
 
                 //判断结束时间是否早于开始时间

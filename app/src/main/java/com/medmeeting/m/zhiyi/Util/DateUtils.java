@@ -85,5 +85,22 @@ public class DateUtils {
             return currentTime;
         }
     }
+
+    // long转换为Date类型
+    // currentTime要转换的long类型的时间
+    // formatType要转换的时间格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
+    public static Date longToDate(long currentTime, String formatType) throws ParseException {
+        Date dateOld = new Date(currentTime); // 根据long类型的毫秒数生命一个date类型的时间
+        String sDateTime = dateToString(dateOld, formatType); // 把date类型的时间转换为string
+        Date date = stringToDate(sDateTime, formatType); // 把String类型转换为Date类型
+        return date;
+    }
+
+    // date类型转换为String类型
+    // formatType格式为yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
+    // data Date类型的时间
+    public static String dateToString(Date data, String formatType) {
+        return new SimpleDateFormat(formatType).format(data);
+    }
 }
 

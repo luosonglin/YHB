@@ -23,7 +23,6 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.Version;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.CleanUtils;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
@@ -182,10 +181,9 @@ public class SettingActivity extends AppCompatActivity {
                 DBUtils.del(SettingActivity.this, "tokenId");
             } catch (SnappydbException e) {
                 e.printStackTrace();
+            }finally {
+                finish();
             }
-
-            finish();
-            startActivity(new Intent(SettingActivity.this, Login_v2Activity.class));
         });
     }
 

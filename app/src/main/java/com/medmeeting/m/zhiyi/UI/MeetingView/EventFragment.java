@@ -196,7 +196,6 @@ public class EventFragment extends Fragment implements SpringView.OnFreshListene
                     });
 
                     mAdapter.addHeaderView(mHeaderView);
-                    sv.onFinishFreshAndLoad();
                 }
             }, "EVENT");
         }
@@ -255,10 +254,6 @@ public class EventFragment extends Fragment implements SpringView.OnFreshListene
                 },1102);
             }
         }, map);
-
-//        if (eventType == 0) {
-
-//        }
     }
 
     @Override
