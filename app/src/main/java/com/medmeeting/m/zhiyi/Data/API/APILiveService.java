@@ -591,7 +591,7 @@ public interface APILiveService {
      */
     //    POST /v1/users/label/edit 用户标签-更新
     @POST("/v1/users/label/edit")
-    Observable<HttpResult3> userSubject(@Body String labelIds);
+    Observable<HttpResult3> userSubject(@Body Object labelIds);
 
 
     //PUT /v1/users/app/user/editPwd APP-用户忘记密码

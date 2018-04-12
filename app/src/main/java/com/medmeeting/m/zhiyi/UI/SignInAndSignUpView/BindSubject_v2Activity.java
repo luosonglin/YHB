@@ -115,6 +115,10 @@ public class BindSubject_v2Activity extends AppCompatActivity {
                     switch (view.getId()) {
                         case R.id.name:
                             if (!tags_confirm.contains(tagDto)) {
+                                if(tags_confirm.size()>3){
+                                    ToastUtils.show(BindSubject_v2Activity.this, "最多只能有3个标签");
+                                    return;
+                                }
                                 tags_confirm.add(tagDto);
                                 view.setBackgroundResource(R.drawable.textview_radius_blue_v3);
                             } else {
@@ -135,7 +139,7 @@ public class BindSubject_v2Activity extends AppCompatActivity {
 
     @OnClick(R.id.start)
     public void onClick() {
-        String subjects = "";
+        Object subjects = "";
         for (TagDto i : tags_confirm) {
             if (subjects.equals(""))
                 subjects = "" + i.getId();
@@ -143,8 +147,7 @@ public class BindSubject_v2Activity extends AppCompatActivity {
                 subjects += "," + i.getId();
         }
 
-        Log.e(getLocalClassName(), subjects);
-
+        Log.e(getLocalClassName(), subjects.toString());
 
         HttpData.getInstance().HttpDataUserSubject(new Observer<HttpResult3>() {
             @Override
