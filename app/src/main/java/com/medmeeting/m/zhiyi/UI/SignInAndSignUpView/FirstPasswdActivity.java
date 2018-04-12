@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.Entity.FirstPwd;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
@@ -110,7 +111,7 @@ public class FirstPasswdActivity extends AppCompatActivity {
                 }
                 startActivity(new Intent(FirstPasswdActivity.this, BindSubject_v2Activity.class));
             }
-        }, password.getText().toString());
+        }, new FirstPwd(password.getText().toString()));
 
     }
 }

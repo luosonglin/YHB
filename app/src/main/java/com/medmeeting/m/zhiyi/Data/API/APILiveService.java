@@ -17,6 +17,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
 import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.FirstPwd;
 import com.medmeeting.m.zhiyi.UI.Entity.HospitalInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -593,7 +594,6 @@ public interface APILiveService {
     @POST("/v1/users/label/edit")
     Observable<HttpResult3> userSubject(@Body Object labelIds);
 
-
     //PUT /v1/users/app/user/editPwd APP-用户忘记密码
     Observable<HttpResult3> editPwd(@Body UserEditPwdEntity userEditPwdEntity);
 
@@ -611,5 +611,5 @@ public interface APILiveService {
 
     //PUT /v1/users/app/user/firstPwd APP-用户第一次设定登录密码
     @PUT("/v1/users/app/user/firstPwd")
-    Observable<HttpResult3> firstPwd(@Body String pwd);
+    Observable<HttpResult3> firstPwd(@Body FirstPwd pwd);
 }

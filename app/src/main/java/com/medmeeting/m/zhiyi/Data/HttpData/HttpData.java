@@ -26,6 +26,7 @@ import com.medmeeting.m.zhiyi.UI.Entity.EventBanner;
 import com.medmeeting.m.zhiyi.UI.Entity.EventPrepayOrderRequestVO;
 import com.medmeeting.m.zhiyi.UI.Entity.EventRegisterSwitchVO;
 import com.medmeeting.m.zhiyi.UI.Entity.ExtractEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.FirstPwd;
 import com.medmeeting.m.zhiyi.UI.Entity.HospitalInfo;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -738,7 +739,7 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
-    public void HttpDatafirstPwd(Observer<HttpResult3> observer, String pwd) {
+    public void HttpDatafirstPwd(Observer<HttpResult3> observer, FirstPwd pwd) {
         Observable observable = service_live.firstPwd(pwd);
         setSubscribe(observable, observer);
     }

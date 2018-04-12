@@ -106,9 +106,9 @@ public class BindSubject_v2Activity extends AppCompatActivity {
                 }
 
                 tags_confirm.clear();
-                mQuickAdapter.setOnRecyclerViewItemClickListener((view12, position) -> {
-
-                });
+//                mQuickAdapter.setOnRecyclerViewItemClickListener((view12, position) -> {
+//
+//                });
 
                 mQuickAdapter.setOnRecyclerViewItemChildClickListener((adapter, view, position) -> {
                     TagDto tagDto = (TagDto) adapter.getItem(position);
