@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -271,7 +272,11 @@ public class LiveRedVipActivity extends AppCompatActivity {
                     return;
                 }
                 titleTv.setText(data.getEntity().getName());// + " | " + data.getEntity().getPostion());
-                userNameTv.setText(data.getEntity().getHospital() + "");
+                if (data.getEntity().getHospital() != null) {
+                    userNameTv.setVisibility(View.VISIBLE);
+                    userNameTv.setText(data.getEntity().getHospital() + "");
+                } else
+                    userNameTv.setVisibility(View.INVISIBLE);
                 Glide.with(LiveRedVipActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()

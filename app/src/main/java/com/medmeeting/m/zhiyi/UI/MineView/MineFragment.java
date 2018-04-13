@@ -35,7 +35,6 @@ import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizeActivity;
 import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizedActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.FirstPasswdActivity;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.UI.UserInfoView.UpdateUserInfoActivity;
 import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
@@ -402,21 +401,21 @@ public class MineFragment extends Fragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.setting:
-//                try {
-//                    if (!DBUtils.isSet(getActivity(), "userToken")) {
-//                        getActivity().finish();
-//                        startActivity(new Intent(getActivity(), Login_v2Activity.class));
-//                        return;
-//                    }
-//                } catch (SnappydbException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                Intent intent = new Intent(getActivity(), SettingActivity.class);
-//                intent.putExtra("avatar", userAvatar);
-//                startActivity(intent);
+                try {
+                    if (!DBUtils.isSet(getActivity(), "userToken")) {
+                        getActivity().finish();
+                        startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                        return;
+                    }
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
 
-                startActivity(new Intent(getActivity(), FirstPasswdActivity.class));
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                intent.putExtra("avatar", userAvatar);
+                startActivity(intent);
+
+//                startActivity(new Intent(getActivity(), FirstPasswdActivity.class));
 
                 break;
             case R.id.modify_userinfo:  //激活后就能修改
