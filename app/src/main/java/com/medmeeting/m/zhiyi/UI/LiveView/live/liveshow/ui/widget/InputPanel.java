@@ -4,17 +4,14 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.EmojiManager;
 
 public class InputPanel extends LinearLayout {
 
@@ -22,9 +19,7 @@ public class InputPanel extends LinearLayout {
 
     private ViewGroup inputBar;
     private EditText textEditor;
-    private ImageView emojiBtn;
     private TextView sendBtn;
-    private EmojiBoard emojiBoard;
 
     private InputPanelListener listener;
 
@@ -41,16 +36,10 @@ public class InputPanel extends LinearLayout {
         LayoutInflater.from(getContext()).inflate(R.layout.widget_input_panel, this);
         inputBar = (ViewGroup) findViewById(R.id.input_bar);
         textEditor = (EditText) findViewById(R.id.input_editor);
-        emojiBtn = (ImageView) findViewById(R.id.input_emoji_btn);
         sendBtn = (TextView) findViewById(R.id.input_send);
-        emojiBoard = (EmojiBoard) findViewById(R.id.input_emoji_board);
-
-        //去掉emoji
-        emojiBtn.setVisibility(VISIBLE);
 
         textEditor.setOnFocusChangeListener((v, hasFocus) -> {
             inputBar.setSelected(hasFocus);
-            emojiBtn.setSelected(emojiBoard.getVisibility() == VISIBLE);
         });
         textEditor.addTextChangedListener(new TextWatcher() {
             @Override
@@ -67,16 +56,10 @@ public class InputPanel extends LinearLayout {
                 int start = textEditor.getSelectionStart();
                 int end = textEditor.getSelectionEnd();
                 textEditor.removeTextChangedListener(this);
-                CharSequence cs = EmojiManager.parse(s.toString(), textEditor.getTextSize());
-                textEditor.setText(cs, TextView.BufferType.SPANNABLE);
+                textEditor.setText(s.toString(), TextView.BufferType.SPANNABLE);
                 textEditor.setSelection(start, end);
                 textEditor.addTextChangedListener(this);
             }
-        });
-
-        emojiBtn.setOnClickListener(v -> {
-            emojiBoard.setVisibility(emojiBoard.getVisibility() == VISIBLE ? GONE : VISIBLE);
-            emojiBtn.setSelected(emojiBoard.getVisibility() == VISIBLE);
         });
 
         sendBtn.setOnClickListener(v -> {
@@ -87,13 +70,6 @@ public class InputPanel extends LinearLayout {
             textEditor.getText().clear();
         });
 
-        emojiBoard.setItemClickListener(code -> {
-            if (code.equals("/DEL")) {
-                textEditor.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-            } else {
-                textEditor.getText().insert(textEditor.getSelectionStart(), code);
-            }
-        });
     }
 
     public void setPanelListener(InputPanelListener l) {
@@ -106,11 +82,6 @@ public class InputPanel extends LinearLayout {
      * @return 已处理true, 否则false
      */
     public boolean onBackAction() {
-        if (emojiBoard.getVisibility() == VISIBLE) {
-            emojiBoard.setVisibility(GONE);
-            emojiBtn.setSelected(false);
-            return true;
-        }
         return false;
     }
 
