@@ -1,32 +1,24 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="24dp">
+    android:layout_height="match_parent">
 
+    <com.medmeeting.m.zhiyi.Widget.LoadingFlashView
+        android:id="@+id/loadingView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
-    <!--SpringView下拉刷新-->
-    <com.xiaochao.lcrapiddeveloplibrary.widget.SpringView
-        android:id="@+id/springview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey2">
-
-        <FrameLayout
+        <!--SpringView下拉刷新-->
+        <com.xiaochao.lcrapiddeveloplibrary.widget.SpringView
+            android:id="@+id/springview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.medmeeting.m.zhiyi.Widget.LoadingFlashView
-                android:id="@+id/loadingView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+            android:layout_height="match_parent"
+            android:background="@color/grey2">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white" />
-        </FrameLayout>
-    </com.xiaochao.lcrapiddeveloplibrary.widget.SpringView>
-
-</RelativeLayout>
+        </com.xiaochao.lcrapiddeveloplibrary.widget.SpringView>
+</FrameLayout>

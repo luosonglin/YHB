@@ -99,6 +99,9 @@ public class EventFragment extends Fragment implements SpringView.OnFreshListene
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadingView = (LoadingFlashView) view.findViewById(R.id.loadingView);
+        loadingView.showLoading();
+//        mRecyclerView.setVisibility(View.INVISIBLE);
 
         sv = (SpringView) view.findViewById(R.id.springview);
         //设置下拉刷新监听
@@ -115,10 +118,6 @@ public class EventFragment extends Fragment implements SpringView.OnFreshListene
         mAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         mAdapter.openLoadMore(8, true);
         mRecyclerView.setAdapter(mAdapter);
-
-        loadingView = (LoadingFlashView) view.findViewById(R.id.loadingView);
-        loadingView.showLoading();
-        mRecyclerView.setVisibility(View.INVISIBLE);
 
         mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.item_event_header, null);
         mBanner = (Banner) mHeaderView.findViewById(R.id.banner_news);
