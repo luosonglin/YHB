@@ -65,5 +65,5 @@
         android:id="@+id/input_emoji_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 </LinearLayout>

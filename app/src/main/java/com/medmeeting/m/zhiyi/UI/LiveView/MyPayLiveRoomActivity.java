@@ -28,7 +28,6 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     ProgressActivity progress;
     private Toolbar toolbar;
     private BaseQuickAdapter mQuickAdapter;
-    private int PageIndex=1;
     private SpringView springView;
     private LiveMyPayListPresent present;
 
@@ -72,7 +71,6 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-//        mQuickAdapter = new LiveAdapter(R.layout.item_live_v2, null);
         mQuickAdapter = new MyPayLiveAdapter(R.layout.item_video_others, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
@@ -80,10 +78,8 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
         mQuickAdapter.openLoadMore(6,true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
-//        present = new BookListPresent(this);
         present = new LiveMyPayListPresent(this);
         //请求网络数据
-//        present.LoadData("1",PageIndex,false);
         present.LoadData(false);
     }
     private void initListener() {
@@ -93,18 +89,14 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     //自动加载
     @Override
     public void onLoadMoreRequested() {
-//        PageIndex++;
-//        present.LoadData(true);
         showLoadCompleteAllData();
     }
     //下拉刷新
     @Override
     public void onRefresh() {
-        PageIndex=1;
-//        present.LoadData("1",PageIndex,false);
         present.LoadData(false);
     }
-    //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
+    //上啦加载
     @Override
     public void onLoadmore() {
 
@@ -141,8 +133,6 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     public void showLoadFailMsg() {
         //设置加载错误页显示
         progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, v -> {
-            PageIndex=1;
-//                present.LoadData("1",PageIndex,false);
             present.LoadData(false);
         });
     }
