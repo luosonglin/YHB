@@ -2,6 +2,7 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -157,6 +158,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
             }
 
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onNext(HttpResult3<Object, LiveDto> data) {
                 Glide.with(LiveUpdateProgramActivity.this)
@@ -176,16 +178,16 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 theme.setText(data.getEntity().getTitle());
                 name.setText(data.getEntity().getAuthorName());
                 title.setText(data.getEntity().getAuthorTitle());
-                if (DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_01).equals("1970-01-01 08:00:00")) {
-                    startTime.setText(DateUtils.formatDate(System.currentTimeMillis(), DateUtils.TYPE_01));
+                if (DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_06).equals("1970-01-01 08:00")) {
+                    startTime.setText(DateUtils.formatDate(System.currentTimeMillis(), DateUtils.TYPE_06));
                 } else {
-                    startTime.setText(DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_01));
+                    startTime.setText(DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_06));
                 }
 
-                if (DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_01).equals("1970-01-01 08:00:00")) {
+                if (DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_06).equals("1970-01-01 08:00")) {
                     endTime.setText("");
                 } else {
-                    endTime.setText(DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_01));
+                    endTime.setText(DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_06));
                 }
                 if (data.getEntity().getChargeType().equals("no")) {
                     free.setBackground(getResources().getDrawable(R.drawable.button_live_free));
@@ -538,7 +540,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
                 //判断开始时间是否早于当前时间
                 try {
-                    mStartDate = mSimpleDateFormat.parse(startDateTime + ":" + 59);
+                    mStartDate = mSimpleDateFormat.parse(startDateTime);// + ":" + 59);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -553,7 +555,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 }
                 mLiveSettingPopupWindow.dismiss();
                 startTime.setText(startDateTime);
-//                    expectBeginTime = DateUtils.stringToLong(startDateTime, DateUtils.TYPE_01);
+//                    expectBeginTime = DateUtils.stringToLong(startDateTime, DateUtils.TYPE_06);
                 expectBeginTime = DateUtils.dateToLong(mStartDate);
 
             } else if ("END".equals(sign)) {
@@ -564,7 +566,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 //                        mLiveSettingPopupWindow.dismiss();
 //                        return;
                         try {
-                            mStartDate = DateUtils.longToDate(expectBeginTime, DateUtils.TYPE_01);
+                            mStartDate = DateUtils.longToDate(expectBeginTime, DateUtils.TYPE_06);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -574,7 +576,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
                 //判断结束时间是否早于开始时间
                 try {
-                    mEndDate = mSimpleDateFormat.parse(endDateTime + ":" + 59);
+                    mEndDate = mSimpleDateFormat.parse(endDateTime);// + ":" + 59);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -591,7 +593,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                 }
                 mLiveSettingPopupWindow.dismiss();
                 endTime.setText(endDateTime);
-//                    expectEndTime = DateUtils.stringToLong(endDateTime, DateUtils.TYPE_01);
+//                    expectEndTime = DateUtils.stringToLong(endDateTime, DateUtils.TYPE_06);
                 expectEndTime = DateUtils.dateToLong(mEndDate);
             }
         });

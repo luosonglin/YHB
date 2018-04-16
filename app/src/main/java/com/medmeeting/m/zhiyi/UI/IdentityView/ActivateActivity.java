@@ -390,7 +390,7 @@ public class ActivateActivity extends AppCompatActivity {
                 final View popupView = this.getLayoutInflater().inflate(R.layout.popupwindow_activate, null);
 
                 // 创建PopupWindow对象，指定宽度和高度
-                final PopupWindow window = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, 600);
+                final PopupWindow window = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 // 设置动画
                 window.setAnimationStyle(R.style.popup_window_anim);
                 // 设置背景颜色
