@@ -80,6 +80,12 @@ public class LoadingFlashView  extends FrameLayout {
 
 
     private void initAnimation() {
+        PorterDuffColorFilter localPorterDuffColorFilter = new PorterDuffColorFilter(getResources().getColor(R.color.dodgerblue), PorterDuff.Mode.SRC_ATOP); //subscribe_category_bar_bg_night
+        mLoad1.setColorFilter(localPorterDuffColorFilter);
+        mLoad2.setColorFilter(localPorterDuffColorFilter);
+        mLoad3.setColorFilter(localPorterDuffColorFilter);
+
+
         mAnimatorSet = new AnimatorSet();
 
         List<ImageView> imageViewList = Arrays.asList(mLoad1, mLoad2, mLoad3);
