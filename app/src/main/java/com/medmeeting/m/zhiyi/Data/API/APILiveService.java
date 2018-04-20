@@ -612,4 +612,12 @@ public interface APILiveService {
     //PUT /v1/users/app/user/firstPwd APP-用户第一次设定登录密码
     @PUT("/v1/users/app/user/firstPwd")
     Observable<HttpResult3> firstPwd(@Body FirstPwd pwd);
+
+    //GET /v1/anchor/liveRoom/get/agreement 获取主播是否同意过直播协议
+    @GET("/v1/anchor/liveRoom/get/agreement")
+    Observable<HttpResult3<Object, Boolean>> getAgreement();
+
+    //PUT /v1/anchor/liveRoom/edit/agreement 更新主播的直播协议状态为true
+    @PUT("/v1/anchor/liveRoom/edit/agreement")
+    Observable<HttpResult3> agree();
 }

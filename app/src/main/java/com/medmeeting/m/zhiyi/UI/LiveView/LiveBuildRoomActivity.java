@@ -15,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -136,6 +138,72 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        View codeView = LayoutInflater.from(this).inflate(R.layout.popupwindow_live_agreement, null);
+        PopupWindow codePopupwindow = new PopupWindow(codeView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        TextView confirmTv = (TextView) codeView.findViewById(R.id.confirm);
+        confirmTv.setOnClickListener(view ->
+                HttpData.getInstance().HttpDataAgree(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
+                        codePopupwindow.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(LiveBuildRoomActivity.this, data.getMsg());
+                            return;
+                        }
+                        codePopupwindow.dismiss();
+                    }
+                }));
+        TextView cancelTv = (TextView) codeView.findViewById(R.id.cancel);
+        cancelTv.setOnClickListener(view -> {
+            codePopupwindow.dismiss();
+            finish();
+        });
+        TextView agreementTv = (TextView) codeView.findViewById(R.id.blue);
+        agreementTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BrowserActivity.launch(LiveBuildRoomActivity.this, "http://webview.medmeeting.com/#/page/live-protocol", "《直播协议》");
+            }
+        });
+
+
+        HttpData.getInstance().HttpDataGetAgreement(new Observer<HttpResult3<Object, Boolean>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, Boolean> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(LiveBuildRoomActivity.this, data.getMsg());
+                    return;
+                }
+                if (data.getEntity())
+                    return;
+
+                codePopupwindow.setOutsideTouchable(true);
+                ColorDrawable dw = new ColorDrawable(0x000ff000);
+                codePopupwindow.setBackgroundDrawable(dw);
+                codePopupwindow.showAtLocation(codeView, Gravity.BOTTOM, 0, 0);
+            }
+        });
     }
 
     @OnClick({R.id.agreement_llyt, R.id.live_pic_tip, R.id.classify, R.id.buildllyt})
@@ -245,7 +313,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                         return;
                     }
 
-                    videoPhoto  = data.getExtra().getAbsQiniuImgHash();
+                    videoPhoto = data.getExtra().getAbsQiniuImgHash();
 
                     Glide.with(LiveBuildRoomActivity.this)
                             .load(videoPhoto)

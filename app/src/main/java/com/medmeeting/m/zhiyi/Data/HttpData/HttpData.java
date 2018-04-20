@@ -744,6 +744,15 @@ public class HttpData extends RetrofitUtils {
         setSubscribe(observable, observer);
     }
 
+    public void HttpDataGetAgreement(Observer<HttpResult3<Object, Boolean>> observer) {
+        Observable observable = service_live.getAgreement();
+        setSubscribe(observable, observer);
+    }
+    public void HttpDataAgree(Observer<HttpResult3> observer) {
+        Observable observable = service_live.agree();
+        setSubscribe(observable, observer);
+    }
+
     /**
      * 插入观察者
      *
