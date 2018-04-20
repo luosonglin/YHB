@@ -31,6 +31,12 @@ public interface ConstanceValue {
     String TITLE_UNSELECTED = "explore_title_unselected";
 
     /**
+     * 会议首页标签
+     */
+    String MEETING_SELECTED = "explore_meeting_selected";
+    String MEETING_UNSELECTED = "explore_meeting_unselected";
+
+    /**
      * 历史搜索词条
      */
     String HISTORY_WORD = "history_word";

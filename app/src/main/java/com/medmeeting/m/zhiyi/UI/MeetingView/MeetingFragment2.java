@@ -77,6 +77,8 @@ public class MeetingFragment2 extends Fragment {
     private void setUpViewPager(ViewPager viewPager) {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(getChildFragmentManager());//getActivity().getSupportFragmentManager
 
+
+
         mIndexChildAdapter.addFragment(EventFragment.newInstance(0), "全部");
         mIndexChildAdapter.addFragment(EventFragment.newInstance(1), "年会");
         mIndexChildAdapter.addFragment(EventFragment.newInstance(2), "论坛");

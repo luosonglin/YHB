@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment2">
+    tools:context="com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,9 +28,9 @@
             android:id="@+id/search_icon"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:padding="10dp"
             android:src="@mipmap/search_icon"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
             android:contentDescription="TODO" />
 
     </RelativeLayout>
@@ -40,11 +40,11 @@
         android:layout_height="1px"
         android:background="#cccbcc" />
 
-    <!--显示头部滑块-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/new_category_tip"
@@ -90,18 +90,17 @@
             android:scaleType="centerInside"
             android:src="@drawable/add_channel"
             android:contentDescription="TODO" />
+        <!--android:background="@mipmap/shadow_add_titlebar_new"-->
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey1" />
+        android:background="#ffe8e8e8" />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+        android:id="@+id/vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
 </LinearLayout>
-
-

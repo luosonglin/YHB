@@ -24,7 +24,7 @@ import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveIndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.MeetingView.ExchangeBusinessCardActivity;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment2;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment3;
 import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
 import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
@@ -45,7 +45,7 @@ import rx.Observer;
 
 public class MainActivity extends AppCompatActivity implements
         IndexFragment.OnFragmentInteractionListener,
-        MeetingFragment2.OnFragmentInteractionListener,
+        MeetingFragment3.OnFragmentInteractionListener,
         LiveIndexFragment.OnFragmentInteractionListener,
         MineFragment.OnFragmentInteractionListener {
 
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private FragmentManager fragmentManager;
     private IndexFragment mIndexFragment;
-    private MeetingFragment2 mMeetingFragment;
+    private MeetingFragment3 mMeetingFragment;
     private LiveIndexFragment mLiveIndexFragment;
     private MineFragment mMineFragment;
 
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             mIndexFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABORDERSTAG);
-            mMeetingFragment = (MeetingFragment2) fragmentManager.findFragmentByTag(TABMERCHANDISE);
+            mMeetingFragment = (MeetingFragment3) fragmentManager.findFragmentByTag(TABMERCHANDISE);
             mLiveIndexFragment = (LiveIndexFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
             mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
         }
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements
                 tabMerchandiseImg.setImageResource(R.mipmap.tab2_b);
                 tabMerchandiseTitle.setTextColor(activeColorRecourse);
                 if (mMeetingFragment == null) {
-                    mMeetingFragment = new MeetingFragment2();
+                    mMeetingFragment = new MeetingFragment3();
                     fragmentTransaction.add(R.id.container, mMeetingFragment, TABMERCHANDISE);
                 } else {
                     fragmentTransaction.show(mMeetingFragment);

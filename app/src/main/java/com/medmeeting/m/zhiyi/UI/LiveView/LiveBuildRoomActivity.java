@@ -15,8 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -95,38 +93,38 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         toolBar();
         initView();
 
-        //第一次创建直播间，弹出直播间协议弹窗
-        if (getIntent().getStringExtra("times").equals("0") || getIntent().getStringExtra("times").equals("")) {
-            View codeView = LayoutInflater.from(this).inflate(R.layout.popupwindow_live_agreement, null);
-            PopupWindow codePopupwindow = new PopupWindow(codeView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-
-            TextView confirmTv = (TextView) codeView.findViewById(R.id.confirm);
-            confirmTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    codePopupwindow.dismiss();
-                }
-            });
-            TextView cancelTv = (TextView) codeView.findViewById(R.id.cancel);
-            cancelTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    codePopupwindow.dismiss();
-                    finish();
-                }
-            });
-            TextView agreementTv = (TextView) codeView.findViewById(R.id.blue);
-            cancelTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                }
-            });
-
-            codePopupwindow.setOutsideTouchable(true);
-            ColorDrawable dw = new ColorDrawable(0x000ff000);
-            codePopupwindow.setBackgroundDrawable(dw);
-            codePopupwindow.showAtLocation(codeView, Gravity.BOTTOM, 0, 0);
-        }
+//        //第一次创建直播间，弹出直播间协议弹窗
+//        if (getIntent().getStringExtra("times").equals("0") || getIntent().getStringExtra("times").equals("")) {
+//            View codeView = LayoutInflater.from(this).inflate(R.layout.popupwindow_live_agreement, null);
+//            PopupWindow codePopupwindow = new PopupWindow(codeView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+//
+//            TextView confirmTv = (TextView) codeView.findViewById(R.id.confirm);
+//            confirmTv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    codePopupwindow.dismiss();
+//                }
+//            });
+//            TextView cancelTv = (TextView) codeView.findViewById(R.id.cancel);
+//            cancelTv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    codePopupwindow.dismiss();
+//                    finish();
+//                }
+//            });
+//            TextView agreementTv = (TextView) codeView.findViewById(R.id.blue);
+//            cancelTv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                }
+//            });
+//
+//            codePopupwindow.setOutsideTouchable(true);
+//            ColorDrawable dw = new ColorDrawable(0x000ff000);
+//            codePopupwindow.setBackgroundDrawable(dw);
+//            codePopupwindow.showAtLocation(codeView, Gravity.BOTTOM, 0, 0);
+//        }
     }
 
     private void toolBar() {

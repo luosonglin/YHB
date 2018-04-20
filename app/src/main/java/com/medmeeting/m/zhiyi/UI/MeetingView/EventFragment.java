@@ -35,14 +35,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import rx.Observer;
-
-import static java.lang.Thread.sleep;
 
 /**
  * @author NapoleonRohaha_Songlin
@@ -235,7 +231,7 @@ public class EventFragment extends Fragment implements SpringView.OnFreshListene
                 sv.onFinishFreshAndLoad();
 
 
-                new Timer().schedule(new TimerTask() {
+                /*new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
 
@@ -250,7 +246,10 @@ public class EventFragment extends Fragment implements SpringView.OnFreshListene
                             });
                         }
                     }
-                },1102);
+                },1102);*/
+                loadingView.hideLoading();
+                mRecyclerView.setVisibility(View.VISIBLE);
+
             }
         }, map);
     }
