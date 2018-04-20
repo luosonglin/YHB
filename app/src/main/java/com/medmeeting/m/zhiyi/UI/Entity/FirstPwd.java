@@ -9,21 +9,41 @@ package com.medmeeting.m.zhiyi.UI.Entity;
  */
 public class FirstPwd {
 
-    public FirstPwd(String pwd) {
-        this.pwd = pwd;
+    public FirstPwd(String password) {
+        this.password = password;
     }
 
     /**
-     * pwd : 123
+     * password : 123
      */
 
-    private String pwd;
+    private String password;
 
-    public String getPwd() {
-        return pwd;
+
+    private String inviteNumber;
+    private String platformType="android";
+
+    public String getInviteNumber() {
+        return inviteNumber;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setInviteNumber(String inviteNumber) {
+        this.inviteNumber = inviteNumber;
+    }
+
+    public String getPlatformType() {
+        return platformType;
+    }
+
+    public void setPlatformType(String platformType) {
+        this.platformType = platformType;
+    }
+
+    public String getPwd() {
+        return password;
+    }
+
+    public void setPwd(String password) {
+        this.password = password;
     }
 }

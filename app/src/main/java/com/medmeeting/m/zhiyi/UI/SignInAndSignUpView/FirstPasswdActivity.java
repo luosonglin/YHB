@@ -30,6 +30,8 @@ public class FirstPasswdActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.password)
     EditText password;
+    @BindView(R.id.inviteNumber)
+    EditText inviteNumber;
     @BindView(R.id.confirm)
     TextView confirm;
 
@@ -92,6 +94,8 @@ public class FirstPasswdActivity extends AppCompatActivity {
             ToastUtils.show(FirstPasswdActivity.this, "密码不能为空");
             return;
         }
+        FirstPwd firstPwd = new FirstPwd(password.getText().toString());
+        firstPwd.setInviteNumber(inviteNumber.getText().toString().trim());
         HttpData.getInstance().HttpDatafirstPwd(new Observer<HttpResult3>() {
             @Override
             public void onCompleted() {
@@ -111,7 +115,7 @@ public class FirstPasswdActivity extends AppCompatActivity {
                 }
                 startActivity(new Intent(FirstPasswdActivity.this, BindSubject_v2Activity.class));
             }
-        }, new FirstPwd(password.getText().toString()));
+        }, firstPwd);
 
     }
 }
