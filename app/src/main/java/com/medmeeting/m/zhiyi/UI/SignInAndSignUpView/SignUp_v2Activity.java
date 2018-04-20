@@ -75,6 +75,8 @@ public class SignUp_v2Activity extends AppCompatActivity {
     EditText password;
     @BindView(R.id.repassword)
     EditText repassword;
+    @BindView(R.id.inviteNumber)
+    EditText inviteNumber;
     @BindView(R.id.agree)
     CheckBox agree;
     @BindView(R.id.agreement)
@@ -165,6 +167,7 @@ public class SignUp_v2Activity extends AppCompatActivity {
                 userRegEntity.setPhone(phone.getText().toString().trim());
                 userRegEntity.setCode(code.getText().toString().trim());
                 userRegEntity.setPassword(password.getText().toString().trim());
+                userRegEntity.setInviteNumber(inviteNumber.getText().toString().trim());
                 HttpData.getInstance().HttpDataFastRignUp(new Observer<HttpResult3<Object, AccessToken>>() {
                     @Override
                     public void onCompleted() {

@@ -20,6 +20,25 @@ public class UserRegEntity {
     private String password;
     private String phone;
 
+    private String inviteNumber;
+    private String platformType="android";
+
+    public String getInviteNumber() {
+        return inviteNumber;
+    }
+
+    public void setInviteNumber(String inviteNumber) {
+        this.inviteNumber = inviteNumber;
+    }
+
+    public String getPlatformType() {
+        return platformType;
+    }
+
+    public void setPlatformType(String platformType) {
+        this.platformType = platformType;
+    }
+
     public String getCode() {
         return code;
     }
