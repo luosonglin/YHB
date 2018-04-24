@@ -253,12 +253,9 @@ public class RxShineButton extends RxPorterShapeImageView {
         shakeAnimator.setDuration(500);
         shakeAnimator.setStartDelay(180);
         invalidate();
-        shakeAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                setScaleX((float) valueAnimator.getAnimatedValue());
-                setScaleY((float) valueAnimator.getAnimatedValue());
-            }
+        shakeAnimator.addUpdateListener(valueAnimator -> {
+            setScaleX((float) valueAnimator.getAnimatedValue());
+            setScaleY((float) valueAnimator.getAnimatedValue());
         });
         shakeAnimator.addListener(new Animator.AnimatorListener() {
             @Override

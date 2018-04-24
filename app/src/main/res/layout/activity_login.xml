@@ -8,8 +8,8 @@
         android:id="@+id/login_background_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="-50dp"
-        android:layout_marginRight="-300dp"
+        android:layout_marginStart="-50dp"
+        android:layout_marginEnd="-300dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/login_background"
         tools:ignore="ContentDescription" />
@@ -43,6 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|top"
+                    android:layout_marginTop="10dp"
                     android:padding="10dp"
                     android:text="切换密码登录"
                     android:textColor="@color/grey"
@@ -52,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
-                    android:layout_marginTop="70dp"
+                    android:layout_marginTop="60dp"
                     android:text=" 医会宝 "
                     android:textColor="@color/deepskyblue"
                     android:textSize="40sp" />
@@ -60,7 +61,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
                     android:layout_marginTop="10dp"
                     android:text="登录"
                     android:textColor="@color/black"
@@ -71,7 +72,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
                     android:layout_marginTop="10dp"
                     android:text="请使用手机号和验证码\n进行登录"
                     android:textColor="@color/black"
@@ -88,7 +89,8 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     card_view:cardBackgroundColor="@android:color/white"
                     card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="14dp">
+                    card_view:cardElevation="14dp"
+                    android:focusable="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -127,14 +129,67 @@
                             android:background="@color/grey" />
 
                         <RelativeLayout
+                            android:id="@+id/tx_rlyt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_marginRight="90dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginEnd="90dp"
+                                android:focusable="true"
+                                android:focusableInTouchMode="false"
+                                card_view:hintEnabled="false">
+
+                                <EditText
+                                    android:id="@+id/tx_code"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="47dp"
+                                    android:background="@null"
+                                    android:hint="请输入图形验证码"
+                                    android:imeActionId="@+id/login"
+                                    android:imeActionLabel="Sign in"
+                                    android:imeOptions="actionUnspecified"
+                                    android:maxLines="1"
+                                    android:paddingLeft="28dp"
+                                    android:paddingRight="28dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black"
+                                    android:textColorHighlight="@color/grey"
+                                    android:textColorHint="@color/grey"
+                                    android:textColorLink="@color/grey"
+                                    android:textSize="16sp" />
+                            </android.support.design.widget.TextInputLayout>
+
+                            <ImageView
+                                android:id="@+id/get_tx_code_textview"
+                                android:layout_width="80dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/textview_radius_blue"
+                                android:gravity="center"
+                                android:scaleType="fitXY"
+                                android:contentDescription="TODO" />
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/grey" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginEnd="90dp"
                                 android:focusable="true"
                                 android:focusableInTouchMode="false"
                                 card_view:hintEnabled="false">
@@ -144,8 +199,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="47dp"
                                     android:background="@null"
-                                    android:hint="请输入验证码"
-                                    android:imeActionId="@+id/login"
+                                    android:hint="请输入短信验证码"
+                                    android:imeActionId="@+id/login_code"
                                     android:imeActionLabel="Sign in"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="number"
@@ -165,10 +220,10 @@
                                 android:id="@+id/get_code_textview"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
-                                android:layout_marginLeft="4dp"
-                                android:layout_marginRight="8dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginEnd="8dp"
                                 android:background="@drawable/textview_radius_blue"
                                 android:gravity="center"
                                 android:text="获取验证码"
@@ -183,7 +238,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginRight="28dp"
+                    android:layout_marginEnd="28dp"
                     android:layout_marginTop="14dp"
                     android:text=""
                     android:textColor="@color/grey"
@@ -200,7 +255,8 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     card_view:cardBackgroundColor="@android:color/white"
                     card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="4dp">
+                    card_view:cardElevation="4dp"
+                    android:focusable="true">
 
                     <Button
                         android:id="@+id/phone_sign_in_button"
@@ -217,6 +273,7 @@
         </ScrollView>
 
         <TextView
+            android:id="@+id/agreement_tv"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"

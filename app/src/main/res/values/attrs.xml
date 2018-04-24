@@ -47,4 +47,60 @@
         <attr name="siShape" format="integer|reference"/>
     </declare-styleable>
 
+    <declare-styleable name="ColorTrackView">
+        <attr name="ctvText" format="string"/>
+        <attr name="ctvText_size" format="dimension"/>
+        <attr name="ctvText_origin_color" format="color"/>
+        <attr name="ctvText_change_color" format="color"/>
+        <attr name="ctvProgress" format="float"/>
+        <attr name="ctvDirection" format="integer"/>
+    </declare-styleable>
+
+    <string-array name="home_title">
+        <item>全部</item>
+        <item>年会</item>
+        <item>论坛</item>
+        <item>峰会</item>
+        <item>交流会</item>
+        <item>研讨会</item>
+        <item>专题会</item>
+        <item>培训班</item>
+        <item>学习班</item>
+        <item>取证班</item>
+        <item>研修班</item>
+        <item>展会</item>
+        <item>其他</item>
+
+        <item>旅游</item>
+        <item>历史</item>
+        <item>探索</item>
+        <item>美食</item>
+        <item>育儿</item>
+        <item>养生</item>
+        <item>故事</item>
+        <item>美文</item>
+    </string-array>
+    <string-array name="home_title_code">
+        <item>__all__</item>
+        <item>video</item>
+        <item>news_hot</item>
+        <item>news_society</item>
+        <item>news_entertainment</item>
+        <item>news_tech</item>
+        <item>news_car</item>
+        <item>news_sports</item>
+        <item>news_finance</item>
+        <item>news_military</item>
+        <item>news_world</item>
+        <item>news_fashion</item>
+        <item>news_game</item>
+        <item>news_travel</item>
+        <item>news_history</item>
+        <item>news_discovery</item>
+        <item>news_food</item>
+        <item>news_baby</item>
+        <item>news_regimen</item>
+        <item>news_story</item>
+        <item>news_essay</item>
+    </string-array>
 </resources>

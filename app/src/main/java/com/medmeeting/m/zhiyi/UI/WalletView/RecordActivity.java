@@ -27,16 +27,16 @@ import com.medmeeting.m.zhiyi.Widget.CircleProgressView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecordActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.webView)
+    @BindView(R.id.webView)
     WebView mWebView;
-    @Bind(R.id.circle_progress)
+    @BindView(R.id.circle_progress)
     CircleProgressView progressBar;
 
     private final Handler mHandler = new Handler();

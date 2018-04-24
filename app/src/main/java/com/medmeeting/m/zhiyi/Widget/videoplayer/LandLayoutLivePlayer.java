@@ -190,5 +190,4 @@ public class LandLayoutLivePlayer extends StandardGSYVideoPlayer {
         return heartLayout;
     }
 
-
 }

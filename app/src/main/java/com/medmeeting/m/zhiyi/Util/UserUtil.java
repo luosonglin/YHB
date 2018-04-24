@@ -1,5 +1,7 @@
 package com.medmeeting.m.zhiyi.Util;
 
+import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,14 +11,14 @@ import java.util.Date;
  */
 public class UserUtil {
     public static String times() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         String str = formatter.format(curDate);
         return str;
     }
 
     public static String times(long time) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date curDate = new Date(time);//获取当前时间
         String str = formatter.format(curDate);
         return str;
@@ -28,8 +30,8 @@ public class UserUtil {
     public static String timedata(String time) {
         //2015/11/6 10:05:52
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat format_info = new SimpleDateFormat("MM-dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format_info = new SimpleDateFormat("MM-dd");
         Date date = null;
         try {
             date = format.parse(time);

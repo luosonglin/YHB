@@ -1,19 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    android:layout_marginBottom="12dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
     android:background="@color/white">
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
-        android:src="@mipmap/haha" />
+        android:src="@mipmap/haha"
+        android:contentDescription="TODO" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +39,7 @@
                 android:layout_alignParentLeft="true"
                 android:text="罗大大"
                 android:textColor="@color/grey"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/time"
@@ -47,16 +48,16 @@
                 android:layout_alignParentRight="true"
                 android:text="2017-09-15 13:04"
                 android:textColor="@color/grey"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <TextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hahahaha"
+            android:text=""
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
 </RelativeLayout>

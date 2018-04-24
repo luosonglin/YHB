@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
     android:background="@color/white"
     android:orientation="horizontal">
 
@@ -12,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/live_item_shape"
+        android:layout_marginLeft="10dp"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="2dp"
@@ -129,9 +129,9 @@
                 android:layout_marginTop="2dp"
                 android:ellipsize="marquee"
                 android:gravity="right"
-                android:lines="1"
                 android:text="haha"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:singleLine="true" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -140,6 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
+        android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:orientation="vertical">
 
@@ -160,8 +161,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/name">
-
             <TextView
+                android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -169,10 +170,10 @@
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
                 android:ellipsize="marquee"
-                android:lines="1"
                 android:paddingLeft="2dp"
                 android:text="☆ 123"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/time"
@@ -183,10 +184,10 @@
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp"
                 android:ellipsize="marquee"
-                android:lines="1"
                 android:paddingLeft="2dp"
                 android:text="2017-04-08"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:singleLine="true" />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

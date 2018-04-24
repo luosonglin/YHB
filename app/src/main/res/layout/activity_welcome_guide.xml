@@ -43,7 +43,8 @@
             android:src="@drawable/dot_selector"
             android:scaleType="fitXY"
             android:layout_margin="10dp"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:focusable="true" />
 
         <ImageView
             android:layout_width="8dp"
@@ -53,7 +54,8 @@
             android:src="@drawable/dot_selector"
             android:scaleType="fitXY"
             android:layout_margin="10dp"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:focusable="true" />
 
         <ImageView
             android:layout_width="8dp"
@@ -63,7 +65,18 @@
             android:src="@drawable/dot_selector"
             android:scaleType="fitXY"
             android:layout_margin="10dp"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:focusable="true" />
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:src="@drawable/dot_selector"
+            android:scaleType="fitXY"
+            android:layout_margin="10dp"
+            tools:ignore="ContentDescription"
+            android:focusable="true" />
     </LinearLayout>
 
 </RelativeLayout>

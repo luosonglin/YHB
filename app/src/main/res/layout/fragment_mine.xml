@@ -1,15 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.medmeeting.m.zhiyi.UI.MineView.MineFragment">
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:scrollbars="none">
         <!--android:scrollbars= none 隐藏滚动条-->
 
@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:layout_gravity="center"
-                    android:contentDescription=""
+                    android:contentDescription="TODO"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/self_bg" />
 
@@ -44,28 +44,15 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
+                        android:contentDescription="TODO"
                         android:src="@mipmap/my_setting_icon" />
                 </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/identity"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="50dp"
-                    android:background="#a0e1c99d"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="40dp"
-                    android:paddingRight="0dp"
-                    android:text="你还没有实名认证，点击前往认证 >>"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    android:visibility="invisible" />
             </FrameLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-130dp">
+                android:layout_marginTop="-140dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,59 +63,72 @@
                     android:background="@mipmap/self_bg2"
                     android:orientation="vertical">
 
+                    <ImageView
+                        android:id="@+id/modify_userinfo"
+                        android:layout_width="14dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="18dp"
+                        android:layout_marginTop="14dp"
+                        android:contentDescription="TODO"
+                        android:src="@mipmap/modify_userinfo"
+                        android:visibility="visible" />
+
                     <LinearLayout
                         android:id="@+id/doctor_llyt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="姓名"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="4dp">
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/hospital"
+                                android:id="@+id/name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_toLeftOf="@+id/line"
-                                android:text="科目类型科目类型"
-                                android:textColor="@color/grey"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/line"
-                                android:layout_width="10dp"
-                                android:layout_height="wrap_content"
+                                android:text="未登录"
                                 android:layout_centerHorizontal="true"
-                                android:gravity="center"
-                                android:text="  |  "
-                                android:textColor="@color/grey"
-                                android:textSize="12sp" />
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_toRightOf="@+id/line"
-                                android:text="职称职称"
+                                android:id="@+id/activate"
+                                android:layout_width="40dp"
+                                android:layout_height="18dp"
+                                android:background="@mipmap/identity_bg2"
+                                android:layout_toEndOf="@+id/name"
+                                android:layout_marginStart="6dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_gravity="center_vertical"
+                                android:text="未激活"
+                                android:gravity="center"
                                 android:textColor="@color/grey"
-                                android:textSize="12sp" />
-
+                                android:textSize="9sp"
+                                android:visibility="visible"/>
                         </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/authorize"
+                            android:layout_width="60dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="4dp"
+                            android:background="@mipmap/identity_bg"
+                            android:gravity="center"
+                            android:paddingBottom="2dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="2dp"
+                            android:text="去激活 >"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            android:visibility="visible"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -159,7 +159,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="关注"
+                                        android:text="@string/follow"
                                         android:textColor="@color/grey"
                                         android:textSize="12sp" />
                                 </LinearLayout>
@@ -187,7 +187,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="粉丝"
+                                        android:text="@string/follower"
                                         android:textColor="@color/grey"
                                         android:textSize="12sp" />
                                 </LinearLayout>
@@ -198,8 +198,9 @@
 
                 <RelativeLayout
                     android:id="@+id/user_flyt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/head_ic"
@@ -207,7 +208,7 @@
                         android:layout_height="66dp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/avator_white"
-                        android:src="@mipmap/hahaha" />
+                        android:src="@mipmap/avator_default" />
 
                     <ImageView
                         android:id="@+id/specialist"
@@ -217,7 +218,8 @@
                         android:layout_alignEnd="@+id/head_ic"
                         android:layout_alignRight="@+id/head_ic"
                         android:layout_gravity="center_vertical"
-                        android:src="@mipmap/specialis_yellow"
+                        android:src="@mipmap/yellow_v"
+                        android:visibility="invisible"
                         tools:ignore="ContentDescription" />
                 </RelativeLayout>
             </FrameLayout>
@@ -253,20 +255,21 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="我的参会"
-                            android:textColor="@color/black" />
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/my_meeting"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/wodezhibo"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_weight="1"
                     android:background="@color/white">
 
                     <LinearLayout
+                        android:id="@+id/my_live"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -283,20 +286,21 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="我的直播"
-                            android:textColor="@color/black" />
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/my_live"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/wodeluxiang"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_weight="1"
                     android:background="@color/white">
 
                     <LinearLayout
+                        android:id="@+id/my_video"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -313,9 +317,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="我的视频"
-                            android:textColor="@color/black" />
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/my_video"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
@@ -349,9 +354,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="我的收藏"
-                            android:textColor="@color/black" />
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/my_collect"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -379,9 +385,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="我的订单"
-                            android:textColor="@color/black" />
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/my_order"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -409,9 +416,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="我的钱包"
-                            android:textColor="@color/black" />
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/my_wallet"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
@@ -448,7 +456,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="我的付费直播"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
@@ -481,7 +490,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:text="我的简历"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -514,7 +524,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:text="我的文档"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -546,7 +557,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="20dp"
                         android:text="我的学分"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </RelativeLayout>
 
@@ -560,4 +572,4 @@
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</RelativeLayout>

@@ -41,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:padding="19dp"
-            android:src="@mipmap/search_icon" />
+            android:src="@mipmap/search_icon"
+            android:contentDescription="TODO" />
     </RelativeLayout>
 
     <View

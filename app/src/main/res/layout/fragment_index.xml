@@ -5,55 +5,111 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment">
+    tools:context="com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="?attr/actionBarSize"-->
-    <!--android:background="@color/colorPrimary"-->
-    <!--android:orientation="horizontal">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/location"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerInParent="true"-->
-    <!--android:layout_marginLeft="12dp"-->
-    <!--android:text="医会宝"-->
-    <!--android:textColor="@color/colorAccent"-->
-    <!--android:textSize="16sp" />-->
-
-    <!--</RelativeLayout>-->
-
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="1px"-->
-    <!--android:background="#cccbcc" />-->
-
-    <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->
-    <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity
-        android:id="@+id/progress"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/message_icon"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/message"
+            android:padding="10dp"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="TODO" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="12dp"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@mipmap/search_icon"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:contentDescription="TODO" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccbcc" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/white"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/new_category_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="7.0dip"
+            android:layout_marginTop="6.0dip"
+            android:layout_toLeftOf="@+id/line"
+            android:src="@drawable/ic_new_category_tip_dark"
+            android:visibility="gone"
+            android:contentDescription="TODO" />
+
+        <com.medmeeting.m.zhiyi.Widget.colortrackview.ColorTrackTabLayout
+            android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <!--SpringView下拉刷新-->
-            <com.xiaochao.lcrapiddeveloplibrary.widget.SpringView
-                android:id="@+id/springview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+            android:layout_toLeftOf="@+id/line"
+            android:background="@color/white"
+            app:tabIndicatorColor="@color/deepskyblue"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/deepskyblue"
+            app:tabTextAppearance="@style/TextAppearanceBig"
+            app:tabTextColor="#ff222222" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white" />
-            </com.xiaochao.lcrapiddeveloplibrary.widget.SpringView>
-        </LinearLayout>
-    </com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity>
+        <View
+            android:id="@+id/line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@+id/icon_category"
+            android:background="@color/deepskyblue" />
+
+        <ImageView
+            android:id="@+id/icon_category"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/add_channel"
+            android:contentDescription="TODO" />
+        <!--android:background="@mipmap/shadow_add_titlebar_new"-->
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ffe8e8e8" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

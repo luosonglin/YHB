@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black">
@@ -39,7 +38,8 @@
         android:layout_height="24dp"
         android:layout_marginLeft="6dp"
         android:layout_marginTop="6dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
     <moe.codeest.enviews.ENDownloadView
         android:id="@+id/loading"
@@ -58,7 +58,8 @@
         android:paddingTop="10dp"
         android:scaleType="centerInside"
         android:src="@drawable/video_small_close"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
     <ImageView
         android:id="@+id/lock_screen"
@@ -69,17 +70,19 @@
         android:layout_marginRight="50dp"
         android:scaleType="centerInside"
         android:src="@drawable/unlock"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:contentDescription="TODO" />
 
     <LinearLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="24dp"
         android:layout_toEndOf="@+id/back_tiny"
         android:layout_toRightOf="@+id/back_tiny"
-        android:background="@drawable/video_title_bg"
         android:gravity="center_vertical">
+        <!--android:background="@drawable/video_title_bg"-->
 
         <ImageView
             android:id="@+id/back"
@@ -87,7 +90,8 @@
             android:layout_height="48dp"
             android:paddingLeft="10dp"
             android:scaleType="centerInside"
-            android:src="@drawable/video_back" />
+            android:src="@drawable/video_back"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/title"
@@ -105,9 +109,10 @@
             android:padding="14dp"
             android:paddingRight="10dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/video_share_land" />
+            android:src="@mipmap/video_share_land"
+            android:visibility="gone"
+            android:contentDescription="TODO" />
     </LinearLayout>
-
 
     <RelativeLayout
         android:id="@+id/preview_layout"

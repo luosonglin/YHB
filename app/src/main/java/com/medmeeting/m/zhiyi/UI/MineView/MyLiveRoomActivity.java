@@ -52,10 +52,30 @@ public class MyLiveRoomActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         toolbar.setNavigationOnClickListener(view -> finish());
         addTv = (TextView) findViewById(R.id.add);
-        addTv.setOnClickListener(view -> {
-            startActivity(new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class));
-            finish();
-        });
+        addTv.setOnClickListener(view ->
+                HttpData.getInstance().HttpDataGetLiveRoom(new Observer<HttpResult3<LiveRoomDto, Object>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<LiveRoomDto, Object> data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(MyLiveRoomActivity.this, data.getMsg());
+                            return;
+                        }
+                        Intent intent = new Intent(MyLiveRoomActivity.this, LiveBuildRoomActivity.class);
+                        intent.putExtra("times", data.getData().size() + "");    //看创建过几个直播间，如果没创建过，则第一次创建要弹出直播间协议弹窗
+                        startActivity(intent);
+                        finish();
+                    }
+                }));
     }
 
     private void initView() {
@@ -121,6 +141,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                                     public void onNext(HttpResult3 httpResult3) {
                                         if (!httpResult3.getStatus().equals("success")) {
                                             ToastUtils.show(MyLiveRoomActivity.this, httpResult3.getMsg());
+                                            return;
                                         }
                                         adapter.removeItem(position);
                                         dialogInterface.dismiss();
@@ -136,6 +157,7 @@ public class MyLiveRoomActivity extends AppCompatActivity {
                         intent.putExtra("coverPhoto", mList.get(position).getCoverPhoto());
                         intent.putExtra("labelIds", mList.get(position).getLabelIds());
                         startActivity(intent);
+                        finish();
                     }
                 });
             }

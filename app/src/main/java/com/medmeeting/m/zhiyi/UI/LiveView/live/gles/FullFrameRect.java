@@ -1,8 +1,5 @@
 package com.medmeeting.m.zhiyi.UI.LiveView.live.gles;
 
-/**
- * Created by jerikc on 16/2/23.
- */
 import android.opengl.Matrix;
 
 import com.medmeeting.m.zhiyi.UI.LiveView.live.filter.IFilter;

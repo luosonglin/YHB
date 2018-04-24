@@ -89,21 +89,15 @@ public class ItemRemoveRecyclerView extends RecyclerView {
                     mUpdate = (RelativeLayout) mItemLayout.findViewById(R.id.item_update);
                     mDelete = (RelativeLayout) mItemLayout.findViewById(R.id.item_delete);
                     mMaxLength = (mDelete.getWidth() + 20) * 2;//20是删除按钮与屏幕的边距
-                    mUpdate.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mListener.onUpdateClick(mPosition);
-                            mItemLayout.scrollTo(0, 0);
-                            mDeleteBtnState = 0;
-                        }
+                    mUpdate.setOnClickListener(view1 -> {
+                        mListener.onUpdateClick(mPosition);
+                        mItemLayout.scrollTo(0, 0);
+                        mDeleteBtnState = 0;
                     });
-                    mDelete.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mListener.onDeleteClick(mPosition);
-                            mItemLayout.scrollTo(0, 0);
-                            mDeleteBtnState = 0;
-                        }
+                    mDelete.setOnClickListener(v -> {
+                        mListener.onDeleteClick(mPosition);
+                        mItemLayout.scrollTo(0, 0);
+                        mDeleteBtnState = 0;
                     });
                 } else if (mDeleteBtnState == 3) {
                     mScroller.startScroll(mItemLayout.getScrollX(), 0, -mMaxLength, 0, 200);

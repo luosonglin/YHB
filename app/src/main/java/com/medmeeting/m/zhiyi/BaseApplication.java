@@ -8,6 +8,7 @@ import android.util.Log;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.OtherVIew.WelcomeActivity;
+import com.medmeeting.m.zhiyi.Util.SharedPreferencesMgr;
 import com.qiniu.pili.droid.streaming.StreamingEnv;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -16,6 +17,9 @@ import com.xiaochao.lcrapiddeveloplibrary.Exception.core.Recovery;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
+import cn.jpush.android.api.JPushInterface;
+
 //import com.vondear.rxtools.RxUtils;
 
 public class BaseApplication extends MultiDexApplication {//Application {
@@ -23,9 +27,9 @@ public class BaseApplication extends MultiDexApplication {//Application {
     private static final String TAG = "BaseApplication";
     private static Context context;
     //记录当前栈里所有activity
-    private List<Activity> activities = new ArrayList<Activity>();
+    private List<Activity> activities = new ArrayList<>();
     //记录需要一次性关闭的页面
-    private List<Activity> activitys = new ArrayList<Activity>();
+    private List<Activity> activitys = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -39,6 +43,8 @@ public class BaseApplication extends MultiDexApplication {//Application {
 
         //工具类
 //        RxUtils.init(this);
+
+        SharedPreferencesMgr.init(this, "medmeeting");
 
         //初始化异常管理工具
         Recovery.getInstance()
@@ -59,6 +65,34 @@ public class BaseApplication extends MultiDexApplication {//Application {
         //#define RIGHTRONGCLOUD_IM_APPSECRET @"xVOEBe44fhL"//融云正式
         context = this;
         LiveKit.init(context, String.valueOf("qd46yzrfq3lwf"));//FakeServer.getAppKey()
+
+
+        //极光推送
+        JPushInterface.setDebugMode(true);//该接口需在init接口之前调用，避免出现部分日志没打印的情况
+        JPushInterface.init(this);
+
+
+//        JPushInterface.setAlias(this, "luosonglin", new TagAliasCallback() {
+//            @Override
+//            public void gotResult(int i, String s, Set<String> set) {
+//                Log.e("188", "极光推送绑定用户成功" + i + s);
+//            }
+//        });
+
+
+        //极光统计
+        JAnalyticsInterface.init(this);
+        //设置调试模式：参数为 true 表示打开调试模式，可看到 sdk 的日志
+        JAnalyticsInterface.setDebugMode(true);
+        //开启crashlog日志上报
+        JAnalyticsInterface.initCrashHandler(this);
+
+//        //获取剪贴板管理器：
+//        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+//        // 创建普通字符型ClipData
+//        ClipData mClipData = ClipData.newPlainText("Label", "快来领取支付宝跨年红包！1月1日起还有机会额外获得专享红包哦！复制此消息，打开最新版支付宝就能领取！Jc5cPd92OP");
+//        // 将ClipData内容放到系统剪贴板里。
+//        cm.setPrimaryClip(mClipData);
     }
 
     public static Context getContext() {
@@ -141,20 +175,13 @@ public class BaseApplication extends MultiDexApplication {//Application {
 
     //各个平台的配置，建议放在全局Application或者程序入口
     {
-        PlatformConfig.setWeixin(Constant.WeChat_AppID, "390b7bcd6e6e4f82441cebcdebccb223");
+        PlatformConfig.setWeixin(Constant.WeChat_AppID, Constant.WeChat_AppSecret);//"390b7bcd6e6e4f82441cebcdebccb223"
 //        PlatformConfig.setWeixin("wx5b882abda749656d", "411f579410f6b81b875b2c2fbaa533f0");
 //        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setQQZone("1105918131", "uNzl6dleoc80UQle");
         PlatformConfig.setSinaWeibo("188948618", "416592ff15fdad47403ad89e894d5fd4", "http://sns.whalecloud.com");
         PlatformConfig.setAlipay("2015111700822536");
     }
-    /**
-     * 应用签名：
-     * 2d1f5af844ab43da48e5ec917713e2bc
-     */
-
-
-
 
 }
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    tools:context=".UI.VideoView.LiveAndVideoRoomActivity">
+    tools:context=".UI.VideoView.LiveRedVipActivity">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -50,7 +50,8 @@
                             android:layout_width="65dp"
                             android:layout_height="65dp"
                             android:layout_gravity="center"
-                            android:scaleType="fitXY"/>
+                            android:scaleType="fitXY"
+                            android:contentDescription="TODO" />
                         <TextView
                             android:id="@+id/title"
                             android:layout_width="match_parent"
@@ -78,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
-                android:layout_marginLeft="18dp"
+                android:layout_marginStart="18dp"
                 android:text="TA的直播间"
                 android:textColor="@color/grey"
                 android:textSize="12sp"/>
@@ -88,15 +89,15 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginLeft="18dp"
+                android:layout_marginStart="18dp"
                 android:background="@color/grey1"/>
             <!--显示头部滑块-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="6dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginEnd="6dp"
                 android:background="@color/white">
 
                 <android.support.v7.widget.RecyclerView

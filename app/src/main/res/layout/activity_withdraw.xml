@@ -22,7 +22,8 @@
             android:layout_height="50dp"
             android:background="@color/white"
             android:elevation="2dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            tools:targetApi="lollipop">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -69,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
+                    android:layout_marginStart="14dp"
                     android:text="收款方式"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -78,7 +79,7 @@
                     android:id="@+id/extractType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
@@ -90,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginLeft="14dp"
+                android:layout_marginStart="14dp"
                 android:gravity="center_vertical"
                 android:text="提现金额"
                 android:textColor="@color/black"
@@ -99,14 +100,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginLeft="14dp"
+                android:layout_marginStart="14dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/a1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:text="¥"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
@@ -115,12 +116,12 @@
                     android:id="@+id/amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@+id/a1"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/a1"
                     android:background="@drawable/edittext_delete_line"
                     android:hint="可提现- -元"
                     android:maxLines="1"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:minWidth="120dp"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
@@ -129,9 +130,9 @@
                     android:id="@+id/all_extract_action"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
+                    android:layout_marginEnd="12dp"
                     android:gravity="center_vertical"
                     android:text="全部提现"
                     android:textColor="@color/deepskyblue"
@@ -141,8 +142,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="12dp"
                 android:background="@color/grey1" />
 
             <RelativeLayout
@@ -155,8 +156,8 @@
                     android:id="@+id/actual_arrival"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="14dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="14dp"
                     android:maxLines="1"
                     android:maxWidth="200dp"
                     android:text="实际到账： - -元"
@@ -167,8 +168,8 @@
                     android:id="@+id/tax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="12dp"
                     android:maxLines="1"
                     android:maxWidth="120dp"
                     android:text="扣税： - -元"
@@ -201,7 +202,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="14dp"
+                android:layout_marginStart="14dp"
                 android:text="提款密码："
                 android:textSize="14sp"
                 android:textColor="@color/black"/>
@@ -210,13 +211,14 @@
                 android:id="@+id/extractPassword"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:background="@drawable/edittext_delete_line"
                 android:layout_gravity="center_vertical"
                 android:inputType="numberPassword"
                 android:minWidth="120dp"
                 android:textColor="@color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:ignore="LabelFor" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -224,7 +226,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
         android:text="温馨提示：提交后预计3-7个工作日到账"
         android:textColor="@color/orange"
         android:textSize="14sp" />
@@ -240,7 +242,8 @@
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="22dp"
-        card_view:cardElevation="2dp">
+        card_view:cardElevation="2dp"
+        android:focusable="true">
 
         <Button
             android:id="@+id/confirm"

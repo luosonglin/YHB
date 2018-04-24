@@ -3,9 +3,10 @@ package com.medmeeting.m.zhiyi.UI.Adapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
@@ -29,16 +30,19 @@ public class VideoCommandAdapter extends BaseQuickAdapter<VideoCommentUserEntity
         Glide.with(mContext)
                 .load(item.getUserPic())
                 .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .placeholder(R.mipmap.avator_default)
                 .transform(new GlideCircleTransform(mContext))
                 .into((ImageView) helper.getView(R.id.avatar));
 
-        if (!item.getName().equals("")) {
-            helper.setText(R.id.name, item.getName());
+        if (item.getName() != null) {
+            if (!item.getName().equals("")) {
+                helper.setText(R.id.name, item.getName());
+            }
         } else {
             helper.setText(R.id.name, item.getNickName());
         }
-        helper.setText(R.id.time, DateUtil.formatDate(item.getCreateTime(), DateUtil.TYPE_06));
-        helper.setText(R.id.content,item.getContent());
+        helper.setText(R.id.time, DateUtils.formatDate(item.getCreateTime(), DateUtils.TYPE_06));
+        helper.setText(R.id.content, item.getContent());
     }
 }

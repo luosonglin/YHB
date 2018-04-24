@@ -23,8 +23,8 @@ import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto2;
-import com.medmeeting.m.zhiyi.UI.VideoView.LiveAndVideoRoomActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
@@ -129,8 +129,9 @@ public class LiveIndexTabFragment1 extends Fragment
 
                     Glide.with(getActivity())
                             .load(firstData.getCoverPhoto())
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
+                            .dontAnimate()
                             .placeholder(R.mipmap.live_background)
                             .into(mBackgroundTv);
                     switch (firstData.getLiveStatus()) {
@@ -161,14 +162,15 @@ public class LiveIndexTabFragment1 extends Fragment
                     }
                     Glide.with(getActivity())
                             .load(firstData.getUserPic())
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
+                            .dontAnimate()
                             .error(R.mipmap.avator_default)
                             .transform(new GlideCircleTransform(getActivity()))
                             .into(mAvatarIv);
                     mTitleTv.setText(firstData.getTitle());
                     mUserTv.setText(firstData.getAuthorName() + " | " + firstData.getAuthorTitle());
-                    mTimeTv.setText(DateUtil.formatDate(firstData.getStartTime(), DateUtil.TYPE_06));
+                    mTimeTv.setText(DateUtils.formatDate(firstData.getStartTime(), DateUtils.TYPE_06));
 
                     mBackgroundTv.setOnClickListener(view -> {
                         if (firstData.getUserId() == Data.getUserId()) {
@@ -180,7 +182,7 @@ public class LiveIndexTabFragment1 extends Fragment
                         }
                     });
                     mAvatarIv.setOnClickListener(view -> {
-                        Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+                        Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
                         intent.putExtra("userId", firstData.getUserId());
                         startActivity(intent);
                     });

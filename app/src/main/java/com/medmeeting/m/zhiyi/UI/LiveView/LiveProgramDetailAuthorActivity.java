@@ -22,7 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.zxing.activity.CaptureActivity;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -62,11 +64,16 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
 
     private static final String TAG = LiveProgramDetailAuthorActivity.class.getSimpleName();
     private Toolbar toolbar;
-    private TextView titleTv, name, title, programIdTv;
+    private TextView titleTv, name, title2, programIdTv;
     private ImageView backgroundIv, userPic;
     private Integer roomId = 0;
     private Integer programId;
     private TextView detailTv;
+
+    //分享用
+    private String title;
+    private String photo;
+    private String description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +86,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         backgroundIv = (ImageView) findViewById(R.id.img);
         userPic = (ImageView) findViewById(R.id.live_user_pic);
         name = (TextView) findViewById(R.id.name);
-        title = (TextView) findViewById(R.id.author_title);
+        title2 = (TextView) findViewById(R.id.author_title);
         detailTv = (TextView) findViewById(R.id.detail);
 
         toolBar();
@@ -190,15 +197,19 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 titleTv.setText(data.getEntity().getTitle());
                 programIdTv.setText("节目No." + data.getEntity().getId());
                 name.setText(data.getEntity().getAuthorName());
-                title.setText(data.getEntity().getAuthorTitle());
+                title2.setText(data.getEntity().getAuthorTitle());
                 detailTv.setText(data.getEntity().getDes());
                 Glide.with(LiveProgramDetailAuthorActivity.this)
                         .load(data.getEntity().getCoverPhoto())
                         .crossFade()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .into(backgroundIv);
                 Glide.with(LiveProgramDetailAuthorActivity.this)
                         .load(data.getEntity().getUserPic())
                         .crossFade()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .transform(new GlideCircleTransform(LiveProgramDetailAuthorActivity.this))
                         .placeholder(R.mipmap.avator_default)
                         .into(userPic);
@@ -212,6 +223,10 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                         data.getEntity().getTitle(),
                         data.getEntity().getCoverPhoto(),
                         data.getEntity().getDes());
+                title = data.getEntity().getTitle();
+                photo = data.getEntity().getCoverPhoto();
+                description = data.getEntity().getDes();
+
             }
         }, programId);
 
@@ -247,7 +262,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                     e.printStackTrace();
                 } finally {
                     Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
-                    startStreamingActivity(intent, data.getEntity().getPushUrl(), programId);
+                    startStreamingActivity(intent, data.getEntity().getPushUrl(), programId, title, photo, description);
                 }
             }
         }, programId));
@@ -307,7 +322,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + programId);
+                    UMWeb web = new UMWeb(Constant.Share_Live +programId);//"http://wap.medmeeting.com/#!/live/room/show/" +
                     web.setTitle(title);//标题
 //                        web.setThumb(new UMImage(LiveProgramDetailAuthorActivity.this, photo));  //缩略图
                     web.setDescription(description);//描述
@@ -410,7 +425,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 
-    private void startStreamingActivity(final Intent intent, String pushUrl1, final Integer programId) {
+    private void startStreamingActivity(final Intent intent, String pushUrl1, final Integer programId, final String title, final String photo, final String description) {
         if (!isPermissionOK()) {
             return;
         }
@@ -456,6 +471,10 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             }
             intent.putExtra(Config.EXTRA_KEY_PUB_URL, publishUrl);
             intent.putExtra("programId", programId);
+            intent.putExtra("title", title);
+            intent.putExtra("photo", photo);
+            intent.putExtra("description", description);
+
             startActivity(intent);
         }).start();
     }
@@ -528,20 +547,15 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     }
 
     void showToast(final String msg) {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(LiveProgramDetailAuthorActivity.this, msg, Toast.LENGTH_LONG).show();
-            }
-        });
+        this.runOnUiThread(() -> Toast.makeText(LiveProgramDetailAuthorActivity.this, msg, Toast.LENGTH_LONG).show());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private boolean checkPermission() {
         boolean ret = true;
 
-        List<String> permissionsNeeded = new ArrayList<String>();
-        final List<String> permissionsList = new ArrayList<String>();
+        List<String> permissionsNeeded = new ArrayList<>();
+        final List<String> permissionsList = new ArrayList<>();
         if (!addPermission(permissionsList, Manifest.permission.CAMERA)) {
             permissionsNeeded.add("CAMERA");
         }
@@ -561,13 +575,8 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             // Check for Rationale Option
             if (!shouldShowRequestPermissionRationale(permissionsList.get(0))) {
                 showMessageOKCancel(message,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
-                                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-                            }
-                        });
+                        (dialog, which) -> requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                                REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS));
             } else {
                 requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
                         REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);

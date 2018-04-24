@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView;
 
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.MVP.Listener.SampleListener;
 import com.medmeeting.m.zhiyi.R;
@@ -31,6 +33,7 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import java.util.Random;
 
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.ChatRoomInfo;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
 
@@ -41,7 +44,7 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 10/11/2017 7:47 AM
- * @describe TODO
+ * @describe 全屏直播的播放器
  * @email iluosonglin@gmail.com
  * @org Healife
  */
@@ -57,6 +60,7 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
     private ImageView btnHeart;
     private HeartLayout heartLayout;
     private Random random = new Random();
+    private TextView sumTv;
 
     private int programId;
 
@@ -65,19 +69,32 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
     private boolean isPlay;
     private boolean isPause;
     private OrientationUtils orientationUtils;
+    private int countIncrement;
+    private int countRatio;
 
     //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_player2);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         programId = getIntent().getExtras().getInt("programId");
         initChat(programId);
 
         detailPlayer = (LandLayoutLivePlayer) findViewById(R.id.detail_player);
-        initPlayer(getIntent().getStringExtra("url"), "","");
 
+        countIncrement = getIntent().getIntExtra("countIncrement", 0);
+        countRatio = getIntent().getIntExtra("countRatio", 1);
+        initPlayer(getIntent().getStringExtra("url"), "","", countIncrement, countRatio);
+
+    }
+
+    @Override
+    public void recreate() {
+        initChat(programId);
+        initPlayer(getIntent().getStringExtra("url"), "","", countIncrement, countRatio);
+        super.recreate();
     }
 
     private void initChat(Integer programId) {
@@ -91,45 +108,30 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
         btnGift = (ImageView) bottomPanel.getView().findViewById(R.id.btn_gift);
         btnHeart = (ImageView) bottomPanel.getView().findViewById(R.id.btn_heart);
         heartLayout = (HeartLayout) findViewById(R.id.heart_layout);
-        btnDan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (chatListView.getVisibility() == View.VISIBLE) {
-                    chatListView.setVisibility(View.GONE);
-                    btnDan.setImageResource(R.mipmap.icon_dan_close);
-                } else if (chatListView.getVisibility() == View.GONE) {
-                    chatListView.setVisibility(View.VISIBLE);
-                    btnDan.setImageResource(R.mipmap.icon_dan);
-                }
+        btnDan.setOnClickListener(view -> {
+            if (chatListView.getVisibility() == View.VISIBLE) {
+                chatListView.setVisibility(View.GONE);
+                btnDan.setImageResource(R.mipmap.icon_dan_close);
+            } else if (chatListView.getVisibility() == View.GONE) {
+                chatListView.setVisibility(View.VISIBLE);
+                btnDan.setImageResource(R.mipmap.icon_dan);
             }
         });
-        btnGift.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GiftMessage msg = new GiftMessage("2", "送您一个礼物");
-                LiveKit.sendMessage(msg);
-            }
+        btnGift.setOnClickListener(view -> {
+            GiftMessage msg = new GiftMessage("2", "送您一个礼物");
+            LiveKit.sendMessage(msg);
         });
-        btnHeart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                heartLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
-                        heartLayout.addHeart(rgb);
-                    }
-                });
-                GiftMessage msg = new GiftMessage("1", "点赞了");
-                LiveKit.sendMessage(msg);
-            }
+        btnHeart.setOnClickListener(view -> {
+            heartLayout.post(() -> {
+                int rgb = Color.rgb(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+                heartLayout.addHeart(rgb);
+            });
+            GiftMessage msg = new GiftMessage("1", "点赞了");
+            LiveKit.sendMessage(msg);
         });
-        bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
-            @Override
-            public void onSendClick(String text) {
-                final TextMessage content = TextMessage.obtain(text);
-                LiveKit.sendMessage(content);
-            }
+        bottomPanel.setInputPanelListener(text -> {
+            final TextMessage content = TextMessage.obtain(text);
+            LiveKit.sendMessage(content);
         });
 
 
@@ -186,7 +188,7 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
     /**
      * **********************以下为播放器**********
      */
-    private void initPlayer(String url, String photo, String title) {
+    private void initPlayer(String url, String photo, String title, int countIncrement, int countRatio) {
         //外部辅助的旋转，帮助全屏
         orientationUtils = new OrientationUtils(this, detailPlayer);
         //初始化不打开外部的旋转
@@ -250,13 +252,10 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
                             super.onClickStartIcon(url, objects);
                         }
                     })
-                    .setLockClickListener(new LockClickListener() {
-                        @Override
-                        public void onClick(View view, boolean lock) {
-                            if (orientationUtils != null) {
-                                //配合下方的onConfigurationChanged
-                                orientationUtils.setEnable(!lock);
-                            }
+                    .setLockClickListener((view, lock) -> {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
                         }
                     })
                     .build(detailPlayer);
@@ -294,13 +293,38 @@ public class LivePlayerActivity2 extends AppCompatActivity implements Handler.Ca
 
         detailPlayer.getFullscreenButton().setVisibility(View.GONE);
 
+
 //
 //        //直接横屏
 //        orientationUtils.resolveByClick();
 //
 //        //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
 //        detailPlayer.startWindowFullscreen(LivePlayerActivity2.this, true, true);
+
+        sumTv = (TextView) findViewById(R.id.sum);
+
+        mHandler2 = new Handler();
+        mHandler2.post(new Runnable() {
+            @Override
+            public void run() {
+                LiveKit.getChatRoomSum(programId + "", 500, new RongIMClient.ResultCallback<ChatRoomInfo>() {
+                    @Override
+                    public void onSuccess(ChatRoomInfo chatRoomInfo) {
+                        sumTv.setText("  " + (countIncrement + chatRoomInfo.getTotalMemberCount() * countRatio));
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                    }
+                });
+                mHandler2.postDelayed(this, 2000);
+            }
+        });
+
+        detailPlayer.getStartButton().performClick();
     }
+
+    private Handler mHandler2;
 
     @Override
     public void onBackPressed() {

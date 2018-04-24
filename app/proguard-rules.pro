@@ -144,3 +144,15 @@
 -keep class com.alipay.sdk.app.PayTask{ public *;}
 -keep class com.alipay.sdk.app.AuthTask{ public *;}
 -keep class android.net.SSLCertificateSocketFactory
+
+
+#极光推送
+-dontoptimize
+-dontpreverify
+
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }

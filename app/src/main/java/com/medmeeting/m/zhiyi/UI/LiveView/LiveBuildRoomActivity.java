@@ -15,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -32,43 +34,43 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
-import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
 import com.medmeeting.m.zhiyi.UI.MineView.MyLiveRoomActivity;
+import com.medmeeting.m.zhiyi.UI.OtherVIew.BrowserActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UploadManager;
 
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 
 public class LiveBuildRoomActivity extends AppCompatActivity {
 
-    @Bind(R.id.live_pic)
+    @BindView(R.id.live_pic)
     ImageView livePic;
-    @Bind(R.id.live_pic_tip_tv)
+    @BindView(R.id.live_pic_tip_tv)
     TextView livePicTipTv;
-    @Bind(R.id.live_pic_tip)
+    @BindView(R.id.live_pic_tip)
     LinearLayout livePicTip;
-    @Bind(R.id.theme)
+    @BindView(R.id.theme)
     EditText theme;
-    @Bind(R.id.classify_tv)
+    @BindView(R.id.classify_tv)
     TextView classifyTv;
-    @Bind(R.id.classify)
+    @BindView(R.id.classify)
     LinearLayout classify;
-    @Bind(R.id.introduction)
+    @BindView(R.id.introduction)
     EditText introduction;
-    @Bind(R.id.buildllyt)
+    @BindView(R.id.buildllyt)
     LinearLayout buildllyt;
     private Toolbar toolbar;
     private static final String TAG = LiveBuildRoomActivity.class.getSimpleName();
@@ -82,7 +84,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     private String videoDesc = "";  //直播间描述
     private String videoPhoto = "";  //直播间封面图片
 
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     View mProgressView;
 
     @Override
@@ -92,6 +94,39 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         toolBar();
         initView();
+
+//        //第一次创建直播间，弹出直播间协议弹窗
+//        if (getIntent().getStringExtra("times").equals("0") || getIntent().getStringExtra("times").equals("")) {
+//            View codeView = LayoutInflater.from(this).inflate(R.layout.popupwindow_live_agreement, null);
+//            PopupWindow codePopupwindow = new PopupWindow(codeView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+//
+//            TextView confirmTv = (TextView) codeView.findViewById(R.id.confirm);
+//            confirmTv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    codePopupwindow.dismiss();
+//                }
+//            });
+//            TextView cancelTv = (TextView) codeView.findViewById(R.id.cancel);
+//            cancelTv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    codePopupwindow.dismiss();
+//                    finish();
+//                }
+//            });
+//            TextView agreementTv = (TextView) codeView.findViewById(R.id.blue);
+//            cancelTv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                }
+//            });
+//
+//            codePopupwindow.setOutsideTouchable(true);
+//            ColorDrawable dw = new ColorDrawable(0x000ff000);
+//            codePopupwindow.setBackgroundDrawable(dw);
+//            codePopupwindow.showAtLocation(codeView, Gravity.BOTTOM, 0, 0);
+//        }
     }
 
     private void toolBar() {
@@ -103,11 +138,80 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        View codeView = LayoutInflater.from(this).inflate(R.layout.popupwindow_live_agreement, null);
+        PopupWindow codePopupwindow = new PopupWindow(codeView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+
+        TextView confirmTv = (TextView) codeView.findViewById(R.id.confirm);
+        confirmTv.setOnClickListener(view ->
+                HttpData.getInstance().HttpDataAgree(new Observer<HttpResult3>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
+                        codePopupwindow.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3 data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(LiveBuildRoomActivity.this, data.getMsg());
+                            return;
+                        }
+                        codePopupwindow.dismiss();
+                    }
+                }));
+        TextView cancelTv = (TextView) codeView.findViewById(R.id.cancel);
+        cancelTv.setOnClickListener(view -> {
+            codePopupwindow.dismiss();
+            finish();
+        });
+        TextView agreementTv = (TextView) codeView.findViewById(R.id.blue);
+        agreementTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BrowserActivity.launch(LiveBuildRoomActivity.this, "http://webview.medmeeting.com/#/page/live-protocol", "《直播协议》");
+            }
+        });
+
+
+        HttpData.getInstance().HttpDataGetAgreement(new Observer<HttpResult3<Object, Boolean>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<Object, Boolean> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(LiveBuildRoomActivity.this, data.getMsg());
+                    return;
+                }
+                if (data.getEntity())
+                    return;
+
+                codePopupwindow.setOutsideTouchable(true);
+                ColorDrawable dw = new ColorDrawable(0x000ff000);
+                codePopupwindow.setBackgroundDrawable(dw);
+                codePopupwindow.showAtLocation(codeView, Gravity.BOTTOM, 0, 0);
+            }
+        });
     }
 
-    @OnClick({R.id.live_pic_tip, R.id.classify, R.id.buildllyt})
+    @OnClick({R.id.agreement_llyt, R.id.live_pic_tip, R.id.classify, R.id.buildllyt})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.agreement_llyt:
+                BrowserActivity.launch(LiveBuildRoomActivity.this, "http://webview.medmeeting.com/#/page/live-protocol", "《直播协议》");
+                break;
             case R.id.live_pic_tip:
                 PhotoPicker.builder()
                         .setShowCamera(true)
@@ -152,7 +256,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
-                        Log.e(TAG, "onError"+e.getMessage()+" "+e.getStackTrace());
+                        Log.e(TAG, "onError" + e.getMessage() + " " + e.getStackTrace());
                     }
 
                     @Override
@@ -181,93 +285,52 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             for (String i : photos) {
                 Log.e(TAG, i);
             }
-            showProgress(true);
-            ToastUtils.show(LiveBuildRoomActivity.this, "正在上传封面图片...");
-            getQiniuToken(photos.get(0));
-        }
-    }
 
-    private String qiniuKey;
-    private String qiniuToken;
+            File file = new File(photos.get(0));
+            // creates RequestBody instance from file
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+            // MultipartBody.Part is used to send also the actual filename
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            // adds another part within the multipart request
+            String descriptionString = "Sample description";
+            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), descriptionString); //multipart/form-data
 
-    private void getQiniuToken(final String file) {
-        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
-            @Override
-            public void onCompleted() {
-                Log.e(TAG, "onCompleted");
-            }
+            HttpData.getInstance().HttpUploadFile(new Observer<HttpResult6>() {
+                @Override
+                public void onCompleted() {
 
-            @Override
-            public void onError(Throwable e) {
-                ToastUtils.show(LiveBuildRoomActivity.this, e.getMessage());
-            }
-
-            @Override
-            public void onNext(QiniuTokenDto q) {
-                if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
-                    showProgress(false);
-                    return;
                 }
-                qiniuToken = q.getData().getUploadToken();
 
-                // 设置图片名字
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                qiniuKey = "android_live_" + sdf.format(new Date());
+                @Override
+                public void onError(Throwable e) {
 
-                int i = new Random().nextInt(1000) + 1;
+                }
 
-                Log.e(TAG, "File对象、或 文件路径、或 字节数组: " + file);
-                Log.e(TAG, "指定七牛服务上的文件名，或 null: " + qiniuKey + i);
-                Log.e(TAG, "从服务端SDK获取: " + qiniuToken);
-                Log.e(TAG, "http://ono5ms5i0.bkt.clouddn.com/" + qiniuKey + i);
-
-                upload(file, qiniuKey + i, qiniuToken);
-            }
-        }, "android");
-    }
-
-    private Configuration config = new Configuration.Builder()
-            .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
-            .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
-            .connectTimeout(10) // 链接超时。默认10秒
-            .responseTimeout(60) // 服务器响应超时。默认60秒
-//            .zone(Zone.zone1) // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
-            .build();
-
-    // 重用uploadManager。一般地，只需要创建一个uploadManager对象
-    UploadManager uploadManager = new UploadManager(config);
-
-    private void upload(final String data, final String key, final String token) {
-        new Thread() {
-            public void run() {
-                uploadManager.put(data, key, token,
-                        (key1, info, res) -> {
-                            //res包含hash、key等信息，具体字段取决于上传策略的设置
-                            if (info.isOK()) {
-                                Log.i("qiniu", "Upload Success");
-                            } else {
-                                Log.i("qiniu", "Upload Fail");
-                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                            }
-                            Log.i("qiniu", key1 + ",\r\n " + info + ",\r\n " + res);
-
-                            videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key1;
-                        }, null);
-            }
-        }.start();
-        Glide.with(LiveBuildRoomActivity.this)
-                .load("http://ono5ms5i0.bkt.clouddn.com/" + key + "/thumbnail/200x140")
-                .crossFade()
-                .into(new GlideDrawableImageViewTarget(livePic) {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                        //在这里添加一些图片加载完成的操作
-                        super.onResourceReady(resource, animation);
-                        showProgress(false);
-                        livePicTipTv.setText("修改直播间封面");
-                        ToastUtils.show(LiveBuildRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
+                @Override
+                public void onNext(HttpResult6 data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(LiveBuildRoomActivity.this, data.getMsg());
+                        return;
                     }
-                });
+
+                    videoPhoto = data.getExtra().getAbsQiniuImgHash();
+
+                    Glide.with(LiveBuildRoomActivity.this)
+                            .load(videoPhoto)
+                            .crossFade()
+                            .dontAnimate()
+                            .into(new GlideDrawableImageViewTarget(livePic) {
+                                @Override
+                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                    //在这里添加一些图片加载完成的操作
+                                    super.onResourceReady(resource, animation);
+                                    livePicTipTv.setText("修改直播间封面");
+                                }
+                            });
+                }
+            }, body, description);
+
+        }
     }
 
 

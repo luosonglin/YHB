@@ -9,7 +9,7 @@ public class LiveOrderDto {
      * programId : 100010
      */
 
-    private String openId;
+//    private String openId;
     private String paymentChannel;
     private String platformType;
     private int programId;
@@ -17,20 +17,13 @@ public class LiveOrderDto {
     public LiveOrderDto() {
     }
 
-    public LiveOrderDto(String openId, String paymentChannel, String platformType, int programId) {
-        this.openId = openId;
-        this.paymentChannel = paymentChannel;
-        this.platformType = platformType;
-        this.programId = programId;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
+//    public String getOpenId() {
+//        return openId;
+//    }
+//
+//    public void setOpenId(String openId) {
+//        this.openId = openId;
+//    }
 
     public String getPaymentChannel() {
         return paymentChannel;

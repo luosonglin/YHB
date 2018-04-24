@@ -2,7 +2,6 @@ package com.medmeeting.m.zhiyi.UI.WalletView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -36,6 +35,7 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
@@ -57,7 +57,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 
@@ -70,11 +70,11 @@ import rx.Observer;
  */
 public class WalletWebActivity  extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.WebView)
+    @BindView(R.id.WebView)
     BridgeWebView WebView;
-    @Bind(R.id.content_meeting_enrol)
+    @BindView(R.id.content_meeting_enrol)
     RelativeLayout contentMeetingEnrol;
 
     private static final String TAG = WalletWebActivity.class.getSimpleName();
@@ -158,7 +158,7 @@ public class WalletWebActivity  extends AppCompatActivity {
 
         WebSettings settings = WebView.getSettings();
 
-        // BindUserInfo settings
+        // BindViewUserInfo settings
         settings.setJavaScriptCanOpenWindowsAutomatically(true);//设置js可以直接打开窗口，如window.open()，默认为false
         settings.setJavaScriptEnabled(true);    //设置webview支持javascript
         settings.setLoadsImagesAutomatically(true);    //支持自动加载图片
@@ -193,7 +193,7 @@ public class WalletWebActivity  extends AppCompatActivity {
         }
         settings.setUserAgentString(userAgent);//设置用户代理
         Log.e(TAG, userAgent);
-        
+
         WebView.loadUrl(url);
 
         WebView.addJavascriptInterface(new WalletWebActivity.JSHook(), "SetAndroidJavaScriptBridge");
@@ -334,23 +334,11 @@ public class WalletWebActivity  extends AppCompatActivity {
 
                 @Override
                 public void onNext(PaymentStatus paymentStatus) {
-                    if (paymentStatus.getPayStatus().get(0).isAlipay()) {
-                        AlipayDisplay = true;
-                    } else {
-                        AlipayDisplay = false;
-                    }
+                    AlipayDisplay = paymentStatus.getPayStatus().get(0).isAlipay();
 
-                    if (paymentStatus.getPayStatus().get(0).isWechat()) {
-                        WechatDisplay = true;
-                    } else {
-                        WechatDisplay = false;
-                    }
+                    WechatDisplay = paymentStatus.getPayStatus().get(0).isWechat();
 
-                    if (paymentStatus.getPayStatus().get(0).isLine()) {
-                        OffLineDisplay = true;
-                    } else {
-                        OffLineDisplay = false;
-                    }
+                    OffLineDisplay = paymentStatus.getPayStatus().get(0).isLine();
 
                     initPopupwindow();
                 }
@@ -369,47 +357,41 @@ public class WalletWebActivity  extends AppCompatActivity {
         final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
         final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.pay_offline);
 
-        a.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPayInfo(v, paymentId, "alipay");
-                academicPopupWindow.dismiss();
-            }
+        a.setOnClickListener(v -> {
+            getPayInfo(v, paymentId, "alipay");
+            academicPopupWindow.dismiss();
         });
 
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        b.setOnClickListener(v -> {
 
 //                ToastUtils.show(WalletWebActivity.this, "http://www.medmeeting.com/phoneEvent/confirmPayType?paymentId="+paymentId +"&payType=line");
 //                startActivity(new Intent(WalletWebActivity.this, PayDemoActivity.class));
-                academicPopupWindow.dismiss();
+            academicPopupWindow.dismiss();
 
-                Map<String, Object> options = new HashMap<>();
-                options.put("paymentId", paymentId);
-                options.put("payType", "line");
-                HttpData.getInstance().HttpDataGetPayInfo(new Observer<HttpResult4>() {
-                    @Override
-                    public void onCompleted() {
+            Map<String, Object> options = new HashMap<>();
+            options.put("paymentId", paymentId);
+            options.put("payType", "line");
+            HttpData.getInstance().HttpDataGetPayInfo(new Observer<HttpResult4>() {
+                @Override
+                public void onCompleted() {
 
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult4 httpResult4) {
+                    if (httpResult4.getStatus().equals("200")) {
+                        WebView.reload();
+                    } else {
+                        ToastUtils.show(WalletWebActivity.this, httpResult4.getReturnMsg());
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(HttpResult4 httpResult4) {
-                        if (httpResult4.getStatus().equals("200")) {
-                            WebView.reload();
-                        } else {
-                            ToastUtils.show(WalletWebActivity.this, httpResult4.getReturnMsg());
-                        }
-
-                    }
-                }, options);
-            }
+                }
+            }, options);
         });
 
         if (AlipayDisplay) {
@@ -422,12 +404,9 @@ public class WalletWebActivity  extends AppCompatActivity {
         else b.setVisibility(View.GONE);
 
         LinearLayout academicPopupParentLayout = (LinearLayout) academicPopupwindowView.findViewById(R.id.popup_parent);
-        academicPopupParentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
-                    academicPopupWindow.dismiss();
-                }
+        academicPopupParentLayout.setOnClickListener(v -> {
+            if (academicPopupWindow != null && academicPopupWindow.isShowing()) {
+                academicPopupWindow.dismiss();
             }
         });
 
@@ -465,15 +444,6 @@ public class WalletWebActivity  extends AppCompatActivity {
             }
         }, options);
     }
-
-    // 商户PID
-    public static final String PARTNER = "2088311846356487";
-    // 商户收款账号
-    public static final String SELLER = "zhifubao@healife.com";
-    // 商户私钥，pkcs8格式
-    public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAIoUMNT6sAOC05BU72JoQWbhmJhe9n917DtUrT8kU0nFGzeV+tmSSy+3bsbSbKUg9ngVpyXsfn4ouH33Ktx42H8TAHs3n39qaSAePKgB3o6pOV0vYnpVqnYB1UlecW/vbxv8XcvmcEOS1gE3OwcFh6NTzdgbr+rb+mLbAGlINfWNAgMBAAECgYBDY4FFoKegvwvkCB/g5kLtJDMmQkqJgJLvje8TvvXLLiCPa2pHH2gEfMDa1j3iBYlkqCSwlJBToCoSiDvp6Cy4cRtMKbTSNx00bhLWzpuropvSAH9EIsOJe+rCpOZox+DcIUOFS3TkXkXOKaAW9F2Onqr1nfK+1C9nXMPePOyLnQJBAPnuKnBgAYSxD8OeO2AIjF5iO93Ap1f9q8/L4bxcsw1WfKJlolFKxWC3nnuOrL9qe1DcKOPnKaJHA9XdFH7VNG8CQQCNbqL8HOh/9LhPe8TgwfUl4Bjz0WjQGq3qIQscy0o6JfkAHz+Po2zl+kTugtUguWnlhpFli/fT2d9yaVDj9cvDAkB5DuN/iwExRJJeLkaUPY/AJ9TXlHl6JWUTQa4VjtErpLi58ICu34i7UDVzo6gJD4qrn/gua8m+0KcK8Ar9ZEgBAkBFgan33P0mZU5vQZRwIOIpywh4SuIH5BS0i6i6be38xcypkrHaFabfHy/hR8sWWgkBFDFAhpk1NE3sHHX0kkehAkAud+wmYHchvQ2ME9yxNl5+LHsVRbEOscJIdbPTO95MrBufBfyFyIJ79SQvj/lb+ueEfyr+QUkJU5UxEH8rhhFM";
-    // 支付宝公钥
-    public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCKFDDU+rADgtOQVO9iaEFm4ZiYXvZ/dew7VK0/JFNJxRs3lfrZkksvt27G0mylIPZ4Facl7H5+KLh99yrceNh/EwB7N59/amkgHjyoAd6OqTldL2J6Vap2AdVJXnFv728b/F3L5nBDktYBNzsHBYejU83YG6/q2/pi2wBpSDX1jQIDAQAB";
     private static final int SDK_PAY_FLAG = 1;
 
     @SuppressLint("HandlerLeak")
@@ -512,7 +482,7 @@ public class WalletWebActivity  extends AppCompatActivity {
                 default:
                     break;
             }
-        };
+        }
     };
 
     /**
@@ -520,13 +490,11 @@ public class WalletWebActivity  extends AppCompatActivity {
      *
      */
     public void pay(View v, float amount) {
-        if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
+        if (TextUtils.isEmpty(Constant.PARTNER) || TextUtils.isEmpty(Constant.RSA_PRIVATE) || TextUtils.isEmpty(Constant.SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialoginterface, int i) {
-                            //
-                            finish();
-                        }
+                    .setPositiveButton("确定", (dialoginterface, i) -> {
+                        //
+                        finish();
                     }).show();
             return;
         }
@@ -550,20 +518,16 @@ public class WalletWebActivity  extends AppCompatActivity {
          */
         final String payInfo = orderInfo + "&sign=\"" + sign + "\"&" + getSignType();
 
-        Runnable payRunnable = new Runnable() {
+        Runnable payRunnable = () -> {
+            // 构造PayTask 对象
+            PayTask alipay = new PayTask(WalletWebActivity.this);
+            // 调用支付接口，获取支付结果
+            String result = alipay.pay(payInfo, true);
 
-            @Override
-            public void run() {
-                // 构造PayTask 对象
-                PayTask alipay = new PayTask(WalletWebActivity.this);
-                // 调用支付接口，获取支付结果
-                String result = alipay.pay(payInfo, true);
-
-                Message msg = new Message();
-                msg.what = SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
+            Message msg = new Message();
+            msg.what = SDK_PAY_FLAG;
+            msg.obj = result;
+            mHandler.sendMessage(msg);
         };
 
         // 必须异步调用
@@ -578,10 +542,10 @@ public class WalletWebActivity  extends AppCompatActivity {
     private String getOrderInfo(String subject, String body, String price, String paymentId) {
 
         // 签约合作者身份ID
-        String orderInfo = "partner=" + "\"" + PARTNER + "\"";
+        String orderInfo = "partner=" + "\"" + Constant.PARTNER + "\"";
 
         // 签约卖家支付宝账号
-        orderInfo += "&seller_id=" + "\"" + SELLER + "\"";
+        orderInfo += "&seller_id=" + "\"" + Constant.SELLER + "\"";
 
         // 商户网站唯一订单号
 //        orderInfo += "&out_trade_no=" + "\"" + getOutTradeNo() + "\"";
@@ -646,7 +610,7 @@ public class WalletWebActivity  extends AppCompatActivity {
      *            待签名订单信息
      */
     private String sign(String content) {
-        return com.medmeeting.m.zhiyi.paydemo.SignUtils.sign(content, RSA_PRIVATE);
+        return com.medmeeting.m.zhiyi.paydemo.SignUtils.sign(content, Constant.RSA_PRIVATE);
     }
 
     /**

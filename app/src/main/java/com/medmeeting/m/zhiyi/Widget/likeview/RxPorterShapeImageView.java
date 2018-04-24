@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.Widget.likeview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -34,7 +35,7 @@ public class RxPorterShapeImageView extends RxPorterImageView {
 
     private void setup(Context context, AttributeSet attrs, int defStyle) {
         if(attrs != null){
-            TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RxPorterImageView, defStyle, 0);
+            @SuppressLint("CustomViewStyleable") TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RxPorterImageView, defStyle, 0);
             shape = typedArray.getDrawable(R.styleable.RxPorterImageView_siShape);
             typedArray.recycle();
         }

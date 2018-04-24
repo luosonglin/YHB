@@ -3,12 +3,11 @@ package com.medmeeting.m.zhiyi.MVP.Presenter;
 import com.medmeeting.m.zhiyi.MVP.Listener.OnLoadDataListListener;
 import com.medmeeting.m.zhiyi.MVP.Model.MyMeetingListModel;
 import com.medmeeting.m.zhiyi.MVP.View.MeetingListView;
-import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 
 import java.util.List;
-import java.util.Map;
 
-public class MyMeetingListPresent implements OnLoadDataListListener<List<MeetingDto>> {
+public class MyMeetingListPresent implements OnLoadDataListListener<List<VAppMyEvents>> {
     private MeetingListView mView;
     private MyMeetingListModel mModel;
     private boolean isjz;
@@ -18,13 +17,13 @@ public class MyMeetingListPresent implements OnLoadDataListListener<List<Meeting
         mView.showProgress();
     }
 
-    public void LoadData(boolean isjz, Map<String, Object> map){
+    public void LoadData(boolean isjz, Integer type){
         this.isjz=isjz;
-        mModel.LoadData(this, map);
+        mModel.LoadData(this, type);
     }
 
     @Override
-    public void onSuccess(List<MeetingDto> data) {
+    public void onSuccess(List<VAppMyEvents> data) {
         if(isjz){
             if(data.size()==0){
                 mView.showLoadCompleteAllData();

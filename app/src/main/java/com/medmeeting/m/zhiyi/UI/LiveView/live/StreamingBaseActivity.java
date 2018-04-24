@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.LiveView.live;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +25,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.medmeeting.m.zhiyi.Constant.Constant;
+import com.medmeeting.m.zhiyi.MVP.Listener.CustomShareListener;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.fragment.BottomPanelFragment2;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.gles.FBO;
@@ -30,7 +34,6 @@ import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.RotateLayout;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.ChatListView;
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.InputPanel;
 import com.qiniu.android.dns.DnsManager;
 import com.qiniu.android.dns.IResolver;
 import com.qiniu.android.dns.NetworkInfo;
@@ -52,6 +55,14 @@ import com.qiniu.pili.droid.streaming.StreamingState;
 import com.qiniu.pili.droid.streaming.StreamingStateChangedListener;
 import com.qiniu.pili.droid.streaming.SurfaceTextureCallback;
 import com.qiniu.pili.droid.streaming.av.common.PLFourCC;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 
 import org.json.JSONObject;
 
@@ -63,6 +74,7 @@ import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Map;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.ChatRoomInfo;
@@ -147,20 +159,17 @@ public class StreamingBaseActivity extends Activity implements
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_START_STREAMING:
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // disable the shutter button before startStreaming
-                            setShutterButtonEnabled(false);
-                            boolean res = mMediaStreamingManager.startStreaming();
-                            mShutterButtonPressed = true;
-                            Log.i(TAG, "res:" + res);
-                            if (!res) {
-                                mShutterButtonPressed = false;
-                                setShutterButtonEnabled(true);
-                            }
-                            setShutterButtonPressed(mShutterButtonPressed);
+                    new Thread(() -> {
+                        // disable the shutter button before startStreaming
+                        setShutterButtonEnabled(false);
+                        boolean res = mMediaStreamingManager.startStreaming();
+                        mShutterButtonPressed = true;
+                        Log.i(TAG, "res:" + res);
+                        if (!res) {
+                            mShutterButtonPressed = false;
+                            setShutterButtonEnabled(true);
                         }
+                        setShutterButtonPressed(mShutterButtonPressed);
                     }).start();
                     break;
                 case MSG_STOP_STREAMING:
@@ -219,6 +228,13 @@ public class StreamingBaseActivity extends Activity implements
     private ImageView btnTorch;
     private ImageView btnEncodingOrientationSwitcher;
     private ImageView btnCaptureFrame;
+
+    /**
+     * 分享
+     */
+    private ImageView btnShare;
+    private UMShareListener mShareListener;
+    private ShareAction mShareAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,7 +310,8 @@ public class StreamingBaseActivity extends Activity implements
                 .setCameraPrvSizeLevel(CameraStreamingSetting.PREVIEW_SIZE_LEVEL.MEDIUM)
                 .setCameraPrvSizeRatio(CameraStreamingSetting.PREVIEW_SIZE_RATIO.RATIO_16_9)
                 .setBuiltInFaceBeautyEnabled(true)
-                .setFaceBeautySetting(new CameraStreamingSetting.FaceBeautySetting(1.0f, 1.0f, 0.8f))
+                // FaceBeautySetting 中的参数依次为：beautyLevel，whiten，redden，即磨皮程度、美白程度以及红润程度，取值范围为[0.0f, 1.0f]
+                .setFaceBeautySetting(new CameraStreamingSetting.FaceBeautySetting(0.1f, 0.1f, 0.4f))
                 .setVideoFilter(CameraStreamingSetting.VIDEO_FILTER_TYPE.VIDEO_FILTER_BEAUTY);
 
         mIsNeedFB = true;
@@ -310,71 +327,86 @@ public class StreamingBaseActivity extends Activity implements
         chatListView.setAdapter(chatListAdapter);
         bottomPanel = (BottomPanelFragment2) getFragmentManager().findFragmentById(R.id.bottom_bar);
         btnDan = (ImageView) bottomPanel.getView().findViewById(R.id.dan_btn);
-        btnDan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (chatListView.getVisibility() == View.VISIBLE) {
-                    chatListView.setVisibility(View.GONE);
-                    btnDan.setImageResource(R.mipmap.icon_dan_close);
-                } else {
-                    chatListView.setVisibility(View.VISIBLE);
-                    btnDan.setImageResource(R.mipmap.icon_dan);
-                }
+        btnDan.setOnClickListener(view -> {
+            if (chatListView.getVisibility() == View.VISIBLE) {
+                chatListView.setVisibility(View.GONE);
+                btnDan.setImageResource(R.mipmap.icon_dan_close);
+            } else {
+                chatListView.setVisibility(View.VISIBLE);
+                btnDan.setImageResource(R.mipmap.icon_dan);
             }
         });
         btnCameraSwitch = (ImageView) bottomPanel.getView().findViewById(R.id.camera_switch_btn);
-        btnCameraSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacks(mSwitcher);
-                mHandler.postDelayed(mSwitcher, 100);
-            }
+        btnCameraSwitch.setOnClickListener(view -> {
+            mHandler.removeCallbacks(mSwitcher);
+            mHandler.postDelayed(mSwitcher, 100);
         });
         btnTorch = (ImageView) bottomPanel.getView().findViewById(R.id.torch_btn);
-        btnTorch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!mIsTorchOn) {
-                            mIsTorchOn = true;
-                            mMediaStreamingManager.turnLightOn();
-                        } else {
-                            mIsTorchOn = false;
-                            mMediaStreamingManager.turnLightOff();
-                        }
-                        setTorchEnabled(mIsTorchOn);
-                    }
-                }).start();
+        btnTorch.setOnClickListener(view -> new Thread(() -> {
+            if (!mIsTorchOn) {
+                mIsTorchOn = true;
+                mMediaStreamingManager.turnLightOn();
+            } else {
+                mIsTorchOn = false;
+                mMediaStreamingManager.turnLightOff();
             }
-        });
+            setTorchEnabled(mIsTorchOn);
+        }).start());
         btnEncodingOrientationSwitcher = (ImageView) bottomPanel.getView().findViewById(R.id.orientation_btn);
-        btnEncodingOrientationSwitcher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacks(mEncodingOrientationSwitcher);
-                mHandler.post(mEncodingOrientationSwitcher);
-            }
+        btnEncodingOrientationSwitcher.setOnClickListener(view -> {
+            mHandler.removeCallbacks(mEncodingOrientationSwitcher);
+            mHandler.post(mEncodingOrientationSwitcher);
         });
         btnCaptureFrame = (ImageView) bottomPanel.getView().findViewById(R.id.capture_btn);
-        btnCaptureFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mHandler.removeCallbacks(mScreenShooter);
-                mHandler.postDelayed(mScreenShooter, 100);
-            }
+        btnCaptureFrame.setOnClickListener(view -> {
+            mHandler.removeCallbacks(mScreenShooter);
+            mHandler.postDelayed(mScreenShooter, 100);
         });
-        bottomPanel.setInputPanelListener(new InputPanel.InputPanelListener() {
-            @Override
-            public void onSendClick(String text) {
-                final TextMessage content = TextMessage.obtain(text);
-                LiveKit.sendMessage(content);
-            }
+        bottomPanel.setInputPanelListener(text -> {
+            final TextMessage content = TextMessage.obtain(text);
+            LiveKit.sendMessage(content);
         });
+
 
         Log.e(TAG, "programId" + programId);
         joinChatRoom(programId);
+
+
+        //分享
+        //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
+        UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
+            @Override
+            public void onStart(SHARE_MEDIA share_media) {
+
+            }
+
+            @Override
+            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA platform, int action) {
+
+            }
+        });
+        btnShare = (ImageView) bottomPanel.getView().findViewById(R.id.share_btn);
+        btnShare.setOnClickListener(view -> {
+            ShareBoardConfig config = new ShareBoardConfig();
+            config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+            mShareAction.open(config);
+        });
+
+        initShare(programId,
+                getIntent().getExtras().getString("title"),
+                getIntent().getExtras().getString("photo"),
+                getIntent().getExtras().getString("description"));
+
     }
 
     @Override
@@ -418,26 +450,22 @@ public class StreamingBaseActivity extends Activity implements
 ////                Toast.makeText(StreamingBaseActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
 //            }
 //        });
+
+        mShareAction.close();
     }
 
     protected void setShutterButtonPressed(final boolean pressed) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mShutterButtonPressed = pressed;
-                mShutterButton.setPressed(pressed);
-            }
+        runOnUiThread(() -> {
+            mShutterButtonPressed = pressed;
+            mShutterButton.setPressed(pressed);
         });
     }
 
     protected void setShutterButtonEnabled(final boolean enable) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mShutterButton.setFocusable(enable);
-                mShutterButton.setClickable(enable);
-                mShutterButton.setEnabled(enable);
-            }
+        runOnUiThread(() -> {
+            mShutterButton.setFocusable(enable);
+            mShutterButton.setClickable(enable);
+            mShutterButton.setEnabled(enable);
         });
     }
 
@@ -560,25 +588,17 @@ public class StreamingBaseActivity extends Activity implements
 
     @Override
     public void notifyStreamStatusChanged(final StreamingProfile.StreamStatus streamStatus) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatView.setText("bitrate:" + streamStatus.totalAVBitrate / 1024 + " kbps"
-                        + "\naudio:" + streamStatus.audioFps + " fps"
-                        + "\nvideo:" + streamStatus.videoFps + " fps");
-            }
-        });
+        runOnUiThread(() -> mStatView.setText("bitrate:" + streamStatus.totalAVBitrate / 1024 + " kbps"
+                + "\naudio:" + streamStatus.audioFps + " fps"
+                + "\nvideo:" + streamStatus.videoFps + " fps"));
     }
 
     private void setTorchEnabled(final boolean enabled) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+        runOnUiThread(() -> {
 //                String flashlight = enabled ? getString(R.string.flash_light_off) : getString(R.string.flash_light_on);
 //                mTorchBtn.setText("");
 //                mTorchBtn.setBackgroundResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
-                btnTorch.setImageResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
-            }
+            btnTorch.setImageResource(enabled ? R.mipmap.icon_close_light : R.mipmap.icon_open_light);
         });
     }
 
@@ -644,44 +664,33 @@ public class StreamingBaseActivity extends Activity implements
             case CAMERA_SWITCHED:
 //                mShutterButtonPressed = false;
                 if (extra != null) {
-                    Log.i(TAG, "current camera id:" + (Integer) extra);
+                    Log.i(TAG, "current camera id:" + extra);
                 }
                 Log.i(TAG, "camera switched");
                 final int currentCamId = (Integer) extra;
-                this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateCameraSwitcherButtonText(currentCamId);
-                    }
-                });
+                this.runOnUiThread(() -> updateCameraSwitcherButtonText(currentCamId));
                 break;
             case TORCH_INFO:
                 if (extra != null) {
                     final boolean isSupportedTorch = (Boolean) extra;
                     Log.i(TAG, "isSupportedTorch=" + isSupportedTorch);
-                    this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isSupportedTorch) {
+                    this.runOnUiThread(() -> {
+                        if (isSupportedTorch) {
 //                                mTorchBtn.setVisibility(View.VISIBLE);
-                                btnTorch.setVisibility(View.VISIBLE);
-                            } else {
+                            btnTorch.setVisibility(View.VISIBLE);
+                        } else {
 //                                mTorchBtn.setVisibility(View.GONE);
-                                btnTorch.setVisibility(View.GONE);
-                            }
+                            btnTorch.setVisibility(View.GONE);
                         }
                     });
                 }
                 break;
         }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mLogTextView != null) {
-                    mLogTextView.setText(mLogContent);
-                }
-                mStatusTextView.setText(mStatusMsgContent);
+        runOnUiThread(() -> {
+            if (mLogTextView != null) {
+                mLogTextView.setText(mLogContent);
             }
+            mStatusTextView.setText(mStatusMsgContent);
         });
     }
 
@@ -704,14 +713,11 @@ public class StreamingBaseActivity extends Activity implements
         mStatView = (TextView) findViewById(R.id.stream_status);
 
         mLogoutBtn = (Button) findViewById(R.id.logout_btn);
-        mLogoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(StreamingBaseActivity.this)
-                        .setIcon(R.mipmap.logo)
-                        .setTitle("")
-                        .setMessage("确定退出直播？")
-                        .setNegativeButton("确定", (dialogInterface, i) -> finish())
+        mLogoutBtn.setOnClickListener(view -> new AlertDialog.Builder(StreamingBaseActivity.this)
+                .setIcon(R.mipmap.logo)
+                .setTitle("")
+                .setMessage("确定退出直播？")
+                .setNegativeButton("确定", (dialogInterface, i) -> finish())
 //                        .setPositiveButton("彻底关闭", new DialogInterface.OnClickListener() {
 //                            @Override
 //                            public void onClick(DialogInterface dialogInterface, int i) {
@@ -738,10 +744,8 @@ public class StreamingBaseActivity extends Activity implements
 //                                }, programId);
 //                            }
 //                        })
-                        .setNeutralButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())
-                        .show();
-            }
-        });
+                .setNeutralButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())
+                .show());
 
 
 //        mFaceBeautyBtn.setOnClickListener(new View.OnClickListener() {
@@ -775,33 +779,24 @@ public class StreamingBaseActivity extends Activity implements
 //            }
 //        });
 
-        previewMirrorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mHandler.hasMessages(MSG_PREVIEW_MIRROR)) {
-                    mHandler.sendEmptyMessage(MSG_PREVIEW_MIRROR);
-                }
+        previewMirrorBtn.setOnClickListener(v -> {
+            if (!mHandler.hasMessages(MSG_PREVIEW_MIRROR)) {
+                mHandler.sendEmptyMessage(MSG_PREVIEW_MIRROR);
             }
         });
 
-        encodingMirrorBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mHandler.hasMessages(MSG_ENCODING_MIRROR)) {
-                    mHandler.sendEmptyMessage(MSG_ENCODING_MIRROR);
-                }
+        encodingMirrorBtn.setOnClickListener(v -> {
+            if (!mHandler.hasMessages(MSG_ENCODING_MIRROR)) {
+                mHandler.sendEmptyMessage(MSG_ENCODING_MIRROR);
             }
         });
 
         //底部圆形按钮
-        mShutterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mShutterButtonPressed) {
-                    stopStreaming();
-                } else {
-                    startStreaming();
-                }
+        mShutterButton.setOnClickListener(view -> {
+            if (mShutterButtonPressed) {
+                stopStreaming();
+            } else {
+                startStreaming();
             }
         });
 
@@ -936,12 +931,7 @@ public class StreamingBaseActivity extends Activity implements
             }
 
             final String info = "截图保存在: " + Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(mContext, info, Toast.LENGTH_LONG).show();
-                }
-            });
+            runOnUiThread(() -> Toast.makeText(mContext, info, Toast.LENGTH_LONG).show());
         }
     }
 
@@ -1016,18 +1006,15 @@ public class StreamingBaseActivity extends Activity implements
                         return;
                     }
                     bitmap = bmp;
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                saveToSDCard(fileName, bitmap);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } finally {
-                                if (bitmap != null) {
-                                    bitmap.recycle();
-                                    bitmap = null;
-                                }
+                    new Thread(() -> {
+                        try {
+                            saveToSDCard(fileName, bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (bitmap != null) {
+                                bitmap.recycle();
+                                bitmap = null;
                             }
                         }
                     }).start();
@@ -1070,10 +1057,10 @@ public class StreamingBaseActivity extends Activity implements
 //                LiveKit.sendMessage(content);
 
                 // 配合ios
-                TextMessage content = TextMessage.obtain("进入了房间，房间号："+roomId);
+                TextMessage content = TextMessage.obtain("进入了房间");//，房间号："+roomId);
                 LiveKit.sendMessage(content);
 
-//                Log.e(TAG + "joinChatRoom: ", content + "" + content.getUserInfo().getName());
+                Log.e(TAG + "joinChatRoom: ", content + "" + content.getUserInfo().getName());
             }
 
             @Override
@@ -1114,4 +1101,42 @@ public class StreamingBaseActivity extends Activity implements
     private Handler mHandler2;
 
     int sum = 0;
+
+
+    /**
+     * 分享
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //qq微信新浪授权防杀死
+        UMShareAPI.get(this).onSaveInstanceState(outState);
+    }
+
+    public void initShare(final int programId, final String title, final String photo, final String description) {
+
+        //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] mPermissionList = new String[]{
+                    Manifest.permission.WRITE_APN_SETTINGS};
+            ActivityCompat.requestPermissions(this, mPermissionList, 123);
+        }
+
+        mShareListener = new CustomShareListener(this);
+        /*增加自定义按钮的分享面板*/
+        mShareAction = new ShareAction(StreamingBaseActivity.this)
+                .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
+
+                    UMWeb web = new UMWeb(Constant.Share_Live + programId); //http://wap.medmeeting.com/#!/live/room/show/
+                    web.setTitle(title);//标题
+                    web.setThumb(new UMImage(StreamingBaseActivity.this, photo));  //缩略图
+                    web.setDescription(description);//描述
+                    new ShareAction(StreamingBaseActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
+                });
+    }
 }

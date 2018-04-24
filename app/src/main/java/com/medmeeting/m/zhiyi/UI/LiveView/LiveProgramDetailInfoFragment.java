@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,39 +21,50 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveProgramDateilsEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
-import com.medmeeting.m.zhiyi.UI.VideoView.LiveAndVideoRoomActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
+import com.snappydb.SnappydbException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.Observer;
 
 public class LiveProgramDetailInfoFragment extends Fragment {
 
 
-    @Bind(R.id.avatar)
+    @BindView(R.id.avatar)
     ImageView avatar;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.author_name)
+    @BindView(R.id.author_name)
     TextView authorName;
-    @Bind(R.id.like)
+    @BindView(R.id.like)
     RxShineButton like;
-    @Bind(R.id.time)
+    @BindView(R.id.time)
     TextView time;
-    @Bind(R.id.collect)
+    @BindView(R.id.collect)
     TextView collect;
-    @Bind(R.id.type)
+    @BindView(R.id.type)
     TextView type;
-    @Bind(R.id.des)
+    @BindView(R.id.des)
     TextView des;
     private String TAG = LiveProgramDetailInfoFragment.class.getSimpleName();
 
     private static LiveProgramDateilsEntity mLiveProgramDateilsEntity;
     private static Integer mProgramId;
+
+    Unbinder unbinder;
+
+    private String tocPortStatus;
+    private String userId;
+
 
     public LiveProgramDetailInfoFragment() {
         // Required empty public constructor
@@ -75,6 +87,7 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_live_program_detail_info, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         like.init(getActivity());
 
@@ -106,16 +119,18 @@ public class LiveProgramDetailInfoFragment extends Fragment {
         authorName.setText(mLiveProgramDateilsEntity.getAuthorName() + " | " + mLiveProgramDateilsEntity.getAuthorTitle());
         Glide.with(getActivity())
                 .load(mLiveProgramDateilsEntity.getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
+                .dontAnimate()
+                .placeholder(R.mipmap.avator_default)
                 .transform(new GlideCircleTransform(getActivity()))
                 .into(avatar);
         avatar.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+            Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
             intent.putExtra("userId", mLiveProgramDateilsEntity.getRoomUserId());
             startActivity(intent);
         });
-        time.setText(DateUtil.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtil.TYPE_04) +" ~ "+DateUtil.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtil.TYPE_04));
+        time.setText(DateUtils.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtils.TYPE_05) +" ~ "+ DateUtils.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtils.TYPE_05));
         collect.setText("收藏：" + mLiveProgramDateilsEntity.getCollectCount());
         if (mLiveProgramDateilsEntity.getChargeType().equals("no")) {
             type.setText("观看：   公开免费");
@@ -130,6 +145,21 @@ public class LiveProgramDetailInfoFragment extends Fragment {
             like.setBtnColor(Color.GRAY);//初始颜色
         }
         like.setOnClickListener(view -> {
+            try {
+                userId = DBUtils.get(getActivity(), "userId");
+                tocPortStatus = DBUtils.get(getActivity(), "tocPortStatus");
+            } catch (SnappydbException e) {
+                e.printStackTrace();
+            }
+            if (userId == null) {
+                startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                return;
+            }
+            if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+                startActivity(new Intent(getActivity(), ActivateActivity.class));
+                return;
+            }
+            Log.e(getActivity().getLocalClassName(), "tocPortStatus is " +tocPortStatus);
             like.setChecked(false);//不能再点
             collectService(mLiveProgramDateilsEntity.isCollectFlag());
         });
@@ -193,10 +223,12 @@ public class LiveProgramDetailInfoFragment extends Fragment {
                 authorName.setText(data.getEntity().getAuthorName());
                 Glide.with(getActivity())
                         .load(data.getEntity().getUserPic())// + "?imageMogr/v2/thumbnail/1400x700"
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .transform(new GlideCircleTransform(getActivity()))
                         .crossFade()
+                        .dontAnimate()
                         .into(avatar);
-                time.setText(DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_04));
+                time.setText(DateUtils.formatDate(mLiveProgramDateilsEntity.getStartTime(), DateUtils.TYPE_04) +" ~ "+ DateUtils.formatDate(mLiveProgramDateilsEntity.getEndTime(), DateUtils.TYPE_04));
                 if (data.getEntity().getChargeType().equals("no")) {
                     type.setText("观看：   公开免费");
                 } else {
@@ -234,6 +266,6 @@ public class LiveProgramDetailInfoFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 }

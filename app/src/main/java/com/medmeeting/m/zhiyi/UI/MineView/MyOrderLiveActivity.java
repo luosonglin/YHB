@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.MyPayLiveAdapter;
+import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
@@ -58,7 +59,11 @@ public class MyOrderLiveActivity extends AppCompatActivity {
     }
 
     private void getMyPayLiveService() {
-        HttpData.getInstance().HttpDataGetMyPayLives(new Observer<HttpResult3<LiveDto, Object>>() {
+
+        BasePageSearchEntity searchEntity = new BasePageSearchEntity();
+        searchEntity.setPageNum(1);
+        searchEntity.setPageSize(100);
+        HttpData.getInstance().HttpDataGetMyPayLive(new Observer<HttpResult3<LiveDto, Object>>() {
             @Override
             public void onCompleted() {
 
@@ -77,12 +82,10 @@ public class MyOrderLiveActivity extends AppCompatActivity {
                 }
 
                 mAdapter.addData(data.getData());
-                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
-                    startActivity(new Intent(MyOrderLiveActivity.this, LiveProgramDetailActivity2.class)
-                            .putExtra("programId", data.getData().get(position).getId()));
-                });
+                mAdapter.setOnRecyclerViewItemClickListener((view, position) -> startActivity(new Intent(MyOrderLiveActivity.this, LiveProgramDetailActivity2.class)
+                        .putExtra("programId", data.getData().get(position).getId())));
             }
-        });
+        }, searchEntity);
     }
 }
 

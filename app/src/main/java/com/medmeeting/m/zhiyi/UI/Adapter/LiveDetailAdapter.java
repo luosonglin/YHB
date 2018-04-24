@@ -9,7 +9,7 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailActivity2;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveProgramDetailAuthorActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.BaseViewHolder;
 
@@ -28,12 +28,13 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
         Glide.with(mContext)
                 .load(item.getCoverPhoto())
                 .crossFade()
+                .dontAnimate()
                 .placeholder(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.image));
 
         helper.setText(R.id.name, item.getTitle())
                 .setText(R.id.author, "主讲人：" + item.getAuthorName())
-                .setText(R.id.time, DateUtil.formatDate(item.getStartTime(), DateUtil.TYPE_06))
+                .setText(R.id.time, DateUtils.formatDate(item.getStartTime(), DateUtils.TYPE_06))
                 .setText(R.id.money, "¥" + item.getPrice())
                 .setText(R.id.type, "直播");
 
@@ -41,6 +42,15 @@ public class LiveDetailAdapter extends BaseQuickAdapter<LiveDetailDto.EntityBean
 
         helper.getView(R.id.item_news_cv).setOnClickListener(view -> {
             Intent intent;
+            if (mUserId == null) {
+                //用户进的直播节目详情页
+                intent = new Intent(mContext, LiveProgramDetailActivity2.class);
+                Log.e(TAG, "0: " + mUserId + " " + item.getUserId());
+                intent.putExtra("programId", item.getId());
+                mContext.startActivity(intent);
+                return;
+            }
+
             if (mUserId.equals(item.getUserId() + "")) {
                 //主播进的直播节目详情页
                 intent = new Intent(mContext, LiveProgramDetailAuthorActivity.class);

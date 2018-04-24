@@ -28,14 +28,11 @@ public class BottomPanelFragment2 extends Fragment {
         btnInput = (ImageView) view.findViewById(R.id.btn_input);
         inputPanel = (InputPanel) view.findViewById(R.id.input_panel);
 
-        btnInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (inputPanel.getVisibility() != View.VISIBLE) {
-                    inputPanel.setVisibility(View.VISIBLE);
-                } else {
-                    inputPanel.setVisibility(View.GONE);
-                }
+        btnInput.setOnClickListener(v -> {
+            if (inputPanel.getVisibility() != View.VISIBLE) {
+                inputPanel.setVisibility(View.VISIBLE);
+            } else {
+                inputPanel.setVisibility(View.GONE);
             }
         });
         return view;

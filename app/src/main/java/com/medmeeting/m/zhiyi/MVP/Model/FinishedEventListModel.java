@@ -4,21 +4,19 @@ import android.util.Log;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Listener.OnLoadDataListListener;
-import com.medmeeting.m.zhiyi.UI.Entity.FollowFinishedEvent;
-import com.medmeeting.m.zhiyi.UI.Entity.HttpResult4;
-
-import java.util.Map;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 
 import rx.Observer;
 
 public class FinishedEventListModel {
     private static final String TAG = FinishedEventListModel.class.getSimpleName();
 
-    public void LoadData(final OnLoadDataListListener listener, Map<String, Object> map){
-        HttpData.getInstance().HttpDataGetMyFinishedMeeting(new Observer<HttpResult4<FollowFinishedEvent>>() {
+    public void LoadData(final OnLoadDataListListener listener, Integer type){
+        HttpData.getInstance().HttpDataGetMyEvents(new Observer<HttpResult3<VAppMyEvents, Object>>() {
             @Override
             public void onCompleted() {
-                Log.e(TAG, "onCompleted");
+
             }
 
             @Override
@@ -32,10 +30,10 @@ public class FinishedEventListModel {
             }
 
             @Override
-            public void onNext(HttpResult4<FollowFinishedEvent> data) {
-                listener.onSuccess(data.getPageInfo().getList());
+            public void onNext(HttpResult3<VAppMyEvents, Object> data) {
+                listener.onSuccess(data.getData());
                 Log.e(TAG, "onNext");
             }
-        }, map);
+        }, type);
     }
 }

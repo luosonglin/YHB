@@ -1,24 +1,337 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="160dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="140dp"
         android:background="@drawable/live_item_shape"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="@android:color/white"
-        app:cardElevation="3dp"
-        app:cardCornerRadius="2dp"
-        app:cardUseCompatPadding="true">
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp">
 
         <com.youth.banner.Banner
             android:id="@+id/banner_news"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="match_parent"
             app:delay_time="5000"
             app:image_scale_type="fit_xy" />
     </android.support.v7.widget.CardView>
-</RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey2" />
+
+    <RelativeLayout
+        android:id="@+id/live_title_rlyt"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="1.5dp"
+            android:layout_height="14dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/deepskyblue" />
+
+        <TextView
+            android:id="@+id/live_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/line"
+            android:gravity="center_vertical"
+            android:text="下午好，今天有两场直播"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/live_more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:gravity="center_vertical"
+            android:text="更多 >"
+            android:textColor="@color/grey"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey2" />
+
+    <RelativeLayout
+        android:id="@+id/live_title_rlyt1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <LinearLayout
+            android:id="@+id/alert1"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/live_image1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:src="@mipmap/index_alert1"
+                android:contentDescription="TODO" />
+
+            <TextView
+                android:id="@+id/live_start_time1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/alert1"
+            android:background="@color/grey1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/status1"
+            android:layout_toRightOf="@+id/line1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/live_name1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/live_name11"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/status1"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="6dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="9sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey2" />
+
+    <RelativeLayout
+        android:id="@+id/live_title_rlyt2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <LinearLayout
+            android:id="@+id/alert2"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/live_image2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:src="@mipmap/index_alert2"
+                android:contentDescription="TODO" />
+
+            <TextView
+                android:id="@+id/live_start_time2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/alert2"
+            android:background="@color/grey1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/status2"
+            android:layout_toRightOf="@+id/line2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/live_name2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/live_name22"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="@color/grey"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/status2"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="9sp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/grey2" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="1.5dp"
+            android:layout_height="14dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/deepskyblue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/line3"
+            android:gravity="center_vertical"
+            android:text="会议精选"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/meeting_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:gravity="center_vertical"
+            android:text="全部 (34) >"
+            android:textColor="@color/grey"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey2" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:layout_width="match_parent"
+        android:layout_height="120dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/grey2" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="30dp">
+
+        <View
+            android:id="@+id/line4"
+            android:layout_width="1.5dp"
+            android:layout_height="14dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/deepskyblue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/line4"
+            android:gravity="center_vertical"
+            android:text="医学新闻"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</LinearLayout>

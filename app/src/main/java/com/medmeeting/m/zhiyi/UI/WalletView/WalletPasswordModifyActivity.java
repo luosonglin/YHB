@@ -13,22 +13,22 @@ import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletPasswordModifyDto;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class WalletPasswordModifyActivity extends AppCompatActivity {
     private static final String TAG = WalletPasswordModifyActivity.class.getSimpleName();
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.pwd0)
+    @BindView(R.id.pwd0)
     EditText oldPwd;
-    @Bind(R.id.pwd1)
+    @BindView(R.id.pwd1)
     EditText newPwd;
-    @Bind(R.id.pwd2)
+    @BindView(R.id.pwd2)
     EditText newPwd2;
-    @Bind(R.id.confirm)
+    @BindView(R.id.confirm)
     TextView confirm;
 
     @Override
@@ -44,12 +44,7 @@ public class WalletPasswordModifyActivity extends AppCompatActivity {
         toolbar.setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     @OnClick(R.id.confirm)

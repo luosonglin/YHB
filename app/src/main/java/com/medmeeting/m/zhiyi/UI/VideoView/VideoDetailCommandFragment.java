@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.VideoView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -19,12 +20,17 @@ import com.medmeeting.m.zhiyi.UI.Entity.BasePageSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoComment;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoCommentUserEntity;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.snappydb.SnappydbException;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import rx.Observer;
 
 /**
@@ -37,12 +43,13 @@ import rx.Observer;
 public class VideoDetailCommandFragment extends Fragment {
 
     private static Integer videoId;
-    @Bind(R.id.input_editor)
+    @BindView(R.id.input_editor)
     EditText inputEditor;
-    @Bind(R.id.input_send)
+    @BindView(R.id.input_send)
     Button inputSend;
     private RecyclerView mRecyclerView;
     private BaseQuickAdapter mAdapter;
+    Unbinder unbinder;
 
     public static VideoDetailCommandFragment newInstance(Integer classifys1) {
         VideoDetailCommandFragment fragment = new VideoDetailCommandFragment();
@@ -69,6 +76,7 @@ public class VideoDetailCommandFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video_detail_command, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -119,11 +127,29 @@ public class VideoDetailCommandFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
+
+    private String userId;
+    private String tocPortStatus;
 
     @OnClick(R.id.input_send)
     public void onClick() {
+        try {
+            userId = DBUtils.get(getActivity(), "userId");
+            tocPortStatus = DBUtils.get(getActivity(), "tocPortStatus");
+        } catch (SnappydbException e) {
+            e.printStackTrace();
+        }
+        if (userId == null) {
+            startActivity(new Intent(getActivity(), Login_v2Activity.class));
+            return;
+        }
+        if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+            startActivity(new Intent(getActivity(), ActivateActivity.class));
+            return;
+        }
+
         if (inputEditor.getText().toString().trim().equals("")) {
             ToastUtils.show(getActivity(), "不能发空评论");
             return;

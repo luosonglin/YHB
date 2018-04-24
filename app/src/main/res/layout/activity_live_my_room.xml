@@ -21,7 +21,8 @@
             android:layout_height="50dp"
             android:background="@color/white"
             android:elevation="2dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            tools:targetApi="lollipop">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,12 +49,13 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:elevation="1dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        tools:targetApi="lollipop">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:text="提示：左滑可以编辑或删除直播间"
             android:textSize="12sp"
             android:textColor="@color/deepskyblue"/>

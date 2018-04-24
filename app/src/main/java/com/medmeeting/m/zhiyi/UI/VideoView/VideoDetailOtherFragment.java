@@ -100,13 +100,16 @@ public class VideoDetailOtherFragment extends Fragment {
                     ToastUtils.show(getActivity(), videoListEntityObjectHttpResult3.getMsg());
                     return;
                 }
-                mAdapter.addData(videoListEntityObjectHttpResult3.getData());
+                mAdapter.setNewData(videoListEntityObjectHttpResult3.getData());
                 mAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), VideoDetailActivity.class);
                     i.putExtra("videoId", videoListEntityObjectHttpResult3.getData().get(position).getVideoId());
                     startActivity(i);
                     getActivity().finish();
                 });
+
+                View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
+                mAdapter.addFooterView(view);
             }
         }, searchEntity);
     }

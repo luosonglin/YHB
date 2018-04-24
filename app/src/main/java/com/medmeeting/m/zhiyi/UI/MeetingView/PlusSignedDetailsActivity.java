@@ -1,5 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.MeetingView;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,10 +21,11 @@ import android.widget.Toast;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitmapUtils;
 import com.medmeeting.m.zhiyi.R;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
 import com.snappydb.SnappydbException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -32,63 +34,63 @@ import butterknife.OnClick;
  */
 public class PlusSignedDetailsActivity extends AppCompatActivity {
 
-    @Bind(R.id.meeting_name)
+    @BindView(R.id.meeting_name)
     TextView meetingName;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.share)
+    @BindView(R.id.share)
     TextView share;
-    @Bind(R.id.imageView)
+    @BindView(R.id.imageView)
     ImageView imageView;
-    @Bind(R.id.qrcode_llyt)
+    @BindView(R.id.qrcode_llyt)
     LinearLayout qrcodeLlyt;
-    @Bind(R.id.meeting_name2)
+    @BindView(R.id.meeting_name2)
     TextView meetingName2;
-    @Bind(R.id.info)
+    @BindView(R.id.info)
     LinearLayout info;
-    @Bind(R.id.name_icon)
+    @BindView(R.id.name_icon)
     TextView nameIcon;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     TextView name;
-    @Bind(R.id.time_icon)
+    @BindView(R.id.time_icon)
     TextView timeIcon;
-    @Bind(R.id.time)
+    @BindView(R.id.time)
     TextView time;
-    @Bind(R.id.location_icon)
+    @BindView(R.id.location_icon)
     TextView locationIcon;
-    @Bind(R.id.location)
+    @BindView(R.id.location)
     TextView location;
-    @Bind(R.id.phone_icon)
+    @BindView(R.id.phone_icon)
     TextView phoneIcon;
-    @Bind(R.id.phone)
+    @BindView(R.id.phone)
     TextView phone;
-    @Bind(R.id.email_icon)
+    @BindView(R.id.email_icon)
     TextView emailIcon;
-    @Bind(R.id.email)
+    @BindView(R.id.email)
     TextView email;
-    @Bind(R.id.type_icon)
+    @BindView(R.id.type_icon)
     TextView typeIcon;
-    @Bind(R.id.type)
+    @BindView(R.id.type)
     TextView type;
-    @Bind(R.id.money_icon)
+    @BindView(R.id.money_icon)
     TextView moneyIcon;
-    @Bind(R.id.money)
+    @BindView(R.id.money)
     TextView money;
-    @Bind(R.id.hottopics)
+    @BindView(R.id.hottopics)
     LinearLayout hottopics;
-    @Bind(R.id.textView2)
+    @BindView(R.id.textView2)
     TextView textView2;
-    @Bind(R.id.tip)
+    @BindView(R.id.tip)
     TextView tip;
-    @Bind(R.id.yimatong)
+    @BindView(R.id.yimatong)
     RelativeLayout yimatong;
-    @Bind(R.id.content)
+    @BindView(R.id.content)
     TextView content;
-    @Bind(R.id.yimatong_content)
+    @BindView(R.id.yimatong_content)
     RelativeLayout yimatongContent;
-    @Bind(R.id.button)
+    @BindView(R.id.button)
     Button button;
-    @Bind(R.id.content_plus_signed_details)
+    @BindView(R.id.content_plus_signed_details)
     RelativeLayout contentPlusSignedDetails;
 
     @Override
@@ -131,6 +133,12 @@ public class PlusSignedDetailsActivity extends AppCompatActivity {
             input = DBUtils.get(PlusSignedDetailsActivity.this, "confirmNumber");
         } catch (SnappydbException e) {
             e.printStackTrace();
+        }
+
+        if (input == null) {
+            finish();
+            startActivity(new Intent(PlusSignedDetailsActivity.this, Login_v2Activity.class));
+            return;
         }
         if (input.equals("")){
             Toast.makeText(this,"请先登录", Toast.LENGTH_SHORT).show();

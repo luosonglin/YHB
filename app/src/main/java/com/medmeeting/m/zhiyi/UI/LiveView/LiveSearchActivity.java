@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -25,14 +26,18 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.MVP.Presenter.ListSearchListPresent;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.SearchUserRedAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
 import com.medmeeting.m.zhiyi.UI.Adapter.VideoAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveSearchDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRedEntity;
+import com.medmeeting.m.zhiyi.UI.Entity.UserRedSearchEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListEntity;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoListSearchEntity;
+import com.medmeeting.m.zhiyi.UI.VideoView.LiveRedVipActivity;
 import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
@@ -42,37 +47,41 @@ import com.xiaochao.lcrapiddeveloplibrary.widget.SpringView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class LiveSearchActivity extends AppCompatActivity {
 
-    //    @Bind(R.id.toolbar_title)
+    //    @BindView(R.id.toolbar_title)
 //    TextView toolbarTitleTv;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.search_edit)
+    @BindView(R.id.search_edit)
     EditText searchEt;
 
-    @Bind(R.id.search_tag_llyt)
+    @BindView(R.id.search_tag_llyt)
     LinearLayout searchTagLlyt;
-    @Bind(R.id.search_tag_text)
+    @BindView(R.id.search_tag_text)
     TextView searchTagTv;
-    @Bind(R.id.search_tag_delete)
+    @BindView(R.id.search_tag_delete)
     ImageView searchTagIv;
 
-    @Bind(R.id.tags_recyclerView)
+    @BindView(R.id.tags_recyclerView)
     RecyclerView tagsRecyclerView;
-    @Bind(R.id.tags_swipe_refresh_lyt)
+    @BindView(R.id.tags_swipe_refresh_lyt)
     SwipeRefreshLayout tagsSwipeRefreshLyt;
 
+    @BindView(R.id.rv_list_user)
+    RecyclerView rvUserList;
+    private BaseQuickAdapter mUserAdapter;
+
     private static final String TAG = LiveSearchActivity.class.getSimpleName();
-    @Bind(R.id.type)
+    @BindView(R.id.type)
     TextView typeTv;
-    @Bind(R.id.search_tv)
+    @BindView(R.id.search_tv)
     TextView searchTv;
 
     private String classify = "";
@@ -112,6 +121,9 @@ public class LiveSearchActivity extends AppCompatActivity {
         initToolbar();
 
         initTagsView();
+
+        initUsersView();
+
         initLivesView();
 
         initVideoView();
@@ -122,6 +134,59 @@ public class LiveSearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         toolbar.setNavigationOnClickListener(view -> finish());
+    }
+
+    private void initUsersView() {
+        rvUserList.setVisibility(View.GONE);
+        rvUserList.setLayoutManager(new LinearLayoutManager(LiveSearchActivity.this, LinearLayoutManager.HORIZONTAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        });
+        rvUserList.setHasFixedSize(true);
+        mUserAdapter = new SearchUserRedAdapter(R.layout.item_user_red, null);
+        rvUserList.setAdapter(mUserAdapter);
+    }
+
+    private void searchUser(String word) {
+        UserRedSearchEntity userRedSearchEntity = new UserRedSearchEntity();
+        userRedSearchEntity.setPageNum(1);
+        userRedSearchEntity.setPageSize(100);
+        userRedSearchEntity.setUserName(word);
+        HttpData.getInstance().HttpDataSearchRedUser(new Observer<HttpResult3<UserRedEntity, Object>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtils.show(LiveSearchActivity.this, e.getMessage());
+                Log.e(LiveSearchActivity.this.getLocalClassName(), e.getMessage());
+            }
+
+            @Override
+            public void onNext(HttpResult3<UserRedEntity, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(LiveSearchActivity.this, data.getMsg());
+                    return;
+                }
+
+                if (data.getData().size() == 0) {
+                    rvUserList.setVisibility(View.GONE);
+                    return;
+                }
+                rvUserList.setVisibility(View.VISIBLE);
+
+                mUserAdapter.setNewData(data.getData());
+                mUserAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
+                    Intent intent = new Intent(LiveSearchActivity.this, LiveRedVipActivity.class);
+                    intent.putExtra("userId", data.getData().get(position).getUserId());
+                    startActivity(intent);
+                });
+            }
+        }, userRedSearchEntity);
     }
 
     private void initLivesView() {
@@ -164,31 +229,28 @@ public class LiveSearchActivity extends AppCompatActivity {
                 window.showAsDropDown(typeTv, 0, 20);
 
                 RelativeLayout relativeLayout = (RelativeLayout) popupView.findViewById(R.id.public_rlyt);
-                relativeLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        typeTv.setText("公开 ▼");
-                        window.dismiss();
-                        type = "公开";
-                        searchEt.setHint("请输入直播间、直播、描述信息");
-                        tagsSwipeRefreshLyt.setVisibility(View.VISIBLE);
-                    }
+                relativeLayout.setOnClickListener(view12 -> {
+                    typeTv.setText("公开 ▼");
+                    window.dismiss();
+                    type = "公开";
+                    searchEt.setHint("请输入直播间、直播、描述信息");
+                    tagsSwipeRefreshLyt.setVisibility(View.VISIBLE);
                 });
                 RelativeLayout relativeLayout2 = (RelativeLayout) popupView.findViewById(R.id.private_rlyt);
-                relativeLayout2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        typeTv.setText("私密 ▼");
-                        window.dismiss();
-                        type = "私密";
-                        searchEt.setHint("请输入房间号ID");
-                        tagsSwipeRefreshLyt.setVisibility(View.GONE);
-                    }
+                relativeLayout2.setOnClickListener(view1 -> {
+                    typeTv.setText("私密 ▼");
+                    window.dismiss();
+                    type = "私密";
+                    searchEt.setHint("请输入房间号ID");
+                    tagsSwipeRefreshLyt.setVisibility(View.GONE);
                 });
                 break;
             case R.id.search_tv:
+                if (!searchEt.getText().toString().equals(""))
+                    searchUser(searchEt.getText().toString());
+
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
                 if ("公开".equals(type)) {
                     liveSearchDto.setKeyword(searchEt.getText().toString());
@@ -199,8 +261,6 @@ public class LiveSearchActivity extends AppCompatActivity {
                     liveSearchDto.setRoomNumber(searchEt.getText().toString());// test data 411826
                     liveSearchDto.setLabelIds(labelIds);
                 }
-
-//                present.LoadData(false, liveSearchDto);
                 //请求网络数据
                 HttpData.getInstance().HttpDataGetPrograms(new Observer<HttpResult3<LiveDto, Object>>() {
                     @Override
@@ -215,6 +275,12 @@ public class LiveSearchActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(HttpResult3<LiveDto, Object> data) {
+//                        if (data.getData().size() > 4) {
+//                            List<LiveDto> lives = new ArrayList<>()
+//
+//                        } else {
+//
+//                        }
                         mQuickAdapter.setNewData(data.getData());
                         mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                             Intent i = new Intent(LiveSearchActivity.this, LiveProgramDetailActivity2.class);
@@ -230,11 +296,16 @@ public class LiveSearchActivity extends AppCompatActivity {
                     VideoListSearchEntity searchEntity = new VideoListSearchEntity();
                     searchEntity.setPageNum(1);
                     searchEntity.setPageSize(100);
-                    searchEntity.setKeyword(searchEt.getText().toString());
+                    if ("公开".equals(type)) {
+                        searchEntity.setKeyword(searchEt.getText().toString());
+                        searchEntity.setRoomNumber(null);
+                    } else if ("私密".equals(type)) {
+                        searchEntity.setKeyword(null);
+                        searchEntity.setRoomNumber(searchEt.getText().toString());
+                    }
                     searchEntity.setLabelId(labelVideo);
                     searchEntity.setRoomId(null);
                     searchEntity.setProgramId(null);
-                    searchEntity.setRoomNumber(null);
                     searchEntity.setVideoUserId(null);
                     HttpData.getInstance().HttpDataGetVideos(new Observer<HttpResult3<VideoListEntity, Object>>() {
                         @Override

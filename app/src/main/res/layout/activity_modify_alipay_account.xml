@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
@@ -61,7 +61,6 @@
             android:singleLine="true"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
-            android:textColor="@color/grey"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -88,7 +87,6 @@
             android:maxLines="1"
             android:paddingLeft="18dp"
             android:paddingRight="18dp"
-            android:textColor="@color/grey"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -169,7 +167,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:src="@mipmap/wallet_add_identity_number_icon" />
+            android:src="@mipmap/wallet_add_identity_number_icon"
+            android:contentDescription="TODO" />
     </LinearLayout>
 
     <LinearLayout
@@ -194,18 +193,16 @@
                 android:id="@+id/code"
                 android:layout_width="match_parent"
                 android:layout_height="47dp"
-                android:layout_toLeftOf="@+id/get_code_textview"
+                android:layout_toStartOf="@+id/get_code_textview"
                 android:background="@null"
                 android:hint="请输入验证码"
-                android:imeActionId="@+id/login"
                 android:imeActionLabel="Sign in"
                 android:imeOptions="actionUnspecified"
                 android:inputType="number"
                 android:maxLines="1"
-                android:paddingLeft="18dp"
-                android:paddingRight="28dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="28dp"
                 android:singleLine="true"
-                android:textColor="@color/grey"
                 android:textColorHighlight="@color/grey"
                 android:textColorHint="@color/grey"
                 android:textColorLink="@color/grey"
@@ -215,10 +212,10 @@
                 android:id="@+id/get_code_textview"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/textview_radius_blue"
                 android:gravity="center"
                 android:text="获取验证码"

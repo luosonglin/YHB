@@ -164,22 +164,19 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     @Override
     public void showLoadFailMsg() {
         //设置加载错误页显示
-        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageIndex=1;
+        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, v -> {
+            PageIndex=1;
 //                present.LoadData("1",PageIndex,false);
-                present.LoadData(false, roomId);
-            }
+            present.LoadData(false, roomId);
         });
     }
 
     @Override
     public void showLoadCompleteAllData() {
         //所有数据加载完成后显示
-        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
-        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
-        mQuickAdapter.addFooterView(view);
+//        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
+//        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
+//        mQuickAdapter.addFooterView(view);
     }
 
     @Override

@@ -18,14 +18,12 @@ import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -51,12 +49,12 @@ import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.ChatListAdapter;
 import com.medmeeting.m.zhiyi.UI.MineView.MyOrderActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
-import com.medmeeting.m.zhiyi.Util.DownloadImageTaskUtil;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutLivePlayer;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
-import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -78,6 +76,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
+import cn.jiguang.analytics.android.api.BrowseEvent;
+import cn.jiguang.analytics.android.api.Currency;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
+import cn.jiguang.analytics.android.api.PurchaseEvent;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
@@ -91,13 +93,13 @@ import static com.shuyu.gsyvideoplayer.video.base.GSYVideoView.CURRENT_STATE_PRE
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 07/11/2017 6:44 PM
- * @describe TODO
+ * @describe 直播节目详情页（普通用户）
  * @email iluosonglin@gmail.com
  * @org Healife
  */
 public class LiveProgramDetailActivity2 extends AppCompatActivity implements Handler.Callback {
 
-    NestedScrollView postDetailNestedScroll;
+    //    NestedScrollView postDetailNestedScroll;
     LandLayoutLivePlayer detailPlayer;
     RelativeLayout activityDetailPlayer;
 
@@ -112,6 +114,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     static final String TAG = LiveProgramDetailActivity2.class.getSimpleName();
     private Integer programId;
     private String url;
+    private String programTitle;
 
 
     //以下为直播室互动参数
@@ -126,13 +129,23 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     private ImageView back;
     private ImageView share;
 
+    /**
+     * 极光统计、购买对象
+     */
+    PurchaseEvent pEvent;
+
+    /**
+     * 统计浏览该页面时长
+     */
+    private long startTime;
+    private long endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_program_detail2);
 
-        postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
+//        postDetailNestedScroll = (NestedScrollView) findViewById(R.id.post_detail_nested_scroll);
         detailPlayer = (LandLayoutLivePlayer) findViewById(R.id.detail_player);
         activityDetailPlayer = (RelativeLayout) findViewById(R.id.activity_detail_player);
 
@@ -141,7 +154,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         back = (ImageView) findViewById(R.id.back);
         back.setOnClickListener(view -> finish());
         share = (ImageView) findViewById(R.id.share);
-        share.setOnClickListener(view ->{
+        share.setOnClickListener(view -> {
             ShareBoardConfig config = new ShareBoardConfig();
             config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
             mShareAction.open(config);
@@ -172,6 +185,8 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
         programId = getIntent().getIntExtra("programId", 0);
         initView(programId);
+
+        startTime = System.nanoTime();
     }
 
     /**
@@ -203,7 +218,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
                 .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                    UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + programId);
+                    UMWeb web = new UMWeb(Constant.Share_Live + programId); //http://wap.medmeeting.com/#!/live/room/show/
                     web.setTitle(title);//标题
                     web.setThumb(new UMImage(LiveProgramDetailActivity2.this, photo));  //缩略图
                     web.setDescription(description);//描述
@@ -231,6 +246,20 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         UMShareAPI.get(this).onSaveInstanceState(outState);
     }
 
+
+//    @Override
+//    protected void onResumeFragments() {
+//        initView(programId);
+//        super.onResumeFragments();
+//    }
+
+
+//    @Override
+//    protected void onRestart() {
+//        initView(programId);
+//        super.onRestart();
+//    }
+
     private void initView(Integer programId) {
         HttpData.getInstance().HttpDataGetOpenProgramDetail(new Observer<HttpResult3<Object, LiveProgramDateilsEntity>>() {
             @Override
@@ -249,27 +278,28 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     return;
                 }
                 url = data.getEntity().getRtmpPlayUrl() + "";
+                programTitle = data.getEntity().getTitle();
 
                 initFakerPlayer(url, data.getEntity().getCoverPhoto(), data.getEntity().getTitle(),
                         data.getEntity().getChargeType(), data.getEntity().getPrice(),
-                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
+                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId(),
+                        data.getEntity().getLiveStatus(),
+                        data.getEntity().getCountIncrement(),
+                        data.getEntity().getCountRatio());
 
-                try {
-                    audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
-                    audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
-                    Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
-
-                    if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
-                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserNickName, url);
-                    } else {
-                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserName, url);
-                    }
-                } catch (SnappydbException e) {
-                    e.printStackTrace();
-                }
-
-//                initPlayer(data.getEntity().getRtmpPlayUrl()+" made", data.getEntity().getCoverPhoto(), data.getEntity().getTitle(), data.getEntity().getChargeType(), data.getEntity().getPrice(),
-//                        data.getEntity().getPayFalg(), data.getEntity().getRoomUserId());
+//                try {
+//                    audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
+//                    audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
+//                    Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
+//
+//                    if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+//                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserNickName, url);
+//                    } else {
+//                        loginRongCloudChatRoom(Data.getUserId() + "", audienceUserName, url);
+//                    }
+//                } catch (SnappydbException e) {
+//                    e.printStackTrace();
+//                }
 
                 initTagsView(data.getEntity());
 
@@ -281,11 +311,13 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         }, programId);
     }
 
-    private void initFakerPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId) {
+    //liveStatus (string, optional): 直播状态（ready：准备中，play：直播中，wait：断开中，end：已结束） ,
+    private void initFakerPlayer(String url, String photo, String title, String chargeType, float price, Integer payFlag, Integer userId, String liveStatus, int countIncrement, int countRatio) {
         Glide.with(LiveProgramDetailActivity2.this)
                 .load(photo)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
+                .dontAnimate()
                 .into(cover);
 
         Log.e("initPlayer(1", url);
@@ -298,21 +330,75 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
             buyBtn.setText("购买 " + price + " 元");
             buyBtn.setTextSize(12);
             buyBtn.setTextColor(Color.WHITE);
-            buyBtn.setOnClickListener(view -> initPopupwindow(programId));
+            buyBtn.setOnClickListener(view -> {
+                try {
+                    if (!DBUtils.isSet(LiveProgramDetailActivity2.this, "userToken")) {
+                        startActivity(new Intent(LiveProgramDetailActivity2.this, Login_v2Activity.class));
+                        ToastUtils.show(LiveProgramDetailActivity2.this, "请先登录");
+                        return;
+                    }
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
+                initPopupwindow(programId);
+            });
             Log.e("eeee", chargeType + " " + payFlag + " " + detailPlayer.getBuyButton().getText().toString());
         } else {
-            buyBtn.setVisibility(View.VISIBLE);
-            buyBtn.setText("点击开始");
-            buyBtn.setTextSize(12);
-            buyBtn.setTextColor(Color.WHITE);
-            buyBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
-                            .putExtra("programId", programId)
-                            .putExtra("url", url));
-                }
-            });
+            switch (liveStatus) {
+                case "ready":
+                    buyBtn.setVisibility(View.VISIBLE);
+                    buyBtn.setText("主播正在准备中");
+                    buyBtn.setTextSize(12);
+                    buyBtn.setTextColor(Color.WHITE);
+                    buyBtn.setClickable(false);
+                    break;
+                case "play":
+                    buyBtn.setVisibility(View.VISIBLE);
+                    buyBtn.setText("点击开始");
+                    buyBtn.setTextSize(12);
+                    buyBtn.setTextColor(Color.WHITE);
+                    buyBtn.setClickable(true);
+                    buyBtn.setOnClickListener(view -> {
+
+                        try {
+                            audienceUserName = DBUtils.get(LiveProgramDetailActivity2.this, "userName");
+                            audienceUserNickName = DBUtils.get(LiveProgramDetailActivity2.this, "userNickName");
+                            Log.e(TAG, "haha " + audienceUserName + " " + audienceUserNickName);
+
+                            if (audienceUserName == null || audienceUserName.equals("") || audienceUserName.equals("null")) {
+                                loginRongCloudChatRoom(Data.getUserId() + "", audienceUserNickName, url);
+                            } else {
+                                loginRongCloudChatRoom(Data.getUserId() + "", audienceUserName, url);
+                            }
+                        } catch (SnappydbException e) {
+                            e.printStackTrace();
+                        }
+
+                        startActivity(new Intent(LiveProgramDetailActivity2.this, LivePlayerActivity2.class)
+                                .putExtra("programId", programId)
+                                .putExtra("url", url)
+                                .putExtra("countIncrement", countIncrement)
+                                .putExtra("countRatio", countRatio)
+                        );
+
+                    });
+                    break;
+                case "wait":
+                    buyBtn.setVisibility(View.VISIBLE);
+                    buyBtn.setText("主播已离开");
+                    buyBtn.setTextSize(12);
+                    buyBtn.setTextColor(Color.WHITE);
+                    buyBtn.setClickable(false);
+                    break;
+                case "end":
+                    buyBtn.setVisibility(View.VISIBLE);
+                    buyBtn.setText("直播已结束");
+                    buyBtn.setTextSize(12);
+                    buyBtn.setTextColor(Color.WHITE);
+                    buyBtn.setClickable(false);
+                    break;
+            }
+
         }
     }
 
@@ -382,18 +468,17 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                             super.onClickStartIcon(url, objects);
                         }
                     })
-                    .setLockClickListener(new LockClickListener() {
-                        @Override
-                        public void onClick(View view, boolean lock) {
-                            if (orientationUtils != null) {
-                                //配合下方的onConfigurationChanged
-                                orientationUtils.setEnable(!lock);
-                            }
+                    .setLockClickListener((view, lock) -> {
+                        if (orientationUtils != null) {
+                            //配合下方的onConfigurationChanged
+                            orientationUtils.setEnable(!lock);
                         }
                     })
                     .build(detailPlayer);
 
-        new DownloadImageTaskUtil(detailPlayer.getCoverPhoto()).execute(photo);
+//        new DownloadImageTaskUtil(detailPlayer.getCoverPhoto()).execute(photo);
+        detailPlayer.getCoverPhoto().setImageResource(R.mipmap.video_bg);
+
         if (detailPlayer.getCurrentState() == CURRENT_STATE_NORMAL
                 || detailPlayer.getCurrentState() == CURRENT_STATE_PREPAREING
                 || detailPlayer.getCurrentState() == CURRENT_STATE_PLAYING) {
@@ -417,9 +502,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
             });
         }
         Log.e("initPlayer(2", url);
-        /**
-         * 对比userId chargeType url
-         */
         Log.e("aaaaa", Data.getUserId() + " " + userId + " " + chargeType + " " + payFlag);
         if (Objects.equals(Data.getUserId(), userId)) {
             detailPlayer.getStartButton().setVisibility(View.VISIBLE);
@@ -490,6 +572,15 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     }
 
     @Override
+    protected void onStart() {
+        //511675
+        programId = getIntent().getIntExtra("programId", 0);
+        initView(programId);
+
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
         getCurPlay().onVideoResume();
 
@@ -531,6 +622,13 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 //                Toast.makeText(LivePlayerActivity.this, "退出聊天室失败! errorCode = " + errorCode, Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        endTime = System.nanoTime();
+
+        //极光统计  浏览事件
+        BrowseEvent bEvent = new BrowseEvent(programId + "", programTitle, "直播", (endTime - startTime) / 1000000000);
+        JAnalyticsInterface.onEvent(this, bEvent);
     }
 
 
@@ -546,15 +644,16 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         //为ViewPager设置高度
-        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
-
-        viewPager.setLayoutParams(params);
+//        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+////        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
+//        params.height = this.getWindowManager().getDefaultDisplay().getHeight() + 100 * 1;//800
+//
+//        viewPager.setLayoutParams(params);
 
         setUpViewPager(viewPager, liveProgramDateilsEntity);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(1).select();
+        tabLayout.getTabAt(0).select();
     }
 
     private void setUpViewPager(ViewPager viewPager, LiveProgramDateilsEntity liveProgramDateilsEntity) {
@@ -564,7 +663,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         mIndexChildAdapter.addFragment(LiveProgramDetailInfoFragment.newInstance(liveProgramDateilsEntity, liveProgramDateilsEntity.getId()), "详情");
         mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(liveProgramDateilsEntity.getRoomId()), "相关预告");
 
-        viewPager.setOffscreenPageLimit(3);//缓存view 的个数
+        viewPager.setOffscreenPageLimit(2);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);
     }
 
@@ -580,9 +679,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         final TextView a = (TextView) academicPopupwindowView.findViewById(R.id.alipay);
         final TextView b = (TextView) academicPopupwindowView.findViewById(R.id.wechat);
 
-        /**
-         * 支付宝
-         */
         a.setOnClickListener(v -> {
             if (checkAliPayInstalled(LiveProgramDetailActivity2.this)) {
                 getPayInfo(v, "ALIPAY", "APP", videoId);
@@ -592,11 +688,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
             }
         });
 
-        /**
-         * 微信
-         */
         b.setOnClickListener(v -> {
-            /** 检测是否有微信软件 */
             if (isWXAppInstalledAndSupported(LiveProgramDetailActivity2.this, api)) {
                 getPayInfo(v, "WXPAY", "APP", videoId);
                 academicPopupWindow.dismiss();
@@ -631,7 +723,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
     private void getPayInfo(final View v, String paymentChannel, String platformType, int programId) {
 
         LiveOrderDto liveOrderDto = new LiveOrderDto();
-        liveOrderDto.setOpenId("");
+//        liveOrderDto.setOpenId("");
         liveOrderDto.setPaymentChannel(paymentChannel);
         liveOrderDto.setPlatformType(platformType);
         liveOrderDto.setProgramId(programId);
@@ -656,6 +748,9 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                     }
                     tradeId = data.getEntity().getPrepayId();
                     pay(v, data.getEntity().getAmount() + "", data.getEntity().getTradeTitle(), "直播", data.getEntity().getPrepayId(), data.getEntity().getAlipayOrderString());
+
+                    //极光统计  购买对象
+                    pEvent = new PurchaseEvent(programId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "直播", 1);
                 }
             }, liveOrderDto);
         } else if ("WXPAY".equals(paymentChannel)) {
@@ -676,12 +771,25 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                         ToastUtils.show(LiveProgramDetailActivity2.this, data.getMsg());
                         return;
                     }
+
+                    Log.e(getLocalClassName(), data.getEntity().getRequestPay().getPartnerid() +  "\n"+
+                            data.getEntity().getRequestPay().getPrepayid() +  "\n"+
+                            data.getEntity().getRequestPay().getNoncestr() +  "\n"+
+                            data.getEntity().getRequestPay().getTimeStamp() +  "\n"+
+                            data.getEntity().getRequestPay().getPackageX() +  "\n"+
+                            data.getEntity().getRequestPay().getSign());
+
                     payByWechat(data.getEntity().getRequestPay().getPartnerid(),
                             data.getEntity().getRequestPay().getPrepayid(),
                             data.getEntity().getRequestPay().getNoncestr(),
                             data.getEntity().getRequestPay().getTimeStamp(),
-                            data.getEntity().getRequestPay().getPackageX(),
+//                            data.getEntity().getRequestPay().getPackageX(),
+                            "Sign=WXPay",
                             data.getEntity().getRequestPay().getSign());
+
+                    //极光统计  购买对象
+                    pEvent = new PurchaseEvent(programId + "", data.getEntity().getTradeTitle(), data.getEntity().getAmount(), true, Currency.CNY, "直播", 1);
+                    Data.setPurchaseEvent(pEvent);
                 }
             }, liveOrderDto);
         }
@@ -691,14 +799,6 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
      * 支付宝支付配置
      * ======================================================================================================================================================
      */
-    // 商户PID
-    public static final String PARTNER = "2088311846356487";
-    // 商户收款账号
-    public static final String SELLER = "zhifubao@healife.com";
-    // 商户私钥，pkcs8格式
-    public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAIoUMNT6sAOC05BU72JoQWbhmJhe9n917DtUrT8kU0nFGzeV+tmSSy+3bsbSbKUg9ngVpyXsfn4ouH33Ktx42H8TAHs3n39qaSAePKgB3o6pOV0vYnpVqnYB1UlecW/vbxv8XcvmcEOS1gE3OwcFh6NTzdgbr+rb+mLbAGlINfWNAgMBAAECgYBDY4FFoKegvwvkCB/g5kLtJDMmQkqJgJLvje8TvvXLLiCPa2pHH2gEfMDa1j3iBYlkqCSwlJBToCoSiDvp6Cy4cRtMKbTSNx00bhLWzpuropvSAH9EIsOJe+rCpOZox+DcIUOFS3TkXkXOKaAW9F2Onqr1nfK+1C9nXMPePOyLnQJBAPnuKnBgAYSxD8OeO2AIjF5iO93Ap1f9q8/L4bxcsw1WfKJlolFKxWC3nnuOrL9qe1DcKOPnKaJHA9XdFH7VNG8CQQCNbqL8HOh/9LhPe8TgwfUl4Bjz0WjQGq3qIQscy0o6JfkAHz+Po2zl+kTugtUguWnlhpFli/fT2d9yaVDj9cvDAkB5DuN/iwExRJJeLkaUPY/AJ9TXlHl6JWUTQa4VjtErpLi58ICu34i7UDVzo6gJD4qrn/gua8m+0KcK8Ar9ZEgBAkBFgan33P0mZU5vQZRwIOIpywh4SuIH5BS0i6i6be38xcypkrHaFabfHy/hR8sWWgkBFDFAhpk1NE3sHHX0kkehAkAud+wmYHchvQ2ME9yxNl5+LHsVRbEOscJIdbPTO95MrBufBfyFyIJ79SQvj/lb+ueEfyr+QUkJU5UxEH8rhhFM";
-    // 支付宝公钥
-    public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCKFDDU+rADgtOQVO9iaEFm4ZiYXvZ/dew7VK0/JFNJxRs3lfrZkksvt27G0mylIPZ4Facl7H5+KLh99yrceNh/EwB7N59/amkgHjyoAd6OqTldL2J6Vap2AdVJXnFv728b/F3L5nBDktYBNzsHBYejU83YG6/q2/pi2wBpSDX1jQIDAQAB";
     private static final int SDK_PAY_FLAG = 1;
 
     @SuppressLint("HandlerLeak")
@@ -739,6 +839,11 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
 
                         Toast.makeText(LiveProgramDetailActivity2.this, "支付成功", Toast.LENGTH_SHORT).show();
                         initView(programId);
+
+                        //购买事件
+                        pEvent.setPurchaseSuccess(true);
+                        JAnalyticsInterface.onEvent(LiveProgramDetailActivity2.this, pEvent);
+
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -748,6 +853,10 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             Toast.makeText(LiveProgramDetailActivity2.this, "支付失败", Toast.LENGTH_SHORT).show();
                         }
+
+                        //购买事件
+                        pEvent.setPurchaseSuccess(false);
+                        JAnalyticsInterface.onEvent(LiveProgramDetailActivity2.this, pEvent);
                     }
                     break;
                 }
@@ -761,11 +870,9 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
      * call alipay sdk pay. 调用SDK支付
      */
     public void pay(View v, String amount, String title, String description, String paymentId, final String payInfo) {
-        if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
+        if (TextUtils.isEmpty(Constant.PARTNER) || TextUtils.isEmpty(Constant.RSA_PRIVATE) || TextUtils.isEmpty(Constant.SELLER)) {
             new AlertDialog.Builder(this).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", (dialoginterface, i) -> {
-                        finish();
-                    }).show();
+                    .setPositiveButton("确定", (dialoginterface, i) -> finish()).show();
             return;
         }
 
@@ -811,8 +918,9 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
         api.registerApp(Constant.WeChat_AppID);
         this.runOnUiThread(() -> {
             try {
+                Log.e(TAG, "runOnUiThread");
                 PayReq req = new PayReq();
-                req.appId = "wx7e6722fad8a0975c";
+                req.appId = Constant.WeChat_AppID;
                 req.partnerId = partnerId;
                 req.prepayId = prepayId;
                 req.nonceStr = nonceStr;
@@ -823,7 +931,7 @@ public class LiveProgramDetailActivity2 extends AppCompatActivity implements Han
                 api.sendReq(req);
             } catch (Exception e) {
                 Log.e("PAY_GET", e.getMessage());
-                Toast.makeText(LiveProgramDetailActivity2.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LiveProgramDetailActivity2.this, "网络错误 " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

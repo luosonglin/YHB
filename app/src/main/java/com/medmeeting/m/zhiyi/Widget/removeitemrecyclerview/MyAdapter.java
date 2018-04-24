@@ -37,6 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter {
                 .load(mList.get(position).getCoverPhoto())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .dontAnimate()
                 .into(viewHolder.background);
 
         viewHolder.liveNumber.setText("房间No：" + mList.get(position).getNumber());

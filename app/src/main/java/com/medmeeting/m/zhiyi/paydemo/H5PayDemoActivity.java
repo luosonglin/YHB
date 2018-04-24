@@ -50,13 +50,7 @@ public class H5PayDemoActivity extends Activity {
 			// 测试H5支付，必须设置要打开的url网站
 			new AlertDialog.Builder(H5PayDemoActivity.this).setTitle("警告")
 					.setMessage("必须配置需要打开的url 站点，请在PayDemoActivity类的h5Pay中配置")
-					.setPositiveButton("确定", new OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							finish();
-						}
-					}).show();
+					.setPositiveButton("确定", (arg0, arg1) -> finish()).show();
 
 		}
 		super.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -115,21 +109,13 @@ public class H5PayDemoActivity extends Activity {
 			final String ex = task.fetchOrderInfoFromH5PayUrl(url);
 			if (!TextUtils.isEmpty(ex)) {
 				System.out.println("paytask:::::" + url);
-				new Thread(new Runnable() {
-					public void run() {
-						System.out.println("payTask:::" + ex);
-						final H5PayResultModel result = task.h5Pay(ex, true);
-						if (!TextUtils.isEmpty(result.getReturnUrl())) {
-							H5PayDemoActivity.this.runOnUiThread(new Runnable() {
-
-								@Override
-								public void run() {
-									view.loadUrl(result.getReturnUrl());
-								}
-							});
-						}
-					}
-				}).start();
+				new Thread(() -> {
+                    System.out.println("payTask:::" + ex);
+                    final H5PayResultModel result = task.h5Pay(ex, true);
+                    if (!TextUtils.isEmpty(result.getReturnUrl())) {
+                        H5PayDemoActivity.this.runOnUiThread(() -> view.loadUrl(result.getReturnUrl()));
+                    }
+                }).start();
 			} else {
 				view.loadUrl(url);
 			}

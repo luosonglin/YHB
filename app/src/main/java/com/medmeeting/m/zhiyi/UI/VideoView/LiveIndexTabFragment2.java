@@ -51,6 +51,9 @@ public class LiveIndexTabFragment2 extends Fragment
     private BaseQuickAdapter mTagsAdapter;
     private TextView mTagsTurnUpTv;
 
+
+    private int page = 1;
+
     public static LiveIndexTabFragment2 newInstance() {
         LiveIndexTabFragment2 fragment = new LiveIndexTabFragment2();
         return fragment;
@@ -97,13 +100,13 @@ public class LiveIndexTabFragment2 extends Fragment
         mTagsRecyclerView.setAdapter(mTagsAdapter);
         getVideoTag();
 
-        getVideos();
+        getVideos(page);
 
         return view;
     }
 
     private void getVideoTag() {
-        Map<String, Integer> options = new HashMap<>();
+        Map<String, Object> options = new HashMap<>();
         options.put("limit", 100);
         HttpData.getInstance().HttpDataGetVideoTags(new Observer<HttpResult3<TagDto, Object>>() {
             @Override
@@ -149,10 +152,10 @@ public class LiveIndexTabFragment2 extends Fragment
     }
 
 
-    private void getVideos() {
+    private void getVideos(int page) {
         VideoListSearchEntity searchEntity = new VideoListSearchEntity();
-        searchEntity.setPageNum(1);
-        searchEntity.setPageSize(100);
+        searchEntity.setPageNum(page);
+        searchEntity.setPageSize(10000);
         searchEntity.setKeyword(null);
         searchEntity.setLabelId(null);
         searchEntity.setRoomId(null);
@@ -175,18 +178,22 @@ public class LiveIndexTabFragment2 extends Fragment
             }
 
             @Override
-            public void onNext(HttpResult3<VideoListEntity, Object> videoListEntityObjectHttpResult3) {
-                if (!videoListEntityObjectHttpResult3.getStatus().equals("success")) {
-                    ToastUtils.show(getActivity(), videoListEntityObjectHttpResult3.getMsg());
+            public void onNext(HttpResult3<VideoListEntity, Object> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(getActivity(), data.getMsg());
                     return;
                 }
-                mQuickAdapter.addHeaderView(mHeaderView);
-                mQuickAdapter.setNewData(videoListEntityObjectHttpResult3.getData());
+                if (mQuickAdapter.getData().size() != 0) {
+                    mQuickAdapter.addData(data.getData());
+                } else {
+                    mQuickAdapter.setNewData(data.getData());
+                }
                 mQuickAdapter.setOnRecyclerViewItemClickListener((view, position) -> {
                     Intent i = new Intent(getActivity(), VideoDetailActivity.class);
-                    i.putExtra("videoId", videoListEntityObjectHttpResult3.getData().get(position).getVideoId());
+                    i.putExtra("videoId", data.getData().get(position).getVideoId());
                     startActivity(i);
                 });
+                mQuickAdapter.addHeaderView(mHeaderView);
             }
         }, searchEntity);
     }
@@ -236,13 +243,15 @@ public class LiveIndexTabFragment2 extends Fragment
 
     @Override
     public void onRefresh() {
-        getVideos();
+        getVideos(page);
         springView.onFinishFreshAndLoad();
     }
 
     @Override
     public void onLoadmore() {
-
+        page++;
+        getVideos(page);
+        springView.onFinishFreshAndLoad();
     }
 }
 

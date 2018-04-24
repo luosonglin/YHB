@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/post_detail_nested_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+    <!--<android.support.v4.widget.NestedScrollView-->
+        <!--android:id="@+id/post_detail_nested_scroll"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:fillViewport="true">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,24 +25,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="230dp"
                     android:layout_marginTop="24dp"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitXY"
+                    android:contentDescription="TODO" />
 
                 <ImageView
                     android:id="@+id/back"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:layout_marginTop="24dp"
-                    android:layout_marginLeft="20dp"
-                    android:src="@mipmap/back_grey"/>
+                    android:layout_marginStart="20dp"
+                    android:src="@mipmap/back_grey"
+                    android:contentDescription="TODO" />
 
                 <ImageView
                     android:id="@+id/share"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:layout_marginTop="24dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
-                    android:src="@mipmap/share_grey"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@mipmap/share_grey"
+                    android:contentDescription="TODO" />
 
                 <TextView
                     android:id="@+id/buy"
@@ -91,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    <!--</android.support.v4.widget.NestedScrollView>-->
 
     <com.medmeeting.m.zhiyi.Widget.videoplayer.LandLayoutLivePlayer
         android:id="@+id/detail_player"

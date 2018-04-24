@@ -103,12 +103,9 @@ public class RxShineView extends View {
         ValueAnimator.setFrameDelay(FRAME_REFRESH_DELAY);
         clickAnimator.setDuration(clickAnimDuration);
         clickAnimator.setInterpolator(new RxEasingInterpolator(RxEase.QUART_OUT));
-        clickAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                clickValue = (float) valueAnimator.getAnimatedValue();
-                invalidate();
-            }
+        clickAnimator.addUpdateListener(valueAnimator -> {
+            clickValue = (float) valueAnimator.getAnimatedValue();
+            invalidate();
         });
         clickAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -174,24 +171,21 @@ public class RxShineView extends View {
         rxShineButton.getLocationInWindow(location);
         centerAnimX = location[0] + btnWidth / 2;
         centerAnimY = getMeasuredHeight() - rxShineButton.getBottomHeight() + btnHeight / 2;
-        mRxShineAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                value = (float) valueAnimator.getAnimatedValue();
-                if (shineSize != 0 && shineSize > 0) {
-                    paint.setStrokeWidth((shineSize) * (shineDistanceMultiple - value));
-                    paintSmall.setStrokeWidth(((float) shineSize / 3 * 2) * (shineDistanceMultiple - value));
-                } else {
-                    paint.setStrokeWidth((btnWidth / 2) * (shineDistanceMultiple - value));
-                    paintSmall.setStrokeWidth((btnWidth / 3) * (shineDistanceMultiple - value));
-                }
-
-
-                rectF.set(centerAnimX - (btnWidth / (3 - shineDistanceMultiple) * value), centerAnimY - (btnHeight / (3 - shineDistanceMultiple) * value), centerAnimX + (btnWidth / (3 - shineDistanceMultiple) * value), centerAnimY + (btnHeight / (3 - shineDistanceMultiple) * value));
-                rectFSmall.set(centerAnimX - (btnWidth / ((3 - shineDistanceMultiple) + distanceOffset) * value), centerAnimY - (btnHeight / ((3 - shineDistanceMultiple) + distanceOffset) * value), centerAnimX + (btnWidth / ((3 - shineDistanceMultiple) + distanceOffset) * value), centerAnimY + (btnHeight / ((3 - shineDistanceMultiple) + distanceOffset) * value));
-
-                invalidate();
+        mRxShineAnimator.addUpdateListener(valueAnimator -> {
+            value = (float) valueAnimator.getAnimatedValue();
+            if (shineSize != 0 && shineSize > 0) {
+                paint.setStrokeWidth((shineSize) * (shineDistanceMultiple - value));
+                paintSmall.setStrokeWidth(((float) shineSize / 3 * 2) * (shineDistanceMultiple - value));
+            } else {
+                paint.setStrokeWidth((btnWidth / 2) * (shineDistanceMultiple - value));
+                paintSmall.setStrokeWidth((btnWidth / 3) * (shineDistanceMultiple - value));
             }
+
+
+            rectF.set(centerAnimX - (btnWidth / (3 - shineDistanceMultiple) * value), centerAnimY - (btnHeight / (3 - shineDistanceMultiple) * value), centerAnimX + (btnWidth / (3 - shineDistanceMultiple) * value), centerAnimY + (btnHeight / (3 - shineDistanceMultiple) * value));
+            rectFSmall.set(centerAnimX - (btnWidth / ((3 - shineDistanceMultiple) + distanceOffset) * value), centerAnimY - (btnHeight / ((3 - shineDistanceMultiple) + distanceOffset) * value), centerAnimX + (btnWidth / ((3 - shineDistanceMultiple) + distanceOffset) * value), centerAnimY + (btnHeight / ((3 - shineDistanceMultiple) + distanceOffset) * value));
+
+            invalidate();
         });
         mRxShineAnimator.startAnim(this, centerAnimX, centerAnimY);
         clickAnimator.start();

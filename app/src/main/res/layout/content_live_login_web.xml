@@ -55,7 +55,8 @@
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@color/limegreen"
         card_view:cardCornerRadius="20dp"
-        card_view:cardElevation="2dp">
+        card_view:cardElevation="2dp"
+        android:focusable="true">
 
         <Button
             android:id="@+id/live_login_web_confirm"
@@ -79,7 +80,8 @@
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="20dp"
-        card_view:cardElevation="2dp">
+        card_view:cardElevation="2dp"
+        android:focusable="true">
 
         <Button
             android:id="@+id/live_login_web_cancel"

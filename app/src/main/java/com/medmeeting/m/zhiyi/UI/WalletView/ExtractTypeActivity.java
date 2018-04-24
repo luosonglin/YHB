@@ -13,30 +13,30 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.WalletAccountDto;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class ExtractTypeActivity extends AppCompatActivity {
     private static final String TAG = ExtractTypeActivity.class.getSimpleName();
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.account_number_add_status)
+    @BindView(R.id.account_number_add_status)
     TextView accountNumberAddStatus;
-    @Bind(R.id.account_number_rlyt)
+    @BindView(R.id.account_number_rlyt)
     RelativeLayout accountNumberRlyt;
-    @Bind(R.id.alipay_add_status)
+    @BindView(R.id.alipay_add_status)
     TextView alipayAddStatus;
-    @Bind(R.id.alipay_rlyt)
+    @BindView(R.id.alipay_rlyt)
     RelativeLayout alipayRlyt;
-    @Bind(R.id.private_bank)
+    @BindView(R.id.private_bank)
     TextView privateBankTv;
-    @Bind(R.id.account_number_private_rlyt)
+    @BindView(R.id.account_number_private_rlyt)
     RelativeLayout accountNumberPrivateRlyt;
-    @Bind(R.id.alipay_add_private_status)
+    @BindView(R.id.alipay_add_private_status)
     TextView alipayAddPrivateStatus;
-    @Bind(R.id.alipay_private_rlyt)
+    @BindView(R.id.alipay_private_rlyt)
     RelativeLayout alipayPrivateRlyt;
 
     private WalletAccountDto publicBank = null;

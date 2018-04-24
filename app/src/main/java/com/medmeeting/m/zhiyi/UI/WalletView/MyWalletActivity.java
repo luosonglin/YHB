@@ -22,24 +22,24 @@ import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
 public class MyWalletActivity extends AppCompatActivity {
     private static final String TAG = MyWalletActivity.class.getSimpleName();
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.balance)
+    @BindView(R.id.balance)
     TextView balanceTv;
-    @Bind(R.id.apply_btn)
+    @BindView(R.id.apply_btn)
     Button applyBtn;
-    @Bind(R.id.trade_detail_btn)
+    @BindView(R.id.trade_detail_btn)
     Button tradeDetailBtn;
-    @Bind(R.id.agreement)
+    @BindView(R.id.agreement)
     Button radioBtn;
-    @Bind(R.id.agreement_llyt)
+    @BindView(R.id.agreement_llyt)
     LinearLayout agreementLlyt;
 
     private Handler mHandler2;
@@ -137,32 +137,24 @@ public class MyWalletActivity extends AppCompatActivity {
         toolbar.setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.live_point));
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Intent intent = null;
-                switch (item.getItemId()) {
-                    case R.id.action_setting_apply:
-                        intent = new Intent(MyWalletActivity.this, SettingWithdrawActivity.class);
-                        break;
-                    case R.id.action_setting_pay:
-                        if (password == null) {
-                            intent = new Intent(MyWalletActivity.this, WalletPasswordFirstSettingActivity.class);
-                        } else {
-                            intent = new Intent(MyWalletActivity.this, WalletPasswordActivity.class);
-                        }
-                        break;
-                }
-                startActivity(intent);
-                return true;
+        toolbar.setOnMenuItemClickListener(item -> {
+            Intent intent = null;
+            switch (item.getItemId()) {
+                case R.id.action_setting_apply:
+                    intent = new Intent(MyWalletActivity.this, SettingWithdrawActivity.class);
+                    break;
+                case R.id.action_setting_pay:
+                    if (password == null) {
+                        intent = new Intent(MyWalletActivity.this, WalletPasswordFirstSettingActivity.class);
+                    } else {
+                        intent = new Intent(MyWalletActivity.this, WalletPasswordActivity.class);
+                    }
+                    break;
             }
+            startActivity(intent);
+            return true;
         });
     }
 

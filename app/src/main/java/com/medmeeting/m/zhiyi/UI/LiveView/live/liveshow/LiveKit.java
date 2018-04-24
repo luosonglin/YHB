@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.EmojiManager;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.BaseMsgView;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.GiftMessage;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.GiftMsgView;
@@ -126,7 +125,6 @@ android wen ge
      */
     public static void init(Context context, String appKey) {
         RongIMClient.init(context, appKey);
-        EmojiManager.init(context);
 
         //设置监听器来监听接收到的消息
         RongIMClient.setOnReceiveMessageListener(onReceiveMessageListener);

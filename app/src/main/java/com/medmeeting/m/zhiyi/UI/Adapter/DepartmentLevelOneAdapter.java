@@ -1,8 +1,6 @@
 package com.medmeeting.m.zhiyi.UI.Adapter;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -18,7 +16,7 @@ import com.medmeeting.m.zhiyi.Util.FontHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -68,9 +66,8 @@ public class DepartmentLevelOneAdapter extends RecyclerView.Adapter implements V
         return new DepartmentLevelOneViewHolder(view);
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final DepartmentLevelOne departmentLevelOne = departmentLevelOnes.get(position);
         final DepartmentLevelOneViewHolder viewHolder = (DepartmentLevelOneViewHolder) holder;
 
@@ -113,11 +110,11 @@ public class DepartmentLevelOneAdapter extends RecyclerView.Adapter implements V
 
     public static class DepartmentLevelOneViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.name)
+        @BindView(R.id.name)
         TextView name;
-        @Bind(R.id.line)
+        @BindView(R.id.line)
         View line;
-        @Bind(R.id.department_level_one_llyt)
+        @BindView(R.id.department_level_one_llyt)
         RelativeLayout departmentLevelOneLlyt;
 
         public TextView getName() {

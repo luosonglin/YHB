@@ -10,7 +10,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -25,24 +24,24 @@ import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChooseDepartmentActivity extends AppCompatActivity
         implements DepartmentLevelOneAdapter.OnRecyclerViewItemClickListener, DepartmentLevelTwoAdapter.OnRecyclerViewItemClickListener {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.level_one_recycler_view)
+    @BindView(R.id.level_one_recycler_view)
     RecyclerView levelOneRecyclerView;
-    @Bind(R.id.level_one_swipe_refresh_lyt)
+    @BindView(R.id.level_one_swipe_refresh_lyt)
     SwipeRefreshLayout levelOneSwipeRefreshLyt;
 
-    @Bind(R.id.level_two_recycler_view)
+    @BindView(R.id.level_two_recycler_view)
     RecyclerView levelTwoRecyclerView;
-    @Bind(R.id.level_two_swipe_refresh_lyt)
+    @BindView(R.id.level_two_swipe_refresh_lyt)
     SwipeRefreshLayout levelTwoSwipeRefreshLyt;
-    @Bind(R.id.content_choose_department)
+    @BindView(R.id.content_choose_department)
     RelativeLayout contentChooseDepartment;
 
     private DepartmentLevelOneAdapter departmentLevelOneAdapter;
@@ -62,7 +61,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
             "心脏外科", "泌尿外科", "胸外科", "烧伤整形科科", "美容整形科科", "小儿外科"};
     private String[] data1 = {"内科", "呼吸内科", "消化内科", "神经内科", "老年医学科", "心脏内科", "感染科", "肾脏内科", "内分泌科", "风湿免疫科", "血液内科"};
     private String[] data2 = {"口腔科", "口腔内科", "口腔修复科", "口腔种植科", "牙周科", "牙体牙髓科", "口腔黏膜科", "口腔正畸科", "颌面外科", "预防口腔科", "儿童口腔科"};
-    private String[] data3 = {"妇产科科", "妇科", "产科", "计划生育科", "生殖内分泌科", "产前诊断科", "遗传咨询科"};
+    private String[] data3 = {"妇产科", "妇科", "产科", "计划生育科", "生殖内分泌科", "产前诊断科", "遗传咨询科"};
     private String[] data4 = {"儿科", "新生儿科", "小儿呼吸内科", "小儿肾内科", "小二消化科", "小儿血液科", "小儿心脏科", "小儿营养保健科", "小儿神经科", "小儿感染科", "小儿免疫科", "小儿皮肤科", "小儿内分泌科", "小儿精神科"};
     private String[] data5 = {"五官科", "耳鼻咽喉头颈外科", "眼科"};
     private String[] data6 = {"传染科", "肝病科", "结核科", "其他传染病科"};
@@ -75,13 +74,18 @@ public class ChooseDepartmentActivity extends AppCompatActivity
     private String[] data13 = {"中西医结合科", "中西医结合肿瘤内科"};
     private String[] data14 = {"急诊医学"};
     private String[] data15 = {"康复理疗科"};
-    private String[] data16 = {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "体验中心"};
+    private String[] data16 = {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "男科", "生殖中心", "体检中心"};
 
     //科室的第一级数据
-    private String[] data00 = {"\uE900" + " " + data0[0], "\uE900" + " " + data1[0], "\uE900" + " " + data2[0], "\uE900" + " " + data3[0], "\uE900" + " " + data4[0],
-            "\uE900" + " " + data5[0], "\uE900" + " " + data6[0], "\uE900" + " " + data7[0], "\uE900" + " " + data8[0], "\uE900" + " " + data9[0],
-            "\uE900" + " " + data10[0], "\uE900" + " " + data11[0], "\uE900" + " " + data12[0], "\uE900" + " " + data13[0], "\uE900" + " " + data14[0],
-            "\uE900" + " " + data15[0], "\uE900" + " " + data16[0]};
+//    private String[] data00 = {"\uE900" + " " + data0[0], "\uE900" + " " + data1[0], "\uE900" + " " + data2[0], "\uE900" + " " + data3[0], "\uE900" + " " + data4[0],
+//            "\uE900" + " " + data5[0], "\uE900" + " " + data6[0], "\uE900" + " " + data7[0], "\uE900" + " " + data8[0], "\uE900" + " " + data9[0],
+//            "\uE900" + " " + data10[0], "\uE900" + " " + data11[0], "\uE900" + " " + data12[0], "\uE900" + " " + data13[0], "\uE900" + " " + data14[0],
+//            "\uE900" + " " + data15[0], "\uE900" + " " + data16[0]};
+
+    private String[] data00 = {" " + data0[0],  " " + data1[0],  " " + data2[0], " " + data3[0],  " " + data4[0],
+            " " + data5[0],  " " + data6[0],  " " + data7[0], " " + data8[0],  " " + data9[0],
+             " " + data10[0],  " " + data11[0], " " + data12[0],  " " + data13[0],  " " + data14[0],
+             " " + data15[0],  " " + data16[0]};
 
     private String[][] data01 = {
             {"外科", "普通外科", "胃肠外科", "甲状腺外科", "甲状腺乳腺外科", "肝脏外科", "胆胰外科", "血管外科",
@@ -89,7 +93,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
                     "心脏外科", "泌尿外科", "胸外科", "烧伤整形科科", "美容整形科科", "小儿外科"},
             {"内科", "呼吸内科", "消化内科", "神经内科", "老年医学科", "心脏内科", "感染科", "肾脏内科", "内分泌科", "风湿免疫科", "血液内科"},
             {"口腔科", "口腔内科", "口腔修复科", "口腔种植科", "牙周科", "牙体牙髓科", "口腔黏膜科", "口腔正畸科", "颌面外科", "预防口腔科", "儿童口腔科"},
-            {"妇产科科", "妇科", "产科", "计划生育科", "生殖内分泌科", "产前诊断科", "遗传咨询科"},
+            {"妇产科", "妇科", "产科", "计划生育科", "生殖内分泌科", "产前诊断科", "遗传咨询科"},
             {"儿科", "新生儿科", "小儿呼吸内科", "小儿肾内科", "小二消化科", "小儿血液科", "小儿心脏科", "小儿营养保健科", "小儿神经科", "小儿感染科", "小儿免疫科", "小儿皮肤科", "小儿内分泌科", "小儿精神科"},
             {"五官科", "耳鼻咽喉头颈外科", "眼科"},
             {"传染科", "肝病科", "结核科", "其他传染病科"},
@@ -102,7 +106,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
             {"中西医结合科", "中西医结合肿瘤内科"},
             {"急诊医学"},
             {"康复理疗科"},
-            {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "体验中心"}
+            {"其他科室", "营养科", "影像科", "超声科", "核医学科", "检验科", "病理科", "疼痛科", "药剂科", "毒理科", "介入科", "职业病科", "全科医学", "高压氧料", "胃食管反流病科", "男科", "生殖中心", "体检中心"}
     };
 
     //用于填充二级菜单
@@ -118,12 +122,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
 
         initView();
         loadData();
@@ -190,12 +189,9 @@ public class ChooseDepartmentActivity extends AppCompatActivity
             }
         });
         levelOneSwipeRefreshLyt.setColorSchemeResources(R.color.colorAccent);
-        levelOneSwipeRefreshLyt.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                levelOneSwipeRefreshLyt.setRefreshing(false);
-                loadData();
-            }
+        levelOneSwipeRefreshLyt.setOnRefreshListener(() -> {
+            levelOneSwipeRefreshLyt.setRefreshing(false);
+            loadData();
         });
     }
 
@@ -211,7 +207,6 @@ public class ChooseDepartmentActivity extends AppCompatActivity
 
         boolean clear = true;
         departmentLevelOneAdapter.setupDepartmentLevelOne(departmentLevelOnes, clear);
-
     }
 
     private void initSecondView() {
@@ -234,12 +229,7 @@ public class ChooseDepartmentActivity extends AppCompatActivity
             }
         });
         levelTwoSwipeRefreshLyt.setColorSchemeResources(R.color.colorAccent);
-        levelTwoSwipeRefreshLyt.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                levelTwoSwipeRefreshLyt.setRefreshing(false);
-            }
-        });
+        levelTwoSwipeRefreshLyt.setOnRefreshListener(() -> levelTwoSwipeRefreshLyt.setRefreshing(false));
     }
 
     private void loadSecondData(String[] data) {
@@ -270,13 +260,13 @@ public class ChooseDepartmentActivity extends AppCompatActivity
     @Override
     public void onItemClick(View view, DepartmentLevelOneAdapter.DepartmentLevelOneViewHolder viewHolder, DepartmentLevelOne departmentLevelOne, int position) {
         Log.i("viewHolder ", viewHolder.getPosition() + " " + viewHolder.getAdapterPosition() + " " + viewHolder.getLayoutPosition() + " " + position);
-        if (viewHolder.getAdapterPosition() == position) {
+       /* if (viewHolder.getAdapterPosition() == position) {
             viewHolder.getName().setText(Html.fromHtml("<font color=\"#32A2F8\">" + departmentLevelOne.getName() + "</font>"));
             viewHolder.getLine().setBackground(this.getResources().getDrawable(R.color.colorAccent));
         } else {
             viewHolder.getName().setText(Html.fromHtml("<font color=\"#000000\">" + departmentLevelOne.getName() + "</font>"));
             viewHolder.getLine().setBackground(this.getResources().getDrawable(R.color.colorPrimaryDark));
-        }
+        }*/
         loadSecondData(data01[position]);
     }
 

@@ -127,7 +127,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="视频主题"
                             android:textColor="@color/black" />
 
@@ -147,7 +147,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -160,7 +160,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="收费模式"
                             android:textColor="@color/black" />
 
@@ -174,7 +174,7 @@
                                 android:id="@+id/free"
                                 android:layout_width="60dp"
                                 android:layout_height="20dp"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:background="@drawable/button_live_free"
                                 android:text="免费"
                                 android:textColor="@color/white"
@@ -184,7 +184,7 @@
                                 android:id="@+id/charge"
                                 android:layout_width="60dp"
                                 android:layout_height="20dp"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:background="@drawable/button_live_gray"
                                 android:text="收费"
                                 android:textColor="@color/black"
@@ -194,7 +194,7 @@
                                 android:id="@+id/charge_amount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
-                                android:layout_marginLeft="20dp"
+                                android:layout_marginStart="20dp"
                                 android:maxLines="1"
                                 android:text=""
                                 android:textSize="10sp"
@@ -205,7 +205,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:background="#EBEBEB" />
 
                     <LinearLayout
@@ -218,7 +218,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
                             android:text="视频介绍"
                             android:textColor="@color/black" />
                     </LinearLayout>

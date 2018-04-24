@@ -9,7 +9,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
@@ -21,33 +20,32 @@ import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
 
 /**
  * @author NapoleonRohaha_Songlin
  * @date on 10/11/2017 5:13 PM
- * @describe TODO
+ * @describe 报名统计
  * @email iluosonglin@gmail.com
  * @org Healife
  */
 public class LiveTicketActivity2 extends AppCompatActivity {
 
-
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.settlementBtn)
+    @BindView(R.id.settlementBtn)
     TextView settlementBtn;
-    @Bind(R.id.totalAmount)
+    @BindView(R.id.totalAmount)
     TextView totalAmount;
-    @Bind(R.id.actualAmount)
+    @BindView(R.id.actualAmount)
     TextView actualAmount;
-    @Bind(R.id.detail)
+    @BindView(R.id.detail)
     TextView detailTv;
-    @Bind(R.id.rv_list)
+    @BindView(R.id.rv_list)
     RecyclerView mRecyclerView;
 
     private Integer programId;
@@ -72,13 +70,7 @@ public class LiveTicketActivity2 extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -108,7 +100,56 @@ public class LiveTicketActivity2 extends AppCompatActivity {
                 totalAmount.setText("¥ " + data.getEntity().getTotalAmount() + "元");
                 actualAmount.setText("实际到账金额：    ¥ " + data.getEntity().getActualAmount() + "元");
                 settlementBtn.setOnClickListener(view -> {
-                    HttpData.getInstance().HttpDataExtract(new Observer<HttpResult3>() {
+//                    HttpData.getInstance().HttpDataExtract(new Observer<HttpResult3>() {
+//                        @Override
+//                        public void onCompleted() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            ToastUtils.show(LiveTicketActivity2.this, e.getMessage());
+//                        }
+//
+//                        @Override
+//                        public void onNext(HttpResult3 httpResult3) {
+//                            if (!httpResult3.getStatus().equals("success")) {
+//                                if (httpResult3.getMsg().equals("直播节目尚未结束，不可提现。")) {
+//                                    new AlertDialog.Builder(LiveTicketActivity2.this)
+//                                            .setIcon(R.mipmap.logo)
+//                                            .setTitle("是否关闭该直播")
+//                                            .setMessage("提示: 关闭该直播后才能提现")
+//                                            .setNegativeButton("取消", (dialogInterface, i) -> finish())
+//                                            .setPositiveButton("确认", (dialogInterface, i) -> HttpData.getInstance().HttpDataCloseProgram(new Observer<HttpResult3>() {
+//                                                @Override
+//                                                public void onCompleted() {
+//                                                }
+//
+//                                                @Override
+//                                                public void onError(Throwable e) {
+//                                                }
+//
+//                                                @Override
+//                                                public void onNext(HttpResult3 httpResult3) {
+//                                                    if (!httpResult3.getStatus().equals("success")) {
+//                                                        ToastUtils.show(LiveTicketActivity2.this, httpResult3.getMsg());
+//                                                        return;
+//                                                    }
+//                                                    ToastUtils.show(LiveTicketActivity2.this, "成功关闭该场直播，\n 再次点击可进行提现");
+//                                                }
+//                                            }, programId))
+//                                            .show();
+//                                } else {
+//                                    ToastUtils.show(LiveTicketActivity2.this, httpResult3.getMsg());
+//                                }
+//
+//                                return;
+//                            }
+//                            startActivity(new Intent(LiveTicketActivity2.this, MyWalletActivity.class));
+//                        }
+//                    }, programId);
+
+                    HttpData.getInstance().HttpDataPostLiveSettlement(new Observer<HttpResult3>() {
                         @Override
                         public void onCompleted() {
 
@@ -122,11 +163,11 @@ public class LiveTicketActivity2 extends AppCompatActivity {
                         @Override
                         public void onNext(HttpResult3 httpResult3) {
                             if (!httpResult3.getStatus().equals("success")) {
-                                if (httpResult3.getMsg().equals("直播节目尚未结束，不可提现。")) {
+                                if (httpResult3.getErrorCode().equals("70001")) {   //httpResult3.getMsg().equals("直播节目尚未结束，不可结算。") ||
                                     new AlertDialog.Builder(LiveTicketActivity2.this)
                                             .setIcon(R.mipmap.logo)
-                                            .setTitle("是否关闭该直播")
-                                            .setMessage("提示: 关闭该直播后才能提现")
+                                            .setTitle(" ")
+                                            .setMessage("温馨提示: \n关闭直播后将无法开启直播，确定要结束直播吗？")
                                             .setNegativeButton("取消", (dialogInterface, i) -> finish())
                                             .setPositiveButton("确认", (dialogInterface, i) -> HttpData.getInstance().HttpDataCloseProgram(new Observer<HttpResult3>() {
                                                 @Override
@@ -164,7 +205,7 @@ public class LiveTicketActivity2 extends AppCompatActivity {
                         .setPositiveButton("知道啦", (dialog, which) -> dialog.dismiss())
                         .create()
                         .show());
-                mAdapter.addData(data.getEntity().getPayList());
+                mAdapter.setNewData(data.getEntity().getPayList());
             }
         }, programId);
     }

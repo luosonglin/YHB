@@ -18,7 +18,8 @@
         <ImageView
             android:layout_width="180dp"
             android:layout_height="180dp"
-            android:src="@mipmap/wallet_center" />
+            android:src="@mipmap/wallet_center"
+            android:contentDescription="TODO" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,7 +59,8 @@
             android:foreground="?android:attr/selectableItemBackground"
             card_view:cardBackgroundColor="@android:color/white"
             card_view:cardCornerRadius="20dp"
-            card_view:cardElevation="2dp">
+            card_view:cardElevation="2dp"
+            android:focusable="true">
 
             <Button
                 android:id="@+id/apply_btn"
@@ -83,7 +85,8 @@
             android:foreground="?android:attr/selectableItemBackground"
             card_view:cardBackgroundColor="@android:color/white"
             card_view:cardCornerRadius="20dp"
-            card_view:cardElevation="2dp">
+            card_view:cardElevation="2dp"
+            android:focusable="true">
 
             <Button
                 android:id="@+id/trade_detail_btn"

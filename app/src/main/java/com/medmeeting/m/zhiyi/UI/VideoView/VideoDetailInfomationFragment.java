@@ -17,14 +17,19 @@ import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
 import com.medmeeting.m.zhiyi.UI.Entity.UserCollect;
 import com.medmeeting.m.zhiyi.UI.Entity.VideoDetailsEntity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
+import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.medmeeting.m.zhiyi.Widget.likeview.RxShineButton;
+import com.snappydb.SnappydbException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import rx.Observer;
 
 /**
@@ -37,22 +42,28 @@ import rx.Observer;
 public class VideoDetailInfomationFragment extends Fragment {
 
     private static Integer videoId;
-    @Bind(R.id.avatar)
+    @BindView(R.id.avatar)
     ImageView avatar;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.author_name)
+    @BindView(R.id.author_name)
     TextView authorName;
-    @Bind(R.id.like)
+    @BindView(R.id.like)
     RxShineButton like;
-    @Bind(R.id.time)
+    @BindView(R.id.time)
     TextView time;
-    @Bind(R.id.type)
+    @BindView(R.id.type)
     TextView type;
-    @Bind(R.id.sum)
+    @BindView(R.id.sum)
     TextView sum;
-    @Bind(R.id.des)
+    @BindView(R.id.des)
     TextView des;
+
+    Unbinder unbinder;
+
+    private String tocPortStatus;
+    private String userId;
+
 
     public static VideoDetailInfomationFragment newInstance(Integer classifys1) {
         VideoDetailInfomationFragment fragment = new VideoDetailInfomationFragment();
@@ -78,6 +89,7 @@ public class VideoDetailInfomationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_detail_information, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
 
         like.init(getActivity());
@@ -106,12 +118,14 @@ public class VideoDetailInfomationFragment extends Fragment {
             public void onNext(HttpResult3<Object, VideoDetailsEntity> data) {
                 Glide.with(getActivity())
                         .load(data.getEntity().getUserPic())
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .crossFade()
+                        .dontAnimate()
+                        .placeholder(R.mipmap.avator_default)
                         .transform(new GlideCircleTransform(getActivity()))
                         .into(avatar);
                 avatar.setOnClickListener(view -> {
-                    Intent intent = new Intent(getActivity(), LiveAndVideoRoomActivity.class);
+                    Intent intent = new Intent(getActivity(), LiveRedVipActivity.class);
                     intent.putExtra("userId", data.getEntity().getUserId());
                     startActivity(intent);
                 });
@@ -121,7 +135,7 @@ public class VideoDetailInfomationFragment extends Fragment {
                 } else {
                     authorName.setText(data.getEntity().getAuthorName() + " | " + data.getEntity().getAuthorTitle());
                 }
-                time.setText("时间：   " + DateUtil.formatDate(data.getEntity().getCreateTime(), DateUtil.TYPE_06));
+                time.setText("时间：   " + DateUtils.formatDate(data.getEntity().getCreateTime(), DateUtils.TYPE_06));
                 if (data.getEntity().getChargeType().equals("no")) {
                     type.setText("观看：   公开免费");
                 } else {
@@ -138,6 +152,21 @@ public class VideoDetailInfomationFragment extends Fragment {
 //                    like.setBtnFillColor(Color.YELLOW);//点击后颜色
                 }
                 like.setOnClickListener(view -> {
+                    try {
+                        userId = DBUtils.get(getActivity(), "userId");
+                        tocPortStatus = DBUtils.get(getActivity(), "tocPortStatus");
+                    } catch (SnappydbException e) {
+                        e.printStackTrace();
+                    }
+                    if (userId == null) {
+                        startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                        return;
+                    }
+                    if (tocPortStatus == null || tocPortStatus.equals("wait_activation")) {
+                        startActivity(new Intent(getActivity(), ActivateActivity.class));
+                        return;
+                    }
+
                     like.setChecked(false);//不能再点
                     collectService(data.getEntity().isCollectFlag());
                 });
@@ -184,7 +213,7 @@ public class VideoDetailInfomationFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @OnClick({R.id.avatar})

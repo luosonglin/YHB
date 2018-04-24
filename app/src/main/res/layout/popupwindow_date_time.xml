@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/popup_date_time"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -51,7 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:calendarViewShown="false"
-            android:datePickerMode="spinner"/>
+            android:datePickerMode="spinner"
+            tools:targetApi="lollipop" />
         <!--android:datePickerMode="calendar"
         定义部件的外观，有spinner和calendar两种选择（Api 21 以上才能用）-->
 
@@ -61,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:timePickerMode="spinner"
-            />
+            tools:targetApi="lollipop" />
     </LinearLayout>
 
 </LinearLayout>

@@ -21,7 +21,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+
 
     <!-- 录屏需要的权限 -->
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
@@ -64,12 +65,21 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".MainActivity" />
-        <activity
-            android:name=".UI.ListvView.ListvViewActivity"
-            android:label="ListvView模式" />
         <activity android:name=".UI.MeetingView.MeetingDetailActivity" />
         <activity
             android:name=".UI.MeetingView.MeetingEnrolActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.MeetingView.MeetingPayOrderActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.MeetingView.MeetingOrderActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.IndexView.MessageDetailActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -78,48 +88,36 @@
         <activity
             android:name=".UI.LiveView.LiveDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".UI.MineView.MyLiveRoomActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.MineView.MyLiveRoomActivity" />
         <activity
             android:name=".UI.LiveView.MyLiveRoomDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.LiveView.LiveProgramDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="wx7e6722fad8a0975c" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".UI.LiveView.LiveBuildRoomActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".UI.LiveView.LiveUpdateRoomActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan" />
         <activity
             android:name=".UI.LiveView.LiveBuildProgramActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".UI.LiveView.LiveUpdateProgramActivity"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateUnchanged|adjustPan" />
         <activity
-            android:name=".UI.OtherVIew.NewsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".UI.IndexView.NewsActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".UI.OtherVIew.WelcomeGuideActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen" />
-        <activity
-            android:name=".UI.MeetingView.MyMeetingActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <!-- umeng -->
         <meta-data
@@ -168,13 +166,6 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- 播放器 -->
-        <activity
-            android:name=".UI.LiveView.LivePlayerActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppThemeFullscreen" />
-
         <receiver android:name=".wxapi.AppRegister">
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
@@ -215,9 +206,6 @@
             android:name=".UI.LiveView.LiveLoginWebActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".UI.LiveView.LiveTicketActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".UI.MineView.ChooseDepartmentActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
@@ -227,21 +215,19 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.MeetingView.PlusSignedDetailsActivity"
+            android:keepScreenOn="true"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"
-            android:keepScreenOn="true"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".UI.MeetingView.ExchangeBusinessCardActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".UI.OtherVIew.BrowserActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".UI.WalletView.RecordActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".UI.WalletView.MyWalletActivity"
             android:label=""
@@ -258,42 +244,115 @@
         <activity android:name=".UI.WalletView.ExtractTypeActivity" />
         <activity android:name=".UI.WalletView.WithdrawStatusActivity" />
         <activity android:name=".UI.WalletView.BankListActivity" />
-        <activity android:name=".UI.WalletView.WalletPasswordActivity"/>
-
+        <activity android:name=".UI.WalletView.WalletPasswordActivity" />
         <activity
             android:name=".UI.VideoView.VideoDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
-
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".UI.LiveView.LiveProgramDetailAuthorActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
-
-        <activity android:name=".UI.LiveView.LiveProgramDetailActivity2"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".UI.LiveView.LiveProgramDetailActivity2"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".UI.LiveView.LivePlayerActivity2"/>
+            android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".UI.VideoView.MyCollectActivity" />
+        <!-- 播放器 -->
+        <activity
+            android:name=".UI.LiveView.LivePlayerActivity2"
+            android:configChanges="orientation"
+            android:screenOrientation="landscape" />
+        <activity android:name=".UI.MineView.MyCollectActivity" />
         <activity android:name=".UI.MineView.MyOrderActivity" />
         <activity android:name=".UI.MineView.MyCollectLiveActivity" />
         <activity android:name=".UI.MineView.MyCollectVideoActivity" />
-        <activity android:name=".UI.VideoView.LiveAndVideoRoomActivity" />
+        <activity android:name=".UI.VideoView.LiveRedVipActivity" />
         <activity android:name=".UI.MineView.MyOrderLiveActivity" />
         <activity android:name=".UI.MineView.MyOrderVideoActivity" />
+        <activity android:name=".UI.MineView.MyMeetingActivity" />
         <activity android:name=".UI.MineView.MyVideoActivity" />
         <activity android:name=".UI.VideoView.VideoUpdateActivity" />
         <activity android:name=".UI.VideoView.VideoInTagActivity" />
         <activity android:name=".UI.LiveView.LiveTicketActivity2" />
-
         <activity
             android:name=".UI.WalletView.WalletWebActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.SearchView.SearchActicity" />
+        <activity android:name=".UI.SearchView.SearchMeetingActivity" />
+        <activity
+            android:name=".UI.IndexView.NewsVideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".UI.IndexView.ImageGalleryActivity" />
+
+        <!-- User defined. 用户自定义的广播接收器 -->
+        <receiver
+            android:name=".UI.BroadcastReceiver.MyJPushReceiver"
+            android:enabled="true">
+            <intent-filter>
+
+                <!-- Required 用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <!-- Required 用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <!-- Required 用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <!-- Required 用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
+                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+
+                <category android:name="com.medmeeting.m.zhiyi" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".UI.IndexView.MessageActivity" />
+        <activity
+            android:name=".UI.IdentityView.ActivateActivity"
+            android:label="@string/title_activity_activate"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified" />
+        <!-- android:windowSoftInputMode="adjustUnspecified|stateHidden" /> -->
+        <!-- android:windowSoftInputMode="adjustResize" /> -->
+        <activity
+            android:name=".UI.IdentityView.ActivatedActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.IdentityView.AuthorizeActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity android:name=".UI.UserInfoView.UpdateUserInfoActivity" />
+        <activity android:name=".UI.IdentityView.AuthorizedActivity" />
+        <activity
+            android:name=".UI.IdentityView.RightsActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.UserInfoView.UpdateUserInfoNickNameActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.UserInfoView.UpdateUserInfoDescriptionActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.UserInfoView.UpdateUserInfoAreaActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UI.SignInAndSignUpView.Login_v2Activity"
+            android:launchMode="singleTop" />
+        <activity android:name=".UI.SignInAndSignUpView.SignUp_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.ResetPassword_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.BindPhone_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.BindSubject_v2Activity" />
+        <activity android:name=".UI.SignInAndSignUpView.FirstPasswdActivity"></activity>
     </application>
 
 </manifest>
