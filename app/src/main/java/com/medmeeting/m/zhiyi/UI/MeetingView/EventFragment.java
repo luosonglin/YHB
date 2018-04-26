@@ -195,6 +195,7 @@ public class EventFragment extends Fragment implements SpringView.OnFreshListene
             }, "EVENT");
         }
 
+        if(eventType == 0) map.remove("eventType");
         HttpData.getInstance().HttpDataGetAllEventList(new Observer<HttpResult3<Event, Object>>() {
             @Override
             public void onCompleted() {
@@ -230,23 +231,6 @@ public class EventFragment extends Fragment implements SpringView.OnFreshListene
                 });
                 sv.onFinishFreshAndLoad();
 
-
-                /*new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-
-                        try {
-                            sleep(320);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } finally {
-                            getActivity().runOnUiThread(() -> {
-                                loadingView.hideLoading();
-                                mRecyclerView.setVisibility(View.VISIBLE);
-                            });
-                        }
-                    }
-                },1102);*/
                 loadingView.hideLoading();
                 mRecyclerView.setVisibility(View.VISIBLE);
 

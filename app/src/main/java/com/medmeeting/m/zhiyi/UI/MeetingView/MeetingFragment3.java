@@ -131,12 +131,13 @@ public class MeetingFragment3 extends Fragment implements OnChannelListener {
                     }
                     //默认添加频道
                     List<TagDto> liveLabels = new ArrayList<>();
-                    liveLabels.add(new TagDto(0, 3,"神经"));
+                    liveLabels.add(new TagDto(0, 0,"全部"));
 
                     mSelectedDatas.addAll(liveLabels);
                     String selectedStr = mGson.toJson(mSelectedDatas);
                     SharedPreferencesMgr.setString(MEETING_SELECTED, selectedStr);
 
+                    liveLabels.clear();
                     liveLabels.addAll(data.getData());
                     mUnSelectedDatas.addAll(liveLabels);
                     String unselectTitle = mGson.toJson(mUnSelectedDatas);
