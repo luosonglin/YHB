@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.EmojiManager;
 
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.TextMessage;
@@ -30,7 +29,7 @@ public class TextMsgView extends BaseMsgView {
 
 //        username.setText(msgContent.getUserInfo().getName() + "： ");
         if (msgContent.getUserInfo() == null) return;
-        msgText.setText(msgContent.getUserInfo().getName() + "： " + EmojiManager.parse(msg.getContent(), msgText.getTextSize()));
+        msgText.setText(msgContent.getUserInfo().getName() + "： " + msg.getContent());
         //msgContent.getUserInfo().getUserId() + " " +
     }
 }

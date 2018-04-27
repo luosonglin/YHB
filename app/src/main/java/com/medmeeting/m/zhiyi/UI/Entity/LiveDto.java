@@ -28,6 +28,8 @@ public class LiveDto {
      * labelNames : 循环,内分泌,神经
      * payCount : 0
      * des : null
+     *
+     * collectCount:
      */
 
     private int id;
@@ -57,6 +59,8 @@ public class LiveDto {
     private int payCount;
     private String des;
 
+    private int collectCount;
+
     public LiveDto() {
     }
 
@@ -71,6 +75,14 @@ public class LiveDto {
         this.chargeType = chargeType;
         this.price = price;
         this.des = des;
+    }
+
+    public int getCollectCount() {
+        return collectCount;
+    }
+
+    public void setCollectCount(int collectCount) {
+        this.collectCount = collectCount;
     }
 
     public int getId() {

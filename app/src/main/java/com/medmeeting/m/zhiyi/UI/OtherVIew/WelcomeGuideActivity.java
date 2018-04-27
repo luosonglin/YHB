@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.GuideViewPagerAdapter;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.SpUtils;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class WelcomeGuideActivity extends Activity implements OnClickListener {
     private Button startBtn;
 
     // 引导页图片资源
-    private static final int[] pics = {R.layout.guide_view_1, R.layout.guide_view_2, R.layout.guide_view_3};
+    private static final int[] pics = {R.layout.guide_view_1, R.layout.guide_view_2, R.layout.guide_view_3, R.layout.guide_view_4};
 
     // 底部小点图片
     private ImageView[] dots;
@@ -47,7 +47,7 @@ public class WelcomeGuideActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_guide);
 
-        views = new ArrayList<View>();
+        views = new ArrayList<>();
 
         // 初始化引导页视图列表
         for (int i = 0; i < pics.length; i++) {
@@ -154,7 +154,7 @@ public class WelcomeGuideActivity extends Activity implements OnClickListener {
 
 
     private void enterMainActivity() {
-        Intent intent = new Intent(WelcomeGuideActivity.this, LoginActivity.class);
+        Intent intent = new Intent(WelcomeGuideActivity.this, Login_v2Activity.class);
         startActivity(intent);
         SpUtils.putBoolean(WelcomeGuideActivity.this, Constant.FIRST_OPEN, true);
         finish();

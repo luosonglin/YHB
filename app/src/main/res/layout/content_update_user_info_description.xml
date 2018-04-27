@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey2"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.medmeeting.m.zhiyi.UI.UserInfoView.UpdateUserInfoDescriptionActivity"
+    tools:showIn="@layout/activity_update_user_info_description">
+
+    <EditText
+        android:id="@+id/des"
+        android:layout_width="match_parent"
+        android:layout_height="132dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/white"
+        android:text=""
+        android:gravity="top"
+        android:textSize="14sp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        />
+
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:background="@color/royalblue"
+        android:text="保存"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:gravity="center"
+        />
+
+</LinearLayout>

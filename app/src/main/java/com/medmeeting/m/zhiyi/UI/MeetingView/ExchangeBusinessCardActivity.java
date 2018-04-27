@@ -26,7 +26,7 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,19 +36,19 @@ public class ExchangeBusinessCardActivity extends AppCompatActivity {
 
 
     private static final String TAG = ExchangeBusinessCardActivity.class.getSimpleName();
-    @Bind(R.id.QRflyt)
+    @BindView(R.id.QRflyt)
     FrameLayout QRflyt;
-    @Bind(R.id.tip)
+    @BindView(R.id.tip)
     TextView tip;
-    @Bind(R.id.company_info)
+    @BindView(R.id.company_info)
     TextView companyInfo;
-    @Bind(R.id.company)
+    @BindView(R.id.company)
     TextView company;
-    @Bind(R.id.nickname)
+    @BindView(R.id.nickname)
     TextView nickname;
-    @Bind(R.id.phone)
+    @BindView(R.id.phone)
     TextView phone;
-    @Bind(R.id.info)
+    @BindView(R.id.info)
     LinearLayout info;
 
     private final static int REQ_CODE = 1102;
@@ -57,17 +57,17 @@ public class ExchangeBusinessCardActivity extends AppCompatActivity {
     private UserInfoDto userInfo;
     private Map<String, Object> options = new HashMap<>();
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     TextView name;
-    @Bind(R.id.hospital)
+    @BindView(R.id.hospital)
     TextView hospital;
-    @Bind(R.id.doctor_llyt)
+    @BindView(R.id.doctor_llyt)
     LinearLayout doctorLlyt;
-    @Bind(R.id.pic)
+    @BindView(R.id.pic)
     CircleImageView pic;
-    @Bind(R.id.QRImage)
+    @BindView(R.id.QRImage)
     ImageView QRImage;
 
     @Override
@@ -98,12 +98,7 @@ public class ExchangeBusinessCardActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(view -> finish());
     }
 
     private void initQRcodeView() {

@@ -27,10 +27,9 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
 import com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity;
@@ -96,12 +95,7 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -115,35 +109,30 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         roomIdTv.setText("房间No." + getIntent().getExtras().getString("number"));
 
         addTv = (TextView) findViewById(R.id.add);
-        addTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MyLiveRoomDetailActivity.this, LiveBuildProgramActivity.class);
-                intent.putExtra("roomId", roomId);
-                startActivity(intent);
-            }
+        addTv.setOnClickListener(view -> {
+            Intent intent = new Intent(MyLiveRoomDetailActivity.this, LiveBuildProgramActivity.class);
+            intent.putExtra("roomId", roomId);
+            startActivity(intent);
         });
         backgroundIv = (ImageView) findViewById(R.id.img);
         Glide.with(MyLiveRoomDetailActivity.this)
                 .load(getIntent().getExtras().getString("coverPhoto"))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
+                .dontAnimate()
 //                .placeholder(R.mipmap.ic_launcher)
                 .into(backgroundIv);
 
         //分享
-        findViewById(R.id.invitation_letter).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initShare(getIntent().getExtras().getInt("roomId"),
-                        getIntent().getExtras().getString("title"),
-                        getIntent().getExtras().getString("coverPhote"),
-                        "欢迎观看" + getIntent().getExtras().getString("title"));//getIntent().getExtras().getString("description")
+        findViewById(R.id.invitation_letter).setOnClickListener(view -> {
+            initShare(getIntent().getExtras().getInt("roomId"),
+                    getIntent().getExtras().getString("title"),
+                    getIntent().getExtras().getString("coverPhoto"),
+                    "欢迎观看" + getIntent().getExtras().getString("title"));
 
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
-            }
+            ShareBoardConfig config = new ShareBoardConfig();
+            config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+            mShareAction.open(config);
         });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
@@ -160,6 +149,8 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         progress = (ProgressActivity) findViewById(R.id.progress);
         //设置RecyclerView的显示模式  当前List模式
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //分割线
+//        mRecyclerView.addItemDecoration(new DividerItemDecoration(MyLiveRoomDetailActivity.this, DividerItemDecoration.VERTICAL));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..
@@ -237,13 +228,10 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
     @Override
     public void showLoadFailMsg() {
         //设置加载错误页显示
-        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageIndex = 1;
+        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, v -> {
+            PageIndex = 1;
 //                present.LoadData("1",PageIndex,false);
-                present.LoadData(false, roomId);
-            }
+            present.LoadData(false, roomId);
         });
     }
 
@@ -263,24 +251,21 @@ public class MyLiveRoomDetailActivity extends AppCompatActivity implements BaseQ
         progress.showEmpty(getResources().getDrawable(R.mipmap.monkey_nodata), Constant.EMPTY_TITLE, Constant.EMPTY_CONTEXT);
     }
 
-    public void initShare(final int roomId, final String title, final String phone, final String description) {
+    public void initShare(final int roomId, final String title, final String photo, final String description) {
         mShareListener = new MyLiveRoomDetailActivity.CustomShareListener(this);
         /*增加自定义按钮的分享面板*/
         mShareAction = new ShareAction(MyLiveRoomDetailActivity.this)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-                        UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/" + roomId);
-                        web.setTitle(title);//标题
-//                        web.setThumb(new UMImage(LiveProgramDetailActivity.this, phone));  //缩略图
-                        web.setDescription(description);//描述
-                        new ShareAction(MyLiveRoomDetailActivity.this)
-                                .withMedia(web)
-                                .setPlatform(share_media)
-                                .setCallback(mShareListener)
-                                .share();
-                    }
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
+                    UMWeb web = new UMWeb(Constant.Share_Live_Room + roomId);
+                    web.setTitle(title);//标题
+                    web.setThumb(new UMImage(MyLiveRoomDetailActivity.this, photo));  //缩略图
+                    web.setDescription(description);//描述
+                    new ShareAction(MyLiveRoomDetailActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
                 });
     }
 

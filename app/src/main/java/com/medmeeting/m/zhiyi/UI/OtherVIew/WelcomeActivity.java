@@ -2,20 +2,19 @@ package com.medmeeting.m.zhiyi.UI.OtherVIew;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MainActivity;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.ListvView.ListvViewActivity;
 import com.medmeeting.m.zhiyi.Util.SpUtils;
 
 /**
  * 启动页
  */
-public class WelcomeActivity extends ListvViewActivity {
+public class WelcomeActivity extends AppCompatActivity {
 
     private ImageView imageView;
 //    private TextView timeTv;
@@ -40,7 +39,7 @@ public class WelcomeActivity extends ListvViewActivity {
         Glide.with(WelcomeActivity.this)
                 .load(R.mipmap.appbg)
 //                .asGif()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .dontAnimate()
                 .into(imageView);
 
 //        timeTv = (TextView) findViewById(R.id.time);
@@ -56,16 +55,4 @@ public class WelcomeActivity extends ListvViewActivity {
 //        countDownTimer.start();
     }
 
-//    private CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
-//        @Override
-//        public void onTick(long l) {
-//            timeTv.setText("跳过   " + l / 1000 + "秒");
-//        }
-//
-//        @Override
-//        public void onFinish() {
-//            startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
-//            finish();
-//        }
-//    };
 }

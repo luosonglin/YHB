@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.EmojiManager;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.BaseMsgView;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.GiftMessage;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.message.GiftMsgView;
@@ -75,8 +74,14 @@ public class LiveKit {
                     +"\n " + message.getUId()
                     +"\n " + message.getMessageDirection()
                     +"\n " + message.getTargetId()
-                    +"\n " + message.getSenderUserId()+" " +message.getSentTime()+" "+message.getSentStatus());
-            handleEvent(MESSAGE_ARRIVED, message.getContent());
+                    +"\n 当前聊天室房间id " + currentRoomId
+                    +"\n " + message.getSenderUserId()+" " +message.getSentTime()+" "+message.getSentStatus()
+                    +"\n " + message.getConversationType().getName()
+                    +"\n " + message.getConversationType().getValue());
+
+            if (currentRoomId.equals(message.getTargetId()))    //添加消息会话targetId是否与roomId一致，不一致则会话列表不接受该条消息（web端别的房间消息发送到android端主播界面）
+                handleEvent(MESSAGE_ARRIVED, message.getContent());
+
             return false;
         }
     };
@@ -89,7 +94,6 @@ public class LiveKit {
      RECEIVE
      237
      11 1496213116219 SENT
-
 
 ios
      05-31 14:45:57.545 974-1410/com.medmeeting.m.zhiyi E/LiveKit 接收监听者: io.rong.message.TextMessage@39832082
@@ -121,7 +125,6 @@ android wen ge
      */
     public static void init(Context context, String appKey) {
         RongIMClient.init(context, appKey);
-        EmojiManager.init(context);
 
         //设置监听器来监听接收到的消息
         RongIMClient.setOnReceiveMessageListener(onReceiveMessageListener);

@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.LiveDetailListPresent;
@@ -114,27 +113,13 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     private void initListener() {
         //设置自动加载监听
         mQuickAdapter.setOnLoadMoreListener(this);
-
-        mQuickAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(), "点击了"+position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mQuickAdapter.setOnRecyclerViewItemLongClickListener(new BaseQuickAdapter.OnRecyclerViewItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "长按了"+position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
     }
     //自动加载
     @Override
     public void onLoadMoreRequested() {
-        PageIndex++;
-//        present.LoadData("1",PageIndex,true);
-        present.LoadData(true, roomId);
+//        PageIndex++;
+//        present.LoadData(true, roomId);
+        showLoadCompleteAllData();
     }
     //下拉刷新
     @Override
@@ -179,22 +164,19 @@ public class LiveDetailLiveFragment extends Fragment implements BaseQuickAdapter
     @Override
     public void showLoadFailMsg() {
         //设置加载错误页显示
-        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageIndex=1;
+        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, v -> {
+            PageIndex=1;
 //                present.LoadData("1",PageIndex,false);
-                present.LoadData(false, roomId);
-            }
+            present.LoadData(false, roomId);
         });
     }
 
     @Override
     public void showLoadCompleteAllData() {
         //所有数据加载完成后显示
-        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
-        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
-        mQuickAdapter.addFooterView(view);
+//        mQuickAdapter.notifyDataChangedAfterLoadMore(false);
+//        View view = getActivity().getLayoutInflater().inflate(R.layout.not_loading, (ViewGroup) mRecyclerView.getParent(), false);
+//        mQuickAdapter.addFooterView(view);
     }
 
     @Override

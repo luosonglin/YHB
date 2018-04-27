@@ -33,48 +33,43 @@ import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Adapter.TagAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDetailInfoDto;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
-import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
 import com.medmeeting.m.zhiyi.UI.Entity.TagDto;
+import com.medmeeting.m.zhiyi.UI.MineView.MyLiveRoomActivity;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
-import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 
 public class LiveUpdateRoomActivity extends AppCompatActivity {
 
-    @Bind(R.id.live_pic)
+    @BindView(R.id.live_pic)
     ImageView livePic;
-    @Bind(R.id.live_pic_tip_tv)
+    @BindView(R.id.live_pic_tip_tv)
     TextView livePicTipTv;
-    @Bind(R.id.live_pic_tip)
+    @BindView(R.id.live_pic_tip)
     LinearLayout livePicTip;
-    @Bind(R.id.theme)
+    @BindView(R.id.theme)
     EditText theme;
-    @Bind(R.id.classify_tv)
+    @BindView(R.id.classify_tv)
     TextView classifyTv;
-    @Bind(R.id.classify)
+    @BindView(R.id.classify)
     LinearLayout classify;
-    @Bind(R.id.introduction)
+    @BindView(R.id.introduction)
     EditText introduction;
-    @Bind(R.id.buildllyt)
+    @BindView(R.id.buildllyt)
     LinearLayout buildllyt;
     private Toolbar toolbar;
     private static final String TAG = LiveUpdateRoomActivity.class.getSimpleName();
@@ -91,7 +86,7 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
     private long createTime;
     private long updateTime;
 
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     View mProgressView;
 
     @Override
@@ -109,12 +104,7 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     List<TagDto> tags2 = new ArrayList<>();
@@ -125,6 +115,7 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
         Glide.with(LiveUpdateRoomActivity.this)
                 .load(videoPhoto)
                 .crossFade()
+                .dontAnimate()
                 .into(new GlideDrawableImageViewTarget(livePic) {
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
@@ -275,103 +266,55 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
             for (String i : photos) {
                 Log.e(TAG, i);
             }
-            showProgress(true);
-            ToastUtils.show(LiveUpdateRoomActivity.this, "正在上传封面图片...");
-            getQiniuToken(photos.get(0));
+
+            File file = new File(photos.get(0));
+            // creates RequestBody instance from file
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+            // MultipartBody.Part is used to send also the actual filename
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            Log.e("mediaType is  ", requestFile.contentType().toString());
+
+            // adds another part within the multipart request
+            String descriptionString = "Sample description";
+            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), descriptionString); //multipart/form-data
+
+            HttpData.getInstance().HttpUploadFile(new Observer<HttpResult6>() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(HttpResult6 data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(LiveUpdateRoomActivity.this, data.getMsg());
+                        return;
+                    }
+
+                    videoPhoto = data.getExtra().getAbsQiniuImgHash();
+                    Glide.with(LiveUpdateRoomActivity.this)
+                            .load(videoPhoto)
+                            .crossFade()
+                            .dontAnimate()
+                            .into(new GlideDrawableImageViewTarget(livePic) {
+                                @Override
+                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                    //在这里添加一些图片加载完成的操作
+                                    super.onResourceReady(resource, animation);
+                                    livePicTipTv.setText("修改直播间封面");
+                                }
+                            });
+                }
+            }, body, description);
+
         }
     }
 
-    private List<String> qiniuData = new ArrayList<>();
-    private String qiniuKey;
-    private String qiniuToken;
-    private String images = "";
-
-    private void getQiniuToken(final String file) {
-        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
-            @Override
-            public void onCompleted() {
-                Log.e(TAG, "onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
-            }
-
-            @Override
-            public void onNext(QiniuTokenDto q) {
-                if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
-                    showProgress(false);
-                    return;
-                }
-                qiniuToken = q.getData().getUploadToken();
-
-                // 设置图片名字
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                qiniuKey = "android_live_" + sdf.format(new Date());
-
-                int i = new Random().nextInt(1000) + 1;
-
-                Log.e(TAG, "File对象、或 文件路径、或 字节数组: " + file);
-                Log.e(TAG, "指定七牛服务上的文件名，或 null: " + qiniuKey + i);
-                Log.e(TAG, "从服务端SDK获取: " + qiniuToken);
-                Log.e(TAG, "http://ono5ms5i0.bkt.clouddn.com/" + qiniuKey + i);
-
-                upload(file, qiniuKey + i, qiniuToken);
-            }
-        }, "android");
-    }
-
-    private Configuration config = new Configuration.Builder()
-            .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
-            .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
-            .connectTimeout(10) // 链接超时。默认10秒
-            .responseTimeout(60) // 服务器响应超时。默认60秒
-//            .zone(Zone.zone1) // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
-            .build();
-
-    private void upload(final String data, final String key, final String token) {
-        new Thread() {
-            public void run() {
-                // 重用uploadManager。一般地，只需要创建一个uploadManager对象
-                UploadManager uploadManager = new UploadManager(config);
-                uploadManager.put(data, key, token,
-                        new UpCompletionHandler() {
-                            @Override
-                            public void complete(String key, ResponseInfo info, JSONObject res) {
-                                //res包含hash、key等信息，具体字段取决于上传策略的设置
-                                if (info.isOK()) {
-                                    Log.i("qiniu", "Upload Success");
-
-
-                                } else {
-                                    Log.i("qiniu", "Upload Fail");
-                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-                                }
-                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-
-                                videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key;
-                            }
-                        }, null);
-            }
-        }.start();
-        Glide.with(LiveUpdateRoomActivity.this)
-                .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
-                .crossFade()
-                .into(new GlideDrawableImageViewTarget(livePic) {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                        //在这里添加一些图片加载完成的操作
-                        super.onResourceReady(resource, animation);
-                        showProgress(false);
-                        livePicTipTv.setText("修改直播间封面");
-                        ToastUtils.show(LiveUpdateRoomActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
-                    }
-                });
-    }
 
     final List<TagDto> tags = new ArrayList<>();
     final List<TagDto> tags_confirm = new ArrayList<>();
@@ -431,52 +374,41 @@ public class LiveUpdateRoomActivity extends AppCompatActivity {
         window.showAsDropDown(buildllyt, 0, 20);
 
         ImageView cancelIv = (ImageView) popupView.findViewById(R.id.cancel);
-        cancelIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                window.dismiss();
-            }
-        });
+        cancelIv.setOnClickListener(view -> window.dismiss());
 
         tags_confirm.clear();
         videoLabelIds = "";
-        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                TagDto tagDto = (TagDto) adapter.getItem(position);
-                switch (view.getId()) {
-                    case R.id.name:
-                        if (!tags_confirm.contains(tagDto)) {
-                            tags_confirm.add(tagDto);
-                            view.setBackgroundResource(R.drawable.textview_all_blue);
-                        } else {
-                            tags_confirm.remove(tagDto);
-                            view.setBackgroundResource(R.drawable.textview_radius_grey);
-                        }
-                        break;
-                }
+        mBaseQuickAdapter.setOnRecyclerViewItemChildClickListener((adapter, view, position) -> {
+            TagDto tagDto = (TagDto) adapter.getItem(position);
+            switch (view.getId()) {
+                case R.id.name:
+                    if (!tags_confirm.contains(tagDto)) {
+                        tags_confirm.add(tagDto);
+                        view.setBackgroundResource(R.drawable.textview_all_blue);
+                    } else {
+                        tags_confirm.remove(tagDto);
+                        view.setBackgroundResource(R.drawable.textview_radius_grey);
+                    }
+                    break;
             }
         });
 
         TextView confirmTv = (TextView) popupView.findViewById(R.id.confirm_tag);
-        confirmTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tags_confirm.size() <= 3) {
-                    String classify = "";
-                    for (TagDto i : tags_confirm) {
-                        videoLabelIds += i.getId() + ",";
-                        classify += " " + i.getLabelName();
-                        Log.e(TAG, i.getLabelName());
-                    }
-                    classifyTv.setText(classify);
-                    videoLabelIds = videoLabelIds.substring(0, videoLabelIds.length() - 1);
-                    window.dismiss();
-                } else if (tags_confirm.size() == 0) {
-                    ToastUtils.show(LiveUpdateRoomActivity.this, "请选择直播分类标签");
-                } else {
-                    ToastUtils.show(LiveUpdateRoomActivity.this, "只能选3个标签，请重新筛选");
+        confirmTv.setOnClickListener(view -> {
+            if (tags_confirm.size() <= 3) {
+                String classify1 = "";
+                for (TagDto i : tags_confirm) {
+                    videoLabelIds += i.getId() + ",";
+                    classify1 += " " + i.getLabelName();
+                    Log.e(TAG, i.getLabelName());
                 }
+                classifyTv.setText(classify1);
+                videoLabelIds = videoLabelIds.substring(0, videoLabelIds.length() - 1);
+                window.dismiss();
+            } else if (tags_confirm.size() == 0) {
+                ToastUtils.show(LiveUpdateRoomActivity.this, "请选择直播分类标签");
+            } else {
+                ToastUtils.show(LiveUpdateRoomActivity.this, "只能选3个标签，请重新筛选");
             }
         });
     }

@@ -49,11 +49,7 @@ public class FBO {
             mFullScreen.release(false);
         }
 
-        /**
-         * Create a new full frame renderer with beauty filter.
-         * There are two another filter, you can have a try.
-         */
-//        mFullScreen = new FullFrameRect(new CameraFilterToneCurve(context,
+        //        mFullScreen = new FullFrameRect(new CameraFilterToneCurve(context,
 //                context.getResources().openRawResource(mCurveArrays[mCurveIndex])));
 //        mFullScreen = new FullFrameRect(new CameraFilterMosaic(context));
         mFullScreen = new FullFrameRect(new CameraFilterBeauty(context));

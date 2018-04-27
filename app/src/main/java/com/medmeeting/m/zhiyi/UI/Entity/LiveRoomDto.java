@@ -25,6 +25,16 @@ public class LiveRoomDto {
     private String coverPhoto;
     private String labelIds;    //此处后端API是个坑
     private String des;
+    private int sort;
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
+
     private String status;
     private long createTime;
     private long updateTime;

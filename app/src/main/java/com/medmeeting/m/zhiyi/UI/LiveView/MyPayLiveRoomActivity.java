@@ -2,8 +2,9 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.MVP.Presenter.LiveMyPayListPresent;
 import com.medmeeting.m.zhiyi.MVP.View.LiveListView;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Adapter.LiveAdapter;
+import com.medmeeting.m.zhiyi.UI.Adapter.MyPayLiveAdapter;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
 import com.xiaochao.lcrapiddeveloplibrary.BaseQuickAdapter;
 import com.xiaochao.lcrapiddeveloplibrary.container.DefaultHeader;
@@ -27,14 +28,13 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     ProgressActivity progress;
     private Toolbar toolbar;
     private BaseQuickAdapter mQuickAdapter;
-    private int PageIndex=1;
     private SpringView springView;
     private LiveMyPayListPresent present;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listv_view);
+        setContentView(R.layout.activity_my_pay_live_room);
         toolBar();
         initView();
         initListener();
@@ -45,12 +45,7 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -66,24 +61,25 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
 //        springView.setFooter(new RotationFooter(this)); //mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
 
         progress = (ProgressActivity) findViewById(R.id.progress);
+        //分割线
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         //设置RecyclerView的显示模式  当前List模式
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //如果Item高度固定  增加该属性能够提高效率
         mRecyclerView.setHasFixedSize(true);
         //设置页面为加载中..
         progress.showLoading();
         //设置适配器
-        mQuickAdapter = new LiveAdapter(R.layout.item_live, null);
+        mQuickAdapter = new MyPayLiveAdapter(R.layout.item_video_others, null);
         //设置加载动画
         mQuickAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         //设置是否自动加载以及加载个数
         mQuickAdapter.openLoadMore(6,true);
         //将适配器添加到RecyclerView
         mRecyclerView.setAdapter(mQuickAdapter);
-//        present = new BookListPresent(this);
         present = new LiveMyPayListPresent(this);
         //请求网络数据
-//        present.LoadData("1",PageIndex,false);
         present.LoadData(false);
     }
     private void initListener() {
@@ -93,18 +89,14 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     //自动加载
     @Override
     public void onLoadMoreRequested() {
-//        PageIndex++;
-//        present.LoadData(true);
         showLoadCompleteAllData();
     }
     //下拉刷新
     @Override
     public void onRefresh() {
-        PageIndex=1;
-//        present.LoadData("1",PageIndex,false);
         present.LoadData(false);
     }
-    //上啦加载  mRecyclerView内部集成的自动加载  上啦加载用不上   在其他View使用
+    //上啦加载
     @Override
     public void onLoadmore() {
 
@@ -140,13 +132,8 @@ public class MyPayLiveRoomActivity extends AppCompatActivity implements BaseQuic
     @Override
     public void showLoadFailMsg() {
         //设置加载错误页显示
-        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PageIndex=1;
-//                present.LoadData("1",PageIndex,false);
-                present.LoadData(false);
-            }
+        progress.showError(getResources().getDrawable(R.mipmap.monkey_cry), Constant.ERROR_TITLE, Constant.ERROR_CONTEXT, Constant.ERROR_BUTTON, v -> {
+            present.LoadData(false);
         });
     }
 

@@ -3,6 +3,7 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -17,7 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
+import com.medmeeting.m.zhiyi.UI.VideoView.VideoDetailOtherFragment;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -60,7 +61,6 @@ public class LiveDetailActivity extends AppCompatActivity {
     //背景图
     private ImageView imageView;
     //直播间头像
-    private ImageView coverPhotoTv;
     private TextView titleTv, userNameTv;
 
     // 记录首次按下位置
@@ -93,17 +93,29 @@ public class LiveDetailActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        toolbar.setTitle("");//标题
-//        toolbar.setSubtitle(R.string.app_name);//二级标题
-//        toolbar.setLogo(R.mipmap.ic_launcher);//设置logo
         getSupportActionBar().setTitle("");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back_grey));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_share:
+                    ShareBoardConfig config = new ShareBoardConfig();
+                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                    mShareAction.open(config);
+                    break;
             }
+            return true;
         });
+    }
+
+    /**
+     * 菜单栏 修改器下拉刷新模式
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_live_program_toolbar, menu);
+        return true;
     }
 
     public void initShare(Bundle savedInstanceState, final int roomId, final String title, final String phone, final String description){
@@ -129,15 +141,15 @@ public class LiveDetailActivity extends AppCompatActivity {
 
             }
         });
-        shareIv = (ImageView) findViewById(R.id.share);
-        shareIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShareBoardConfig config = new ShareBoardConfig();
-                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                mShareAction.open(config);
-            }
-        });
+//        shareIv = (ImageView) findViewById(R.id.share);
+//        shareIv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ShareBoardConfig config = new ShareBoardConfig();
+//                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+//                mShareAction.open(config);
+//            }
+//        });
         //因为分享授权中需要使用一些对应的权限，如果你的targetSdkVersion设置的是23或更高，需要提前获取权限。
         if (Build.VERSION.SDK_INT >= 23) {
             String[] mPermissionList = new String[]{
@@ -149,20 +161,17 @@ public class LiveDetailActivity extends AppCompatActivity {
         /*增加自定义按钮的分享面板*/
         mShareAction = new ShareAction(LiveDetailActivity.this)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                        UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/" + roomId);
-                        web.setTitle(title);//标题
-                        web.setThumb(new UMImage(LiveDetailActivity.this, phone));  //缩略图
-                        web.setDescription(description);//描述
-                        new ShareAction(LiveDetailActivity.this)
-                                .withMedia(web)
-                                .setPlatform(share_media)
-                                .setCallback(mShareListener)
-                                .share();
-                    }
+                    UMWeb web = new UMWeb(Constant.Share_Live_Room + roomId); //http://wap.medmeeting.com/#!/live/room/
+                    web.setTitle(title);//标题
+                    web.setThumb(new UMImage(LiveDetailActivity.this, phone));  //缩略图
+                    web.setDescription(description);//描述
+                    new ShareAction(LiveDetailActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
                 });
     }
     @Override
@@ -236,15 +245,8 @@ public class LiveDetailActivity extends AppCompatActivity {
         mShareAction.close();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView(String coverPhone, String title, String userName) {
-        //直播间封面
-        coverPhotoTv = (ImageView) findViewById(R.id.coverPhoto);
-        Glide.with(LiveDetailActivity.this)
-                .load(coverPhone)
-                .crossFade()
-                .transform(new GlideCircleTransform(LiveDetailActivity.this))
-                .placeholder(R.mipmap.ic_launcher)
-                .into(coverPhotoTv);
         titleTv = (TextView) findViewById(R.id.title);
         userNameTv = (TextView) findViewById(R.id.userName);
         titleTv.setText(title);
@@ -271,45 +273,42 @@ public class LiveDetailActivity extends AppCompatActivity {
         imageView.setLayoutParams(lp);
 
         // 监听滚动事件
-        scrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
-                        .getLayoutParams();
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        // 手指离开后恢复图片
-                        mScaling = false;
-                        replyImage();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (!mScaling) {
-                            if (scrollView.getScrollY() == 0) {
-                                mFirstPosition = event.getY();// 滚动到顶部时记录位置，否则正常返回
-                            } else {
-                                break;
-                            }
-                        }
-                        int distance = (int) ((event.getY() - mFirstPosition) * 0.6); // 滚动距离乘以一个系数
-                        if (distance < 0) { // 当前位置比记录位置要小，正常返回
+        scrollView.setOnTouchListener((v, event) -> {
+            ViewGroup.LayoutParams lp1 = imageView
+                    .getLayoutParams();
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    // 手指离开后恢复图片
+                    mScaling = false;
+                    replyImage();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (!mScaling) {
+                        if (scrollView.getScrollY() == 0) {
+                            mFirstPosition = event.getY();// 滚动到顶部时记录位置，否则正常返回
+                        } else {
                             break;
                         }
+                    }
+                    int distance = (int) ((event.getY() - mFirstPosition) * 0.6); // 滚动距离乘以一个系数
+                    if (distance < 0) { // 当前位置比记录位置要小，正常返回
+                        break;
+                    }
 
-                        // 处理放大
-                        mScaling = true;
-                        lp.width = metric.widthPixels + distance;
-                        lp.height = (metric.widthPixels + distance) * 9 / 16;
-                        imageView.setLayoutParams(lp);
-                        return true; // 返回true表示已经完成触摸事件，不再处理
-                }
-                return false;
+                    // 处理放大
+                    mScaling = true;
+                    lp1.width = metric.widthPixels + distance;
+                    lp1.height = (metric.widthPixels + distance) * 9 / 16;
+                    imageView.setLayoutParams(lp1);
+                    return true; // 返回true表示已经完成触摸事件，不再处理
             }
+            return false;
         });
     }
 
     // 回弹动画 (使用了属性动画)
     public void replyImage() {
-        final ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) imageView
+        final ViewGroup.LayoutParams lp = imageView
                 .getLayoutParams();
         final float w = imageView.getLayoutParams().width;// 图片当前宽度
         final float h = imageView.getLayoutParams().height;// 图片当前高度
@@ -320,14 +319,11 @@ public class LiveDetailActivity extends AppCompatActivity {
         ValueAnimator anim = ObjectAnimator.ofFloat(0.0F, 1.0F)
                 .setDuration(200);
 
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float cVal = (Float) animation.getAnimatedValue();
-                lp.width = (int) (w - (w - newW) * cVal);
-                lp.height = (int) (h - (h - newH) * cVal);
-                imageView.setLayoutParams(lp);
-            }
+        anim.addUpdateListener(animation -> {
+            float cVal = (Float) animation.getAnimatedValue();
+            lp.width = (int) (w - (w - newW) * cVal);
+            lp.height = (int) (h - (h - newH) * cVal);
+            imageView.setLayoutParams(lp);
         });
         anim.start();
     }
@@ -338,24 +334,25 @@ public class LiveDetailActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         //为ViewPager设置高度
-        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
-        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
-        Log.e(TAG, this.getWindowManager().getDefaultDisplay().getHeight() + " " + params.height + " ");
-
-        viewPager.setLayoutParams(params);
-        Log.e(TAG, viewPager.getHeight() + " " + viewPager.getLayoutParams().height);
+//        ViewGroup.LayoutParams params = viewPager.getLayoutParams();
+//        params.height = this.getWindowManager().getDefaultDisplay().getHeight() - 140 * 6;//800
+//        Log.e(TAG, this.getWindowManager().getDefaultDisplay().getHeight() + " " + params.height + " ");
+//
+//        viewPager.setLayoutParams(params);
+//        Log.e(TAG, viewPager.getHeight() + " " + viewPager.getLayoutParams().height);
 
         setUpViewPager(viewPager, roomId, des);
         tabLayout.setTabMode(TabLayout.MODE_FIXED); //tabLayout
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).select();
     }
 
     private void setUpViewPager(ViewPager viewPager, Integer roomId, String des) {
         IndexChildAdapter mIndexChildAdapter = new IndexChildAdapter(LiveDetailActivity.this.getSupportFragmentManager());//.getChildFragmentManager()
 
         mIndexChildAdapter.addFragment(LiveDetailLiveFragment.newInstance(roomId), "直播");
-        mIndexChildAdapter.addFragment(LiveDetailVideoFragment.newInstance(roomId), "视频");
-        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "简介");
+        mIndexChildAdapter.addFragment(VideoDetailOtherFragment.newInstance(roomId), "视频");
+        mIndexChildAdapter.addFragment(LiveDetailSummaryFragment.newInstance(des), "详情");
 
         viewPager.setOffscreenPageLimit(3);//缓存view 的个数
         viewPager.setAdapter(mIndexChildAdapter);

@@ -1,6 +1,7 @@
 package com.medmeeting.m.zhiyi;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -11,39 +12,41 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.githang.statusbar.StatusBarCompat;
 import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
-import com.medmeeting.m.zhiyi.UI.Entity.HttpResult;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.LiveRoomDto;
 import com.medmeeting.m.zhiyi.UI.Entity.RCUserDto;
-import com.medmeeting.m.zhiyi.UI.Entity.VersionDto;
+import com.medmeeting.m.zhiyi.UI.Entity.Version;
+import com.medmeeting.m.zhiyi.UI.IndexView.IndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.LiveBuildRoomActivity;
-import com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment;
+import com.medmeeting.m.zhiyi.UI.LiveView.LiveIndexFragment;
 import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.LiveKit;
 import com.medmeeting.m.zhiyi.UI.MeetingView.ExchangeBusinessCardActivity;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment;
+import com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment3;
 import com.medmeeting.m.zhiyi.UI.MeetingView.PlusSignedDetailsActivity;
 import com.medmeeting.m.zhiyi.UI.MineView.MineFragment;
-import com.medmeeting.m.zhiyi.UI.OtherVIew.IndexFragment;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
 import com.medmeeting.m.zhiyi.Util.CustomUtils;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
+import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenu;
+import com.medmeeting.m.zhiyi.Widget.ImageGalleryPopmenu.PopMenuItem;
 import com.medmeeting.m.zhiyi.Widget.UpdataDialog;
-import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenu;
-import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItem;
-import com.medmeeting.m.zhiyi.Widget.popmenu.PopMenuItemListener;
 import com.snappydb.SnappydbException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jiguang.analytics.android.api.JAnalyticsInterface;
 import io.rong.imlib.RongIMClient;
 import rx.Observer;
 
-public class MainActivity extends AppCompatActivity
-        implements IndexFragment.OnFragmentInteractionListener,
-        MeetingFragment.OnFragmentInteractionListener,
-        LiveFragment.OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements
+        IndexFragment.OnFragmentInteractionListener,
+        MeetingFragment3.OnFragmentInteractionListener,
+        LiveIndexFragment.OnFragmentInteractionListener,
         MineFragment.OnFragmentInteractionListener {
 
     private static final String TABORDERSTAG = "TABORDERSTAG";
@@ -60,50 +63,48 @@ public class MainActivity extends AppCompatActivity
     private int versioncode;
     private String oldVersion, newVersion, versionmsg, url, channelid;
     private TextView tvmsg, tvcode;
+    private ImageView updateDeletIv;
 
     //首页
-    @Bind(R.id.tab_index)
+    @BindView(R.id.tab_index)
     View tabOrders;
-    @Bind(R.id.tab_index_img)
+    @BindView(R.id.tab_index_img)
     ImageView tabOrdersImg;
-    @Bind(R.id.tab_index_title)
+    @BindView(R.id.tab_index_title)
     TextView tabOrdersTitle;
 
     //知医
-    @Bind(R.id.tab_doctor)
-    View tabMerchandise;
-    @Bind(R.id.tab_doctor_img)
+    private static View tabMerchandise;
+    @BindView(R.id.tab_doctor_img)
     ImageView tabMerchandiseImg;
-    @Bind(R.id.tab_doctor_title)
+    @BindView(R.id.tab_doctor_title)
     TextView tabMerchandiseTitle;
 
     //加号
-    @Bind(R.id.tab_plus)
+    @BindView(R.id.tab_plus)
     View tabPlus;
-    @Bind(R.id.tab_plus_img)
+    @BindView(R.id.tab_plus_img)
     ImageView tabPlusIv;
 
     //圈子
-    @Bind(R.id.tab_community)
-    View tabPurchase;
-    @Bind(R.id.tab_community_img)
+    private static View tabPurchase;
+    @BindView(R.id.tab_community_img)
     ImageView tabPurchaseImg;
-    @Bind(R.id.tab_community_title)
+    @BindView(R.id.tab_community_title)
     TextView tabPurchaseTitle;
 
     //个人
-    @Bind(R.id.tab_mine)
+    @BindView(R.id.tab_mine)
     View tabSelf;
-    @Bind(R.id.tab_mine_img)
+    @BindView(R.id.tab_mine_img)
     ImageView tabSelfImg;
-    @Bind(R.id.tab_mine_title)
+    @BindView(R.id.tab_mine_title)
     TextView tabSelfTitle;
 
     private FragmentManager fragmentManager;
     private IndexFragment mIndexFragment;
-    private MeetingFragment mMeetingFragment;
-    //    private CommunityFragment mLiveFragment;
-    private LiveFragment mLiveFragment;
+    private MeetingFragment3 mMeetingFragment;
+    private LiveIndexFragment mLiveIndexFragment;
     private MineFragment mMineFragment;
 
     @OnClick(R.id.tab_index)
@@ -135,6 +136,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        StatusBarCompat.setStatusBarColor(this, Color.LTGRAY, true);
+
+        tabMerchandise = findViewById(R.id.tab_doctor);
+        tabPurchase = findViewById(R.id.tab_community);
 
         ButterKnife.bind(this);
 
@@ -144,8 +149,8 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             mIndexFragment = (IndexFragment) fragmentManager.findFragmentByTag(TABORDERSTAG);
-            mMeetingFragment = (MeetingFragment) fragmentManager.findFragmentByTag(TABMERCHANDISE);
-            mLiveFragment = (LiveFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
+            mMeetingFragment = (MeetingFragment3) fragmentManager.findFragmentByTag(TABMERCHANDISE);
+            mLiveIndexFragment = (LiveIndexFragment) fragmentManager.findFragmentByTag(TABPURCHASE);
             mMineFragment = (MineFragment) fragmentManager.findFragmentByTag(TABSELFTAG);
         }
         setTabSelection(tabOrders);
@@ -191,8 +196,10 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        //检查android最新版本
+//        //检查android最新版本
         getLatestAndroidVersion();
+
+//        fakerAction();
     }
 
     private void initUserToken() {
@@ -240,7 +247,7 @@ public class MainActivity extends AppCompatActivity
                 tabMerchandiseImg.setImageResource(R.mipmap.tab2_b);
                 tabMerchandiseTitle.setTextColor(activeColorRecourse);
                 if (mMeetingFragment == null) {
-                    mMeetingFragment = new MeetingFragment();
+                    mMeetingFragment = new MeetingFragment3();
                     fragmentTransaction.add(R.id.container, mMeetingFragment, TABMERCHANDISE);
                 } else {
                     fragmentTransaction.show(mMeetingFragment);
@@ -248,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             case R.id.tab_plus:
-                tabPlusIv.setImageResource(R.mipmap.tab_plus_b);
+                tabPlusIv.setImageResource(R.mipmap.tab_plus_b2);
                 //只有大咖认证用户才可以发起
                 try {
                     if (!DBUtils.isSet(MainActivity.this, "authentication")) {
@@ -272,11 +279,11 @@ public class MainActivity extends AppCompatActivity
                 hideFragments(fragmentTransaction);
                 tabPurchaseImg.setImageResource(R.mipmap.tab3_b);
                 tabPurchaseTitle.setTextColor(activeColorRecourse);
-                if (mLiveFragment == null) {
-                    mLiveFragment = new LiveFragment();
-                    fragmentTransaction.add(R.id.container, mLiveFragment, TABPURCHASE);
+                if (mLiveIndexFragment == null) {
+                    mLiveIndexFragment = new LiveIndexFragment();
+                    fragmentTransaction.add(R.id.container, mLiveIndexFragment, TABPURCHASE);
                 } else {
-                    fragmentTransaction.show(mLiveFragment);
+                    fragmentTransaction.show(mLiveIndexFragment);
                 }
                 break;
 
@@ -305,16 +312,11 @@ public class MainActivity extends AppCompatActivity
             mPopMenu = new PopMenu.Builder().attachToActivity(MainActivity.this)
                     .addMenuItem(new PopMenuItem("大会签到", getResources().getDrawable(R.mipmap.tabbar_compose_idea)))
                     .addMenuItem(new PopMenuItem("交换名片", getResources().getDrawable(R.mipmap.tabbar_compose_photo)))
-                    .addMenuItem(new PopMenuItem("建直播间", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
+                    .addMenuItem(new PopMenuItem("创建直播", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
 //                    .addMenuItem(new PopMenuItem("发病例", getResources().getDrawable(R.mipmap.tabbar_compose_lbs)))
 //                    .addMenuItem(new PopMenuItem("我的钱包", getResources().getDrawable(R.mipmap.tabbar_compose_review)))
 //                    .addMenuItem(new PopMenuItem("发起直播", getResources().getDrawable(R.mipmap.tabbar_compose_more)))
-                    .setOnItemClickListener(new PopMenuItemListener() {
-                        @Override
-                        public void onItemClick(PopMenu popMenu, int position) {
-                            PopMenuItemClick(position);
-                        }
-                    })
+                    .setOnItemClickListener((popMenu, position) -> PopMenuItemClick(position))
                     .build();
         } else {
             mPopMenu = new PopMenu.Builder().attachToActivity(MainActivity.this)
@@ -323,12 +325,7 @@ public class MainActivity extends AppCompatActivity
 //                    .addMenuItem(new PopMenuItem("发帖子", getResources().getDrawable(R.mipmap.tabbar_compose_headlines)))
 //                    .addMenuItem(new PopMenuItem("发病例", getResources().getDrawable(R.mipmap.tabbar_compose_lbs)))
 //                    .addMenuItem(new PopMenuItem("我的钱包", getResources().getDrawable(R.mipmap.tabbar_compose_review)))
-                    .setOnItemClickListener(new PopMenuItemListener() {
-                        @Override
-                        public void onItemClick(PopMenu popMenu, int position) {
-                            PopMenuItemClick(position);
-                        }
-                    })
+                    .setOnItemClickListener((popMenu, position) -> PopMenuItemClick(position))
                     .build();
         }
     }
@@ -337,7 +334,6 @@ public class MainActivity extends AppCompatActivity
      * @param position
      */
     private void PopMenuItemClick(int position) {
-        Intent intent;
         switch (position) {
             case 0:
                 startActivity(new Intent(MainActivity.this, PlusSignedDetailsActivity.class));
@@ -347,7 +343,7 @@ public class MainActivity extends AppCompatActivity
                 final String TAG_CARD = "002";
                 try {
                     if (!DBUtils.isSet(MainActivity.this, "tokenId") && !DBUtils.isSet(MainActivity.this, "openId")) {
-                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        Intent loginIntent = new Intent(MainActivity.this, Login_v2Activity.class);
                         int requestCode = 2;
                         startActivityForResult(loginIntent, requestCode);
                         return;
@@ -364,21 +360,29 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent2);
                 break;
             case 2:
-                startActivity(new Intent(MainActivity.this, LiveBuildRoomActivity.class));
-//                intent = new Intent(MainActivity.this, ListvViewActivity.class);
-//                startActivity(intent);
+                HttpData.getInstance().HttpDataGetLiveRoom(new Observer<HttpResult3<LiveRoomDto, Object>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult3<LiveRoomDto, Object> data) {
+                        if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(MainActivity.this, data.getMsg());
+                            return;
+                        }
+                        Intent intent = new Intent(MainActivity.this, LiveBuildRoomActivity.class);
+                        intent.putExtra("times", data.getData().size() + "");    //看创建过几个直播间，如果没创建过，则第一次创建要弹出直播间协议弹窗
+                        startActivity(intent);
+                    }
+                });
                 break;
-//            case 3:
-//                // 唤出RecoveryActivity
-////                BookListDto bookListDto=null;
-////                Toast.makeText(MainActivity.this, bookListDto.getBookName(), Toast.LENGTH_SHORT).show();
-//                break;
-//            case 4:
-////                startActivity(new Intent(MainActivity.this, WalletActivity.class));
-//                break;
-//            case 5:
-////                startActivity(new Intent(MainActivity.this, LiveBuildActivity.class));
-//                break;
         }
     }
 
@@ -411,8 +415,8 @@ public class MainActivity extends AppCompatActivity
         if (mMeetingFragment != null) {
             transaction.hide(mMeetingFragment);
         }
-        if (mLiveFragment != null) {
-            transaction.hide(mLiveFragment);
+        if (mLiveIndexFragment != null) {
+            transaction.hide(mLiveIndexFragment);
         }
         if (mMineFragment != null) {
             transaction.hide(mMineFragment);
@@ -447,7 +451,8 @@ public class MainActivity extends AppCompatActivity
 
         oldVersion = CustomUtils.getVersion(MainActivity.this) + "";
 
-        HttpData.getInstance().HttpDataGetLatestAndroidVersion(new Observer<HttpResult<VersionDto>>() {
+
+        HttpData.getInstance().HttpDataGetAndroidVersion(new Observer<HttpResult3<Object, Version>>() {
             @Override
             public void onCompleted() {
 
@@ -459,36 +464,76 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onNext(HttpResult<VersionDto> versionDtoHttpResult) {
-                newVersion = versionDtoHttpResult.getData().getVersion().getVersion();
-                versionmsg = versionDtoHttpResult.getData().getVersion().getLog();
-                url = versionDtoHttpResult.getData().getVersion().getUrl();
-                Log.e(TAG, newVersion + " " + oldVersion);
-                if (!newVersion.equals(oldVersion)) {
-                    updataDialog.show();
+            public void onNext(HttpResult3<Object, Version> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(MainActivity.this, "网络错误");
+                    return;
+                }
+                newVersion = data.getEntity().getVersion();
+                Log.e(getLocalClassName(), oldVersion + " " + newVersion);
 
-                    tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
-                    tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
-                    tvcode.setText(newVersion);
-                    tvmsg.setText(versionmsg);
-                    updataDialog.setOnCenterItemClickListener(new UpdataDialog.OnCenterItemClickListener() {
-                        @Override
-                        public void OnCenterItemClick(UpdataDialog dialog, View view) {
-                            switch (view.getId()) {
-                                case R.id.dialog_sure:
-                                    /**调用系统自带的浏览器去下载最新apk*/
-                                    Intent intent = new Intent();
-                                    intent.setAction("android.intent.action.VIEW");
-                                    Uri content_url = Uri.parse(url);
-                                    intent.setData(content_url);
-                                    startActivity(intent);
-                                    break;
-                            }
-                            updataDialog.dismiss();
+                String[] yours = oldVersion.split("\\.");   //已经安装的版本
+                String[] news = newVersion.split("\\.");
+                Log.e(getLocalClassName(), yours[0] + " " + yours[1] + " " + yours[2]);
+                Log.e(getLocalClassName(), news[0] + " " + news[1] + " " + news[2]);
+
+                if (Integer.parseInt(yours[0]) >= Integer.parseInt(news[0])) { //&&  &&
+                    Log.e(MainActivity.this.getLocalClassName(), "已经是最新版本");
+
+                } else if (Integer.parseInt(yours[0]) < Integer.parseInt(news[0])) {
+                    if (Integer.parseInt(yours[1]) >= Integer.parseInt(news[1])) {
+                        Log.e(MainActivity.this.getLocalClassName(), "已经是最新版本");
+
+                    } else if (Integer.parseInt(yours[1]) < Integer.parseInt(news[1])) {
+                        if (Integer.parseInt(yours[2]) >= Integer.parseInt(news[2])) {
+                            Log.e(MainActivity.this.getLocalClassName(), "已经是最新版本");
+                        } else {
+                            updataDialog.show();
+
+                            tvmsg = (TextView) updataDialog.findViewById(R.id.updataversion_msg);
+                            tvcode = (TextView) updataDialog.findViewById(R.id.updataversioncode);
+                            updateDeletIv = (ImageView) updataDialog.findViewById(R.id.delete);
+                            tvcode.setText(newVersion);
+                            tvmsg.setText(data.getEntity().getLog());
+
+                            updateDeletIv.setOnClickListener(view1 -> updataDialog.dismiss());
+                            updataDialog.setOnCenterItemClickListener((dialog, view12) -> {
+                                switch (view12.getId()) {
+                                    case R.id.dialog_sure:
+                                        Intent intent = new Intent();
+                                        intent.setAction("android.intent.action.VIEW");
+                                        Uri content_url = Uri.parse(data.getEntity().getUrl());
+                                        intent.setData(content_url);
+                                        startActivity(intent);
+                                        break;
+                                }
+                                updataDialog.dismiss();
+                            });
                         }
-                    });
+                    }
                 }
             }
         });
+    }
+
+
+    public static void trunMeetingView() {
+        tabMerchandise.performClick();
+    }
+
+    public static void trunLiveView() {
+        tabPurchase.performClick();
+    }
+
+    @Override
+    protected void onStart() {
+        JAnalyticsInterface.onPageStart(this, "主页");//this.getClass().getCanonicalName()
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        JAnalyticsInterface.onPageEnd(this, "主页");
+        super.onStop();
     }
 }

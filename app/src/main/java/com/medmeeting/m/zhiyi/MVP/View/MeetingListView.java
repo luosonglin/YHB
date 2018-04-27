@@ -1,6 +1,6 @@
 package com.medmeeting.m.zhiyi.MVP.View;
 
-import com.medmeeting.m.zhiyi.UI.Entity.MeetingDto;
+import com.medmeeting.m.zhiyi.UI.Entity.VAppMyEvents;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ public interface MeetingListView {
     //关闭加载页
     void hideProgress();
     //加载新数据
-    void newDatas(List<MeetingDto> newsList);
+    void newDatas(List<VAppMyEvents> newsList);
     //添加更多数据
-    void addDatas(List<MeetingDto> addList);
+    void addDatas(List<VAppMyEvents> addList);
     //显示加载失败
     void showLoadFailMsg();
     //显示已加载所有数据

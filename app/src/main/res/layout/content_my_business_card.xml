@@ -63,7 +63,7 @@
                             android:layout_height="16dp"
                             android:layout_marginLeft="4dp"
                             android:gravity="center"
-                            android:src="@mipmap/specialis_yellow"
+                            android:src="@mipmap/yellow_v"
                             tools:ignore="ContentDescription" />
                     </LinearLayout>
 

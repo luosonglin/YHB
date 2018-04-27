@@ -128,7 +128,7 @@ public class CameraFilterToneCurve extends CameraFilter {
             int version = readShort(input);
             int totalCurves = readShort(input);
 
-            ArrayList<PointF[]> curves = new ArrayList<PointF[]>(totalCurves);
+            ArrayList<PointF[]> curves = new ArrayList<>(totalCurves);
             float pointRate = 1.0f / 255;
 
             for (int i = 0; i < totalCurves; i++) {
@@ -190,16 +190,13 @@ public class CameraFilterToneCurve extends CameraFilter {
 
         // Sort the array
         PointF[] pointsSorted = points.clone();
-        Arrays.sort(pointsSorted, new Comparator<PointF>() {
-            @Override
-            public int compare(PointF point1, PointF point2) {
-                if (point1.x < point2.x) {
-                    return -1;
-                } else if (point1.x > point2.x) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+        Arrays.sort(pointsSorted, (point1, point2) -> {
+            if (point1.x < point2.x) {
+                return -1;
+            } else if (point1.x > point2.x) {
+                return 1;
+            } else {
+                return 0;
             }
         });
 
@@ -230,7 +227,7 @@ public class CameraFilterToneCurve extends CameraFilter {
         }
 
         // Prepare the spline points.
-        ArrayList<Float> preparedSplinePoints = new ArrayList<Float>(splinePoints.size());
+        ArrayList<Float> preparedSplinePoints = new ArrayList<>(splinePoints.size());
         for (Point newPoint : splinePoints) {
             Point origPoint = new Point(newPoint.x, newPoint.x);
 
@@ -264,7 +261,7 @@ public class CameraFilterToneCurve extends CameraFilter {
             sd[i] = sdA.get(i);
         }
 
-        ArrayList<Point> output = new ArrayList<Point>(n + 1);
+        ArrayList<Point> output = new ArrayList<>(n + 1);
 
         for (int i = 0; i < n - 1; i++) {
             Point cur = points[i];
@@ -346,7 +343,7 @@ public class CameraFilterToneCurve extends CameraFilter {
             result[i] -= k * result[i + 1];
         }
 
-        ArrayList<Double> output = new ArrayList<Double>(n);
+        ArrayList<Double> output = new ArrayList<>(n);
         for (int i = 0; i < n; i++) output.add(result[i] / matrix[i][1]);
 
         return output;

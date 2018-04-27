@@ -1,10 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment">
+    tools:context="com.medmeeting.m.zhiyi.UI.MeetingView.MeetingFragment2">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -14,7 +13,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->
-    <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity xmlns:progressActivity="http://schemas.android.com/apk/res-auto"
+    <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

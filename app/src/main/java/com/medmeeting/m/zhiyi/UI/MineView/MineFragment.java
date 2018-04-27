@@ -2,6 +2,9 @@ package com.medmeeting.m.zhiyi.UI.MineView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -9,31 +12,40 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.Entity.MyInfoDto;
-import com.medmeeting.m.zhiyi.UI.LiveView.MyLiveRoomActivity;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.UserAuthenRecord;
+import com.medmeeting.m.zhiyi.UI.Entity.UserGetInfoEntity;
+import com.medmeeting.m.zhiyi.UI.IdentityView.ActivateActivity;
+import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizeActivity;
+import com.medmeeting.m.zhiyi.UI.IdentityView.AuthorizedActivity;
 import com.medmeeting.m.zhiyi.UI.LiveView.MyPayLiveRoomActivity;
-import com.medmeeting.m.zhiyi.UI.MeetingView.MyMeetingActivity;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
+import com.medmeeting.m.zhiyi.UI.UserInfoView.UpdateUserInfoActivity;
+import com.medmeeting.m.zhiyi.UI.WalletView.MyWalletActivity;
 import com.medmeeting.m.zhiyi.Util.DBUtils;
+import com.medmeeting.m.zhiyi.Util.ToastUtils;
 import com.snappydb.SnappydbException;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import rx.Observer;
 
 /**
@@ -50,53 +62,58 @@ public class MineFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @Bind(R.id.setting)
-    TextView setting;
-    @Bind(R.id.identity)
-    TextView identity;
-    @Bind(R.id.head_ic)
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
+    @BindView(R.id.img)
+    ImageView imageView;
+    @BindView(R.id.setting)
+    ImageView setting;
+    @BindView(R.id.head_ic)
     ImageView headIv;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     TextView nameTv;
-    @Bind(R.id.title)
-    TextView titleTv;
-    @Bind(R.id.hospital)
-    TextView hospitalTv;
-    @Bind(R.id.doctor_llyt)
+    @BindView(R.id.doctor_llyt)
     LinearLayout doctorLlyt;
-    @Bind(R.id.user_flyt)
+    @BindView(R.id.user_flyt)
     RelativeLayout userLlyt;
-    @Bind(R.id.specialist)
+    @BindView(R.id.specialist)
     ImageView specialistIv;
 
     private static final String TAG = MineFragment.class.getSimpleName();
 
-    @Bind(R.id.wodecanhui)
+    @BindView(R.id.wodecanhui)
     RelativeLayout wodecanhui;
-    @Bind(R.id.wodeqianbao)
+    @BindView(R.id.wodeqianbao)
     RelativeLayout wodeqianbao;
-    @Bind(R.id.wodetiezi)
-    RelativeLayout wodetiezi;
-    @Bind(R.id.wodebingli)
-    RelativeLayout wodebingli;
-    @Bind(R.id.wodexuefen)
+    @BindView(R.id.wodeshoucang)
+    RelativeLayout wodeshoucang;
+    @BindView(R.id.wodexuefen)
     RelativeLayout wodexuefen;
-    @Bind(R.id.wodejianli)
+    @BindView(R.id.wodejianli)
     RelativeLayout wodejianli;
-    @Bind(R.id.wodezhibo)
-    RelativeLayout wodezhibo;
-    @Bind(R.id.wodewendang)
+    @BindView(R.id.my_live)
+    LinearLayout my_live;
+    @BindView(R.id.wodewendang)
     RelativeLayout wodewendang;
+    @BindView(R.id.wodefufeizhibo)
+    RelativeLayout wodefufeizhibo;
+    @BindView(R.id.my_video)
+    LinearLayout my_video;
+    @BindView(R.id.activate)
+    TextView activate;
+    @BindView(R.id.authorize)
+    TextView authorize;
 
     private String identityHtml;
     private String userId = null;
     private String userAvatar;
 
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     View mProgressView;
 
     private OnFragmentInteractionListener mListener;
 
+    private String code = ""; //身份类型
 
     // 记录首次按下位置
     private float mFirstPosition = 0;
@@ -104,6 +121,8 @@ public class MineFragment extends Fragment {
     private Boolean mScaling = false;
 
     private DisplayMetrics metric;
+
+    Unbinder unbinder;
 
     public MineFragment() {
         // Required empty public constructor
@@ -140,9 +159,9 @@ public class MineFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if (userId == null && "".equals(userId)) {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-        }
+//        if (userId == null && "".equals(userId)) {
+//            startActivity(new Intent(getActivity(), Login_v2Activity.class));
+//        }
     }
 
     @Override
@@ -151,21 +170,91 @@ public class MineFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         initView();
 
         return view;
-
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
 
-        showProgress(true);
+        // 获取屏幕宽高
+        metric = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
 
-        if(userId == null) {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-        } else {
-            HttpData.getInstance().HttpDataGetMyInfo(new Observer<MyInfoDto>() {
+        // 设置图片初始大小 这里我设为满屏的16:9
+        ViewGroup.LayoutParams lp = imageView.getLayoutParams();
+        lp.width = metric.widthPixels;
+        lp.height = metric.widthPixels * 9 / 16;
+        imageView.setLayoutParams(lp);
+
+        // 监听滚动事件
+        scrollView.setOnTouchListener((v, event) -> {
+            ViewGroup.LayoutParams lp1 = imageView
+                    .getLayoutParams();
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    // 手指离开后恢复图片
+                    mScaling = false;
+                    replyImage();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (!mScaling) {
+                        if (scrollView.getScrollY() == 0) {
+                            mFirstPosition = event.getY();// 滚动到顶部时记录位置，否则正常返回
+                        } else {
+                            break;
+                        }
+                    }
+                    int distance = (int) ((event.getY() - mFirstPosition) * 0.6); // 滚动距离乘以一个系数
+                    if (distance < 0) { // 当前位置比记录位置要小，正常返回
+                        break;
+                    }
+
+                    // 处理放大
+                    mScaling = true;
+                    lp1.width = metric.widthPixels + distance;
+                    lp1.height = (metric.widthPixels + distance) * 9 / 16;
+                    imageView.setLayoutParams(lp1);
+                    return true; // 返回true表示已经完成触摸事件，不再处理
+            }
+            return false;
+        });
+
+
+        if (userId == null) {
+//            startActivity(new Intent(getActivity(), Login_v2Activity.class));
+            showProgress(false);
+            return;
+        }
+
+        try {
+            if (!DBUtils.isSet(getActivity(), "userToken")) {
+                //退出登录后
+                Glide.with(getActivity())
+                        .load(R.mipmap.avator_default)
+                        .crossFade()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .placeholder(R.mipmap.avator_default)
+                        .into(headIv);
+                nameTv.setText("未登录");
+                nameTv.setOnClickListener(view -> startActivity(new Intent(getActivity(), Login_v2Activity.class)));
+
+                activate.setVisibility(View.GONE);
+                authorize.setVisibility(View.GONE);
+                specialistIv.setVisibility(View.GONE);
+
+                showProgress(false);
+
+                return;
+            }
+
+            showProgress(true);
+            Log.e(getActivity().getLocalClassName(), DBUtils.get(getActivity(), "userToken"));
+            HttpData.getInstance().HttpDataGetUserInfo2(new Observer<HttpResult3<Object, UserGetInfoEntity>>() {
                 @Override
                 public void onCompleted() {
 
@@ -173,87 +262,93 @@ public class MineFragment extends Fragment {
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.e(TAG, "onError: " + e.getMessage()
-                            + "\n" + e.getCause()
-                            + "\n" + e.getLocalizedMessage()
-                            + "\n" + e.getStackTrace());
+                    ToastUtils.show(getActivity(), e.getMessage());
+                    Log.e(getActivity().getLocalClassName(), e.getMessage());
+                    showProgress(false);
                 }
 
                 @Override
-                public void onNext(MyInfoDto item) {
-                    userAvatar = item.getData().getUser().getUserPic();
+                public void onNext(HttpResult3<Object, UserGetInfoEntity> data) {
+                       /* if (!data.getStatus().equals("success")) {
+                            ToastUtils.show(getActivity(), data.getMsg());
+                            showProgress(false);
+//                    if (data.getMsg().equals("token校验错误")) {
+                            if (data.getErrorCode().equals("11010")) {
+                                getActivity().finish();
+                                startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                            }
+                            return;
+                        }*/
+                    userAvatar = data.getEntity().getUserPic();
                     Glide.with(getActivity())
-                            .load(item.getData().getUser().getUserPic())
+                            .load(userAvatar)
                             .crossFade()
+                            .dontAnimate()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .placeholder(R.mipmap.avator_default)
                             .into(headIv);
+                    if (data.getEntity().getName() != null) {
+                        nameTv.setText(data.getEntity().getName());
+                    } else {
+                        nameTv.setText(data.getEntity().getNickName());
+                    }
 
-
+                    //正式服，该字段暂无
+                    switch (data.getEntity().getTocPortStatus()) {
+                        case "wait_activation":
+                            activate.setText("待激活");
+                            authorize.setText("去激活");
+                            specialistIv.setVisibility(View.GONE);
+                            break;
+                        case "done_activation":
+                            activate.setText("未认证");//已激活
+                            specialistIv.setVisibility(View.VISIBLE);
+                            specialistIv.setImageResource(R.mipmap.red_v);
+                            code = data.getEntity().getMedical();
+                            authorize.setText("去认证");
+                            break;
+                        case "done_authen":
+                            activate.setText("已认证");
+                            specialistIv.setVisibility(View.VISIBLE);
+                            specialistIv.setImageResource(R.mipmap.yellow_v);
+                            authorize.setVisibility(View.GONE);
+                            break;
+                    }
                     try {
-                        DBUtils.put(getActivity(), "authentication", item.getData().getUser().getAuthenStatus() + "");
+                        DBUtils.put(getActivity(), "tocPortStatus", data.getEntity().getTocPortStatus() + "");
                     } catch (SnappydbException e) {
                         e.printStackTrace();
                     }
-                    //A:已认证'',''B:待审核'',''C:大咖认证'',''''X:未认证'
-                    switch (item.getData().getUser().getAuthenStatus()) {
-                        case "A":
-                            identity.setVisibility(View.GONE);
-                            specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.specialis_yellow);
-                            nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
-                            titleTv.setText(item.getData().getUser().getTitle() + " ");
 
-                            wodezhibo.setVisibility(View.GONE);
-                            break;
-                        case "B":
-                            identityHtml = "&nbsp;"
-                                    + "<font size=\"10\" color=\"#000000\"> 您已实名认证，请静候相关人员核实 </font>"
-                                    + "<font size=\"38\" color=\"#32A2F8\">" + "</font>";
-                            identity.setText(Html.fromHtml(identityHtml));
-                            identity.setClickable(false);
-                            specialistIv.setVisibility(View.GONE);
-                            nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
-                            titleTv.setText(item.getData().getUser().getTitle() + " ");
-
-                            wodezhibo.setVisibility(View.GONE);
-                            break;
-                        case "C":
-                            identity.setVisibility(View.GONE);
-                            specialistIv.setVisibility(View.VISIBLE);
-                            specialistIv.setImageResource(R.mipmap.specialist_red);
-                            nameTv.setText(item.getData().getUser().getName());
-                            hospitalTv.setText(item.getData().getUser().getHospital() + " " + item.getData().getUser().getDepartment());
-                            titleTv.setText(item.getData().getUser().getTitle() + " ");
-
-                            wodezhibo.setVisibility(View.VISIBLE);
-                            break;
-                        default:
-                            identityHtml = "&nbsp;"
-                                    + "<font size=\"10\" color=\"#000000\"> 你还没有实名认证，点击前往认证 </font>"
-                                    + "<font size=\"38\" color=\"#32A2F8\">" + " >>" + "</font>";
-                            identity.setVisibility(View.VISIBLE);
-                            identity.setText(Html.fromHtml(identityHtml));
-                            identity.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    startActivity(new Intent(getActivity(), IdentityActivity.class));
-                                }
-                            });
-                            specialistIv.setVisibility(View.GONE);
-                            nameTv.setText(item.getData().getUser().getNickName());
-                            hospitalTv.setText(" ");
-                            titleTv.setText(" ");
-
-
-                            wodezhibo.setVisibility(View.GONE);
-                            break;
-                    }
                     showProgress(false);
                 }
-            }, Integer.parseInt(userId));
+            });
+
+        } catch (SnappydbException e) {
+            e.printStackTrace();
         }
+    }
+
+    // 回弹动画 (使用了属性动画)
+    public void replyImage() {
+        final ViewGroup.LayoutParams lp = imageView
+                .getLayoutParams();
+        final float w = imageView.getLayoutParams().width;// 图片当前宽度
+        final float h = imageView.getLayoutParams().height;// 图片当前高度
+        final float newW = metric.widthPixels;// 图片原宽度
+        final float newH = metric.widthPixels * 9 / 16;// 图片原高度
+
+        // 设置动画
+        ValueAnimator anim = ObjectAnimator.ofFloat(0.0F, 1.0F)
+                .setDuration(200);
+
+        anim.addUpdateListener(animation -> {
+            float cVal = (Float) animation.getAnimatedValue();
+            lp.width = (int) (w - (w - newW) * cVal);
+            lp.height = (int) (h - (h - newH) * cVal);
+            imageView.setLayoutParams(lp);
+        });
+        anim.start();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -265,6 +360,7 @@ public class MineFragment extends Fragment {
 
     @Override
     public void onResume() {
+        Log.e(getActivity().getLocalClassName(), "resume");
         initView();
         super.onResume();
     }
@@ -294,42 +390,551 @@ public class MineFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
-    @OnClick({R.id.setting, R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.wodetiezi, R.id.wodebingli, R.id.wodexuefen, R.id.wodejianli, R.id.wodezhibo, R.id.wodewendang, R.id.wodefufeizhibo})
+    @OnClick({R.id.setting, R.id.modify_userinfo, R.id.authorize,
+            R.id.user_flyt, R.id.wodecanhui, R.id.wodeqianbao, R.id.my_video,
+            R.id.wodeshoucang, R.id.wodedingdan, R.id.wodexuefen, R.id.wodejianli,
+            R.id.my_live, R.id.wodewendang, R.id.wodefufeizhibo,
+            R.id.name, R.id.activate})
     public void onClick(View view) {
-        Intent intent;
         switch (view.getId()) {
             case R.id.setting:
-                intent = new Intent(getActivity(), SettingActivity.class);
+                try {
+                    if (!DBUtils.isSet(getActivity(), "userToken")) {
+                        getActivity().finish();
+                        startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                        return;
+                    }
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                }
+
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
                 intent.putExtra("avatar", userAvatar);
                 startActivity(intent);
+
+//                startActivity(new Intent(getActivity(), FirstPasswdActivity.class));
+
                 break;
-            case R.id.user_flyt:
+            case R.id.modify_userinfo:  //激活后就能修改
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        startActivity(new Intent(getActivity(), ActivateActivity.class));
+                        break;
+                    case "未认证":     //跳认证页
+                        startActivity(new Intent(getActivity(), UpdateUserInfoActivity.class));
+                       /* HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
+                                if (!data.getStatus().equals("success")) {
+                                    ToastUtils.show(getActivity(), data.getMsg());
+                                    return;
+                                }
+                                if (data.getEntity() == null) { //从来没有认证过
+                                    ToastUtils.show(getActivity(), "请重新认证账户");
+                                    Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                    if (code.equals("OTHER")) code = "ASSOCIATION"; //回到默认值，传参
+                                    intent.putExtra("Category", code);
+                                    switch (code) {
+                                        case "ASSOCIATION":
+                                            intent.putExtra("CategoryName", "医疗协会");
+                                            break;
+                                        case "MEDICAL_STAFF":
+                                            intent.putExtra("CategoryName", "医护人员");
+                                            break;
+                                        case "MEDICAL_COMPANY":
+                                            intent.putExtra("CategoryName", "药械企业");
+                                            break;
+                                        case "MEDICO":
+                                            intent.putExtra("CategoryName", "医学生");
+                                            break;
+                                        case "EDUCATION_SCIENCE":
+                                            intent.putExtra("CategoryName", "医药教科研人员");
+                                            break;
+                                    }
+                                    startActivity(intent);
+                                    return;
+                                }
+                                switch (data.getEntity().getStatus()) {
+                                    case "A":   //已认证
+                                        startActivity(new Intent(getActivity(), UpdateUserInfoActivity.class));
+                                        break;
+                                    case "B":   //待认证 (运营端未审核,弹出“资料提交成功”界面
+                                        startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                                        break;
+                                    case "X":   //未通过 (运营端拒绝,弹出“重新认证界面”界面
+                                        ToastUtils.show(getActivity(), "请重新认证账户");
+                                        Intent intent1 = new Intent(getActivity(), AuthorizeActivity.class);
+                                        intent1.putExtra("Category", data.getEntity().getCategory());
+                                        intent1.putExtra("CategoryName", data.getEntity().getCategoryName());
+                                        startActivity(intent1);
+                                        break;
+                                }
+
+                            }
+                        });*/
+                        break;
+                    case "已认证":     //跳认证状态页
+                        startActivity(new Intent(getActivity(), UpdateUserInfoActivity.class));
+                        break;
+                }
+                break;
+            case R.id.authorize:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        Intent intent20 = new Intent(getActivity(), ActivateActivity.class);
+                        startActivity(intent20);
+                        break;
+                    case "未认证":     //跳认证页
+                        HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
+                                if (!data.getStatus().equals("success")) {
+                                    ToastUtils.show(getActivity(), data.getMsg());
+                                    return;
+                                }
+
+                                if (data.getEntity() == null) {
+                                    //从未认证过
+                                    Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                    if (code.equals("OTHER")) code = "ASSOCIATION"; //回到默认值，传参
+                                    intent.putExtra("Category", code);
+                                    switch (code) {
+                                        case "ASSOCIATION":
+                                            intent.putExtra("CategoryName", "医疗协会");
+                                            break;
+                                        case "MEDICAL_STAFF":
+                                            intent.putExtra("CategoryName", "医护人员");
+                                            break;
+                                        case "MEDICAL_COMPANY":
+                                            intent.putExtra("CategoryName", "药械企业");
+                                            break;
+                                        case "MEDICO":
+                                            intent.putExtra("CategoryName", "医学生");
+                                            break;
+                                        case "EDUCATION_SCIENCE":
+                                            intent.putExtra("CategoryName", "医药教科研人员");
+                                            break;
+                                    }
+                                    startActivity(intent);
+                                } else {
+                                    //认证过
+                                    switch (data.getEntity().getStatus()) {     //认证状态（A:已认证，B:待认证,X:未通过）
+                                        case "A":
+                                            ToastUtils.show(getActivity(), "已认证状态");
+                                            break;
+                                        case "B": //待认证 (运营端未审核,弹出“资料提交成功”界面
+                                            startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                                            break;
+                                        case "X":
+                                            startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+//                                            Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+//                                            intent.putExtra("Category", data.getEntity().getCategory());
+//                                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+//                                            startActivity(intent);
+                                            break;
+                                    }
+                                }
+                            }
+                        });
+                        break;
+                    case "已认证":     //跳认证状态页
+                        Intent intent23 = new Intent(getActivity(), AuthorizedActivity.class);
+                        startActivity(intent23);
+                        break;
+                }
                 break;
             case R.id.wodecanhui:
-                intent = new Intent(getActivity(), MyMeetingActivity.class);
-                intent.putExtra("userId", userId);
-                startActivity(intent);
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                Intent intent30 = new Intent(getActivity(), MyMeetingActivity.class);
+                startActivity(intent30);
                 break;
             case R.id.wodeqianbao:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        ToastUtils.show(getActivity(), "请先激活账户");
+                        Intent intent40 = new Intent(getActivity(), ActivateActivity.class);
+                        startActivity(intent40);
+                        break;
+                    case "未认证":
+                        HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
+                                if (!data.getStatus().equals("success")) {
+                                    ToastUtils.show(getActivity(), data.getMsg());
+                                    return;
+                                }
+
+                                if (data.getEntity() == null) { //从来没有认证过
+                                    ToastUtils.show(getActivity(), "请重新认证账户");
+                                    Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                    if (code.equals("OTHER")) code = "ASSOCIATION"; //回到默认值，传参
+                                    intent.putExtra("Category", code);
+                                    switch (code) {
+                                        case "ASSOCIATION":
+                                            intent.putExtra("CategoryName", "医疗协会");
+                                            break;
+                                        case "MEDICAL_STAFF":
+                                            intent.putExtra("CategoryName", "医护人员");
+                                            break;
+                                        case "MEDICAL_COMPANY":
+                                            intent.putExtra("CategoryName", "药械企业");
+                                            break;
+                                        case "MEDICO":
+                                            intent.putExtra("CategoryName", "医学生");
+                                            break;
+                                        case "EDUCATION_SCIENCE":
+                                            intent.putExtra("CategoryName", "医药教科研人员");
+                                            break;
+                                    }
+                                    startActivity(intent);
+                                    return;
+                                }
+
+                                switch (data.getEntity().getStatus()) {
+                                    case "A":   //已认证
+                                        startActivity(new Intent(getActivity(), MyWalletActivity.class));
+                                        break;
+                                    case "B":   //待认证 (运营端未审核,弹出“资料提交成功”界面
+                                        startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                                        break;
+                                    case "X":   //未通过 (运营端拒绝,弹出“重新认证界面”界面
+                                        ToastUtils.show(getActivity(), "请重新认证账户");
+                                        Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                        intent.putExtra("Category", data.getEntity().getCategory());
+                                        intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+                                        startActivity(intent);
+                                        break;
+                                }
+
+                            }
+                        });
+                        break;
+                    case "已认证":     //跳认证状态页
+                        startActivity(new Intent(getActivity(), MyWalletActivity.class));
+                        break;
+                }
                 break;
-            case R.id.wodetiezi:
+            case R.id.my_live:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        ToastUtils.show(getActivity(), "请先激活账户");
+                        Intent intent50 = new Intent(getActivity(), ActivateActivity.class);
+                        startActivity(intent50);
+                        break;
+                    case "未认证":
+                        HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
+                                if (!data.getStatus().equals("success")) {
+                                    ToastUtils.show(getActivity(), data.getMsg());
+                                    return;
+                                }
+
+                                if (data.getEntity() == null) { //从来没有认证过
+                                    ToastUtils.show(getActivity(), "请重新认证账户");
+                                    Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                    if (code.equals("OTHER")) code = "ASSOCIATION"; //回到默认值，传参
+                                    intent.putExtra("Category", code);
+                                    switch (code) {
+                                        case "ASSOCIATION":
+                                            intent.putExtra("CategoryName", "医疗协会");
+                                            break;
+                                        case "MEDICAL_STAFF":
+                                            intent.putExtra("CategoryName", "医护人员");
+                                            break;
+                                        case "MEDICAL_COMPANY":
+                                            intent.putExtra("CategoryName", "药械企业");
+                                            break;
+                                        case "MEDICO":
+                                            intent.putExtra("CategoryName", "医学生");
+                                            break;
+                                        case "EDUCATION_SCIENCE":
+                                            intent.putExtra("CategoryName", "医药教科研人员");
+                                            break;
+                                    }
+                                    startActivity(intent);
+                                    return;
+                                }
+
+                                switch (data.getEntity().getStatus()) {
+                                    case "A":   //已认证
+                                        startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
+                                        break;
+                                    case "B":   //待认证(运营端未审核,弹出“资料提交成功”界面
+                                        startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                                        break;
+                                    case "X":   //未通过 (运营端拒绝,弹出“重新认证界面”界面
+                                        ToastUtils.show(getActivity(), "请重新认证账户");
+                                        Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                        intent.putExtra("Category", data.getEntity().getCategory());
+                                        intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+                                        startActivity(intent);
+                                        break;
+                                }
+
+                            }
+                        });
+                        break;
+                    case "已认证":     //跳认证状态页
+                        startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
+                        break;
+                }
                 break;
-            case R.id.wodebingli:
+            case R.id.my_video:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                switch (activate.getText().toString().trim()) {
+                    case "待激活":     //跳激活页
+                        ToastUtils.show(getActivity(), "请先激活账户");
+                        startActivity(new Intent(getActivity(), ActivateActivity.class));
+                        break;
+                    case "未认证":
+                        HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
+                                if (!data.getStatus().equals("success")) {
+                                    ToastUtils.show(getActivity(), data.getMsg());
+                                    return;
+                                }
+
+                                if (data.getEntity() == null) { //从来没有认证过
+                                    ToastUtils.show(getActivity(), "请重新认证账户");
+                                    Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                    if (code.equals("OTHER")) code = "ASSOCIATION"; //回到默认值，传参
+                                    intent.putExtra("Category", code);
+                                    switch (code) {
+                                        case "ASSOCIATION":
+                                            intent.putExtra("CategoryName", "医疗协会");
+                                            break;
+                                        case "MEDICAL_STAFF":
+                                            intent.putExtra("CategoryName", "医护人员");
+                                            break;
+                                        case "MEDICAL_COMPANY":
+                                            intent.putExtra("CategoryName", "药械企业");
+                                            break;
+                                        case "MEDICO":
+                                            intent.putExtra("CategoryName", "医学生");
+                                            break;
+                                        case "EDUCATION_SCIENCE":
+                                            intent.putExtra("CategoryName", "医药教科研人员");
+                                            break;
+                                    }
+                                    startActivity(intent);
+                                    return;
+                                }
+                                switch (data.getEntity().getStatus()) {
+                                    case "A":   //已认证
+                                        startActivity(new Intent(getActivity(), MyVideoActivity.class));
+                                        break;
+                                    case "B":   //待认证 (运营端未审核,弹出“资料提交成功”界面
+                                        startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                                        break;
+                                    case "X":   //未通过 (运营端拒绝,弹出“重新认证界面”界面
+                                        ToastUtils.show(getActivity(), "请重新认证账户");
+                                        Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                                        intent.putExtra("Category", data.getEntity().getCategory());
+                                        intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+                                        startActivity(intent);
+                                        break;
+                                }
+
+                            }
+                        });
+                        break;
+                    case "已认证":     //跳认证状态页
+                        startActivity(new Intent(getActivity(), MyVideoActivity.class));
+                        break;
+                }
+                break;
+
+            case R.id.wodeshoucang:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                startActivity(new Intent(getActivity(), MyCollectActivity.class));
+                break;
+            case R.id.wodedingdan:  //非激活情况下也能使用
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                startActivity(new Intent(getActivity(), MyOrderActivity.class));
                 break;
             case R.id.wodexuefen:
                 break;
             case R.id.wodejianli:
                 break;
-            case R.id.wodezhibo:
-                startActivity(new Intent(getActivity(), MyLiveRoomActivity.class));
-                break;
             case R.id.wodewendang:
                 break;
             case R.id.wodefufeizhibo:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
                 startActivity(new Intent(getActivity(), MyPayLiveRoomActivity.class));
+                break;
+            case R.id.user_flyt:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                if (activate.getText().toString().trim().equals("已认证")) {
+                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                    /*HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
+                            if (!data.getStatus().equals("success")) {
+                                ToastUtils.show(getActivity(), data.getMsg());
+                                return;
+                            }
+
+                            Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                            intent.putExtra("Category", data.getEntity().getCategory());
+                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+                            startActivity(intent);
+                        }
+                    });*/
+                }
+                break;
+            case R.id.name:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                if (activate.getText().toString().trim().equals("已认证")) {
+                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+                }
+                break;
+            case R.id.activate:
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), Login_v2Activity.class));
+                    showProgress(false);
+                    return;
+                }
+                if (activate.getText().toString().trim().equals("已认证")) {
+                    startActivity(new Intent(getActivity(), AuthorizedActivity.class));
+
+                    /*HttpData.getInstance().HttpDataGetLastAuthentizeStatus(new Observer<HttpResult3<Object, UserAuthenRecord>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(HttpResult3<Object, UserAuthenRecord> data) {
+                            if (!data.getStatus().equals("success")) {
+                                ToastUtils.show(getActivity(), data.getMsg());
+                                return;
+                            }
+
+                            Intent intent = new Intent(getActivity(), AuthorizeActivity.class);
+                            intent.putExtra("Category", data.getEntity().getCategory());
+                            intent.putExtra("CategoryName", data.getEntity().getCategoryName());
+                            startActivity(intent);
+                        }
+                    });*/
+                }
                 break;
         }
     }
@@ -347,6 +952,7 @@ public class MineFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+
     }
 
 
@@ -366,7 +972,8 @@ public class MineFragment extends Fragment {
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    if (mProgressView != null)
+                        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {

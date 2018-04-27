@@ -23,7 +23,7 @@
         <TextView
             android:id="@+id/tab_index_title"
             style="@style/TabBarTitle"
-            android:text="首页" />
+            android:text="@string/tab_index_title" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,7 +41,7 @@
         <TextView
             android:id="@+id/tab_doctor_title"
             style="@style/TabBarTitle"
-            android:text="会议" />
+            android:text="@string/tab_meeting_title" />
     </LinearLayout>
 
     <LinearLayout
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:src="@mipmap/tab_plus_b"
+            android:src="@mipmap/tab_plus_b2"
             tools:ignore="ContentDescription" />
     </LinearLayout>
 
@@ -80,7 +80,7 @@
         <TextView
             android:id="@+id/tab_community_title"
             style="@style/TabBarTitle"
-            android:text="直播" />
+            android:text="@string/tab_live_title" />
     </LinearLayout>
 
 
@@ -99,7 +99,7 @@
         <TextView
             android:id="@+id/tab_mine_title"
             style="@style/TabBarTitle"
-            android:text="个人" />
+            android:text="@string/tab_me_title" />
     </LinearLayout>
 </LinearLayout>
 

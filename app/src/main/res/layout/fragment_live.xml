@@ -6,63 +6,50 @@
     android:orientation="vertical"
     tools:context="com.medmeeting.m.zhiyi.UI.LiveView.LiveFragment">
 
-    <android.support.design.widget.AppBarLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:elevation="0dp"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:visibility="gone">
-        <info.hoang8f.android.segmented.SegmentedGroup
-            xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/segmented2"
-            android:layout_width="wrap_content"
+        android:background="@color/white">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            segmentedgroup:backgroundTint="@color/colorAccent"
-            segmentedgroup:paddingEnd="4dp"
-            segmentedgroup:paddingStart="4dp"
-            segmentedgroup:sc_border_width="1dp"
-            segmentedgroup:sc_corner_radius="100dp"
-            segmentedgroup:sc_checked_text_color="@color/white"
-            segmentedgroup:sc_tint_color="@color/white">
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:tabBackground="@color/white"
+            app:tabIndicatorColor="@color/deepskyblue"
+            app:tabIndicatorHeight="2dp"
+            app:tabSelectedTextColor="@color/deepskyblue"
+            app:tabTextColor="@color/grey">
 
-            <RadioButton
-                android:id="@+id/button21"
+            <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="直播"
-                style="@style/RadioButton"
-                android:checked="true"/>
+                android:text="直播" />
 
-            <RadioButton
-                android:id="@+id/button22"
+            <android.support.design.widget.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="视频"
-                style="@style/RadioButton" />
-            <RadioButton
-                android:id="@+id/button23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="已付费"
-                style="@style/RadioButton" />
-        </info.hoang8f.android.segmented.SegmentedGroup>
-    </android.support.design.widget.AppBarLayout>
+                android:text="视频" />
+        </android.support.design.widget.TabLayout>
 
-    <View
-        android:id="@+id/search_live_btn"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@mipmap/live_search"/>
+        <ImageView
+            android:id="@+id/search_live_btn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="16dp"
+            android:src="@mipmap/search_icon"
+            android:contentDescription="TODO" />
+    </RelativeLayout>
 
     <!--ProgressActivity用于状态页的控制 比如加载中  网络异常  无数据  适合任何页面-->
     <com.xiaochao.lcrapiddeveloplibrary.viewtype.ProgressActivity
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/navpage">
+        android:background="@color/grey2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,13 +60,13 @@
                 android:id="@+id/springview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/navpage">
+                android:background="@color/grey2">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/navpage" />
+                    android:background="@color/grey2" />
             </com.xiaochao.lcrapiddeveloplibrary.widget.SpringView>
 
         </LinearLayout>

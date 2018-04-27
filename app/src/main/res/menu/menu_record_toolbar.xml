@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".UI.WalletView.RecordActivity">
+
+    <item
+        android:id="@+id/action_record_all"
+        android:icon="@mipmap/live_point"
+        android:orderInCategory="10"
+        android:title="全部"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/action_record_withdraw"
+        android:icon="@mipmap/live_point"
+        android:orderInCategory="10"
+        android:title="提现"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/action_record_income"
+        android:icon="@mipmap/live_point"
+        android:orderInCategory="60"
+        android:title="收入"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/action_record_refund"
+        android:icon="@mipmap/live_point"
+        android:orderInCategory="60"
+        android:title="退款"
+        app:showAsAction="withText" />
+</menu>

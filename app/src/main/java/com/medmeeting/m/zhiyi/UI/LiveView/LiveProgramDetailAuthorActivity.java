@@ -16,14 +16,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.zxing.activity.CaptureActivity;
+import com.medmeeting.m.zhiyi.Constant.Constant;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
@@ -43,8 +44,6 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -65,22 +64,35 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
 
     private static final String TAG = LiveProgramDetailAuthorActivity.class.getSimpleName();
     private Toolbar toolbar;
-    private TextView titleTv, name, title, programIdTv;
+    private TextView titleTv, name, title2, programIdTv;
     private ImageView backgroundIv, userPic;
     private Integer roomId = 0;
-    private Integer programId = 0;
+    private Integer programId;
     private TextView detailTv;
+
+    //分享用
+    private String title;
+    private String photo;
+    private String description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_program_detail_author);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        titleTv = (TextView) findViewById(R.id.title);
+        programIdTv = (TextView) findViewById(R.id.program_id);
+        backgroundIv = (ImageView) findViewById(R.id.img);
+        userPic = (ImageView) findViewById(R.id.live_user_pic);
+        name = (TextView) findViewById(R.id.name);
+        title2 = (TextView) findViewById(R.id.author_title);
+        detailTv = (TextView) findViewById(R.id.detail);
+
         toolBar();
-        initView();
-        initShare(getIntent().getExtras().getInt("programId"),
-                getIntent().getExtras().getString("title"),
-                getIntent().getExtras().getString("coverPhote"),
-                getIntent().getExtras().getString("description"));
+
+        programId = getIntent().getExtras().getInt("programId");
+        initView(programId);
 
         //qq微信新浪授权防杀死, 在onCreate中再设置一次回调
         UMShareAPI.get(this).fetchAuthResultWithBundle(this, savedInstanceState, new UMAuthListener() {
@@ -108,110 +120,62 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     }
 
     private void toolBar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
         toolbar.setOverflowIcon(getResources().getDrawable(R.mipmap.live_point));
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.letter:
-                        ShareBoardConfig config = new ShareBoardConfig();
-                        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-                        mShareAction.open(config);
-                        break;
-                    case R.id.analyse:
-                        Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity.class);
-                        intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
-                        startActivity(intent);
-                        break;
-                    case R.id.update:
-                        Intent intent2 = new Intent(LiveProgramDetailAuthorActivity.this, LiveUpdateProgramActivity.class);
-                        intent2.putExtra("programId", getIntent().getExtras().getInt("programId"));
-                        startActivity(intent2);
-                        break;
-                    case R.id.delete:
-                        new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
-                                .setMessage("确定删除该节目？")
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(final DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.letter:
+                    ShareBoardConfig config = new ShareBoardConfig();
+                    config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
+                    mShareAction.open(config);
+                    break;
+                case R.id.analyse:
+                    Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity2.class);
+                    intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
+                    startActivity(intent);
+                    break;
+                case R.id.update:
+                    Intent intent2 = new Intent(LiveProgramDetailAuthorActivity.this, LiveUpdateProgramActivity.class);
+                    intent2.putExtra("programId", getIntent().getExtras().getInt("programId"));
+                    startActivity(intent2);
+                    break;
+                case R.id.delete:
+                    new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
+                            .setMessage("确定删除该节目？")
+                            .setNegativeButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())
+                            .setPositiveButton("确定", (dialogInterface, i) -> HttpData.getInstance().HttpDataDeleteProgram(new Observer<HttpResult3>() {
+                                @Override
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    ToastUtils.show(LiveProgramDetailAuthorActivity.this, e.getMessage());
+                                }
+
+                                @Override
+                                public void onNext(HttpResult3 httpResult3) {
+                                    if (!httpResult3.getStatus().equals("success")) {
+                                        ToastUtils.show(LiveProgramDetailAuthorActivity.this, httpResult3.getMsg());//"该直播节目已有人付费报名，不可删除");
+                                        return;
                                     }
-                                })
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(final DialogInterface dialogInterface, int i) {
-                                        HttpData.getInstance().HttpDataDeleteProgram(new Observer<HttpResult3>() {
-                                            @Override
-                                            public void onCompleted() {
-
-                                            }
-
-                                            @Override
-                                            public void onError(Throwable e) {
-
-                                            }
-
-                                            @Override
-                                            public void onNext(HttpResult3 httpResult3) {
-                                                if (httpResult3.getStatus().equals("success")) {
-                                                    dialogInterface.dismiss();
-                                                    finish();
-                                                } else {
-                                                    ToastUtils.show(LiveProgramDetailAuthorActivity.this, httpResult3.getMsg());//"该直播节目已有人付费报名，不可删除");
-                                                }
-                                            }
-                                        }, programId);
-                                    }
-                                })
-                                .show();
-                        break;
-                }
-                return true;
+                                    dialogInterface.dismiss();
+                                    finish();
+                                }
+                            }, programId))
+                            .show();
+                    break;
             }
+            return true;
         });
     }
 
-    private void initView() {
-        titleTv = (TextView) findViewById(R.id.title);
-        titleTv.setText(getIntent().getExtras().getString("title"));
-
-        roomId = getIntent().getExtras().getInt("roomId");
-        programId = getIntent().getExtras().getInt("programId");
-
-        programIdTv = (TextView) findViewById(R.id.program_id);
-        programIdTv.setText("节目No." + programId);
-
-        backgroundIv = (ImageView) findViewById(R.id.img);
-        Glide.with(LiveProgramDetailAuthorActivity.this)
-                .load(getIntent().getExtras().getString("coverPhoto"))
-                .crossFade()
-                .into(backgroundIv);
-
-        userPic = (ImageView) findViewById(R.id.live_user_pic);
-        Glide.with(LiveProgramDetailAuthorActivity.this)
-                .load(getIntent().getExtras().getString("userPic"))
-                .crossFade()
-                .transform(new GlideCircleTransform(LiveProgramDetailAuthorActivity.this))
-                .placeholder(R.mipmap.avator_default)
-                .into(userPic);
-
-        name = (TextView) findViewById(R.id.name);
-        name.setText(getIntent().getExtras().getString("authorName"));
-        title = (TextView) findViewById(R.id.author_title);
-        title.setText(getIntent().getExtras().getString("authorTitle"));
-
-        detailTv = (TextView) findViewById(R.id.detail);
+    private void initView(Integer programId) {
         HttpData.getInstance().HttpDataGetProgramDetail(new Observer<HttpResult3<Object, LiveDto>>() {
             @Override
             public void onCompleted() {
@@ -225,69 +189,83 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
 
             @Override
             public void onNext(HttpResult3<Object, LiveDto> data) {
-                detailTv.setText(data.getEntity().getDes()+"");
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(LiveProgramDetailAuthorActivity.this, data.getMsg());
+                    return;
+                }
 
-                if(data.getEntity().getLiveStatus().equals("end")) {
+                titleTv.setText(data.getEntity().getTitle());
+                programIdTv.setText("节目No." + data.getEntity().getId());
+                name.setText(data.getEntity().getAuthorName());
+                title2.setText(data.getEntity().getAuthorTitle());
+                detailTv.setText(data.getEntity().getDes());
+                Glide.with(LiveProgramDetailAuthorActivity.this)
+                        .load(data.getEntity().getCoverPhoto())
+                        .crossFade()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .into(backgroundIv);
+                Glide.with(LiveProgramDetailAuthorActivity.this)
+                        .load(data.getEntity().getUserPic())
+                        .crossFade()
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .transform(new GlideCircleTransform(LiveProgramDetailAuthorActivity.this))
+                        .placeholder(R.mipmap.avator_default)
+                        .into(userPic);
+
+                if (data.getEntity().getLiveStatus().equals("end")) {
                     findViewById(R.id.to_live).setVisibility(View.GONE);
                     findViewById(R.id.to_push).setVisibility(View.GONE);
                 }
+
+                initShare(programId,
+                        data.getEntity().getTitle(),
+                        data.getEntity().getCoverPhoto(),
+                        data.getEntity().getDes());
+                title = data.getEntity().getTitle();
+                photo = data.getEntity().getCoverPhoto();
+                description = data.getEntity().getDes();
+
             }
         }, programId);
 
-        findViewById(R.id.to_live).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.to_live).setOnClickListener(view -> new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
+                .setTitle("请用PC浏览器打开")
+                .setMessage(" zb.medmeeting.com 进行扫码登录")
+                .setPositiveButton("确定", (dialogInterface, i) -> {
+                    Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, CaptureActivity.class);
+                    startActivityForResult(intent, REQ_CODE);
+                })
+                .setNegativeButton("取消", (dialogInterface, i) -> dialogInterface.dismiss())
+                .show());
+        findViewById(R.id.to_push).setOnClickListener(view -> HttpData.getInstance().HttpDataGetLiveStream(new Observer<HttpResult3<Object, LiveStream>>() {
             @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
-                        .setTitle("请用PC浏览器打开")
-                        .setMessage(" zb.medmeeting.com 进行扫码登录")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, CaptureActivity.class);
-                                startActivityForResult(intent, REQ_CODE);
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .show();
+            public void onCompleted() {
+
             }
-        });
-        findViewById(R.id.to_push).setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
-                HttpData.getInstance().HttpDataGetLiveStream(new Observer<HttpResult3<Object, LiveStream>>() {
-                    @Override
-                    public void onCompleted() {
+            public void onError(Throwable e) {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(HttpResult3<Object, LiveStream> objectLiveStreamHttpResult3) {
-                        if (objectLiveStreamHttpResult3.getStatus().equals("success")) {
-                            try {
-                                loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailAuthorActivity.this, "userId"), DBUtils.get(LiveProgramDetailAuthorActivity.this, "userName"), url);
-                            } catch (SnappydbException e) {
-                                e.printStackTrace();
-                            } finally {
-                                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
-                                startStreamingActivity(intent, objectLiveStreamHttpResult3.getEntity().getPushUrl(), programId);
-                            }
-                        } else {
-                            ToastUtils.show(LiveProgramDetailAuthorActivity.this, objectLiveStreamHttpResult3.getMsg());
-                        }
-                    }
-                }, programId);
             }
-        });
+
+            @Override
+            public void onNext(HttpResult3<Object, LiveStream> data) {
+                if (!data.getStatus().equals("success")) {
+                    ToastUtils.show(LiveProgramDetailAuthorActivity.this, data.getMsg());
+                    return;
+                }
+                try {
+                    loginRongCloudChatRoom(DBUtils.get(LiveProgramDetailAuthorActivity.this, "userId"), DBUtils.get(LiveProgramDetailAuthorActivity.this, "userName"), url);
+                } catch (SnappydbException e) {
+                    e.printStackTrace();
+                } finally {
+                    Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, SWCodecCameraStreamingActivity.class);
+                    startStreamingActivity(intent, data.getEntity().getPushUrl(), programId, title, photo, description);
+                }
+            }
+        }, programId));
     }
 
     private final static int REQ_CODE = 1102;
@@ -303,7 +281,7 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             String result = data.getStringExtra(CaptureActivity.SCAN_QRCODE_RESULT);
             Bitmap bitmap = data.getParcelableExtra(CaptureActivity.SCAN_QRCODE_BITMAP);
 
-            Log.e(TAG, "扫码结果：" + result + " " + bitmap);
+            Log.e(TAG, "扫码结果：" + result + " " + bitmap+" "+ programId);
 
             if (result != null) {
                 Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveLoginWebActivity.class);
@@ -320,67 +298,9 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.live_share_analysis, menu);
         return true;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//
-//        switch (id) {
-//            case R.id.letter:
-//                ShareBoardConfig config = new ShareBoardConfig();
-//                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_NONE);
-//                mShareAction.open(config);
-//                return true;
-//            case R.id.analyse:
-//                Intent intent = new Intent(LiveProgramDetailAuthorActivity.this, LiveTicketActivity.class);
-//                intent.putExtra("programId", getIntent().getExtras().getInt("programId"));
-//                startActivity(intent);
-//                return true;
-//            case R.id.update:
-//                ToastUtils.show(LiveProgramDetailAuthorActivity.this, "haha");
-//                break;
-//            case R.id.delete:
-//                new AlertDialog.Builder(LiveProgramDetailAuthorActivity.this)
-//                        .setMessage("确定删除该节目？")
-//                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(final DialogInterface dialogInterface, int i) {
-//                                dialogInterface.dismiss();
-//                            }
-//                        })
-//                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(final DialogInterface dialogInterface, int i) {
-//                                HttpData.getInstance().HttpDataDeleteProgram(new Observer<HttpResult3>() {
-//                                    @Override
-//                                    public void onCompleted() {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onError(Throwable e) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onNext(HttpResult3 httpResult3) {
-//                                        if (httpResult3.getStatus().equals("success")) {
-//                                            dialogInterface.dismiss();
-//                                            finish();
-//                                        }
-//                                    }
-//                                }, programId);
-//                            }
-//                        })
-//                        .show();
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     /**
      * 分享
@@ -400,26 +320,23 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
         /*增加自定义按钮的分享面板*/
         mShareAction = new ShareAction(LiveProgramDetailAuthorActivity.this)
                 .setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ, SHARE_MEDIA.MORE)
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+                .setShareboardclickCallback((snsPlatform, share_media) -> {
 
-                        UMWeb web = new UMWeb("http://wap.medmeeting.com/#!/live/room/show/" + programId);
-                        web.setTitle(title);//标题
+                    UMWeb web = new UMWeb(Constant.Share_Live +programId);//"http://wap.medmeeting.com/#!/live/room/show/" +
+                    web.setTitle(title);//标题
 //                        web.setThumb(new UMImage(LiveProgramDetailAuthorActivity.this, photo));  //缩略图
-                        web.setDescription(description);//描述
+                    web.setDescription(description);//描述
 
-                        Log.e(TAG, "1 url" + "http://wap.medmeeting.com/#!/live/room/show/" + programId
-                                + "\n" + "title" + title
-                                + "\n" + "photo" + photo
-                                + "\n" + "description" + description);
+                    Log.e(TAG, "1 url" + "http://wap.medmeeting.com/#!/live/room/show/" + programId
+                            + "\n" + "title" + title
+                            + "\n" + "photo" + photo
+                            + "\n" + "description" + description);
 
-                        new ShareAction(LiveProgramDetailAuthorActivity.this)
-                                .withMedia(web)
-                                .setPlatform(share_media)
-                                .setCallback(mShareListener)
-                                .share();
-                    }
+                    new ShareAction(LiveProgramDetailAuthorActivity.this)
+                            .withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(mShareListener)
+                            .share();
                 });
     }
 
@@ -508,57 +425,57 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
 
-    private void startStreamingActivity(final Intent intent, String pushUrl1, final Integer programId) {
+    private void startStreamingActivity(final Intent intent, String pushUrl1, final Integer programId, final String title, final String photo, final String description) {
         if (!isPermissionOK()) {
             return;
         }
 
         final String pushUrl = pushUrl1;    //推流地址
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String publishUrl = null;
-                mSelectedInputType = mInputTypeList[0];
-                Log.i(TAG, "mSelectedInputType:" + mSelectedInputType + ",pushUrl:" + pushUrl);
-                if (!"".equalsIgnoreCase(pushUrl)) {
-                    publishUrl = Config.EXTRA_PUBLISH_URL_PREFIX + pushUrl;
-                } else {
-                    if (mSelectedInputType != null) {
-                        if (INPUT_TYPE_STREAM_JSON.equalsIgnoreCase(mSelectedInputType)) {
-                            publishUrl = requestStream(url);
-                            if (publishUrl != null) {
-                                publishUrl = Config.EXTRA_PUBLISH_JSON_PREFIX + publishUrl;
-                            }
-                        } else if (INPUT_TYPE_AUTHORIZED_URL.equalsIgnoreCase(mSelectedInputType)) {
-                            publishUrl = requestStream(url2);
-                            if (publishUrl != null) {
-                                publishUrl = Config.EXTRA_PUBLISH_URL_PREFIX + publishUrl;
-                            }
-                        } else if (INPUT_TYPE_UNAUTHORIZED_URL.equalsIgnoreCase(mSelectedInputType)) {
-                            // just for test
-                            publishUrl = requestStream(url2);
-                            try {
-                                URI u = new URI(publishUrl);
-                                publishUrl = Config.EXTRA_PUBLISH_URL_PREFIX + String.format("rtmp://401.qbox.net%s?%s", u.getPath(), u.getRawQuery());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                publishUrl = null;
-                            }
-                        } else {
-                            throw new IllegalArgumentException("Illegal input type");
+        new Thread(() -> {
+            String publishUrl = null;
+            mSelectedInputType = mInputTypeList[0];
+            Log.i(TAG, "mSelectedInputType:" + mSelectedInputType + ",pushUrl:" + pushUrl);
+            if (!"".equalsIgnoreCase(pushUrl)) {
+                publishUrl = Config.EXTRA_PUBLISH_URL_PREFIX + pushUrl;
+            } else {
+                if (mSelectedInputType != null) {
+                    if (INPUT_TYPE_STREAM_JSON.equalsIgnoreCase(mSelectedInputType)) {
+                        publishUrl = requestStream(url);
+                        if (publishUrl != null) {
+                            publishUrl = Config.EXTRA_PUBLISH_JSON_PREFIX + publishUrl;
                         }
+                    } else if (INPUT_TYPE_AUTHORIZED_URL.equalsIgnoreCase(mSelectedInputType)) {
+                        publishUrl = requestStream(url2);
+                        if (publishUrl != null) {
+                            publishUrl = Config.EXTRA_PUBLISH_URL_PREFIX + publishUrl;
+                        }
+                    } else if (INPUT_TYPE_UNAUTHORIZED_URL.equalsIgnoreCase(mSelectedInputType)) {
+                        publishUrl = requestStream(url2);
+                        try {
+                            URI u = new URI(publishUrl);
+                            publishUrl = Config.EXTRA_PUBLISH_URL_PREFIX + String.format("rtmp://401.qbox.net%s?%s", u.getPath(), u.getRawQuery());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            publishUrl = null;
+                        }
+                    } else {
+                        throw new IllegalArgumentException("Illegal input type");
                     }
                 }
-
-                if (publishUrl == null) {
-                    showToast("Publish Url Got Fail!");
-                    return;
-                }
-                intent.putExtra(Config.EXTRA_KEY_PUB_URL, publishUrl);
-                intent.putExtra("programId", programId);
-                startActivity(intent);
             }
+
+            if (publishUrl == null) {
+                showToast("Publish Url Got Fail!");
+                return;
+            }
+            intent.putExtra(Config.EXTRA_KEY_PUB_URL, publishUrl);
+            intent.putExtra("programId", programId);
+            intent.putExtra("title", title);
+            intent.putExtra("photo", photo);
+            intent.putExtra("description", description);
+
+            startActivity(intent);
         }).start();
     }
 
@@ -630,20 +547,15 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     }
 
     void showToast(final String msg) {
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(LiveProgramDetailAuthorActivity.this, msg, Toast.LENGTH_LONG).show();
-            }
-        });
+        this.runOnUiThread(() -> Toast.makeText(LiveProgramDetailAuthorActivity.this, msg, Toast.LENGTH_LONG).show());
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private boolean checkPermission() {
         boolean ret = true;
 
-        List<String> permissionsNeeded = new ArrayList<String>();
-        final List<String> permissionsList = new ArrayList<String>();
+        List<String> permissionsNeeded = new ArrayList<>();
+        final List<String> permissionsList = new ArrayList<>();
         if (!addPermission(permissionsList, Manifest.permission.CAMERA)) {
             permissionsNeeded.add("CAMERA");
         }
@@ -663,13 +575,8 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
             // Check for Rationale Option
             if (!shouldShowRequestPermissionRationale(permissionsList.get(0))) {
                 showMessageOKCancel(message,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
-                                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-                            }
-                        });
+                        (dialog, which) -> requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
+                                REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS));
             } else {
                 requestPermissions(permissionsList.toArray(new String[permissionsList.size()]),
                         REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
@@ -770,6 +677,6 @@ public class LiveProgramDetailAuthorActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initView();
+        initView(getIntent().getIntExtra("programId", 0));
     }
 }

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.medmeeting.m.zhiyi.R;
-import com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.controller.EmojiManager;
 
 import io.rong.imlib.model.MessageContent;
 
@@ -26,6 +25,6 @@ public class GiftMsgView extends BaseMsgView {
     public void setContent(MessageContent msgContent) {
         GiftMessage msg = (GiftMessage) msgContent;
         username.setText(msg.getUserInfo().getName() + " ");
-        content.setText(EmojiManager.parse(msg.getContent(), content.getTextSize()));
+        content.setText(msg.getContent());
     }
 }

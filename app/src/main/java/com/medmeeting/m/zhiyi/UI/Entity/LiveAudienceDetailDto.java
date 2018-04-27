@@ -32,7 +32,7 @@ public class LiveAudienceDetailDto {
     private int roomId;
     private String title;
     private String coverPhoto;
-    private Object streamPhoto;
+    private String streamPhoto;
     private long startTime;
     private long endTime;
     private String authorName;
@@ -51,6 +51,15 @@ public class LiveAudienceDetailDto {
     private String rtmpPlayUrl;
     private String hlsPlayUrl;
     private int payFalg;
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public int getId() {
         return id;
@@ -84,11 +93,11 @@ public class LiveAudienceDetailDto {
         this.coverPhoto = coverPhoto;
     }
 
-    public Object getStreamPhoto() {
+    public String getStreamPhoto() {
         return streamPhoto;
     }
 
-    public void setStreamPhoto(Object streamPhoto) {
+    public void setStreamPhoto(String streamPhoto) {
         this.streamPhoto = streamPhoto;
     }
 

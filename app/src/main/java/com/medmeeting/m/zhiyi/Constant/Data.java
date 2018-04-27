@@ -4,8 +4,11 @@ package com.medmeeting.m.zhiyi.Constant;
 import com.medmeeting.m.zhiyi.UI.Entity.ChatDto;
 import com.medmeeting.m.zhiyi.UI.Entity.MainDateDto;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.jiguang.analytics.android.api.PurchaseEvent;
 
 /**
  * Created by Administrator on 2016/6/30.
@@ -29,7 +32,7 @@ public class Data {
 
 
     public static List<MainDateDto> getData() {
-        List<MainDateDto> data = new ArrayList<MainDateDto>();
+        List<MainDateDto> data = new ArrayList<>();
         for (int i = 0; i < MAIN_TITLE.length; i++) {
             data.add(new MainDateDto(MAIN_TITLE[i], MAIN_INFO[i], MAIN_IMAGE_URL[i]));
         }
@@ -79,7 +82,113 @@ public class Data {
     public static void setUserId(Integer userId) {
         Data.userId = userId;
     }
+
     public static void clearUserId() {
         Data.userId = 0;
+    }
+
+
+    /**
+     * 0:live pay;    1:video pay       2:meeting
+     */
+    public static Integer payType = 0;
+
+    public static Integer getPayType() {
+        return payType;
+    }
+
+    public static void setPayType(Integer payType) {
+        Data.payType = payType;
+    }
+
+    public static void clearPayType() {
+        Data.payType = 0;
+    }
+
+    /**
+     * videoId
+     */
+    public static Integer videoId = 0;
+
+    public static Integer getVideoId() {
+        return videoId;
+    }
+
+    public static void setVideoId(Integer videoId) {
+        Data.videoId = videoId;
+    }
+
+    /**
+     * tradeId
+     */
+    public static String tradeId = "";
+
+    public static String getTradeId() {
+        return tradeId;
+    }
+
+    public static void setTradeId(String tradeId) {
+        Data.tradeId = tradeId;
+    }
+
+    /**
+     * 简易Session管理
+     */
+    public static String session = "";
+
+    public static String getSession() {
+        return session;
+    }
+
+    public static void setSession(String session) {
+        Data.session = session;
+    }
+
+    public static void clearSession() {
+        Data.session="";
+    }
+
+    /**
+     *
+     */
+    public static InputStream inputStream;
+
+    public static InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public static void setInputStream(InputStream inputStream) {
+        Data.inputStream = inputStream;
+    }
+
+
+    /**
+     *
+     */
+    public static PurchaseEvent purchaseEvent;
+
+    public static PurchaseEvent getPurchaseEvent() {
+        return purchaseEvent;
+    }
+
+    public static void setPurchaseEvent(PurchaseEvent purchaseEvent) {
+        Data.purchaseEvent = purchaseEvent;
+    }
+
+    /**
+     * 手机号
+     */
+    public static String phone = "";
+
+    public static String getPhone() {
+        return phone;
+    }
+
+    public static void setPhone(String phone) {
+        Data.phone = phone;
+    }
+
+    public static void clearPhone() {
+        Data.phone="";
     }
 }

@@ -17,7 +17,7 @@ import com.medmeeting.m.zhiyi.Util.FontHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DepartmentLevelTwoAdapter extends RecyclerView.Adapter implements View.OnClickListener {
@@ -98,9 +98,9 @@ public class DepartmentLevelTwoAdapter extends RecyclerView.Adapter implements V
 
     public static class DepartmentLevelTwoViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.name)
+        @BindView(R.id.name)
         TextView name;
-        @Bind(R.id.department_level_one_llyt)
+        @BindView(R.id.department_level_one_llyt)
         RelativeLayout departmentLevelTwoLlyt;
 
         public DepartmentLevelTwoViewHolder(View itemView) {

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -20,29 +18,17 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_weight="1">
-            <!--android:background="@drawable/rc_editor_bg_selector"-->
 
             <EditText
                 android:id="@+id/input_editor"
-                android:labelFor="@id/input_editor"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/input_emoji_btn"
                 android:background="@android:color/transparent"
+                android:labelFor="@id/input_editor"
                 android:maxLines="4"
-                android:textSize="16sp"
-                android:textColor="@color/black" />
-
-            <ImageView
-                android:id="@+id/input_emoji_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="5dp"
-                android:src="@drawable/rc_emoji_selector"
-                tools:ignore="ContentDescription" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </RelativeLayout>
 
         <TextView
@@ -58,12 +44,7 @@
             android:paddingRight="10dp"
             android:text="@string/rc_send"
             android:textColor="#ffffff"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </LinearLayout>
 
-    <com.medmeeting.m.zhiyi.UI.LiveView.live.liveshow.ui.widget.EmojiBoard
-        android:id="@+id/input_emoji_board"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
 </LinearLayout>

@@ -2,8 +2,8 @@ package com.medmeeting.m.zhiyi.UI.LiveView;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -35,73 +36,68 @@ import com.medmeeting.m.zhiyi.Constant.Data;
 import com.medmeeting.m.zhiyi.Data.HttpData.HttpData;
 import com.medmeeting.m.zhiyi.R;
 import com.medmeeting.m.zhiyi.UI.Entity.HttpResult3;
+import com.medmeeting.m.zhiyi.UI.Entity.HttpResult6;
 import com.medmeeting.m.zhiyi.UI.Entity.LiveDto;
-import com.medmeeting.m.zhiyi.UI.Entity.QiniuTokenDto;
-import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.LoginActivity;
-import com.medmeeting.m.zhiyi.Util.DateUtil;
-import com.medmeeting.m.zhiyi.Util.GlideCircleTransform;
+import com.medmeeting.m.zhiyi.UI.SignInAndSignUpView.Login_v2Activity;
+import com.medmeeting.m.zhiyi.Util.DateUtils;
 import com.medmeeting.m.zhiyi.Util.ToastUtils;
-import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.Configuration;
-import com.qiniu.android.storage.UpCompletionHandler;
-import com.qiniu.android.storage.UploadManager;
 
-import org.json.JSONObject;
-
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.iwf.photopicker.PhotoPicker;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 
 public class LiveUpdateProgramActivity extends AppCompatActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.live_pic)
+    @BindView(R.id.live_pic)
     ImageView livePic;
-    @Bind(R.id.live_pic_tip_tv)
+    @BindView(R.id.live_pic_tip_tv)
     TextView livePicTipTv;
-    @Bind(R.id.live_pic_tip)
+    @BindView(R.id.live_pic_tip)
     LinearLayout livePicTip;
-    @Bind(R.id.theme)
+    @BindView(R.id.theme)
     EditText theme;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     EditText name;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     EditText title;
-    @Bind(R.id.start_time)
+    @BindView(R.id.start_time)
     TextView startTime;
-    @Bind(R.id.start_time_llyt)
+    @BindView(R.id.start_time_llyt)
     LinearLayout startTimeLlyt;
-    @Bind(R.id.end_time)
+    @BindView(R.id.end_time)
     TextView endTime;
-    @Bind(R.id.end_time_llyt)
+    @BindView(R.id.end_time_llyt)
     LinearLayout endTimeLlyt;
-    @Bind(R.id.free)
+    @BindView(R.id.free)
     Button free;
-    @Bind(R.id.charge)
+    @BindView(R.id.charge)
     Button charge;
-    @Bind(R.id.charge_amount)
+    @BindView(R.id.charge_amount)
     TextView chargeAmount;
-    @Bind(R.id.open)
+    @BindView(R.id.open)
     Button open;
-    @Bind(R.id.close)
+    @BindView(R.id.close)
     Button close;
-    @Bind(R.id.introduction)
+    @BindView(R.id.introduction)
     EditText introduction;
-    @Bind(R.id.buildllyt)
+    @BindView(R.id.buildllyt)
     LinearLayout buildllyt;
 
     private static final String TAG = LiveUpdateProgramActivity.class.getSimpleName();
@@ -123,7 +119,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
     LiveDto mLiveDto = new LiveDto();
 
-    @Bind(R.id.progress)
+    @BindView(R.id.progress)
     View mProgressView;
 
     private long createTime;
@@ -146,12 +142,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("修改直播节目");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void initView() {
@@ -167,12 +158,12 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
             }
 
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onNext(HttpResult3<Object, LiveDto> data) {
                 Glide.with(LiveUpdateProgramActivity.this)
                         .load(data.getEntity().getCoverPhoto())
-                        .crossFade()
-                        .transform(new GlideCircleTransform(LiveUpdateProgramActivity.this))
+                        .dontAnimate()
                         .into(new GlideDrawableImageViewTarget(livePic) {
                             @Override
                             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
@@ -183,11 +174,21 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                             }
                         });
 
+                videoPhoto = data.getEntity().getCoverPhoto();
                 theme.setText(data.getEntity().getTitle());
                 name.setText(data.getEntity().getAuthorName());
                 title.setText(data.getEntity().getAuthorTitle());
-                startTime.setText(DateUtil.formatDate(data.getEntity().getStartTime(), DateUtil.TYPE_01));
-                endTime.setText(DateUtil.formatDate(data.getEntity().getEndTime(), DateUtil.TYPE_01));
+                if (DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_06).equals("1970-01-01 08:00")) {
+                    startTime.setText(DateUtils.formatDate(System.currentTimeMillis(), DateUtils.TYPE_06));
+                } else {
+                    startTime.setText(DateUtils.formatDate(data.getEntity().getStartTime(), DateUtils.TYPE_06));
+                }
+
+                if (DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_06).equals("1970-01-01 08:00")) {
+                    endTime.setText("");
+                } else {
+                    endTime.setText(DateUtils.formatDate(data.getEntity().getEndTime(), DateUtils.TYPE_06));
+                }
                 if (data.getEntity().getChargeType().equals("no")) {
                     free.setBackground(getResources().getDrawable(R.drawable.button_live_free));
                     free.setTextColor(getResources().getColor(R.color.white));
@@ -214,12 +215,47 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                     close.setTextColor(getResources().getColor(R.color.white));
                 }
                 introduction.setText(data.getEntity().getDes());
+                introduction.setOnTouchListener((view, motionEvent) -> {
+                    //触摸的是EditText并且当前EditText可以滚动则将事件交给EditText处理；否则将事件交由其父类处理
+                    if ((view.getId() == R.id.introduction && canVerticalScroll(introduction))) {
+                        view.getParent().requestDisallowInterceptTouchEvent(true);
+                        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
+                        }
+                    }
+                    return false;
+                });
+
                 createTime = data.getEntity().getCreateTime();
                 updateTime = data.getEntity().getUpdateTime();
                 privacyType = data.getEntity().getPrivacyType();
                 mLiveDto = data.getEntity();
+                expectBeginTime = data.getEntity().getStartTime();
+                expectEndTime = data.getEntity().getEndTime();
             }
         }, programId);
+    }
+
+    /**
+     * EditText竖直方向是否可以滚动
+     * @param editText  需要判断的EditText
+     * @return  true：可以滚动   false：不可以滚动
+     */
+    private boolean canVerticalScroll(EditText editText) {
+        //滚动的距离
+        int scrollY = editText.getScrollY();
+        //控件内容的总高度
+        int scrollRange = editText.getLayout().getHeight();
+        //控件实际显示的高度
+        int scrollExtent = editText.getHeight() - editText.getCompoundPaddingTop() -editText.getCompoundPaddingBottom();
+        //控件内容总高度与实际显示高度的差值
+        int scrollDifference = scrollRange - scrollExtent;
+
+        if(scrollDifference == 0) {
+            return false;
+        }
+
+        return (scrollY > 0) || (scrollY < scrollDifference - 1);
     }
 
     @OnClick({R.id.live_pic_tip, R.id.start_time_llyt, R.id.end_time_llyt, R.id.free, R.id.charge, R.id.open, R.id.close, R.id.buildllyt})
@@ -239,21 +275,15 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .setIcon(getResources().getDrawable(R.mipmap.logo))
                         .setMessage("选择您想要直播的时间")
-                        .setNegativeButton("马上直播", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                expectType = "liveNow";
-                                startTime.setText("现在直播");
-                                endTime.setText("");
-                                expectBeginTime = System.currentTimeMillis();
-                            }
+                        .setNegativeButton("马上直播", (dialogInterface, i) -> {
+                            expectType = "liveNow";
+                            startTime.setText("现在直播");
+                            endTime.setText("");
+                            expectBeginTime = System.currentTimeMillis();
                         })
-                        .setPositiveButton("预约时间", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                expectType = "expect";
-                                showDateTimePopupwindow("START");
-                            }
+                        .setPositiveButton("预约时间", (dialogInterface, i) -> {
+                            expectType = "expect";
+                            showDateTimePopupwindow("START");
                         })
                         .show()
                         .setCanceledOnTouchOutside(true);
@@ -284,24 +314,21 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                         .setIcon(R.mipmap.logo)
                         .setMessage("填写金额")
                         .setView(et)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                String amount = et.getText().toString();
-                                if (amount.equals("")) {
-                                    Toast.makeText(getApplicationContext(), "金额不能为空，请重新设定" + amount, Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-
-                                Log.e(TAG, "eee1 " + amount + amount.matches(regEx));
-                                if (Float.parseFloat(amount) == 0) {
-                                    ToastUtils.show(LiveUpdateProgramActivity.this, "金额不能为0，请重新设定");
-                                    return;
-                                }
-                                chargeAmount.setText("费用： " + amount + "元");
-                                chargeType = "yes";
-                                price = amount;
+                        .setPositiveButton("确定", (dialogInterface, i) -> {
+                            String amount = et.getText().toString();
+                            if (amount.equals("")) {
+                                Toast.makeText(getApplicationContext(), "金额不能为空，请重新设定" + amount, Toast.LENGTH_LONG).show();
+                                return;
                             }
+
+                            Log.e(TAG, "eee1 " + amount + amount.matches(regEx));
+                            if (Float.parseFloat(amount) == 0) {
+                                ToastUtils.show(LiveUpdateProgramActivity.this, "金额不能为0，请重新设定");
+                                return;
+                            }
+                            chargeAmount.setText("费用： " + amount + "元");
+                            chargeType = "yes";
+                            price = amount;
                         })
                         .setNegativeButton("取消", null)
                         .show();
@@ -365,7 +392,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        ToastUtils.show(LiveUpdateProgramActivity.this, e.getMessage());
                     }
 
                     @Override
@@ -378,7 +405,7 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
                             buildllyt.setClickable(true);
                             if (httpResult3.getMsg().equals("invalid_token")) {
                                 ToastUtils.show(LiveUpdateProgramActivity.this, "账号有问题，请测试人员重新登录");
-                                startActivity(new Intent(LiveUpdateProgramActivity.this, LoginActivity.class));
+                                startActivity(new Intent(LiveUpdateProgramActivity.this, Login_v2Activity.class));
                                 finish();
                             }
                         }
@@ -397,101 +424,53 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
             for (String i : photos) {
                 Log.e(TAG, i);
             }
-            showProgress(true);
-            ToastUtils.show(LiveUpdateProgramActivity.this, "正在上传封面图片...");
-            getQiniuToken(photos.get(0));
-        }
-    }
 
-    private List<String> qiniuData = new ArrayList<>();
-    private String qiniuKey;
-    private String qiniuToken;
-    private String images = "";
+            File file = new File(photos.get(0));
+            // creates RequestBody instance from file
+            RequestBody requestFile = RequestBody.create(MediaType.parse("image/png"), file);
+            // MultipartBody.Part is used to send also the actual filename
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+            Log.e("mediaType is  ", requestFile.contentType().toString());
 
-    private void getQiniuToken(final String file) {
-        HttpData.getInstance().HttpDataGetQiniuToken(new Observer<QiniuTokenDto>() {
-            @Override
-            public void onCompleted() {
-                Log.e(TAG, "onCompleted");
-            }
+            // adds another part within the multipart request
+            String descriptionString = "Sample description";
+            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), descriptionString); //multipart/form-data
 
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: " + e.getMessage()
-                        + "\n" + e.getCause()
-                        + "\n" + e.getLocalizedMessage()
-                        + "\n" + e.getStackTrace());
-            }
+            HttpData.getInstance().HttpUploadFile(new Observer<HttpResult6>() {
+                @Override
+                public void onCompleted() {
 
-            @Override
-            public void onNext(QiniuTokenDto q) {
-                if (q.getCode() != 200 || q.getData().getUploadToken() == null || q.getData().getUploadToken().equals("")) {
-                    showProgress(false);
-                    return;
                 }
-                qiniuToken = q.getData().getUploadToken();
 
-                // 设置图片名字
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                qiniuKey = "android_live_" + sdf.format(new Date());
+                @Override
+                public void onError(Throwable e) {
 
-                int i = new Random().nextInt(1000) + 1;
+                }
 
-                Log.e(TAG, "File对象、或 文件路径、或 字节数组: " + file);
-                Log.e(TAG, "指定七牛服务上的文件名，或 null: " + qiniuKey + i);
-                Log.e(TAG, "从服务端SDK获取: " + qiniuToken);
-                Log.e(TAG, "http://ono5ms5i0.bkt.clouddn.com/" + qiniuKey + i);
+                @Override
+                public void onNext(HttpResult6 data) {
+                    if (!data.getStatus().equals("success")) {
+                        ToastUtils.show(LiveUpdateProgramActivity.this, data.getMsg());
+                        return;
+                    }
+                    videoPhoto = data.getExtra().getAbsQiniuImgHash();
 
-                upload(file, qiniuKey + i, qiniuToken);
-            }
-        }, "android");
-    }
-
-    private Configuration config = new Configuration.Builder()
-            .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
-            .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
-            .connectTimeout(10) // 链接超时。默认10秒
-            .responseTimeout(60) // 服务器响应超时。默认60秒
-//            .zone(Zone.zone1) // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
-            .build();
-
-    private void upload(final String data, final String key, final String token) {
-        new Thread() {
-            public void run() {
-                // 重用uploadManager。一般地，只需要创建一个uploadManager对象
-                UploadManager uploadManager = new UploadManager(config);
-                uploadManager.put(data, key, token,
-                        new UpCompletionHandler() {
-                            @Override
-                            public void complete(String key, ResponseInfo info, JSONObject res) {
-                                //res包含hash、key等信息，具体字段取决于上传策略的设置
-                                if (info.isOK()) {
-                                    Log.i("qiniu", "Upload Success");
-                                    Glide.with(LiveUpdateProgramActivity.this)
-                                            .load("http://ono5ms5i0.bkt.clouddn.com/" + key)
-                                            .crossFade()
-//                                            .placeholder(R.mipmap.live_title_pic)
-                                            .into(new GlideDrawableImageViewTarget(livePic) {
-                                                @Override
-                                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                                                    //在这里添加一些图片加载完成的操作
-                                                    super.onResourceReady(resource, animation);
-                                                    showProgress(false);
-                                                    livePicTipTv.setText("修改直播封面");
-                                                }
-                                            });
-                                    ToastUtils.show(LiveUpdateProgramActivity.this, "封面正在上传，上传速度取决于当前网络，请耐心等待...");
-                                } else {
-                                    Log.i("qiniu", "Upload Fail");
-                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+                    Glide.with(LiveUpdateProgramActivity.this)
+                            .load(videoPhoto)
+                            .crossFade()
+                            .dontAnimate()
+                            .into(new GlideDrawableImageViewTarget(livePic) {
+                                @Override
+                                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
+                                    //在这里添加一些图片加载完成的操作
+                                    super.onResourceReady(resource, animation);
+                                    livePicTipTv.setText("修改直播封面");
                                 }
-                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
+                            });
+                }
+            }, body, description);
 
-                                videoPhoto = "http://ono5ms5i0.bkt.clouddn.com/" + key;
-                            }
-                        }, null);
-            }
-        }.start();
+        }
     }
 
     /**
@@ -530,13 +509,10 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         month = c.get(Calendar.MONTH) + 1;  //Calendar.getInstance().get(Calendar.MONTH) 月份少1，因为Calendar api月份是从0开始计数的
         day = c.get(Calendar.DAY_OF_MONTH);
         Log.e(TAG, "begin " + year + "-" + month + "-" + day);
-        datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                year = i;
-                month = i1 + 1;
-                day = i2;
-            }
+        datePicker.init(year, month - 1, day, (datePicker1, i, i1, i2) -> {
+            year = i;
+            month = i1 + 1;
+            day = i2;
         });
 
         //以下为版本兼容
@@ -549,93 +525,84 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
             hour = timePicker.getCurrentHour();
             minute = timePicker.getCurrentMinute();
         }
-        Log.e(TAG, "hour " + hour + " minute " + minute);
+        Log.e(TAG, year + "-" + month + "-" + day + "hour " + hour + " minute " + minute);
 
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker timePicker, int i, int i1) {
-                hour = i;
-                minute = i1;
-            }
+        timePicker.setOnTimeChangedListener((timePicker1, i, i1) -> {
+            hour = i;
+            minute = i1;
         });
 
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        confirm.setOnClickListener(v -> {
 
-                if ("START".equals(sign)) {
+            if ("START".equals(sign)) {
 
-                    startDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
+                startDateTime = year + "-" + judgeDecade(month) + "-" + judgeDecade(day) + " " + judgeDecade(hour) + ":" + judgeDecade(minute);
 
-                    //判断开始时间是否早于当前时间
-                    try {
-                        mStartDate = mSimpleDateFormat.parse(startDateTime + ":" + 59);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                //判断开始时间是否早于当前时间
+                try {
+                    mStartDate = mSimpleDateFormat.parse(startDateTime);// + ":" + 59);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                currentDate = Calendar.getInstance().getTime();
+                Log.e(TAG, "START " + startDateTime);
+                Log.e(TAG, " " + mStartDate);
+                Log.e(TAG, "  >>> " + currentDate);
+
+                if (mStartDate.before(currentDate)) {
+                    ToastUtils.show(LiveUpdateProgramActivity.this, "开始时间不能在当前时间之前，请重新设置");
+                    return;
+                }
+                mLiveSettingPopupWindow.dismiss();
+                startTime.setText(startDateTime);
+//                    expectBeginTime = DateUtils.stringToLong(startDateTime, DateUtils.TYPE_06);
+                expectBeginTime = DateUtils.dateToLong(mStartDate);
+
+            } else if ("END".equals(sign)) {
+
+                if (!expectType.equals("liveNow")) {
+                    if (mStartDate == null) {
+//                        ToastUtils.show(LiveUpdateProgramActivity.this, "请先设置开始时间，再设置结束时间");
+//                        mLiveSettingPopupWindow.dismiss();
+//                        return;
+                        try {
+                            mStartDate = DateUtils.longToDate(expectBeginTime, DateUtils.TYPE_06);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    currentDate = Calendar.getInstance().getTime();
-                    Log.e(TAG, "START " + startDateTime);
-                    Log.e(TAG, " " + mStartDate);
-                    Log.e(TAG, "  >>> " + currentDate);
+                }
+                endDateTime = year + "-" + judgeDecade(month) + "-" + judgeDecade(day) + " " + judgeDecade(hour) + ":" + judgeDecade(minute);
 
-                    if (mStartDate.before(currentDate)) {
-                        ToastUtils.show(LiveUpdateProgramActivity.this, "开始时间不能在当前时间之前，请重新设置");
+                //判断结束时间是否早于开始时间
+                try {
+                    mEndDate = mSimpleDateFormat.parse(endDateTime);// + ":" + 59);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e(TAG, "END " + endDateTime);
+                Log.e(TAG, "END " + mStartDate);
+                Log.e(TAG, "END " + "  >>> " + mEndDate);
+
+                if (!expectType.equals("liveNow")) {
+                    if (mStartDate.after(mEndDate)) {
+                        ToastUtils.show(LiveUpdateProgramActivity.this, "结束时间应该晚于开始时间，请重新设置");
                         return;
                     }
-                    mLiveSettingPopupWindow.dismiss();
-                    startTime.setText(startDateTime);
-//                    expectBeginTime = DateUtils.stringToLong(startDateTime, DateUtils.TYPE_01);
-                    expectBeginTime = DateUtil.dateToLong(mStartDate);
-
-                } else if ("END".equals(sign)) {
-
-                    if (!expectType.equals("liveNow")) {
-                        if (mStartDate == null) {
-                            ToastUtils.show(LiveUpdateProgramActivity.this, "请先设置开始时间，再设置结束时间");
-                            mLiveSettingPopupWindow.dismiss();
-                            return;
-                        }
-                    }
-                    endDateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute;
-
-                    //判断结束时间是否早于开始时间
-                    try {
-                        mEndDate = mSimpleDateFormat.parse(endDateTime + ":" + 59);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    Log.e(TAG, "END " + endDateTime);
-                    Log.e(TAG, "END " + mStartDate);
-                    Log.e(TAG, "END " + "  >>> " + mEndDate);
-
-                    if (!expectType.equals("liveNow")) {
-                        if (mStartDate.after(mEndDate)) {
-                            ToastUtils.show(LiveUpdateProgramActivity.this, "结束时间应该晚于开始时间，请重新设置");
-                            return;
-                        }
-                    }
-                    mLiveSettingPopupWindow.dismiss();
-                    endTime.setText(endDateTime);
-//                    expectEndTime = DateUtils.stringToLong(endDateTime, DateUtils.TYPE_01);
-                    expectEndTime = DateUtil.dateToLong(mEndDate);
                 }
-            }
-        });
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 mLiveSettingPopupWindow.dismiss();
+                endTime.setText(endDateTime);
+//                    expectEndTime = DateUtils.stringToLong(endDateTime, DateUtils.TYPE_06);
+                expectEndTime = DateUtils.dateToLong(mEndDate);
             }
         });
 
-        popupDateTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mLiveSettingPopupWindow != null && mLiveSettingPopupWindow.isShowing()) {
-                    mLiveSettingPopupWindow.dismiss();
-                }
+        back.setOnClickListener(view -> mLiveSettingPopupWindow.dismiss());
+
+        popupDateTime.setOnClickListener(v -> {
+            if (mLiveSettingPopupWindow != null && mLiveSettingPopupWindow.isShowing()) {
+                mLiveSettingPopupWindow.dismiss();
             }
         });
 
@@ -674,4 +641,12 @@ public class LiveUpdateProgramActivity extends AppCompatActivity {
         }
     }
 
+
+    //判断时候是小于10，如果小于10，则前面加0
+    private String judgeDecade(int i){
+        if (i >= 10)
+            return Integer.toString(i);
+        else
+            return "0"+i;
+    }
 }

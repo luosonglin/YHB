@@ -12,4 +12,95 @@
         <attr name="bezierFactor" format="integer" />
         <attr name="anim_duration" format="integer" />
     </declare-styleable>
+
+    <!-- CircleProgressView -->
+    <declare-styleable name="CircleProgressView">
+        <attr name="matProg_progressIndeterminate" format="boolean" />
+        <attr name="matProg_barColor" format="color" />
+        <attr name="matProg_rimColor" format="color" />
+        <attr name="matProg_rimWidth" format="dimension" />
+        <attr name="matProg_spinSpeed" format="float" />
+        <attr name="matProg_barSpinCycleTime" format="integer" />
+        <attr name="matProg_circleRadius" format="dimension" />
+        <attr name="matProg_fillRadius" format="boolean" />
+        <attr name="matProg_barWidth" format="dimension" />
+        <attr name="matProg_linearProgress" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="RxShineButton">
+        <attr name="btn_color" format="color"/>
+        <attr name="btn_fill_color" format="color"/>
+        <attr name="shine_count" format="integer"/>
+        <attr name="shine_turn_angle" format="float"/>
+        <attr name="small_shine_offset_angle" format="float"/>
+        <attr name="enable_flashing" format="boolean"/>
+        <attr name="allow_random_color" format="boolean"/>
+        <attr name="small_shine_color" format="color"/>
+        <attr name="big_shine_color" format="color"/>
+        <attr name="shine_animation_duration" format="integer"/>
+        <attr name="click_animation_duration" format="integer"/>
+        <attr name="shine_distance_multiple" format="float"/>
+        <attr name="shine_size" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="RxPorterImageView">
+        <attr name="siShape" format="integer|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="ColorTrackView">
+        <attr name="ctvText" format="string"/>
+        <attr name="ctvText_size" format="dimension"/>
+        <attr name="ctvText_origin_color" format="color"/>
+        <attr name="ctvText_change_color" format="color"/>
+        <attr name="ctvProgress" format="float"/>
+        <attr name="ctvDirection" format="integer"/>
+    </declare-styleable>
+
+    <string-array name="home_title">
+        <item>全部</item>
+        <item>年会</item>
+        <item>论坛</item>
+        <item>峰会</item>
+        <item>交流会</item>
+        <item>研讨会</item>
+        <item>专题会</item>
+        <item>培训班</item>
+        <item>学习班</item>
+        <item>取证班</item>
+        <item>研修班</item>
+        <item>展会</item>
+        <item>其他</item>
+
+        <item>旅游</item>
+        <item>历史</item>
+        <item>探索</item>
+        <item>美食</item>
+        <item>育儿</item>
+        <item>养生</item>
+        <item>故事</item>
+        <item>美文</item>
+    </string-array>
+    <string-array name="home_title_code">
+        <item>__all__</item>
+        <item>video</item>
+        <item>news_hot</item>
+        <item>news_society</item>
+        <item>news_entertainment</item>
+        <item>news_tech</item>
+        <item>news_car</item>
+        <item>news_sports</item>
+        <item>news_finance</item>
+        <item>news_military</item>
+        <item>news_world</item>
+        <item>news_fashion</item>
+        <item>news_game</item>
+        <item>news_travel</item>
+        <item>news_history</item>
+        <item>news_discovery</item>
+        <item>news_food</item>
+        <item>news_baby</item>
+        <item>news_regimen</item>
+        <item>news_story</item>
+        <item>news_essay</item>
+    </string-array>
 </resources>
