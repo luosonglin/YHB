@@ -174,7 +174,7 @@
                 android:background="@drawable/edittext_delete_line"
                 android:gravity="center_vertical"
                 android:hint="邀请码"
-                android:inputType="textPassword"
+                android:inputType="number"
                 android:maxLines="1"
                 android:paddingStart="14dp"
                 android:singleLine="true"

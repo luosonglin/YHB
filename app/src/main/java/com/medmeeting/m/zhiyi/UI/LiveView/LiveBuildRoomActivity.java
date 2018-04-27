@@ -93,7 +93,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_build_room);
         ButterKnife.bind(this);
         toolBar();
-        initView();
+        initAgreementView();
 
 //        //第一次创建直播间，弹出直播间协议弹窗
 //        if (getIntent().getStringExtra("times").equals("0") || getIntent().getStringExtra("times").equals("")) {
@@ -137,7 +137,10 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
     }
 
-    private void initView() {
+    /**
+     * 第一次创建直播间，弹出直播协议弹窗
+     */
+    private void initAgreementView() {
         View codeView = LayoutInflater.from(this).inflate(R.layout.popupwindow_live_agreement, null);
         PopupWindow codePopupwindow = new PopupWindow(codeView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
 
@@ -170,12 +173,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
             finish();
         });
         TextView agreementTv = (TextView) codeView.findViewById(R.id.blue);
-        agreementTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BrowserActivity.launch(LiveBuildRoomActivity.this, "http://webview.medmeeting.com/#/page/live-protocol", "《直播协议》");
-            }
-        });
+        agreementTv.setOnClickListener(view -> BrowserActivity.launch(LiveBuildRoomActivity.this, "http://webview.medmeeting.com/#/page/live-protocol", "《直播协议》"));
 
 
         HttpData.getInstance().HttpDataGetAgreement(new Observer<HttpResult3<Object, Boolean>>() {

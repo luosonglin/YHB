@@ -38,7 +38,7 @@ public class Constant {
     public static final String URL_Meeting_Enrol = API_SERVER_microWeb + "?#/m/reg/sign/";
 
     //会议订单页：
-    public static final String URL_Meeting_Order = "http://mobile.medmeeting.com/#/wv/meeting/order";
+    public static final String URL_Meeting_Order = "http://mobil·e.medmeeting.com/#/wv/meeting/order";
 
     //消息
     public static final String URL_Message_Detail = "http://mobile.medmeeting.com/#/wv/message/";
