@@ -274,6 +274,7 @@ public class NewsVideoActivity extends AppCompatActivity {
         UMShareAPI.get(this).onSaveInstanceState(outState);
     }
 
+
     private void initView(Integer blogId) {
         Map<String, Object> map = new HashMap<>();
         map.put("blogId", blogId);
