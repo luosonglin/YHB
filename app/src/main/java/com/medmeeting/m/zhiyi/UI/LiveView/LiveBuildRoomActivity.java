@@ -93,7 +93,7 @@ public class LiveBuildRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_build_room);
         ButterKnife.bind(this);
         toolBar();
-//        initAgreementView();
+        initAgreementView();
 
 //        //第一次创建直播间，弹出直播间协议弹窗
 //        if (getIntent().getStringExtra("times").equals("0") || getIntent().getStringExtra("times").equals("")) {
